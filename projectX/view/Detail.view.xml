@@ -1,0 +1,40 @@
+<mvc:View
+	controllerName="projectX.view.Detail"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<Page
+		showNavButton="{device>/isPhone}"
+		navButtonPress="onNavBack"
+		title="{i18n>detailTitle}">
+		<content>
+			<Input value="{/url}"/>
+			<Select selectedKey="{/httpMethod}">
+				<items>
+					<core:Item text="GET" key="GET"/>
+					<core:Item text="POST"  key="POST"/>
+					<core:Item text="PUT"  key="PUT"/>
+					<core:Item text="DELETE"  key="DELETE"/>
+					<core:Item text="HEAD"  key="HEAD"/>
+					<core:Item text="OPTIONS"  key="OPTIONS"/>
+					<core:Item text="PATCH"  key="PATCH"/>
+				</items>
+			</Select>
+			<Button press="onBtnSendPress" text="Send"/>
+			<TextArea height="200px" width="200px" 
+					enabled="true" 
+					editable="false"
+					value="{/Response/responseHeader}"
+					/>
+			<TextArea height="200px" width="200px" 
+					enabled="true" 
+					editable="false"
+					value="{/Response/data}"
+					/>
+		</content>
+		<footer>
+			<Toolbar>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

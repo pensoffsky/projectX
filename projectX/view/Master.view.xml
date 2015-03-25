@@ -1,0 +1,33 @@
+<mvc:View
+	controllerName="projectX.view.Master"
+	displayBlock="true"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<Page
+		id="page"
+		title="{i18n>masterTitle}">
+		<content>
+			<List
+				id="list"
+				items="{/Products}"
+				mode="{device>/listMode}"
+				noDataText="{i18n>masterListNoDataText}"
+				select="onSelect"
+				growing="true"
+				growingScrollToLoad="true">
+				<items>
+					<StandardListItem/>
+				</items>
+			</List>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button
+					icon="sap-icon://add"
+					tooltip="{i18n>masterFooterAddButtonTooltip}"
+					press="onAddProduct" />
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

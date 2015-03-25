@@ -1,0 +1,11 @@
+# Ignore Eclipse project and settings files
+.classpath
+.settings
+.project
+.externalToolBuilders
+
+# Ignore Mac files
+.DS_Store
+
+# Ignore local ui5 resources folder
+/resources
