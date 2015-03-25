@@ -41,13 +41,11 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 
 		var that = this;
 		oDeferred.done(function(data, textStatus, jqXHR) {
-			console.log("ajax done");
 			that.showResponse(jqXHR);
 			
 		});
 
 		oDeferred.fail(function(jqXHR, textStatus, errorThrown) {
-			console.log("ajax fail");
 			that.showResponse(jqXHR);
 		});
 	},
