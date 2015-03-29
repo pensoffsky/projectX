@@ -9,3 +9,6 @@
 
 # Ignore local ui5 resources folder
 /resources
+
+# Ignore Cloud9 config filder
+.c9

@@ -15,10 +15,6 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 
 		config : {
 			resourceBundle : "i18n/messageBundle.properties",
-			serviceConfig : {
-				name : "Northwind",
-				serviceUrl : "/uilib-sample/proxy/http/services.odata.org/V2/(S(sapuidemobespractices))/OData/OData.svc/"
-			}
 		},
 
 		routing : {
@@ -77,17 +73,12 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		});
 		this.setModel(i18nModel, "i18n");
 
-		var sServiceUrl = mConfig.serviceConfig.serviceUrl;
-
-		//This code is only needed for testing the application when there is no local proxy available, and to have stable test data.
-		var bIsMocked = jQuery.sap.getUriParameters().get("responderOn") === "true";
-		// start the mock server for the domain model
-		if (bIsMocked) {
-			this._startMockServer(sServiceUrl);
-		}
 
 		// Create and set domain model to the component
-		var oModel = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+		var oModel = new sap.ui.model.json.JSONModel({
+			SelectedProject : undefined,
+			Projects : [],
+		});
 		this.setModel(oModel);
 
 		// set device model
@@ -105,25 +96,5 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.getRouter().initialize();
 
 	},
-
-	_startMockServer : function (sServiceUrl) {
-		jQuery.sap.require("sap.ui.core.util.MockServer");
-		var oMockServer = new sap.ui.core.util.MockServer({
-			rootUri: sServiceUrl
-		});
-
-		var iDelay = +(jQuery.sap.getUriParameters().get("responderDelay") || 0);
-		sap.ui.core.util.MockServer.config({
-			autoRespondAfter : iDelay
-		});
-
-		oMockServer.simulate("model/metadata.xml", "model/");
-		oMockServer.start();
-
-
-		sap.m.MessageToast.show("Running in demo mode with mock data.", {
-			duration: 2000
-		});
-	}
 });
 

@@ -100,17 +100,6 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		}
 	},
 
-	onSearch : function() {
-		// add filter for search
-		var filters = [];
-		var searchString = this.getView().byId("searchField").getValue();
-		if (searchString && searchString.length > 0) {
-			filters = [ new sap.ui.model.Filter("Name", sap.ui.model.FilterOperator.Contains, searchString) ];
-		}
-
-		// update list binding
-		this.getView().byId("list").getBinding("items").filter(filters);
-	},
 
 	onSelect : function(oEvent) {
 		// Get the list item, either from the listItem parameter or from the event's
@@ -128,13 +117,23 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		}, bReplace);
 	},
 
-	onAddProduct : function() {
+	
+	
+	onAddNewProject : function() {
 		this.getRouter().myNavToWithoutHash({ 
 			currentView : this.getView(),
 			targetViewName : "projectX.view.AddProduct",
 			targetViewType : "XML",
 			transition : "slide"
 		});
+	},
+	
+	onSelectProjectChange : function(oEvent){
+		debugger;
+		var oSelectedItem = oEvent.getParameter("selectedItem");
+		var oBindingContext = oSelectedItem.getBindingContext();
+		var oModel = this.getView().getModel();
+		oModel.setProperty("/SelectedProject", oModel.getProperty(oBindingContext.getPath()));
 	}
 
 });

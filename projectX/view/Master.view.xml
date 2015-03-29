@@ -2,16 +2,39 @@
 	controllerName="projectX.view.Master"
 	displayBlock="true"
 	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
 	xmlns="sap.m">
 	<Page
 		id="page"
-		title="{i18n>masterTitle}">
+		>
+		<customHeader>
+			<Bar>
+				<contentMiddle>
+					<l:FixFlex 	vertical="false" 
+								fixFirst="false">
+						<l:fixContent>
+							<Button icon="sap-icon://add"
+									tooltip="Add new project"
+									press="onAddNewProject"/>
+						 </l:fixContent>
+						 <l:flexContent>
+						     <Select width="100%"
+						     		 items="{/Projects}"
+						     		 change="onSelectProjectChange"
+						     		>
+						     	<core:Item text="{mProperties/name}" />
+							</Select>
+					     </l:flexContent>
+					</l:FixFlex>
+				</contentMiddle>
+			</Bar>
+    	</customHeader>
 		<content>
 			<List
 				id="list"
-				items="{/Products}"
+				items="{/Projects}"
 				mode="{device>/listMode}"
-				noDataText="{i18n>masterListNoDataText}"
 				select="onSelect"
 				growing="true"
 				growingScrollToLoad="true">
