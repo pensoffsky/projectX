@@ -12,6 +12,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 			TODO2: "Pan",
 			Response: {},
 			name: "",
+			httpMethod: "GET"
 		});
 		//set the local ui model to the view
 		//use a name when addressing the local ui model from xml
@@ -71,6 +72,27 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 	showResponse: function(jqXHR) {
 		this._localUIModel.setProperty("/Response/data", jqXHR.responseText);
 		this._localUIModel.setProperty("/Response/responseHeader", jqXHR.getAllResponseHeaders());
+	},
+	
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// Event Handler
+	// /////////////////////////////////////////////////////////////////////////////
+
+	onBtnDeletePress: function() {
+		var oModel = this.getView().getModel();
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
+		oSelectedProject.removeRequest(this._selectedRequest);
+		oModel.updateBindings();
+	},
+	
+	onBtnSavePress: function() {
+		//write localui data to model
+		var oData = this._localUIModel.getData();
+		this._selectedRequest.setName(oData.name);
+		this._selectedRequest.setUrl(oData.url);
+		this._selectedRequest.setHttpMethod(oData.httpMethod);
+		var oModel = this.getView().getModel();
+		oModel.updateBindings();
 	}
 
 });

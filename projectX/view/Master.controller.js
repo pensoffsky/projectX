@@ -133,6 +133,16 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		});
 	},
 	
+	onLoad : function() {
+		var oComponent = this.getComponent();
+		oComponent.load();
+	},
+	
+	onSave : function() {
+		var oComponent = this.getComponent();
+		oComponent.save();
+	},
+	
 	/**
 	 * add a new request to the currently selected project 
 	 */
@@ -141,7 +151,7 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		var oModel = this.getView().getModel();
 		//get the selected project
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
-		if(!oSelectedProject) {
+		if (!oSelectedProject) {
 			return;
 		}
 		
@@ -159,6 +169,7 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		var oBindingContext = oSelectedItem.getBindingContext();
 		var oModel = this.getView().getModel();
 		oModel.setProperty("/SelectedProject", oModel.getProperty(oBindingContext.getPath()));
+
 	}
 
 });

@@ -31,7 +31,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		}
 		var iNewID = iHighestID + 1;
 		
-		var oRequest = new projectX.util.Request({identifier: iNewID, name:"New Request", url:"http://"});
+		var oRequest = new projectX.util.Request(
+			{identifier: iNewID, name:"New Request", url:"http://"}
+			);
 		this.addRequest(oRequest);
 	};
 	
@@ -46,7 +48,16 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		return null;
 	};
 	
-	
+	Project.prototype.serialize = function(iIdentifier) {
+		var oProject = this.mProperties;
+		var aSerializedRequests = [];
+		var aRequests = this.getRequests();
+		for (var i = 0; i < aRequests.length; i++) {
+			aSerializedRequests.push(aRequests[i].serialize());
+		}	
+		oProject.requests = aSerializedRequests;
+		return oProject;
+	};
 	
 	//TODO function to remove a request
 	//TODO function to create a storeable json object for persistance

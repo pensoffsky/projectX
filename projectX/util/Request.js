@@ -17,9 +17,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		}
 	}});
 	
-	Request.prototype.someFunction = function() {
-		
-		
+	Request.prototype.serialize = function(iIdentifier) {
+		return this.mProperties;
 	};
 
 	return Request;

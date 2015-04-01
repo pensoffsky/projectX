@@ -100,7 +100,43 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.setModel(oDeviceModel, "device");
 
 		this.getRouter().initialize();
-
+	},
+	
+	/**
+	 * save projects to lcoalstorage
+	 */
+	save : function() {
+		var oModel = this.getView().getModel();
+		var aProjects = oModel.getProperty("/Projects");
+		var aSaveableObject = [];
+		for (var i = 0; i < aProjects.length; i++) {
+			aSaveableObject.push(aProjects[i].serialize());
+		}
+		
+		var sData = JSON.stringify(aSaveableObject);
+		window.localStorage.setItem("projects", sData);
+	},
+	
+	/**
+	 * load projects from localstorage
+	 */
+	load : function() {
+		var sData = window.localStorage.getItem("projects");
+		var aLoadedProjects = JSON.parse(sData);
+		var aProjects = [];
+		for (var i = 0; i < aLoadedProjects.length; i++) {
+			var oProject = new projectX.util.Project(aLoadedProjects[i]);
+			aProjects.push(oProject);
+		}
+		
+		if (!aProjects || aProjects.length <= 0) {
+			return;
+		}
+		
+		var oModel = this.getView().getModel();
+		oModel.setProperty("/Projects", aProjects);
+		oModel.setProperty("/SelectedProject", aProjects[0]);
+		oModel.updateBindings();
 	},
 });
 

@@ -8,12 +8,16 @@
 		navButtonPress="onNavBack"
 		title="{localUIModel>/name}">
 		<content>
-
+			<HBox> 
+				<Input value="{localUIModel>/name}"/>
+				<Button press="onBtnSavePress" text="Save"/>
+				<Button press="onBtnDeletePress" text="Delete"/>
+			</HBox>
 			<FlexBox
 				width="100%"
 				alignItems="Start">
 				<items>
-
+				
 					<Select selectedKey="{localUIModel>/httpMethod}">
 						<items>
 							<core:Item text="GET"     key="GET"/>
