@@ -6,10 +6,10 @@
 	<Page
 		showNavButton="{device>/isPhone}"
 		navButtonPress="onNavBack"
-		title="{i18n>detailTitle}">
+		title="{localUIModel>/name}">
 		<content>
-			<Input value="{/url}"/>
-			<Select selectedKey="{/httpMethod}">
+			<Input value="{localUIModel>/url}"/>
+			<Select selectedKey="{localUIModel>/httpMethod}">
 				<items>
 					<core:Item text="GET" key="GET"/>
 					<core:Item text="POST"  key="POST"/>

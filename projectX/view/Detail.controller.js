@@ -3,6 +3,7 @@ jQuery.sap.require("projectX.util.Controller");
 
 projectX.util.Controller.extend("projectX.view.Detail", {
 
+	_selectedRequest : null,
 
 	onInit: function() {
 		this._localUIModel = new sap.ui.model.json.JSONModel();
@@ -10,19 +11,36 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 			url: "http://localhost:3002",
 			TODO2: "Pan",
 			Response: {},
-			
+			name: "",
 		});
-		this.getView().setModel(this._localUIModel);
-
-		if (sap.ui.Device.system.phone) {
-			//don't wait for the master on a phone
-		}
+		//set the local ui model to the view
+		//use a name when addressing the local ui model from xml
+		this.getView().setModel(this._localUIModel, "localUIModel");
+		
+		//hook navigation event
 		this.getRouter().getRoute("product").attachMatched(this.onRouteMatched, this);
 	},
 
 	onRouteMatched: function(oEvent) {
 		var oParameters = oEvent.getParameters();
-
+		var iRequestID = parseInt(oParameters.arguments.requestID, 10);
+		var oModel = this.getView().getModel();
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
+		if (!oSelectedProject) {
+			return;
+		}
+		
+		var oRequest = oSelectedProject.getRequestByIdentifier(iRequestID);
+		if (!oRequest) {
+			return;
+		}
+		
+		this._selectedRequest = oRequest;
+		this._localUIModel.setProperty("/name", oRequest.getName());
+		this._localUIModel.setProperty("/url", oRequest.getUrl());
+		this._localUIModel.setProperty("/httpMethod", oRequest.getHttpMethod());
+		
+		//TODO bind view to /SelectedProject/aAggregations/requests/[index]
 	},
 
 	onNavBack: function() {

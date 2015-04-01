@@ -1,5 +1,7 @@
 jQuery.sap.declare("projectX.Component");
 jQuery.sap.require("projectX.MyRouter");
+jQuery.sap.require("projectX.util.Project");
+jQuery.sap.require("projectX.util.Request");
 
 sap.ui.core.UIComponent.extend("projectX.Component", {
 	metadata : {
@@ -34,7 +36,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 					targetControl : "idAppControl",
 					subroutes : [
 						{
-							pattern : "product/{productId}/:tab:",
+							pattern : "product/{requestID}/:tab:",
 							name : "product",
 							view : "Detail"
 						}
@@ -73,11 +75,15 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		});
 		this.setModel(i18nModel, "i18n");
 
+		//create test project
+		var oProject = new projectX.util.Project({name: "testproj 1"});
+		//add test requests
+		oProject.addNewRequest();
 
 		// Create and set domain model to the component
 		var oModel = new sap.ui.model.json.JSONModel({
-			SelectedProject : undefined,
-			Projects : [],
+			SelectedProject : oProject,
+			Projects : [oProject],
 		});
 		this.setModel(oModel);
 

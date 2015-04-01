@@ -10,14 +10,46 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 			name : {type : "string", defaultValue : null},
 		},
 		events : {
-	
+			
+		},
+		aggregations : {
+			requests : {type : "projectX.util.Request", multiple : true},
 		}
 	}});
 	
-	Project.prototype.someFunction = function() {
+	/**
+	 * create a new request.
+	 * calculate a new id for the request. (highest id + 1)
+	 * add it to the project.
+	 */
+	Project.prototype.addNewRequest = function() {
+		var aRequests = this.getRequests();
 		
+		var iHighestID = 0;
+		for (var i = 0; i < aRequests.length; i++) {
+			iHighestID = Math.max(aRequests[i].getIdentifier(), iHighestID);
+		}
+		var iNewID = iHighestID + 1;
 		
+		var oRequest = new projectX.util.Request({identifier: iNewID, name:"New Request", url:"http://"});
+		this.addRequest(oRequest);
 	};
+	
+	Project.prototype.getRequestByIdentifier = function(iIdentifier) {
+		var aRequests = this.getRequests();
+		
+		for (var i = 0; i < aRequests.length; i++) {
+			if (aRequests[i].getIdentifier() === iIdentifier){
+				return aRequests[i];
+			}
+		}
+		return null;
+	};
+	
+	
+	
+	//TODO function to remove a request
+	//TODO function to create a storeable json object for persistance
 
 	return Project;
 
