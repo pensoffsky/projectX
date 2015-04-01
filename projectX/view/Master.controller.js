@@ -64,7 +64,7 @@ projectX.util.Controller.extend("projectX.view.Master", {
 
 			var oSelectedItem = oList.getSelectedItem();
 			// the correct item is already selected
-			if(oSelectedItem && oSelectedItem.getBindingContext().getPath() === sProductPath) {
+			if (oSelectedItem && oSelectedItem.getBindingContext().getPath() === sProductPath) {
 				return;
 			}
 
@@ -108,17 +108,22 @@ projectX.util.Controller.extend("projectX.view.Master", {
 	},
 
 	showDetail : function(oItem) {
+		var oBindingContext = oItem.getBindingContext();
+        var oModel = oBindingContext.getModel();
+        var sPath = oBindingContext.getPath();
+        var oSelectedRequest = oModel.getProperty(sPath);
+		
 		// If we're on a phone, include nav in history; if not, don't.
 		var bReplace = jQuery.device.is.phone ? false : true;
-		var iProductId = oItem.getBindingContext().getProperty("ID");
 		this.getRouter().navTo("product", {
-			productId : iProductId,
-			tab : this.sTab || "supplier"
+			requestID : oSelectedRequest.getIdentifier()
 		}, bReplace);
 	},
 
-	
-	
+	/**
+	 * the user wants to add a new project.
+	 * navigate to the new project screen.
+	 */
 	onAddNewProject : function() {
 		this.getRouter().myNavToWithoutHash({ 
 			currentView : this.getView(),
@@ -128,8 +133,28 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		});
 	},
 	
+	/**
+	 * add a new request to the currently selected project 
+	 */
+	onAddRequest : function() {
+		//get the model
+		var oModel = this.getView().getModel();
+		//get the selected project
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
+		if(!oSelectedProject) {
+			return;
+		}
+		
+		oSelectedProject.addNewRequest();
+		oModel.updateBindings();
+		//TODO select the newly created request
+	},
+	
+	/**
+	 * the user selected a project.
+	 * make sure the master list shows the request of this project
+	 */
 	onSelectProjectChange : function(oEvent){
-		debugger;
 		var oSelectedItem = oEvent.getParameter("selectedItem");
 		var oBindingContext = oSelectedItem.getBindingContext();
 		var oModel = this.getView().getModel();

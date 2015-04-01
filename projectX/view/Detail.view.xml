@@ -6,7 +6,7 @@
 	<Page
 		showNavButton="{device>/isPhone}"
 		navButtonPress="onNavBack"
-		title="{i18n>detailTitle}">
+		title="{localUIModel>/name}">
 		<content>
 
 			<FlexBox
@@ -14,7 +14,7 @@
 				alignItems="Start">
 				<items>
 
-					<Select selectedKey="{/httpMethod}">
+					<Select selectedKey="{localUIModel>/httpMethod}">
 						<items>
 							<core:Item text="GET"     key="GET"/>
 							<core:Item text="POST"    key="POST"/>
@@ -26,11 +26,11 @@
 						</items>
 					</Select>
 					<Input
-						value="{/url}"
+						value="{localUIModel>/url}"
 						type="Url"
 						maxLength="4096"
 						placeholder="Enter valid Service-URL ..." />
-					<Button press="onBtnSendPress" text="Sender"/>
+					<Button press="onBtnSendPress" text="Send"/>
 
 				</items>
 			</FlexBox>

@@ -1,4 +1,5 @@
 jQuery.sap.require("projectX.util.Project");
+jQuery.sap.require("projectX.util.Request");
 
 sap.ui.core.mvc.Controller.extend("projectX.view.AddProduct", {
 	
@@ -15,7 +16,12 @@ sap.ui.core.mvc.Controller.extend("projectX.view.AddProduct", {
 		//create new Project object
 		var oProject = new projectX.util.Project();
 		oProject.setName(oProjectData["Name"]);
-		oProject.someFunction();
+		
+		//add test request
+		var oRequest = new projectX.util.Request({name:"test1", url:"http://"});
+		oProject.addRequest(oRequest);
+		oRequest = new projectX.util.Request({name:"test2", url:"http2://"});
+		oProject.addRequest(oRequest);
 		
 		//push new projects to global model
 		var oModel = this.getView().getModel();
@@ -23,6 +29,8 @@ sap.ui.core.mvc.Controller.extend("projectX.view.AddProduct", {
 		aProjects.push(oProject);
 		oModel.setProperty("/Projects", aProjects);
 		oModel.setProperty("/SelectedProject", oProject);
+		
+		debugger
 	},
 
 	onSave : function() {

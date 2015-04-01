@@ -14,7 +14,7 @@
 					<l:FixFlex 	vertical="false" 
 								fixFirst="false">
 						<l:fixContent>
-							<Button icon="sap-icon://add"
+							<Button icon="sap-icon://create"
 									tooltip="Add new project"
 									press="onAddNewProject"/>
 						 </l:fixContent>
@@ -33,13 +33,13 @@
 		<content>
 			<List
 				id="list"
-				items="{/Projects}"
+				items="{/SelectedProject/mAggregations/requests}"
 				mode="{device>/listMode}"
 				select="onSelect"
 				growing="true"
 				growingScrollToLoad="true">
 				<items>
-					<StandardListItem/>
+					<StandardListItem title="{mProperties/name}"/>
 				</items>
 			</List>
 		</content>
@@ -48,8 +48,8 @@
 				<ToolbarSpacer/>
 				<Button
 					icon="sap-icon://add"
-					tooltip="{i18n>masterFooterAddButtonTooltip}"
-					press="onAddProduct" />
+					tooltip="Add Request"
+					press="onAddRequest" />
 			</Toolbar>
 		</footer>
 	</Page>

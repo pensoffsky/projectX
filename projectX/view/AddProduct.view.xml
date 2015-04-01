@@ -6,7 +6,7 @@
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
 	<Page
-		title="Add new Project">
+		title="Create new project">
 		<l:Grid
 			defaultSpan="L12 M12 S12"
 			width="auto">
