@@ -8,7 +8,7 @@
 		navButtonPress="onNavBack"
 		title="{localUIModel>/name}">
 		<content>
-			<HBox> 
+			<HBox>
 				<Input value="{localUIModel>/name}"/>
 				<Button press="onBtnSavePress" text="Save"/>
 				<Button press="onBtnDeletePress" text="Delete"/>
@@ -16,8 +16,6 @@
 			<FlexBox
 				width="100%"
 				alignItems="Start">
-				<items>
-				
 					<Select selectedKey="{localUIModel>/httpMethod}">
 						<items>
 							<core:Item text="GET"     key="GET"/>
@@ -33,10 +31,12 @@
 						value="{localUIModel>/url}"
 						type="Url"
 						maxLength="4096"
-						placeholder="Enter valid Service-URL ..." />
+						placeholder="Enter valid Service-URL ..." >
+						<layoutData>
+                <FlexItemData growFactor="1" />
+              </layoutData>
+					</Input>
 					<Button press="onBtnSendPress" text="Send"/>
-
-				</items>
 			</FlexBox>
 
 
@@ -45,14 +45,14 @@
 					<TextArea height="200px" width="100%"
 							enabled="true"
 							editable="true"
-							value="{/Request/requestHeader}" />
+							value="{localUIModel>/Request/header}" />
 				</VBox>
 				<VBox>
 					<Label text="Request Body" />
 					<TextArea height="200px" width="100%"
 							enabled="true"
 							editable="true"
-							value="{/Request/requestBody}" />
+							value="{localUIModel>/Request/body}" />
 				</VBox>
 
 
@@ -61,14 +61,14 @@
 					<TextArea height="200px" width="100%"
 							enabled="true"
 							editable="false"
-							value="{/Request/responseHeader}" />
+							value="{localUIModel>/Response/header}" />
 				</VBox>
 				<VBox>
 					<Label text="Response Body" />
 					<TextArea height="200px" width="100%"
 							enabled="true"
 							editable="false"
-							value="{/Request/responseBody}" />
+							value="{localUIModel>/Response/body}" />
 				</VBox>
 
 

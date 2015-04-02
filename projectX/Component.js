@@ -81,11 +81,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oProject.addNewRequest();
 
 		// Create and set domain model to the component
-		var oModel = new sap.ui.model.json.JSONModel({
+		this._oModel = new sap.ui.model.json.JSONModel({
 			SelectedProject : oProject,
 			Projects : [oProject],
 		});
-		this.setModel(oModel);
+		this.setModel(this._oModel);
 
 		// set device model
 		var oDeviceModel = new sap.ui.model.json.JSONModel({
@@ -101,22 +101,21 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 
 		this.getRouter().initialize();
 	},
-	
+
 	/**
 	 * save projects to lcoalstorage
 	 */
 	save : function() {
-		var oModel = this.getView().getModel();
-		var aProjects = oModel.getProperty("/Projects");
+		var aProjects = this._oModel.getProperty("/Projects");
 		var aSaveableObject = [];
 		for (var i = 0; i < aProjects.length; i++) {
 			aSaveableObject.push(aProjects[i].serialize());
 		}
-		
+
 		var sData = JSON.stringify(aSaveableObject);
 		window.localStorage.setItem("projects", sData);
 	},
-	
+
 	/**
 	 * load projects from localstorage
 	 */
@@ -128,15 +127,13 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 			var oProject = new projectX.util.Project(aLoadedProjects[i]);
 			aProjects.push(oProject);
 		}
-		
+
 		if (!aProjects || aProjects.length <= 0) {
 			return;
 		}
 		
-		var oModel = this.getView().getModel();
-		oModel.setProperty("/Projects", aProjects);
-		oModel.setProperty("/SelectedProject", aProjects[0]);
-		oModel.updateBindings();
+		this._oModel.setProperty("/Projects", aProjects);
+		this._oModel.setProperty("/SelectedProject", aProjects[0]);
+		this._oModel.updateBindings();
 	},
 });
-
