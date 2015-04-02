@@ -1,0 +1,32 @@
+{
+  "name": "projectX",
+  "version": "0.0.1",
+  "description": "sisyphus (automated test tool for REST endpoints)",
+  "author": {
+    "name": "pensoffsky",
+    "name": "citoki"
+  },
+  "license": "MIT",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pensoffsky/projectX.git"
+  },
+  "keywords": [
+    "projectX",
+    "sisyphus"
+  ],
+    "bugs": {
+    "url": "https://github.com/pensoffsky/projectX/issues"
+  },
+  "homepage": "https://github.com/pensoffsky/projectX",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.10.0",
+    "gulp-load-plugins": "^0.9.0",
+    "proxy-middleware": "^0.11.0"
+  }
+}

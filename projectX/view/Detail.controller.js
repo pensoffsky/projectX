@@ -71,8 +71,8 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 	},
 
 	showResponse: function(jqXHR) {
-		this._localUIModel.setProperty("/Response/header", jqXHR.getAllResponseHeaders());
-		this._localUIModel.setProperty("/Response/body", jqXHR.responseText);
+		this._localUIModel.setProperty("/Response/Header", jqXHR.getAllResponseHeaders());
+		this._localUIModel.setProperty("/Response/Body", jqXHR.responseText);
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////

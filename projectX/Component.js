@@ -78,7 +78,10 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		//create test project
 		// TODO check access-control request header to overcom CORS issue
 		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-		var sDemoService = "http://services.odata.org/V2/Northwind/Northwind.svc/"
+		// var sDemoService = "http://services.odata.org/V2/Northwind/Northwind.svc/"
+		var sLocalServer = "http://localhost:3000"
+		var sDemoApiPrefix = "/odata_org";
+		var sDemoService = sLocalServer + sDemoApiPrefix + "/V2/Northwind/Northwind.svc/";
 		var oProject = new projectX.util.Project({name: "Northwind Demo", baseUrl: sDemoService});
 		oProject.generateBasicOdataRequests();
 
