@@ -27,11 +27,14 @@ projectX.util.Controller.extend("projectX.view.Master", {
         var oModel = oBindingContext.getModel();
         var sPath = oBindingContext.getPath();
         var oSelectedRequest = oModel.getProperty(sPath);
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
 		
+		//TODO add selected projectID to navigation parameters
 		// If we're on a phone, include nav in history; if not, don't.
 		var bReplace = jQuery.device.is.phone ? false : true;
 		this.getRouter().navTo("product", {
-			requestID : oSelectedRequest.getIdentifier()
+			requestID : oSelectedRequest.getIdentifier(),
+			projectID : oSelectedProject.getIdentifier(),
 		}, bReplace);
 	},
 	

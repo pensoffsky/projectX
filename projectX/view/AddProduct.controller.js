@@ -84,22 +84,11 @@ projectX.util.Controller.extend("projectX.view.AddProduct", {
 //private methods
 
 	_createProject : function() {
-		//create new Project object and fill in data from local project model
-		var oProject = new projectX.util.Project();
-		oProject.setName(this._localProjectModel.getProperty("/name"));
-		oProject.setBaseUrl(this._localProjectModel.getProperty("/baseUrl"));
-		
-		//add test requests
-		oProject.addNewRequest();
-		oProject.addNewRequest();
-		
-		
-		//push new projects to global model
-		var oModel = this.getView().getModel();
-		var aProjects = oModel.getProperty("/Projects");
-		aProjects.push(oProject);
-		oModel.setProperty("/Projects", aProjects);
-		oModel.setProperty("/SelectedProject", oProject);
+		var oComponent = this.getComponent();
+		oComponent.createNewProject(
+			this._localProjectModel.getProperty("/name"),
+			this._localProjectModel.getProperty("/baseUrl")
+			);
 	},
 	
 	_saveProject : function() {

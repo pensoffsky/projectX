@@ -36,7 +36,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 					targetControl : "idAppControl",
 					subroutes : [
 						{
-							pattern : "product/{requestID}/:tab:",
+							pattern : "product/{projectID}/{requestID}/:tab:",
 							name : "product",
 							view : "Detail"
 						},
@@ -147,4 +147,34 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this._oModel.setProperty("/SelectedProject", aProjects[0]);
 		this._oModel.updateBindings();
 	},
+	
+	/**
+	 * create a new project and add to global model.
+	 * select the new project
+	 */
+	createNewProject : function(sName, sBaseUrl) {
+		//TODO find next project id
+		var aProjects = this._oModel.getProperty("/Projects");
+		var iHighestID = 0;
+		for (var i = 0; i < aProjects.length; i++) {
+			iHighestID = Math.max(aProjects[i].getIdentifier(), iHighestID);
+		}
+		var iNewID = iHighestID + 1;
+		
+		//create new Project object and fill in data from local project model
+		var oProject = new projectX.util.Project({
+			identifier: iNewID,
+			name: sName,
+			baseUrl: sBaseUrl
+		});
+		
+		//add test requests
+		oProject.addNewRequest();
+		oProject.addNewRequest();
+		
+		//push new projects to global model
+		aProjects.push(oProject);
+		this._oModel.setProperty("/Projects", aProjects);
+		this._oModel.setProperty("/SelectedProject", oProject);
+	}
 });
