@@ -76,9 +76,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.setModel(i18nModel, "i18n");
 
 		//create test project
-		var oProject = new projectX.util.Project({name: "testproj 1"});
-		//add test requests
-		oProject.addNewRequest();
+		// TODO check access-control request header to overcom CORS issue
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+		var sDemoService = "http://services.odata.org/V2/Northwind/Northwind.svc/"
+		var oProject = new projectX.util.Project({name: "Northwind Demo", baseUrl: sDemoService});
+		oProject.generateBasicOdataRequests();
 
 		// Create and set domain model to the component
 		this._oModel = new sap.ui.model.json.JSONModel({
@@ -131,7 +133,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		if (!aProjects || aProjects.length <= 0) {
 			return;
 		}
-		
+
 		this._oModel.setProperty("/Projects", aProjects);
 		this._oModel.setProperty("/SelectedProject", aProjects[0]);
 		this._oModel.updateBindings();

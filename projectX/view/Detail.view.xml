@@ -40,19 +40,37 @@
 			</FlexBox>
 
 
-				<VBox>
-					<Label text="Request Header" />
-					<TextArea height="200px" width="100%"
+				<!-- <VBox> -->
+				<Label text="Request Header" />
+				<FlexBox
+					alignItems="Start">
+
+					<!-- TODO bind values to localUIModel>/Request/Header/[0 .. x] -->
+					<Input value="Accept-Encoding" >
+						<layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+					</Input>
+					<!-- TODO insert line break -->
+					<Input value="UTF-8" />
+					<Input value="Content-Type" >
+						<layoutData>
+							<FlexItemData growFactor="1" />
+						</layoutData>
+					</Input>
+					<Input value="application/json" />
+					<!-- <TextArea height="200px" width="100%"
 							enabled="true"
 							editable="true"
-							value="{localUIModel>/Request/header}" />
-				</VBox>
+							value="{localUIModel>/Request/Header}" /> -->
+				<!-- </VBox> -->
+				</FlexBox>
 				<VBox>
 					<Label text="Request Body" />
 					<TextArea height="200px" width="100%"
 							enabled="true"
 							editable="true"
-							value="{localUIModel>/Request/body}" />
+							value="{localUIModel>/Request/Body}" />
 				</VBox>
 
 
@@ -61,14 +79,14 @@
 					<TextArea height="200px" width="100%"
 							enabled="true"
 							editable="false"
-							value="{localUIModel>/Response/header}" />
+							value="{localUIModel>/Response/Header}" />
 				</VBox>
 				<VBox>
 					<Label text="Response Body" />
 					<TextArea height="200px" width="100%"
 							enabled="true"
 							editable="false"
-							value="{localUIModel>/Response/body}" />
+							value="{localUIModel>/Response/Body}" />
 				</VBox>
 
 
