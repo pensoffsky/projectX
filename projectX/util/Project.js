@@ -7,6 +7,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	var Project = ManagedObject.extend("projectX.util.Project", { metadata : {
 
 		properties : {
+			identifier : {type : "int", defaultValue : null},
 			name : {type : "string", defaultValue : null},
 			baseUrl : {type : "string", defaultValue : null},
 		},

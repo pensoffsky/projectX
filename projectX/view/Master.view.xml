@@ -14,6 +14,9 @@
 					<l:FixFlex 	vertical="false" 
 								fixFirst="false">
 						<l:fixContent>
+							<Button icon="sap-icon://edit"
+									tooltip="Edit project"
+									press="onEditProject"/>
 							<Button icon="sap-icon://create"
 									tooltip="Add new project"
 									press="onAddNewProject"/>
@@ -45,7 +48,8 @@
 				mode="{device>/listMode}"
 				select="onSelect"
 				growing="true"
-				growingScrollToLoad="true">
+				growingScrollToLoad="true"
+				updateFinished="onListUpdateFinished">
 				<items>
 					<StandardListItem title="{mProperties/name}"/>
 				</items>

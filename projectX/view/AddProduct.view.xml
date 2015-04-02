@@ -6,7 +6,7 @@
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
 	<Page
-		title="Create new project">
+		title="{projectModel>/reason}">
 		<l:Grid
 			defaultSpan="L12 M12 S12"
 			width="auto">
@@ -28,7 +28,9 @@
 						<!-- Basic info -->
 						<c:Title text="Basic Info" />
 						<Label text="Project Name" />
-						<Input value="{newProject>/Name}" />
+						<Input value="{projectModel>/name}" />
+						<Label text="Base URL" />	
+						<Input value="{projectModel>/baseUrl}" />
 					</f:content>
 				</f:SimpleForm>
 			</l:content>
@@ -36,7 +38,14 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button text="{i18n>addProductButtonSave}" type="Emphasized" press="onSave" />
+				<Button text="Save" 
+						type="Emphasized" 
+						press="onSave"
+						visible="{projectModel>/reasonEdit}"/>
+				<Button text="Create" 
+						type="Emphasized" 
+						press="onCreate" 
+						visible="{projectModel>/reasonNew}"/>
 				<Button text="{i18n>addProductButtonCancel}" press="onCancel" />
 			</Toolbar>
 		</footer>

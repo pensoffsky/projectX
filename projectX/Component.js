@@ -39,6 +39,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 							pattern : "product/{requestID}/:tab:",
 							name : "product",
 							view : "Detail"
+						},
+						{
+							pattern : "project/{projectID}/:reason:",
+							name : "project",
+							view : "AddProduct"
 						}
 					]
 				},
@@ -78,8 +83,12 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		//create test project
 		// TODO check access-control request header to overcom CORS issue
 		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-		var sDemoService = "http://services.odata.org/V2/Northwind/Northwind.svc/"
-		var oProject = new projectX.util.Project({name: "Northwind Demo", baseUrl: sDemoService});
+		var sDemoService = "http://services.odata.org/V2/Northwind/Northwind.svc/";
+		var oProject = new projectX.util.Project({
+			identifier: 0,
+			name: "Northwind Demo", 
+			baseUrl: sDemoService
+		});
 		oProject.generateBasicOdataRequests();
 
 		// Create and set domain model to the component
