@@ -8,7 +8,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 	onInit: function() {
 		this._localUIModel = new sap.ui.model.json.JSONModel();
 		this._localUIModel.setData({
-			url: "http://localhost:3002",
+			url: "http://localhost:3000",
 			TODO2: "Pan",
 			Request: {},
 			Response: {},

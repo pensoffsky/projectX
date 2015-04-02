@@ -36,9 +36,14 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 					targetControl : "idAppControl",
 					subroutes : [
 						{
-							pattern : "product/{requestID}/:tab:",
+							pattern : "product/{projectID}/{requestID}/:tab:",
 							name : "product",
 							view : "Detail"
+						},
+						{
+							pattern : "project/{projectID}/:reason:",
+							name : "project",
+							view : "AddProduct"
 						}
 					]
 				},
@@ -76,13 +81,16 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.setModel(i18nModel, "i18n");
 
 		//create test project
-		// TODO check access-control request header to overcom CORS issue
-		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-		// var sDemoService = "http://services.odata.org/V2/Northwind/Northwind.svc/"
 		var sLocalServer = "http://localhost:3000"
 		var sDemoApiPrefix = "/odata_org";
 		var sDemoService = sLocalServer + sDemoApiPrefix + "/V2/Northwind/Northwind.svc/";
-		var oProject = new projectX.util.Project({name: "Northwind Demo", baseUrl: sDemoService});
+
+		var oProject = new projectX.util.Project({
+			identifier: 0,
+			name: "Northwind Demo",
+			baseUrl: sDemoService
+		});
+
 		oProject.generateBasicOdataRequests();
 
 		// Create and set domain model to the component
@@ -141,4 +149,34 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this._oModel.setProperty("/SelectedProject", aProjects[0]);
 		this._oModel.updateBindings();
 	},
+
+	/**
+	 * create a new project and add to global model.
+	 * select the new project
+	 */
+	createNewProject : function(sName, sBaseUrl) {
+		//TODO find next project id
+		var aProjects = this._oModel.getProperty("/Projects");
+		var iHighestID = 0;
+		for (var i = 0; i < aProjects.length; i++) {
+			iHighestID = Math.max(aProjects[i].getIdentifier(), iHighestID);
+		}
+		var iNewID = iHighestID + 1;
+
+		//create new Project object and fill in data from local project model
+		var oProject = new projectX.util.Project({
+			identifier: iNewID,
+			name: sName,
+			baseUrl: sBaseUrl
+		});
+
+		//add test requests
+		oProject.addNewRequest();
+		oProject.addNewRequest();
+
+		//push new projects to global model
+		aProjects.push(oProject);
+		this._oModel.setProperty("/Projects", aProjects);
+		this._oModel.setProperty("/SelectedProject", oProject);
+	}
 });

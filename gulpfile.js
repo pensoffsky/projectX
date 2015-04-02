@@ -1,11 +1,6 @@
 var gulp = require('gulp');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var plugins = gulpLoadPlugins();
-
-// plugins can be accessed via 'plugins.'
-// var jshint = require('gulp-jshint')
-
-
 var url = require('url'); // https://www.npmjs.org/package/url
 var proxy = require('proxy-middleware'); // https://www.npmjs.org/package/proxy-middleware
 var browserSync = require('browser-sync'); // https://www.npmjs.org/package/browser-sync
