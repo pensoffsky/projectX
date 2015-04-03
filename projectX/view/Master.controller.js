@@ -88,6 +88,11 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		oComponent.save();
 	},
 	
+	onExport : function() {
+		var oComponent = this.getComponent();
+		oComponent.export();
+	},
+	
 	/**
 	 * add a new request to the currently selected project 
 	 */

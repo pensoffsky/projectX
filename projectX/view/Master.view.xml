@@ -20,14 +20,6 @@
 							<Button icon="sap-icon://create"
 									tooltip="Add new project"
 									press="onAddNewProject"/>
-							<Button
-								icon="sap-icon://upload"
-								tooltip="Load"
-								press="onLoad" />
-							<Button
-								icon="sap-icon://save"
-								tooltip="Save"
-								press="onSave" />
 						 </l:fixContent>
 						 <l:flexContent>
 						     <Select width="100%"
@@ -41,6 +33,24 @@
 				</contentMiddle>
 			</Bar>
     	</customHeader>
+		<subHeader>
+			<Bar>
+				<contentRight>
+					<Button
+						text="export"
+						tooltip="Export"
+						press="onExport" />
+					<Button
+						text="load"
+						tooltip="Load"
+						press="onLoad" />
+					<Button
+						text="save"
+						tooltip="Save"
+						press="onSave" />
+				</contentRight>
+			</Bar>
+    	</subHeader>
 		<content>
 			<List
 				id="list"

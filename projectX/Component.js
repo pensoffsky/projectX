@@ -115,17 +115,22 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.getRouter().initialize();
 	},
 
-	/**
-	 * save projects to lcoalstorage
-	 */
-	save : function() {
+	_createJsonString : function() {
 		var aProjects = this._oModel.getProperty("/Projects");
 		var aSaveableObject = [];
 		for (var i = 0; i < aProjects.length; i++) {
 			aSaveableObject.push(aProjects[i].serialize());
 		}
+		//create json string indented with 4 spaces
+		var sData = JSON.stringify(aSaveableObject, null, 2);
+		return sData;
+	},
 
-		var sData = JSON.stringify(aSaveableObject);
+	/**
+	 * save projects to lcoalstorage
+	 */
+	save : function() {
+		var sData = this._createJsonString();
 		window.localStorage.setItem("projects", sData);
 	},
 
@@ -148,6 +153,25 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this._oModel.setProperty("/Projects", aProjects);
 		this._oModel.setProperty("/SelectedProject", aProjects[0]);
 		this._oModel.updateBindings();
+	},
+	
+	/**
+	 * create json file and prepare it for download.
+	 * lets the user donwload the current config in a file which he then can
+	 * save on disk.
+	 */
+	export : function() {
+		var sData = this._createJsonString();
+		var pom = document.createElement('a');
+		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sData));
+		pom.setAttribute('download', "projectX.config");
+
+		pom.style.display = 'none';
+		document.body.appendChild(pom);
+
+		pom.click();
+
+		document.body.removeChild(pom);
 	},
 
 	/**
