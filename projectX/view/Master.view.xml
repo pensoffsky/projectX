@@ -74,6 +74,14 @@
 		</content>
 		<footer>
 			<Toolbar>
+				<Button
+					icon="sap-icon://up"
+					tooltip="Move request up"
+					press="onMoveRequestUp" />
+				<Button
+					icon="sap-icon://down"
+					tooltip="Move request down"
+					press="onMoveRequestDown" />
 				<ToolbarSpacer/>
 				<Button
 					icon="sap-icon://play"

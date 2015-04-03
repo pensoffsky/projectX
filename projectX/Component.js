@@ -192,7 +192,6 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		    // e.target.result should contain the text
 			var sData = e.target.result;
 			that._parseAndLoadProjects(sData);
-			
 		};
 		oFileReader.readAsText(oFile);
 	},
