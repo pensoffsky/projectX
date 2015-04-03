@@ -1,7 +1,8 @@
 <mvc:View
 	xmlns:mvc="sap.ui.core.mvc"
 	displayBlock="true"
-	xmlns="sap.m">
+	xmlns="sap.m"
+	class="sapUiSizeCompact">
 	<SplitApp 	id="idAppControl" 
 				mode="StretchCompressMode"
 				/>

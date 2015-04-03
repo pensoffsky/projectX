@@ -27,18 +27,31 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	Project.prototype.addNewRequest = function(sName, sUrl) {
 		sUrl = (!!sUrl) ? sUrl : "http://localhost:3000";
 		sName = (!!sName) ? sName : "New request";
-		var aRequests = this.getRequests();
+		
+		var iNewID = this._getNextId();
 
-		var iHighestID = 0;
-		for (var i = 0; i < aRequests.length; i++) {
-			iHighestID = Math.max(aRequests[i].getIdentifier(), iHighestID);
-		}
-		var iNewID = iHighestID + 1;
-
-		var oRequest = new projectX.util.Request(
-			{	identifier: iNewID,	name: sName,	url: sUrl }
-			);
+		var oRequest = new projectX.util.Request({	
+			identifier: iNewID,	
+			name: sName,	
+			url: sUrl 
+			}
+		);
 		this.addRequest(oRequest);
+	};
+	
+	/**
+	 * create a copy of the given request and add it to the requests.
+	*/
+	Project.prototype.addCopyOfRequest = function(oRequest) {
+		var iNewID = this._getNextId();
+		var oNewRequest = new projectX.util.Request({
+				identifier: iNewID,	
+				name: oRequest.getName(),
+				url: oRequest.getUrl(),
+				httpMethod: oRequest.getHttpMethod() 
+				}
+			);
+		this.addRequest(oNewRequest);
 	};
 
 
@@ -68,9 +81,16 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		this.addNewRequest( "Service Document", this.getBaseUrl() );
 		this.addNewRequest( "Metadata Document", this.getBaseUrl() + "$metadata" );
 	};
-
-	//TODO function to remove a request
-	//TODO function to create a storeable json object for persistance
+	
+	Project.prototype._getNextId = function() {
+		var aRequests = this.getRequests();
+		var iHighestID = 0;
+		for (var i = 0; i < aRequests.length; i++) {
+			iHighestID = Math.max(aRequests[i].getIdentifier(), iHighestID);
+		}
+		var iNewID = iHighestID + 1;
+		return iNewID;
+	};
 
 	return Project;
 

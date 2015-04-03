@@ -10,8 +10,9 @@
 		<content>
 			<HBox>
 				<Input value="{localUIModel>/name}"/>
-				<Button press="onBtnSavePress" text="Save"/>
-				<Button press="onBtnDeletePress" text="Delete"/>
+				<Button press="onBtnSavePress" text="Save" icon="sap-icon://save"/>
+				<Button press="onBtnDuplicatePress" text="Duplicate" icon="sap-icon://duplicate"/>
+				<Button press="onBtnDeletePress" text="Delete" icon="sap-icon://delete"/>
 			</HBox>
 			<FlexBox
 				width="100%"

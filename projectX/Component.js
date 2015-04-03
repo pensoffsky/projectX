@@ -224,5 +224,16 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		aProjects.push(oProject);
 		this._oModel.setProperty("/Projects", aProjects);
 		this._oModel.setProperty("/SelectedProject", oProject);
+	},
+	
+	/**
+	 * duplicate this request and add it to the currently selected project.
+	 * @param {object} oRequest request to duplicate
+	 */
+	duplicateRequest : function(oRequest) {
+		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
+		oSelectedProject.addCopyOfRequest(oRequest);
+		this._oModel.updateBindings();
 	}
+	
 });
