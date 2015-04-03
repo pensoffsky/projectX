@@ -93,6 +93,15 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		oComponent.export();
 	},
 	
+	onFileUploaderChange : function(oEvent) {
+		//TODO add error hanlding. at the moment best case programming
+		var aFiles = oEvent.getParameter("files");
+		var oFile = aFiles[0];
+		
+		var oComponent = this.getComponent();
+		oComponent.import(oFile);	
+	},
+	
 	/**
 	 * add a new request to the currently selected project 
 	 */

@@ -126,19 +126,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		return sData;
 	},
 
-	/**
-	 * save projects to lcoalstorage
-	 */
-	save : function() {
-		var sData = this._createJsonString();
-		window.localStorage.setItem("projects", sData);
-	},
-
-	/**
-	 * load projects from localstorage
-	 */
-	load : function() {
-		var sData = window.localStorage.getItem("projects");
+	_parseAndLoadProjects : function(sData) {
 		var aLoadedProjects = JSON.parse(sData);
 		var aProjects = [];
 		for (var i = 0; i < aLoadedProjects.length; i++) {
@@ -154,6 +142,22 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this._oModel.setProperty("/SelectedProject", aProjects[0]);
 		this._oModel.updateBindings();
 	},
+
+	/**
+	 * save projects to lcoalstorage
+	 */
+	save : function() {
+		var sData = this._createJsonString();
+		window.localStorage.setItem("projects", sData);
+	},
+
+	/**
+	 * load projects from localstorage
+	 */
+	load : function() {
+		var sData = window.localStorage.getItem("projects");
+		this._parseAndLoadProjects(sData);
+	},
 	
 	/**
 	 * create json file and prepare it for download.
@@ -165,13 +169,27 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		var pom = document.createElement('a');
 		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sData));
 		pom.setAttribute('download', "projectX.config");
-
 		pom.style.display = 'none';
 		document.body.appendChild(pom);
-
 		pom.click();
-
 		document.body.removeChild(pom);
+	},
+	
+	/**
+	 * open a config file from disk and load the projects.
+	 * same as load function but from disk and not from local storage
+	 */
+	import : function(oFile) {
+		//create filereader
+		var oFileReader = new FileReader();
+		var that = this;
+		oFileReader.onload = function(e) {
+		    // e.target.result should contain the text
+			var sData = e.target.result;
+			that._parseAndLoadProjects(sData);
+			
+		};
+		oFileReader.readAsText(oFile);
 	},
 
 	/**
@@ -179,7 +197,6 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	 * select the new project
 	 */
 	createNewProject : function(sName, sBaseUrl) {
-		//TODO find next project id
 		var aProjects = this._oModel.getProperty("/Projects");
 		var iHighestID = 0;
 		for (var i = 0; i < aProjects.length; i++) {
