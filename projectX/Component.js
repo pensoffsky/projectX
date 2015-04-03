@@ -16,7 +16,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		rootView : "projectX.view.App",
 
 		config : {
-			resourceBundle : "i18n/messageBundle.properties",
+			resourceBundle : "i18n/messageBundle.properties"
 		},
 
 		routing : {
@@ -44,6 +44,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 							pattern : "project/{projectID}/:reason:",
 							name : "project",
 							view : "AddProduct"
+						},
+						{
+							pattern : "testrun",
+							name : "testrun",
+							view : "TestRun"
 						}
 					]
 				},
@@ -81,7 +86,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.setModel(i18nModel, "i18n");
 
 		//create test project
-		var sLocalServer = "http://localhost:3000"
+		var sLocalServer = "http://localhost:3000";
 		var sDemoApiPrefix = "/odata_org";
 		var sDemoService = sLocalServer + sDemoApiPrefix + "/V2/Northwind/Northwind.svc/";
 
@@ -96,7 +101,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		// Create and set domain model to the component
 		this._oModel = new sap.ui.model.json.JSONModel({
 			SelectedProject : oProject,
-			Projects : [oProject],
+			Projects : [oProject]
 		});
 		this.setModel(this._oModel);
 

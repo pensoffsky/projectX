@@ -7,9 +7,6 @@
 		"jQuery": true,
 		"projectX": true,		
 	},
-	"plugins": [
-		"openui5"
-	],
 	"rules": {
 		"block-scoped-var": 1,
 		"brace-style": [2, "1tbs", { "allowSingleLine": true }],

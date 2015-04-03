@@ -34,7 +34,7 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		var bReplace = jQuery.device.is.phone ? false : true;
 		this.getRouter().navTo("product", {
 			requestID : oSelectedRequest.getIdentifier(),
-			projectID : oSelectedProject.getIdentifier(),
+			projectID : oSelectedProject.getIdentifier()
 		}, bReplace);
 	},
 	
@@ -128,6 +128,14 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		var oBindingContext = oSelectedItem.getBindingContext();
 		var oModel = this.getView().getModel();
 		oModel.setProperty("/SelectedProject", oModel.getProperty(oBindingContext.getPath()));
-	}
+	},
+	
+	/**
+	 * show the TestRun page
+	 */
+	onTestRun : function() {
+		var bReplace = jQuery.device.is.phone ? false : true;
+		this.getRouter().navTo("testrun", bReplace);
+	},
 
 });

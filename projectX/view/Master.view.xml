@@ -76,6 +76,10 @@
 			<Toolbar>
 				<ToolbarSpacer/>
 				<Button
+					icon="sap-icon://play"
+					tooltip="TestRun"
+					press="onTestRun" />
+				<Button
 					icon="sap-icon://add"
 					tooltip="Add Request"
 					press="onAddRequest" />

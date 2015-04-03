@@ -1,0 +1,58 @@
+<mvc:View
+	controllerName="projectX.view.TestRun"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+	xmlns="sap.m">
+	<Page
+		title="{localUImodel>/project/mProperties/name}">
+		<Label text="{localUIModel>/project/mAggregations/requests}"/>
+		
+		<Table 
+			    items="{/SelectedProject/mAggregations/requests}">
+			    <columns>
+			      <Column
+			        >
+			        <Text text="Request" />
+			      </Column>
+			      <Column
+					width="4em">
+			        <Text text="Method" />
+			      </Column>
+			      <Column
+			        hAlign="Right"
+					width="3em">
+			        <Text text="Status" />
+			      </Column>
+			    </columns>
+			    <items>
+			      <ColumnListItem>
+			        <cells>
+						<ObjectIdentifier
+					       title="{mProperties/name}"
+					       text="{mProperties/url}"/>
+			          <Text
+			            	text="{mProperties/httpMethod}" />
+			          <Text
+				          text="{mProperties/status}"
+				          />
+			        </cells>
+			      </ColumnListItem>
+			    </items>
+			  </Table>
+		
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="Clear"  
+						press="onClearResults"
+						/>
+				<Button text="Run" 
+						type="Emphasized" 
+						press="onRun"
+						/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>
