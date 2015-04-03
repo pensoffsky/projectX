@@ -52,7 +52,9 @@ projectX.util.Controller.extend("projectX.view.AddProduct", {
 		var oModel = this.getView().getModel();
 	},
 
-//event handler
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// event handler
+	// /////////////////////////////////////////////////////////////////////////////
 
 	onSave : function() {
 		//basic input validation
@@ -76,12 +78,9 @@ projectX.util.Controller.extend("projectX.view.AddProduct", {
 		sap.ui.core.UIComponent.getRouterFor(this).backWithoutHash(this.getView());
 	},
 
-	onCancel : function() {
-		sap.ui.core.UIComponent.getRouterFor(this).backWithoutHash(this.getView());
-	},
-
-
-//private methods
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// private methods
+	// /////////////////////////////////////////////////////////////////////////////
 
 	_createProject : function() {
 		var oComponent = this.getComponent();
