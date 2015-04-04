@@ -11,8 +11,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 			name : {type : "string", defaultValue : null},
 			identifier : {type : "int", defaultValue : null},
 			httpMethod : {type : "string", defaultValue : "GET"},
+			
+			
 			//TODO the status should not be serialized
 			status : {type : "string", defaultValue : null},
+			responseHeader : {type : "string", defaultValue : null},
+			responseBody : {type : "string", defaultValue : null}
 		},
 		events : {
 	
@@ -41,6 +45,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	 */
 	Request.prototype.resetTempData = function() {
 		this.setStatus(null);
+		this.setResponseHeader(null);
+		this.setResponseBody(null);
 	};
 
 	/**

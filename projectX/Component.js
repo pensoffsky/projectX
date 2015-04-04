@@ -39,17 +39,20 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 						{
 							pattern : "product/{projectID}/{requestID}/:tab:",
 							name : "product",
-							view : "Detail"
+							view : "Detail",
+							transition : "show"
 						},
 						{
 							pattern : "project/{projectID}/:reason:",
 							name : "project",
-							view : "AddProduct"
+							view : "AddProduct",
+							transition : "show"
 						},
 						{
 							pattern : "testrun",
 							name : "testrun",
-							view : "TestRun"
+							view : "TestRun",
+							transition : "show"
 						}
 					]
 				},
@@ -96,9 +99,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 			name: "Northwind Demo",
 			baseUrl: sDemoService
 		});
-
 		oProject.generateBasicOdataRequests();
-
 
 		// create and set domain model to the component
 		this._oModel = new sap.ui.model.json.JSONModel({
@@ -106,6 +107,10 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 			Projects : [oProject]
 		});
 		this.setModel(this._oModel);
+		
+		//attempt to automatically load from webstorage
+		this.load();
+		
 
 		// set device model
 		var oDeviceModel = new sap.ui.model.json.JSONModel({

@@ -10,6 +10,13 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		}
 
 		this.getRouter().getRoute("main").attachPatternMatched(this.onRouteMatched, this);
+		
+		//if ?testrun=true exists in url then switch to testrun page after 1 second
+		if(jQuery.sap.getUriParameters().get("testrun") === "true"){
+			setTimeout($.proxy( function() {
+				this.onTestRun();
+			}, this), 1000);
+		}
 	},
 
 	onRouteMatched : function(oEvent) {
@@ -37,8 +44,7 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		
 		//remove the selection prior to changing the databinding
 		//this will then trigger the selection of the first element
-		var oList = this.getView().byId("list")
-		oList.removeSelections(true);
+		this._removeSelectionFromList();
 		
 		//set the new project as selected
 		oModel.setProperty("/SelectedProject", oModel.getProperty(oBindingContext.getPath()));
@@ -68,6 +74,9 @@ projectX.util.Controller.extend("projectX.view.Master", {
 			projectID : 0,
 			reason : "new"
 		}, true);
+		
+		//remove selection from master list
+		this._removeSelectionFromList();
 	},
 
 	onEditProject : function() {
@@ -83,6 +92,9 @@ projectX.util.Controller.extend("projectX.view.Master", {
 			projectID : iProjectID,
 			reason : "edit"
 		}, true);
+		
+		//remove selection from master list
+		this._removeSelectionFromList();
 	},
 
 	onLoad : function() {
@@ -132,6 +144,9 @@ projectX.util.Controller.extend("projectX.view.Master", {
 	onTestRun : function() {
 		var bReplace = jQuery.device.is.phone ? false : true;
 		this.getRouter().navTo("testrun", bReplace);
+		//remove the selection from the master list to allow easy switch back
+		var oList = this.getView().byId("list")
+		oList.removeSelections(true);
 	},
 		
 	/**
@@ -251,5 +266,12 @@ projectX.util.Controller.extend("projectX.view.Master", {
 			oList.setSelectedItem(aItems[0], true);
 			this._showDetail(aItems[0]);
 		}
+	},
+	
+	_removeSelectionFromList : function () {
+		var oList = this.getView().byId("list")
+		oList.removeSelections(true);
 	}
+	
+	
 });

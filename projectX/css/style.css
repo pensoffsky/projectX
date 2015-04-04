@@ -1,3 +1,7 @@
 .spacerTop {
 	margin-top: 2rem;
 }
+
+.columnListItemExpanded {
+	height: 200px;
+}

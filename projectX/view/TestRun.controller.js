@@ -115,6 +115,21 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 		this.getView().getModel().updateBindings();
 	},
 	
+	/**
+	 * the user clicked on the title of a specific request.
+	 */
+	onRequestNamePress : function (oEvent) {
+		//TODO what logic to implement here?
+		//navigate to the request?
+		//show details for the request?
+		//show the result of the assertions (not yet implemented)
+		var oParameters = oEvent.getParameters();
+		// var oItem = this.getView().byId(sId);
+		var oObjectHeader = oEvent.getSource();
+		var oColumnListItem = oObjectHeader.getParent(); //the columListItem control
+		oColumnListItem.toggleStyleClass("columnListItemExpanded");
+	},
+	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////

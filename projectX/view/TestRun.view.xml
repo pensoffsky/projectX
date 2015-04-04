@@ -29,9 +29,13 @@
 			    <items>
 			      <ColumnListItem>
 			        <cells>
+						<VBox>
 						<ObjectIdentifier
-					       title="{mProperties/name}"
-					       text="{mProperties/url}"/>
+					       	title="{mProperties/name}"
+					    	text="{mProperties/url}"
+							titleActive="true" 
+							titlePress="onRequestNamePress"/>
+						</VBox>
 			          <Text
 			            	text="{mProperties/httpMethod}" />
 			          <Text
