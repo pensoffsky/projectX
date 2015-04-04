@@ -7,6 +7,7 @@ var browserSync = require('browser-sync'); // https://www.npmjs.org/package/brow
 
 var paths =  {
     filetypes: ['./**/*.js',
+						    './**/*.xml',
 						    './**/*.css',
 					 	    '!./node_modules/**/*']
 };
@@ -30,12 +31,17 @@ gulp.task('browser-sync', function() {
     var proxyOptions = url.parse('http://services.odata.org');
     proxyOptions.route = '/odata_org';
 
+    var proxyOptions2 = url.parse('https://sapes1.sapdevcenter.com');
+    proxyOptions2.route = '/sapes1';
+
     browserSync({
         open: true,
         port: 3000,
         server: {
             baseDir: "./",
-            middleware: [proxy(proxyOptions)]
+            // middleware: [proxy(proxyOptions)]
+            middleware: [ proxy(proxyOptions),
+                          proxy(proxyOptions2)]
         },
 				// add file paths directly to browsersync
 				files: paths.filetypes

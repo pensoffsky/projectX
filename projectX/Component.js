@@ -2,11 +2,12 @@ jQuery.sap.declare("projectX.Component");
 jQuery.sap.require("projectX.MyRouter");
 jQuery.sap.require("projectX.util.Project");
 jQuery.sap.require("projectX.util.Request");
+jQuery.sap.require("projectX.util.Constants");
 
 sap.ui.core.UIComponent.extend("projectX.Component", {
 	metadata : {
-		name : "TDG Demo App",
-		version : "1.0",
+		name : "sisyphus",
+		version : "0.0.1",
 		includes : [],
 		dependencies : {
 			libs : ["sap.m", "sap.ui.layout"],
@@ -89,7 +90,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		var sLocalServer = "http://localhost:3000";
 		var sDemoApiPrefix = "/odata_org";
 		var sDemoService = sLocalServer + sDemoApiPrefix + "/V2/Northwind/Northwind.svc/";
-
+debugger
 		var oProject = new projectX.util.Project({
 			identifier: 0,
 			name: "Northwind Demo",
@@ -98,7 +99,8 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 
 		oProject.generateBasicOdataRequests();
 
-		// Create and set domain model to the component
+
+		// create and set domain model to the component
 		this._oModel = new sap.ui.model.json.JSONModel({
 			SelectedProject : oProject,
 			Projects : [oProject]
@@ -116,6 +118,16 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		});
 		oDeviceModel.setDefaultBindingMode("OneWay");
 		this.setModel(oDeviceModel, "device");
+
+		// set application contants
+		var oConstants = new projectX.util.Constants();
+
+		var oAppConstants = new sap.ui.model.json.JSONModel({
+			Constants : oConstants
+		});
+		oAppConstants.setDefaultBindingMode("OneWay");
+		this.setModel(oAppConstants, "constants");
+
 
 		this.getRouter().initialize();
 	},
@@ -163,7 +175,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		var sData = window.localStorage.getItem("projects");
 		this._parseAndLoadProjects(sData);
 	},
-	
+
 	/**
 	 * create json file and prepare it for download.
 	 * lets the user donwload the current config in a file which he then can
@@ -179,7 +191,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		pom.click();
 		document.body.removeChild(pom);
 	},
-	
+
 	/**
 	 * open a config file from disk and load the projects.
 	 * same as load function but from disk and not from local storage
@@ -192,7 +204,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		    // e.target.result should contain the text
 			var sData = e.target.result;
 			that._parseAndLoadProjects(sData);
-			
+
 		};
 		oFileReader.readAsText(oFile);
 	},
