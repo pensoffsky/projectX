@@ -6,7 +6,7 @@
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
 	<Page
-		title="{localUImodel>/project/mProperties/name}">
+		title="{localUIModel>/project/mProperties/name}">
 		<Label text="{localUIModel>/project/mAggregations/requests}"/>
 		
 		<Table 
@@ -48,9 +48,20 @@
 				<Button text="Clear"  
 						press="onClearResults"
 						/>
-				<Button text="Run" 
+				<Button text="Run Sequence" 
+						type="Emphasized" 
+						press="onRunSequence"
+						visible="{localUIModel>/testNotRunning}"
+						/>
+				<Button text="Run Parallel" 
 						type="Emphasized" 
 						press="onRun"
+						visible="{localUIModel>/testNotRunning}"
+						/>
+				<Button text="Stop" 
+						type="Emphasized" 
+						press="onStopSequence"
+						visible="{localUIModel>/testRunning}"
 						/>
 			</Toolbar>
 		</footer>

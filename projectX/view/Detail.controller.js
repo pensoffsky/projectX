@@ -94,6 +94,14 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		this._selectedRequest.setHttpMethod(oData.httpMethod);
 		var oModel = this.getView().getModel();
 		oModel.updateBindings();
+	},
+	
+	/**
+	 * duplicate the currently selected request.
+	 */
+	onBtnDuplicatePress: function(){
+		var oComponent = this.getComponent();
+		oComponent.duplicateRequest(this._selectedRequest);
 	}
 
 });

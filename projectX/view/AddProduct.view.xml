@@ -46,7 +46,6 @@
 						type="Emphasized" 
 						press="onCreate" 
 						visible="{projectModel>/reasonNew}"/>
-				<Button text="{i18n>addProductButtonCancel}" press="onCancel" />
 			</Toolbar>
 		</footer>
 	</Page>

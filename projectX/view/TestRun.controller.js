@@ -10,6 +10,7 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 	
 	_oLocalUIModel : null,
 	_oSelectedProject : null,
+	_bAbortSequence : false,
 	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// initialization and routing
@@ -17,9 +18,11 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 
 	onInit : function() {
 		this._oLocalUIModel = new sap.ui.model.json.JSONModel({
-			project : {}
+			project : {},
+			testRunning : false,
+			testNotRunning : true
 		});
-		this.getView().setModel(this._oLocalUIModel, "localUImodel");
+		this.getView().setModel(this._oLocalUIModel, "localUIModel");
 		
 		//hook navigation event
 		this.getRouter().getRoute("testrun").attachPatternMatched(this.onRouteMatched, this);
@@ -38,6 +41,10 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 	// /// Event Handler
 	// /////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * execute all requests in parallel.
+	 * clears out the last requests.
+	 */
 	onRun : function() {
 		//get the requests
 		var aRequests = this._oSelectedProject.getRequests();
@@ -45,11 +52,12 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 			return;
 		}
 		
+		//clear existing results
+		this.onClearResults();
+		
 		var that = this;
 		//loop over requests and execute them
 		for (var i = 0; i < aRequests.length; i++) {
-			//clear old request results
-			aRequests[i].resetTempData();
 			//execute the request
 			var oDeferred = aRequests[i].execute();
 			
@@ -61,6 +69,37 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 		}
 	},
 	
+	/**
+	 * execute the first request. when it finished than execute the next request.
+	 * can be aborted by the user. (see onStopSequence function)
+	 */
+	onRunSequence : function() {
+		//get the requests
+		var aRequests = this._oSelectedProject.getRequests();
+		if (!aRequests || aRequests.length <= 0) {
+			return;
+		}
+		
+		//clear existing results
+		this.onClearResults();
+		
+		this._setRunning(true);
+		this._executeRequests(0, aRequests);
+	},
+
+	/**
+	 * stop the currently running sequence.
+	 * works only when sequence was started with onRunSequence function.
+	 */
+	onStopSequence : function() {
+		if (this._getRunning()) {
+			this._bAbortSequence = true;
+		}
+	},
+	
+	/**
+	 * loop over the requests and clear out the result data from the last test run.
+	 */
 	onClearResults : function() {
 		//get the requests
 		var aRequests = this._oSelectedProject.getRequests();
@@ -80,6 +119,49 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
 
+	/**
+	* use recursion to go through the request and execute them one by one.
+	* @param  {int} iIndex    the index of the request to execute next
+	* @param  {array} aRequests array of all requests to execute one after another
+	*/
+	_executeRequests : function(iIndex, aRequests) {
+		var that = this;		
+		if (aRequests.length <= iIndex){
+			//abort
+			this._setRunning(false);
+			return;
+		}
+		
+		//execute the request
+		var oDeferred = aRequests[iIndex].execute();
+		//add hanlder that gets called once the request finishes
+		oDeferred.always(function() {
+			//update bindings so that the status will be displayed
+			that.getView().getModel().updateBindings();
+			
+			if (that._bAbortSequence === true){
+				that._bAbortSequence = false;
+				that._setRunning(false);
+				return;
+			}
+			
+			that._executeRequests(iIndex + 1, aRequests);
+			//TODO add positiliy to abort on failure
+		});		
+	},
+
+	/**
+	 * set the ui bindings to "test is running" or "test is not running".
+	 * used to change visibilites on the UI.
+	 * @param {boolean} bIsRunning state of test running
+	 */
+	_setRunning : function(bIsRunning) {
+		this._oLocalUIModel.setProperty("/testRunning", bIsRunning);
+		this._oLocalUIModel.setProperty("/testNotRunning", !bIsRunning);
+	},
 	
+	_getRunning : function() {
+		return this._oLocalUIModel.getProperty("/testRunning");
+	}
 
 });

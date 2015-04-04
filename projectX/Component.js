@@ -90,7 +90,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		var sLocalServer = "http://localhost:3000";
 		var sDemoApiPrefix = "/odata_org";
 		var sDemoService = sLocalServer + sDemoApiPrefix + "/V2/Northwind/Northwind.svc/";
-debugger
+
 		var oProject = new projectX.util.Project({
 			identifier: 0,
 			name: "Northwind Demo",
@@ -191,7 +191,7 @@ debugger
 		pom.click();
 		document.body.removeChild(pom);
 	},
-
+	
 	/**
 	 * open a config file from disk and load the projects.
 	 * same as load function but from disk and not from local storage
@@ -204,7 +204,6 @@ debugger
 		    // e.target.result should contain the text
 			var sData = e.target.result;
 			that._parseAndLoadProjects(sData);
-
 		};
 		oFileReader.readAsText(oFile);
 	},
@@ -236,5 +235,16 @@ debugger
 		aProjects.push(oProject);
 		this._oModel.setProperty("/Projects", aProjects);
 		this._oModel.setProperty("/SelectedProject", oProject);
+	},
+	
+	/**
+	 * duplicate this request and add it to the currently selected project.
+	 * @param {object} oRequest request to duplicate
+	 */
+	duplicateRequest : function(oRequest) {
+		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
+		oSelectedProject.addCopyOfRequest(oRequest);
+		this._oModel.updateBindings();
 	}
+	
 });
