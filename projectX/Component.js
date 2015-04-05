@@ -140,6 +140,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	_createJsonString : function() {
 		var aProjects = this._oModel.getProperty("/Projects");
 		var aSaveableObject = [];
+		
+		if (!aProjects || aProjects.length <= 0) {
+			return;
+		}
+		
 		for (var i = 0; i < aProjects.length; i++) {
 			aSaveableObject.push(aProjects[i].serialize());
 		}
@@ -151,6 +156,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	_parseAndLoadProjects : function(sData) {
 		var aLoadedProjects = JSON.parse(sData);
 		var aProjects = [];
+		
+		if (!aLoadedProjects) {
+			return;
+		}
+		
 		for (var i = 0; i < aLoadedProjects.length; i++) {
 			var oProject = new projectX.util.Project(aLoadedProjects[i]);
 			aProjects.push(oProject);

@@ -1,7 +1,7 @@
 
 // Provides control sap.m.App.
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
-	function(jQuery, ManagedObject) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion'],
+	function(jQuery, ManagedObject, Assertion) {
 	"use strict";
 
 	var Request = ManagedObject.extend("projectX.util.Request", { metadata : {
@@ -15,11 +15,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 			
 			//TODO the status should not be serialized
 			status : {type : "string", defaultValue : null},
-			responseHeader : {type : "string", defaultValue : null},
+			responseHeaders : {type : "string", defaultValue : null},
 			responseBody : {type : "string", defaultValue : null}
 		},
 		events : {
 	
+		},
+		aggregations : {
+			assertions : {type : "projectX.util.Assertion", multiple : true}
 		}
 	}});
 	
@@ -37,16 +40,30 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		//in the config file that describes the project and requests
 		this.resetTempData();
 		//TODO really delete status from mProperties, create copy first
-		return this.mProperties;
+		var oRequest = this.mProperties;
+		
+		var aSerializedAssertions = [];
+		var aAssertions = this.getAssertions();
+		for (var i = 0; i < aAssertions.length; i++) {
+			aSerializedAssertions.push(aAssertions[i].serialize());
+		}
+		oRequest.assertions = aSerializedAssertions;
+		
+		return oRequest;
 	};
 
 	/**
 	 * reset temporary data that was set after the ajax request finished.
+	 * also reset the results from the assertions
 	 */
 	Request.prototype.resetTempData = function() {
 		this.setStatus(null);
-		this.setResponseHeader(null);
+		this.setResponseHeaders(null);
 		this.setResponseBody(null);
+		var aAssertions = this.getAssertions();
+		for (var i = 0; i < aAssertions.length; i++) {
+			aAssertions[i].resetTempData();
+		}
 	};
 
 	/**
@@ -71,6 +88,19 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		
 		return oDeferred;
 	};
+	
+	Request.prototype.checkAssertions = function(jqXHR) {
+		var aAssertions = this.getAssertions();
+
+		var sStatus = jqXHR ? jqXHR.status : this.getStatus();
+		var sResponseBody = jqXHR ? jqXHR.responseText : this.getResponseBody();
+		var sResponseHeaders = jqXHR ? jqXHR.getAllResponseHeaders() : this.getResponseHeaders();
+
+		for (var i = 0; i < aAssertions.length; i++) {
+			aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders);
+		}
+	};
+	
 	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
