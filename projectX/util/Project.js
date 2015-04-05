@@ -36,19 +36,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			url: sUrl 
 			}
 		);
-		
-		//TODO remove this, only for debug
-		var sProperty = Assertion.prototype.assertProperties.STATUS;
-		var sOperation = Assertion.prototype.assertOperations.EQUALS; 
-		var oAssertion = new Assertion();
-		oAssertion.setAssertProperty(sProperty);
-		oAssertion.setOperation(sOperation);
-		oAssertion.setExpected("200");
-		oRequest.addAssertion(oAssertion);
-		//oRequest.checkAssertions();
-		
-		
-		
 		this.addRequest(oRequest);
 	};
 	

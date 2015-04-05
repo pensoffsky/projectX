@@ -8,6 +8,7 @@
 		navButtonPress="onNavBack"
 		title="{localUIModel>/name}">
 		<content>
+			<VBox id="idVBoxAssertionPlaceholder"/>
 			<HBox>
 				<Input value="{localUIModel>/name}"/>
 			</HBox>

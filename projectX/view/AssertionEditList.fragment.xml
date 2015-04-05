@@ -1,0 +1,60 @@
+<core:FragmentDefinition
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<Table items="{/assertions}"
+			mode="MultiSelect"
+			id="idTableAssertions"
+			rememberSelections="false"
+			>
+		<headerToolbar>
+	    	<Toolbar>
+	        	<Label text="Assertions" />
+	        <ToolbarSpacer />
+	        <Button icon="sap-icon://add"
+					tooltip="Add assertion"
+					press="onBtnAddAssertion"/>
+			<Button icon="sap-icon://delete"
+					tooltip="Delete selected assertions"
+					press="onBtnDeleteAssertions"/>
+	      </Toolbar>
+	    </headerToolbar>
+		<columns>
+			<Column>
+				<Text text="Property" />
+			</Column>
+			<Column>
+				<Text text="Operation" />
+			</Column>
+			<Column>
+				<Text text="Expected Value" />
+			</Column>
+			<Column>
+				<Text text="Success" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Select selectedKey="{mProperties/assertProperty}">
+						<items>
+							<!--These have to be a match of the assertProperties in Assertions.js-->
+							<core:Item key="STATUS" text="STATUS" />
+							<core:Item key="RESPONSEBODY" text="RESPONSEBODY" />
+						</items>
+					</Select>
+					<Select selectedKey="{mProperties/operation}">
+						<items>
+							<!--These have to be a match of the assertOperations in Assertions.js-->
+							<core:Item key="EQUALS" text="EQUALS" />
+							<core:Item key="EQUALSNOT" text="EQUALSNOT" />
+						</items>
+					</Select>
+					<Input value="{mProperties/expected}"/>
+					<Text text="{mProperties/success}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</core:FragmentDefinition>

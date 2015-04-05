@@ -1,5 +1,6 @@
 jQuery.sap.require("projectX.util.Formatter");
 jQuery.sap.require("projectX.util.Controller");
+jQuery.sap.require("projectX.view.AssertionEditListController");
 
 projectX.util.Controller.extend("projectX.view.Detail", {
 
@@ -19,6 +20,18 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		//use a name when addressing the local ui model from xml
 		this.getView().setModel(this._localUIModel, "localUIModel");
 
+		//create fragment controller
+		this._oAssertionEditController = new projectX.util.AssertionEditListController();
+		//create fragment view
+		var oAssertionEditFragment = sap.ui.xmlfragment(this.createId("Assertions"), "projectX.view.AssertionEditList", this._oAssertionEditController);
+		//set fragment view to fragment controller
+		this._oAssertionEditController.setView(oAssertionEditFragment);
+		//add fragment view to page
+		var oAssertionContainer = this.getView().byId("idVBoxAssertionPlaceholder");
+		oAssertionContainer.addItem(oAssertionEditFragment);
+		//initialize the fragement controller
+		this._oAssertionEditController.onInit(this.createId("Assertions"));
+		
 		//hook navigation event
 		this.getRouter().getRoute("product").attachMatched(this.onRouteMatched, this);
 	},
@@ -41,6 +54,8 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		this._localUIModel.setProperty("/name", oRequest.getName());
 		this._localUIModel.setProperty("/url", oRequest.getUrl());
 		this._localUIModel.setProperty("/httpMethod", oRequest.getHttpMethod());
+
+		this._oAssertionEditController.setSelectedRequest(this._selectedRequest);
 
 		//TODO bind view to /SelectedProject/aAggregations/requests/[index]
 	},
@@ -92,6 +107,15 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		this._selectedRequest.setName(oData.name);
 		this._selectedRequest.setUrl(oData.url);
 		this._selectedRequest.setHttpMethod(oData.httpMethod);
+		
+		//set the edited assertions to the selected request
+		var aAssertions = this._oAssertionEditController.getAssertions();
+		this._selectedRequest.removeAllAssertions();
+		for (var i = 0; i < aAssertions.length; i++) {
+			this._selectedRequest.addAssertion(aAssertions[i]);
+		}
+		
+		//update bindings to show e.g. an updated name of the request in master list
 		var oModel = this.getView().getModel();
 		oModel.updateBindings();
 	},
