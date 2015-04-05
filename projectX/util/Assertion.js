@@ -76,8 +76,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	/**
 	 * check response from ajax call for defined condition
 	 */
-	Assertion.prototype.assert = function(sStatus, sResponseBody, sResponseHeaders) {
-		debugger
+	Assertion.prototype.assert = function(iStatus, sResponseBody, sResponseHeaders) {
 		//TODO add error handling. what to do if something is fishy?
 		var sAssertProperty = this.getAssertProperty();
 		var sOperation = this.getOperation();
@@ -92,7 +91,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		
 		var sValue = null;
 		if (sAssertProperty === this.assertProperties.STATUS){
-			sValue = sStatus;
+			sValue = "" + iStatus;
 		} else if (sAssertProperty === this.assertProperties.RESPONSEBODY){
 			sValue = sResponseBody;
 		}

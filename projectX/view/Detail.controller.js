@@ -76,18 +76,25 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 
 		var that = this;
 		oDeferred.done(function(data, textStatus, jqXHR) {
-			that.showResponse(jqXHR);
+			that._handleResponse(jqXHR);
 
 		});
 
 		oDeferred.fail(function(jqXHR, textStatus, errorThrown) {
-			that.showResponse(jqXHR);
+			that._handleResponse(jqXHR);
 		});
 	},
 
-	showResponse: function(jqXHR) {
+	_handleResponse: function(jqXHR) {
 		this._localUIModel.setProperty("/Response/Header", jqXHR.getAllResponseHeaders());
 		this._localUIModel.setProperty("/Response/Body", jqXHR.responseText);
+		
+		//run the assertions
+		var aAssertions = this._oAssertionEditController.getAssertions();
+		for (var i = 0; i < aAssertions.length; i++) {
+			aAssertions[i].assert(jqXHR.status, jqXHR.responseText, jqXHR.getAllResponseHeaders());
+		}
+		this._oAssertionEditController.updateBindings();
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -109,7 +116,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		this._selectedRequest.setHttpMethod(oData.httpMethod);
 		
 		//set the edited assertions to the selected request
-		var aAssertions = this._oAssertionEditController.getAssertions();
+		var aAssertions = this._oAssertionEditController.getAssertionsCopy();
 		this._selectedRequest.removeAllAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
 			this._selectedRequest.addAssertion(aAssertions[i]);

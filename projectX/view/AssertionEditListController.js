@@ -87,11 +87,22 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	/**
 	 * @return {array} returns the edited assertions from the local ui model
 	 */
-	AssertionEditListController.prototype.getAssertions = function() {
+	AssertionEditListController.prototype.getAssertionsCopy = function() {
 		var aAssertions =  this._localUIModel.getProperty("/assertions");
 		var aCopyAssertions = jQuery.extend(true, [], aAssertions);
 		return aCopyAssertions;
 	};
+	
+	AssertionEditListController.prototype.getAssertions = function() {
+		var aAssertions =  this._localUIModel.getProperty("/assertions");
+		return aAssertions;
+	};
+	
+	AssertionEditListController.prototype.updateBindings = function() {
+		this._localUIModel.updateBindings();
+	};
+	
+	
 	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods

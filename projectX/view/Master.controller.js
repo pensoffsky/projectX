@@ -251,6 +251,7 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		}, bReplace);
 	},
 	
+	//TODO move to helper
 	_getRequestForListItem : function(oListItem) {
 		var oBindingContext = oListItem.getBindingContext();
 		var oModel = oBindingContext.getModel();
