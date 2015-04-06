@@ -26,7 +26,7 @@
 					class="editableForm">
 					<f:content>
 						<!-- Basic info -->
-						<c:Title text="Basic Info" />
+						<c:Title text="Project Info" />
 						<Label text="Project Name" />
 						<Input value="{projectModel>/name}" />
 						<Label text="OData Service URL" />
@@ -43,6 +43,8 @@
 				</f:SimpleForm>
 			</l:content>
 		</l:Grid>
+		
+		
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>

@@ -23,6 +23,12 @@ projectX.util.Controller.extend("projectX.view.Master", {
 				this.onEditProject();
 			}, this), 1000);
 		}
+		
+		if(jQuery.sap.getUriParameters().get("metadata") === "true"){
+			setTimeout($.proxy( function() {
+				this.onAddRequestMetadata();
+			}, this), 1000);
+		}
 	},
 
 	onRouteMatched : function(oEvent) {
@@ -144,6 +150,22 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		//TODO select the newly created request
 	},
 
+
+	/**
+	 * show the odata service metadata page
+	 * to let the user add a request based on odata metadata information.
+	 */
+	onAddRequestMetadata : function() {
+		//get the model
+		var oModel = this.getView().getModel();
+		//get the selected project
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
+		var iProjectID = oSelectedProject.getIdentifier();
+		this.getRouter().navTo("metadata", {	
+			projectID : iProjectID
+		}, true);
+	},
+
 	/**
 	* show the TestRun page
 	*/
@@ -151,7 +173,7 @@ projectX.util.Controller.extend("projectX.view.Master", {
 		var bReplace = jQuery.device.is.phone ? false : true;
 		this.getRouter().navTo("testrun", bReplace);
 		//remove the selection from the master list to allow easy switch back
-		var oList = this.getView().byId("list")
+		var oList = this.getView().byId("list");
 		oList.removeSelections(true);
 	},
 		

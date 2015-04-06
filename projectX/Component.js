@@ -53,6 +53,12 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 							name : "testrun",
 							view : "TestRun",
 							transition : "show"
+						},
+						{
+							pattern : "metadata/{projectID}",
+							name : "metadata",
+							view : "Metadata",
+							transition : "show"
 						}
 					]
 				},

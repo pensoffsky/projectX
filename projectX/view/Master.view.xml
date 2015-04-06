@@ -87,6 +87,11 @@
 					icon="sap-icon://play"
 					tooltip="TestRun"
 					press="onTestRun" />
+				<ToolbarSpacer/>
+				<Button
+					icon="sap-icon://sys-add"
+					tooltip="Add Request from metadata"
+					press="onAddRequestMetadata" />
 				<Button
 					icon="sap-icon://add"
 					tooltip="Add Request"

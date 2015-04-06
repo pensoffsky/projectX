@@ -40,6 +40,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		return oDeferred;
 	};
 	
+	Helper.getBoundObjectForItem = function(oItem) {
+		var oBindingContext = oItem.getBindingContext();
+		var oModel = oBindingContext.getModel();
+		var sPath = oBindingContext.getPath();
+		var oboundObject = oModel.getProperty(sPath);
+		return oboundObject;
+	};
+	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////

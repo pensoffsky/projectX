@@ -1,0 +1,153 @@
+<mvc:View
+	controllerName="projectX.view.Metadata"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+	xmlns="sap.m">
+	<Page
+		title="{projectModel>/reason}">
+		<VBox id="idBindingContainer">
+			<Label text="{/odataServiceCheckRes}\"/>
+			<Label text="TODO this currently only works against http://services.odata.org/V2/OData/OData.svc/ because only one schema is supported a the moment."/>
+		
+		<!--  
+		ENTITY SETS
+		-->
+		<Panel expandable="true" 
+			   expanded="true"
+			   headerText="EntitySets">
+		    <content>	
+				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/entitySet}"
+						rememberSelections="false"
+						mode="MultiSelect"
+						id="idTableEntitySets"
+						>
+					<headerToolbar>
+				    	<Toolbar>
+							<ToolbarSpacer/>
+					        <Button icon="sap-icon://add"
+									tooltip="Add requests for selected items"
+									press="onBtnAddEntitySetRequest"/>
+				      </Toolbar>
+				    </headerToolbar>
+					<columns>
+						<Column>
+							<Text text="Name" />
+						</Column>
+						<Column>
+							<Text text="EntityType" />
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Label text="{name}"/>
+								<Text text="{entityType}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>		      
+		    </content>
+	  	</Panel>
+		
+		
+		<!--  
+		ASSOCIATION SET
+		-->
+		<Panel expandable="true" 
+			   expanded="false"
+			   headerText="Association Sets">
+		    <content>	
+				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/associationSet}"
+						rememberSelections="false"
+						>
+					<columns>
+						<Column>
+							<Text text="Name"/>
+						</Column>
+						<Column>
+							<Text text="Association"/>
+						</Column>
+						<Column>
+							<Text text="End1 EntitySet"/>
+						</Column>
+						<Column>
+							<Text text="End1 Role"/>
+						</Column>
+						<Column>
+							<Text text="End2 EntitySet"/>
+						</Column>
+						<Column>
+							<Text text="End2 Role"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Label text="{name}"/>
+								<Text text="{association}"/>
+								<Text text="{end/0/entitySet}"/>
+								<Text text="{end/0/role}"/>
+								<Text text="{end/1/entitySet}"/>
+								<Text text="{end/1/role}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+		
+		<!--  
+		FUNCTION IMPORTS
+		-->
+		<Panel expandable="true" 
+			   expanded="false"
+			   headerText="Fuction Imports">
+		    <content>	
+				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/functionImport}"
+						rememberSelections="false"
+						>
+					<columns>
+						<Column>
+							<Text text="Name"/>
+						</Column>
+						<Column>
+							<Text text="EntitySet"/>
+						</Column>
+						<Column>
+							<Text text="httpMethod"/>
+						</Column>
+						<Column>
+							<Text text="Return Type"/>
+						</Column>
+						<Column>
+							<Text text="Parameters"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Label text="{name}"/>
+								<Text text="{entitySet}"/>
+								<Text text="{httpMethod}"/>
+								<Text text="{returnType}"/>
+								<Text text="{parameter}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+		</VBox>
+		
+		
+		
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>
