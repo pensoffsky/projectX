@@ -17,6 +17,12 @@ projectX.util.Controller.extend("projectX.view.Master", {
 				this.onTestRun();
 			}, this), 1000);
 		}
+		
+		if(jQuery.sap.getUriParameters().get("editproject") === "true"){
+			setTimeout($.proxy( function() {
+				this.onEditProject();
+			}, this), 1000);
+		}
 	},
 
 	onRouteMatched : function(oEvent) {

@@ -1,6 +1,9 @@
 jQuery.sap.require("projectX.util.Project");
 jQuery.sap.require("projectX.util.Request");
 jQuery.sap.require("projectX.util.Controller");
+jQuery.sap.require("projectX.util.Helper");
+
+
 
 projectX.util.Controller.extend("projectX.view.AddProduct", {
 	
@@ -76,6 +79,27 @@ projectX.util.Controller.extend("projectX.view.AddProduct", {
 		
 		this._createProject();
 		sap.ui.core.UIComponent.getRouterFor(this).backWithoutHash(this.getView());
+	},
+	
+	/**
+	 * check if the given base url points to a valid odata service
+	 */
+	onCheckODataService : function() {
+		this._localProjectModel.setProperty("/odataServiceCheckRes", "checking ...");
+		var sBaseUrl = this._localProjectModel.getProperty("/baseUrl");
+		var oDeferred = projectX.util.Helper.getODataServiceMetadata(sBaseUrl);
+
+		var that = this;
+		oDeferred.done(function(oServiceMetadata) {
+			console.log(oServiceMetadata);
+			console.log("successfully loaded service metadata");
+			that._localProjectModel.setProperty("/odataServiceCheckRes", "ok");
+		});
+
+		oDeferred.fail(function() {
+			console.log("Service Metadata could not be loaded");
+			that._localProjectModel.setProperty("/odataServiceCheckRes", "failed");
+		});
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////

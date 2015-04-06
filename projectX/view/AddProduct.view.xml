@@ -29,8 +29,16 @@
 						<c:Title text="Basic Info" />
 						<Label text="Project Name" />
 						<Input value="{projectModel>/name}" />
-						<Label text="Base URL" />	
-						<Input value="{projectModel>/baseUrl}" />
+						<Label text="OData Service URL" />
+						
+							<Input value="{projectModel>/baseUrl}"
+									/>
+							<Button text="Check"
+								 	tooltip="Check for valid OData service"
+									press="onCheckODataService"
+									/>
+							<Text text="{projectModel>/odataServiceCheckRes}"/>
+						
 					</f:content>
 				</f:SimpleForm>
 			</l:content>
