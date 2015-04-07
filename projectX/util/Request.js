@@ -13,10 +13,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			httpMethod : {type : "string", defaultValue : "GET"},
 			
 			
-			//TODO the status should not be serialized
+			//INFO these properties should not be serialized
 			status : {type : "string", defaultValue : null},
 			responseHeaders : {type : "string", defaultValue : null},
-			responseBody : {type : "string", defaultValue : null}
+			responseBody : {type : "string", defaultValue : null},
+			assertionsResultReady : {type : "boolean", defaultValue : false},
+			assertionsResult : {type : "boolean", defaultValue : false}
 		},
 		events : {
 	
@@ -60,6 +62,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.setStatus(null);
 		this.setResponseHeaders(null);
 		this.setResponseBody(null);
+		this.setAssertionsResultReady(false);
+		this.setAssertionsResult(false);
 		var aAssertions = this.getAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
 			aAssertions[i].resetTempData();
@@ -96,9 +100,18 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		var sResponseBody = jqXHR ? jqXHR.responseText : this.getResponseBody();
 		var sResponseHeaders = jqXHR ? jqXHR.getAllResponseHeaders() : this.getResponseHeaders();
 
+		var bAssertionsResult = true; 
+		
 		for (var i = 0; i < aAssertions.length; i++) {
-			aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders);
+			var bRes = aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders);
+			if (bRes !== true){
+				bAssertionsResult = false;
+			}
 		}
+		
+		this.setAssertionsResult(bAssertionsResult);
+		this.setAssertionsResultReady(true);
+		return bAssertionsResult;
 	};
 	
 	

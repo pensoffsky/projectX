@@ -1,6 +1,7 @@
 jQuery.sap.require("projectX.util.Project");
 jQuery.sap.require("projectX.util.Request");
 jQuery.sap.require("projectX.util.Controller");
+jQuery.sap.require("projectX.util.Formatter");
 
 projectX.util.Controller.extend("projectX.view.TestRun", {
 	
@@ -46,6 +47,7 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 	 * clears out the last requests.
 	 */
 	onRun : function() {
+		var that = this;
 		//get the requests
 		var aRequests = this._oSelectedProject.getRequests();
 		if (!aRequests || aRequests.length <= 0) {
@@ -55,17 +57,25 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 		//clear existing results
 		this.onClearResults();
 		
-		var that = this;
-		//loop over requests and execute them
-		for (var i = 0; i < aRequests.length; i++) {
-			//execute the request
-			var oDeferred = aRequests[i].execute();
+		//create function that executes the request and 
+		//triggers assetion check und update binding when request finnishes.
+		//done in this way to have the ref to oRequest inside the oDeferred fct.
+		var fExecuteRequest = function(oRequest) {
+			var oDeferred = oRequest.execute();
 			
 			//add hanlder that gets called once the request finishes
 			oDeferred.always(function() {
+				oRequest.checkAssertions();
 				//update bindings so that the status will be displayed
 				that.getView().getModel().updateBindings();
 			});
+		};
+		
+		//loop over requests and execute them
+		for (var i = 0; i < aRequests.length; i++) {
+			//execute the request
+			var oRequest = aRequests[i];
+			fExecuteRequest(oRequest);
 		}
 	},
 	
@@ -148,11 +158,13 @@ projectX.util.Controller.extend("projectX.view.TestRun", {
 		}
 		
 		//execute the request
-		var oDeferred = aRequests[iIndex].execute();
+		var oRequest = aRequests[iIndex];
+		var oDeferred = oRequest.execute();
 		//add hanlder that gets called once the request finishes
 		oDeferred.always(function() {
+			oRequest.checkAssertions();
 			//update bindings so that the status will be displayed
-			that.getView().getModel().updateBindings();
+			that.getView().getModel().updateBindings(false);
 			
 			if (that._bAbortSequence === true){
 				that._bAbortSequence = false;

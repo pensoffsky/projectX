@@ -20,6 +20,10 @@
 					width="4em">
 			        <Text text="Method" />
 			      </Column>
+					<Column
+					width="5em">
+					<Text text="Assertions" />
+					</Column>
 			      <Column
 			        hAlign="Right"
 					width="3em">
@@ -38,6 +42,12 @@
 						</VBox>
 			          <Text
 			            	text="{mProperties/httpMethod}" />
+			          <c:Icon
+							src="{ parts : [
+                                { path : 'mProperties/assertionsResult' },
+                                { path : 'mProperties/assertionsResultReady' }
+                            ],
+                            formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
 			          <Text
 				          text="{mProperties/status}"
 				          />

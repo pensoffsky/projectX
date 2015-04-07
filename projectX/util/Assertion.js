@@ -29,11 +29,17 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 			
 			
 			/**
+			 * true if the result variable represent the result of the assertion check.
+			 * @type {boolean}
+			 */
+			resultReady: {type : "boolean", defaultValue : false},
+			
+			/**
 			 * result of the assert function. Can be used for databinding purposes.
 			 * true if assert was successfull.
 			 * @type {boolean}
 			 */
-			success : {type : "boolean", defaultValue : false}
+			result : {type : "boolean", defaultValue : false}
 			},
 		events : {
 	
@@ -62,7 +68,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	 * reset temporary data that was set after the ajax request finished.
 	 */
 	Assertion.prototype.resetTempData = function() {
-		this.setSuccess(null);
+		this.setResult(false);
+		this.setResultReady(false);
 	};
 	
 	/**
@@ -75,6 +82,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 
 	/**
 	 * check response from ajax call for defined condition
+	 * @return {booleean} true if the assertion was ok. false if it failed.
 	 */
 	Assertion.prototype.assert = function(iStatus, sResponseBody, sResponseHeaders) {
 		//TODO add error handling. what to do if something is fishy?
@@ -104,7 +112,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		}
 		
 		var bRes = fOp(sValue, sExpected);
-		this.setSuccess(bRes);
+		this.setResultReady(true);
+		this.setResult(bRes);
+		return bRes;
 	};
 
 	
