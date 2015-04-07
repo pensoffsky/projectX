@@ -15,7 +15,14 @@
 			<FlexBox
 					width="100%"
 					alignItems="Start">
-					<Select selectedKey="{localUIModel>/httpMethod}">
+					<Select>
+					<!-- <Select
+							selectedKey="{/Constants/httpMethod}"
+							items="{
+								path: '{/Constants/httpMethod}'
+							}"> -->
+							<!-- <core:Item key="{'httpMethod'}" text="{httpMethod}" /> -->
+
 						<items>
 							<core:Item text="GET"     key="GET"/>
 							<core:Item text="POST"    key="POST"/>

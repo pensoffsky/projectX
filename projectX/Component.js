@@ -96,9 +96,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.setModel(i18nModel, "i18n");
 
 		//create test project
-		var sLocalServer = "http://localhost:3000";
-		var sDemoApiPrefix = "/odata_org";
-		var sDemoService = sLocalServer + sDemoApiPrefix + "/V2/Northwind/Northwind.svc/";
+		var sDemoService = "http://services.odata.org/V2/Northwind/Northwind.svc/";
 
 		var oProject = new projectX.util.Project({
 			identifier: 0,
@@ -113,10 +111,10 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 			Projects : [oProject]
 		});
 		this.setModel(this._oModel);
-		
+
 		//attempt to automatically load from webstorage
 		this.load();
-		
+
 
 		// set device model
 		var oDeviceModel = new sap.ui.model.json.JSONModel({
@@ -146,11 +144,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	_createJsonString : function() {
 		var aProjects = this._oModel.getProperty("/Projects");
 		var aSaveableObject = [];
-		
+
 		if (!aProjects || aProjects.length <= 0) {
 			return;
 		}
-		
+
 		for (var i = 0; i < aProjects.length; i++) {
 			aSaveableObject.push(aProjects[i].serialize());
 		}
@@ -162,11 +160,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	_parseAndLoadProjects : function(sData) {
 		var aLoadedProjects = JSON.parse(sData);
 		var aProjects = [];
-		
+
 		if (!aLoadedProjects) {
 			return;
 		}
-		
+
 		for (var i = 0; i < aLoadedProjects.length; i++) {
 			var oProject = new projectX.util.Project(aLoadedProjects[i]);
 			aProjects.push(oProject);
@@ -212,7 +210,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		pom.click();
 		document.body.removeChild(pom);
 	},
-	
+
 	/**
 	 * open a config file from disk and load the projects.
 	 * same as load function but from disk and not from local storage
@@ -257,7 +255,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this._oModel.setProperty("/Projects", aProjects);
 		this._oModel.setProperty("/SelectedProject", oProject);
 	},
-	
+
 	/**
 	 * duplicate this request and add it to the currently selected project.
 	 * @param {object} oRequest request to duplicate
@@ -267,5 +265,5 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oSelectedProject.addCopyOfRequest(oRequest);
 		this._oModel.updateBindings();
 	}
-	
+
 });

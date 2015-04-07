@@ -1,3 +1,4 @@
+jQuery.sap.require("projectX.util.Constants");
 jQuery.sap.require("projectX.util.Formatter");
 jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.view.AssertionEditListController");
@@ -7,6 +8,9 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 	_selectedRequest : null,
 
 	onInit: function() {
+
+		// var oConstants = new projectX.util.Constants();
+
 		this._localUIModel = new sap.ui.model.json.JSONModel();
 		this._localUIModel.setData({
 			url: "http://localhost:3000",
@@ -31,7 +35,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		oAssertionContainer.addItem(oAssertionEditFragment);
 		//initialize the fragement controller
 		this._oAssertionEditController.onInit(this.createId("Assertions"));
-		
+
 		//hook navigation event
 		this.getRouter().getRoute("product").attachMatched(this.onRouteMatched, this);
 	},
@@ -88,7 +92,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 	_handleResponse: function(jqXHR) {
 		this._localUIModel.setProperty("/Response/Header", jqXHR.getAllResponseHeaders());
 		this._localUIModel.setProperty("/Response/Body", jqXHR.responseText);
-		
+
 		//run the assertions
 		var aAssertions = this._oAssertionEditController.getAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
@@ -114,19 +118,19 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		this._selectedRequest.setName(oData.name);
 		this._selectedRequest.setUrl(oData.url);
 		this._selectedRequest.setHttpMethod(oData.httpMethod);
-		
+
 		//set the edited assertions to the selected request
 		var aAssertions = this._oAssertionEditController.getAssertionsCopy();
 		this._selectedRequest.removeAllAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
 			this._selectedRequest.addAssertion(aAssertions[i]);
 		}
-		
+
 		//update bindings to show e.g. an updated name of the request in master list
 		var oModel = this.getView().getModel();
 		oModel.updateBindings();
 	},
-	
+
 	/**
 	 * duplicate the currently selected request.
 	 */
