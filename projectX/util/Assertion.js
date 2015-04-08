@@ -45,20 +45,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	
 		}
 	}});
-	
-	// /////////////////////////////////////////////////////////////////////////////
-	// /// Enums
-	// /////////////////////////////////////////////////////////////////////////////
-
-	Assertion.prototype.assertProperties = {
-		STATUS : "STATUS",
-		RESPONSEBODY : "RESPONSEBODY"
-	};
-	
-	Assertion.prototype.assertOperations = {
-		EQUALS : "EQUALS",
-		EQUALSNOT : "EQUALSNOT"
-	};
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Methods
@@ -92,13 +78,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			var sExpected = this.getExpected();
 			
 			//get the value to run the assertion for
-			
-			if (sAssertProperty === this.assertProperties.STATUS){
-				sValue = "" + iStatus;
-			} else if (sAssertProperty === this.assertProperties.RESPONSEBODY){
-				sValue = sResponseBody;
-			}
-			
 			var sValue = null;
 			switch (sAssertProperty) {
 				case Helper.ASSERTPROPERTY_STATUS:
@@ -126,7 +105,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			    return false;
 			}
 			
-			//get the operation
+			//get the operation to run against the value
 			var fOp = null;
 			switch (sOperation) {
 				case Helper.ASSERTOPERATION_EQUALS:

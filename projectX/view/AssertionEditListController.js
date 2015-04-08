@@ -22,8 +22,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * create a new assertion and add it to the local ui model.
 	 */
 	AssertionEditListController.prototype.onBtnAddAssertion = function() {
-		var sProperty = Assertion.prototype.assertProperties.STATUS;
-		var sOperation = Assertion.prototype.assertOperations.EQUALS; 
+		var sProperty = Helper.ASSERTPROPERTY_STATUS;
+		var sOperation = Helper.ASSERTOPERATION_EQUALS; 
 		var oAssertion = new Assertion();
 		oAssertion.setAssertProperty(sProperty);
 		oAssertion.setOperation(sOperation);
