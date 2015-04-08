@@ -1,6 +1,6 @@
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion'],
-	function(jQuery, ManagedObject, Assertion) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion', 'projectX/util/Helper'],
+	function(jQuery, ManagedObject, Assertion, Helper) {
 	"use strict";
 
 	var AssertionEditListController = ManagedObject.extend("projectX.util.AssertionEditListController", { metadata : {
@@ -63,7 +63,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	AssertionEditListController.prototype.onInit = function(sIdPrefix) {
 		this._localUIModel = new sap.ui.model.json.JSONModel();
 		this._localUIModel.setData({
-			assertions: []
+			assertions: [],
+			ASSERTPROPERTIES: Helper.ASSERTPROPERTIES, //for assert property select control
+			ASSERTOPERATIONS: Helper.ASSERTOPERATIONS //for assert operation select control
 		});
 		this.getView().setModel(this._localUIModel);
 		this._oTable = sap.ui.core.Fragment.byId(sIdPrefix, "idTableAssertions");

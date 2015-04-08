@@ -1,6 +1,6 @@
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
-	function(jQuery, ManagedObject) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Helper'],
+	function(jQuery, ManagedObject, Helper) {
 	"use strict";
 
 	var Assertion = ManagedObject.extend("projectX.util.Assertion", { metadata : {
@@ -84,37 +84,96 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	 * check response from ajax call for defined condition
 	 * @return {booleean} true if the assertion was ok. false if it failed.
 	 */
-	Assertion.prototype.assert = function(iStatus, sResponseBody, sResponseHeaders) {
+	Assertion.prototype.assert = function(iStatus, sResponseBody, sResponseHeaders, iResponseTime) {
 		//TODO add error handling. what to do if something is fishy?
-		var sAssertProperty = this.getAssertProperty();
-		var sOperation = this.getOperation();
-		var sExpected = this.getExpected();
+		try {
+			var sAssertProperty = this.getAssertProperty();
+			var sOperation = this.getOperation();
+			var sExpected = this.getExpected();
+			
+			//get the value to run the assertion for
+			
+			if (sAssertProperty === this.assertProperties.STATUS){
+				sValue = "" + iStatus;
+			} else if (sAssertProperty === this.assertProperties.RESPONSEBODY){
+				sValue = sResponseBody;
+			}
+			
+			var sValue = null;
+			switch (sAssertProperty) {
+				case Helper.ASSERTPROPERTY_STATUS:
+				    sValue = "" + iStatus;
+					break;
+				case Helper.ASSERTPROPERTY_RESPONSEBODY:
+				    sValue = sResponseBody;
+					break;
+				case Helper.ASSERTPROPERTY_HEADER:
+				    sValue = sResponseHeaders;
+					break;
+				case Helper.ASSERTPROPERTY_JSONBODY:
+					//TODO implement evaluation of json path
+				    sValue = JSON.parse(sResponseBody);
+					break;
+				case Helper.ASSERTPROPERTY_XMLBODY:
+					//TODO implement evaluation of xml path
+					var oParser = new DOMParser();
+					sValue = oParser.parseFromString(sResponseBody, "text/xml");
+					break;
+				case Helper.ASSERTPROPERTY_RESPONSETIME:
+				    sValue = "" + iResponseTime;
+					break;
+			  default:
+			    return false;
+			}
+			
+			//get the operation
+			var fOp = null;
+			switch (sOperation) {
+				case Helper.ASSERTOPERATION_EQUALS:
+				    fOp = this._opEquals;
+					break;
+				case Helper.ASSERTOPERATION_EQUALSNOT:
+				    fOp = this._opEqualsNot;
+					break;
+				case Helper.ASSERTOPERATION_LESS:
+				    fOp = this._opLess;
+					break;
+				case Helper.ASSERTOPERATION_LESSOREQUAL:
+				    fOp = this._opLessOrEqual;
+					break;
+				case Helper.ASSERTOPERATION_GREATER:
+				    fOp = this._opGreater;
+					break;
+				case Helper.ASSERTOPERATION_GREATEROREQUAL:
+				    fOp = this._opGreaterOrEqual;
+					break;
+				case Helper.ASSERTOPERATION_EXISTS:
+				    fOp = this._opExists;
+					break;
+				case Helper.ASSERTOPERATION_EXISTSNOT:
+				    fOp = this._opExistsNot;
+					break;
+				case Helper.ASSERTOPERATION_CONTAINS:
+				    fOp = this._opContains;
+					break;
+				case Helper.ASSERTOPERATION_CONTAINSNOT:
+				    fOp = this._opContainsNot;
+					break;
+			  default:
+			    return false;
+			}
+			
+			var bRes = fOp(sValue, sExpected);
+			this.setResultReady(true);
+			this.setResult(bRes);
+			return bRes;
+		} catch (e) {
+			jQuery.sap.log.error("Assertion: " + e);
+		} 
 		
-		var fOpEquals = function(sValue, sExpectedValue){
-			return (sValue === sExpectedValue);
-		};
-		var fOpEqualsNot = function(sValue, sExpectedValue){
-			return !(sValue === sExpectedValue);
-		};
-		
-		var sValue = null;
-		if (sAssertProperty === this.assertProperties.STATUS){
-			sValue = "" + iStatus;
-		} else if (sAssertProperty === this.assertProperties.RESPONSEBODY){
-			sValue = sResponseBody;
-		}
-		
-		var fOp = null;
-		if (sOperation === this.assertOperations.EQUALS){
-			fOp = fOpEquals;
-		} else if (sOperation === this.assertOperations.EQUALSNOT){
-			fOp = fOpEqualsNot;
-		}
-		
-		var bRes = fOp(sValue, sExpected);
 		this.setResultReady(true);
-		this.setResult(bRes);
-		return bRes;
+		this.setResult(false);
+		return false;
 	};
 
 	
@@ -122,6 +181,62 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
 		
+		
+	Assertion.prototype._opEquals = function(sValue, sExpectedValue){
+		return (sValue === sExpectedValue);
+	};
+	
+	Assertion.prototype._opEqualsNot = function(sValue, sExpectedValue){
+		return !(sValue === sExpectedValue);
+	};
+	
+	Assertion.prototype._opLess = function(sValue, sExpectedValue){
+		var iValue = parseInt(sValue, 10);
+		var iExpectedValue = parseInt(sExpectedValue, 10);
+		return iValue < iExpectedValue;
+	};
+
+	Assertion.prototype._opLessOrEqual = function(sValue, sExpectedValue){
+		var iValue = parseInt(sValue, 10);
+		var iExpectedValue = parseInt(sExpectedValue, 10);
+		return iValue <= iExpectedValue;
+	};
+
+	Assertion.prototype._opGreater = function(sValue, sExpectedValue){
+		var iValue = parseInt(sValue, 10);
+		var iExpectedValue = parseInt(sExpectedValue, 10);
+		return iValue > iExpectedValue;
+	};
+
+	Assertion.prototype._opGreaterOrEqual = function(sValue, sExpectedValue){
+		var iValue = parseInt(sValue, 10);
+		var iExpectedValue = parseInt(sExpectedValue, 10);
+		return iValue >= iExpectedValue;
+	};
+
+	Assertion.prototype._opExists = function(sValue, sExpectedValue){
+		if (sValue && sValue !== ""){
+			return true;
+		}
+		return false;
+	};
+
+	Assertion.prototype._opExistsNot = function(sValue, sExpectedValue){
+		if (sValue && sValue !== ""){
+			return false;
+		}
+		return true;
+	};
+
+	Assertion.prototype._opContains = function(sValue, sExpectedValue){
+		var iRes = sValue.indexOf(sExpectedValue);
+		return (iRes >= 0);
+	};
+
+	Assertion.prototype._opContainsNot = function(sValue, sExpectedValue){
+		var iRes = sValue.indexOf(sExpectedValue);
+		return (iRes === -1);
+	};	
 
 	return Assertion;
 

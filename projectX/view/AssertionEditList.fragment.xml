@@ -37,19 +37,15 @@
 		<items>
 			<ColumnListItem>
 				<cells>
-					<Select selectedKey="{mProperties/assertProperty}">
-						<items>
+					<Select selectedKey="{mProperties/assertProperty}"
+							items="{/ASSERTPROPERTIES}">
 							<!--These have to be a match of the assertProperties in Assertions.js-->
-							<c:Item key="STATUS" text="STATUS" />
-							<c:Item key="RESPONSEBODY" text="RESPONSEBODY" />
-						</items>
+							<c:Item text="{key}" key="{key}"/>
 					</Select>
-					<Select selectedKey="{mProperties/operation}">
-						<items>
-							<!--These have to be a match of the assertOperations in Assertions.js-->
-							<c:Item key="EQUALS" text="EQUALS" />
-							<c:Item key="EQUALSNOT" text="EQUALSNOT" />
-						</items>
+					<Select selectedKey="{mProperties/operation}"
+							items="{/ASSERTOPERATIONS}">
+							<!--These have to be a match of the assertProperties in Assertions.js-->
+							<c:Item text="{key}" key="{key}"/>
 					</Select>
 					<Input value="{mProperties/expected}"/>
 					<c:Icon

@@ -16,10 +16,6 @@
 			        >
 			        <Text text="Request" />
 			      </Column>
-			      <Column
-					width="4em">
-			        <Text text="Method" />
-			      </Column>
 					<Column
 					width="5em">
 					<Text text="Assertions" />
@@ -29,28 +25,29 @@
 					width="3em">
 			        <Text text="Status" />
 			      </Column>
+					<Column
+					width="1em">
+						<Text text="Time" />
+					</Column>
 			    </columns>
 			    <items>
 			      <ColumnListItem>
 			        <cells>
 						<VBox>
 						<ObjectIdentifier
-					       	title="{mProperties/name}"
+					    	title="{mProperties/name}"
 					    	text="{mProperties/url}"
 							titleActive="true" 
 							titlePress="onRequestNamePress"/>
 						</VBox>
-			          <Text
-			            	text="{mProperties/httpMethod}" />
-			          <c:Icon
+			        	<c:Icon
 							src="{ parts : [
                                 { path : 'mProperties/assertionsResult' },
                                 { path : 'mProperties/assertionsResultReady' }
                             ],
                             formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
-			          <Text
-				          text="{mProperties/status}"
-				          />
+			        	<Text text="{mProperties/status}"/>
+						<Text text="{mProperties/responseTime}"/>
 			        </cells>
 			      </ColumnListItem>
 			    </items>

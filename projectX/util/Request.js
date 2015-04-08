@@ -17,6 +17,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			status : {type : "string", defaultValue : null},
 			responseHeaders : {type : "string", defaultValue : null},
 			responseBody : {type : "string", defaultValue : null},
+			responseTime : {type : "int", defaultValue : null},
 			assertionsResultReady : {type : "boolean", defaultValue : false},
 			assertionsResult : {type : "boolean", defaultValue : false}
 		},
@@ -62,6 +63,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.setStatus(null);
 		this.setResponseHeaders(null);
 		this.setResponseBody(null);
+		this.setResponseTime(null);
 		this.setAssertionsResultReady(false);
 		this.setAssertionsResult(false);
 		var aAssertions = this.getAssertions();
@@ -76,6 +78,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * @return {object} jQuery deferred
 	 */
 	Request.prototype.execute = function() {
+		var oStartTime = new Date();
 		var oDeferred = jQuery.ajax({
 			method: this.getHttpMethod(),
 			url: this.getUrl()
@@ -83,27 +86,30 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 		var that = this;
 		oDeferred.done(function(data, textStatus, jqXHR) {
-			that._setAjaxResult(jqXHR);
+			var iResponseTime = new Date() - oStartTime;
+			that._setAjaxResult(jqXHR, iResponseTime);
 		});
 
 		oDeferred.fail(function(jqXHR, textStatus, errorThrown) {
-			that._setAjaxResult(jqXHR);
+			var iResponseTime = new Date() - oStartTime;
+			that._setAjaxResult(jqXHR, iResponseTime);
 		});
 		
 		return oDeferred;
 	};
 	
-	Request.prototype.checkAssertions = function(jqXHR) {
+	Request.prototype.checkAssertions = function(jqXHR, iResponseTime) {
 		var aAssertions = this.getAssertions();
 
 		var sStatus = jqXHR ? jqXHR.status : this.getStatus();
 		var sResponseBody = jqXHR ? jqXHR.responseText : this.getResponseBody();
 		var sResponseHeaders = jqXHR ? jqXHR.getAllResponseHeaders() : this.getResponseHeaders();
-
+		var iResponseT = iResponseTime ? iResponseTime : this.getResponseTime();
+		
 		var bAssertionsResult = true; 
 		
 		for (var i = 0; i < aAssertions.length; i++) {
-			var bRes = aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders);
+			var bRes = aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders, iResponseT);
 			if (bRes !== true){
 				bAssertionsResult = false;
 			}
@@ -123,8 +129,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * helper function that sets the status of the finished ajax call.
 	 * @param {object} jqXHR the reuslt form the ajax call
 	 */
-	Request.prototype._setAjaxResult = function(jqXHR) {
+	Request.prototype._setAjaxResult = function(jqXHR, iResponseTime) {
 		this.setStatus(jqXHR.status);
+		this.setResponseBody(jqXHR.responseText);
+		this.setResponseHeaders(jqXHR.getAllResponseHeaders());
+		this.setResponseTime(iResponseTime);
 	};
 
 	return Request;

@@ -73,6 +73,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		var sUrl = this._localUIModel.getProperty("/url");
 		var sHttpMethod = this._localUIModel.getProperty("/httpMethod");
 
+		var oStartTime = new Date();
 		var oDeferred = jQuery.ajax({
 			method: sHttpMethod,
 			url: sUrl
@@ -80,23 +81,25 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 
 		var that = this;
 		oDeferred.done(function(data, textStatus, jqXHR) {
-			that._handleResponse(jqXHR);
+			var iResponseTime = new Date() - oStartTime;
+			that._handleResponse(jqXHR, iResponseTime);
 
 		});
 
 		oDeferred.fail(function(jqXHR, textStatus, errorThrown) {
-			that._handleResponse(jqXHR);
+			var iResponseTime = new Date() - oStartTime;
+			that._handleResponse(jqXHR, iResponseTime);
 		});
 	},
 
-	_handleResponse: function(jqXHR) {
+	_handleResponse: function(jqXHR, iResponseTime) {
 		this._localUIModel.setProperty("/Response/Header", jqXHR.getAllResponseHeaders());
 		this._localUIModel.setProperty("/Response/Body", jqXHR.responseText);
 
 		//run the assertions
 		var aAssertions = this._oAssertionEditController.getAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
-			aAssertions[i].assert(jqXHR.status, jqXHR.responseText, jqXHR.getAllResponseHeaders());
+			aAssertions[i].assert(jqXHR.status, jqXHR.responseText, jqXHR.getAllResponseHeaders(), iResponseTime);
 		}
 		this._oAssertionEditController.updateBindings();
 	},
