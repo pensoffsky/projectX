@@ -28,6 +28,9 @@
 				<Text text="Operation" />
 			</Column>
 			<Column>
+				<Text text="JSON/XML Path" />
+			</Column>
+			<Column>
 				<Text text="Expected Value" />
 			</Column>
 			<Column>
@@ -39,14 +42,13 @@
 				<cells>
 					<Select selectedKey="{mProperties/assertProperty}"
 							items="{/ASSERTPROPERTIES}">
-							<!--These have to be a match of the assertProperties in Assertions.js-->
 							<c:Item text="{key}" key="{key}"/>
 					</Select>
 					<Select selectedKey="{mProperties/operation}"
 							items="{/ASSERTOPERATIONS}">
-							<!--These have to be a match of the assertProperties in Assertions.js-->
 							<c:Item text="{key}" key="{key}"/>
 					</Select>
+					<Input value="{mProperties/path}"/>
 					<Input value="{mProperties/expected}"/>
 					<c:Icon
 						src="{ parts : [

@@ -1,4 +1,6 @@
 
+//TODO add jsonpath as dependency here so we do not have to include it into the whole project?
+
 sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Helper'],
 	function(jQuery, ManagedObject, Helper) {
 	"use strict";
@@ -21,9 +23,15 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			operation : {type : "string", defaultValue : null},
 			
 			/**
+			 * the path for json or xmldocument asserts
+			 * @type {string}
+			 */
+			path : {type : "string", defaultValue : null},
+			
+			/**
 			 * the expected value for the property and operation.
 			 * e.g. 200 for status code
-			 * @type {Object}
+			 * @type {string}
 			 */
 			expected : {type : "string", defaultValue : null},
 			
@@ -76,6 +84,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			var sAssertProperty = this.getAssertProperty();
 			var sOperation = this.getOperation();
 			var sExpected = this.getExpected();
+			var sPath = this.getPath();
 			
 			//get the value to run the assertion for
 			var sValue = null;
@@ -91,7 +100,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 					break;
 				case Helper.ASSERTPROPERTY_JSONBODY:
 					//TODO implement evaluation of json path
-				    sValue = JSON.parse(sResponseBody);
+					var oJsonObject = JSON.parse(sResponseBody);
+					var vRes = jsonPath(oJsonObject, sPath, {evalType:'RESULT',safeEval:true});
+					sValue = JSON.stringify(vRes);
 					break;
 				case Helper.ASSERTPROPERTY_XMLBODY:
 					//TODO implement evaluation of xml path
