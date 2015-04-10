@@ -1,8 +1,8 @@
 
 //TODO add jsonpath as dependency here so we do not have to include it into the whole project?
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Helper'],
-	function(jQuery, ManagedObject, Helper) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Helper', 'projectX/util/Constants'],
+	function(jQuery, ManagedObject, Helper, Constants) {
 	"use strict";
 
 	var Assertion = ManagedObject.extend("projectX.util.Assertion", { metadata : {
@@ -79,7 +79,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * @return {booleean} true if the assertion was ok. false if it failed.
 	 */
 	Assertion.prototype.assert = function(iStatus, sResponseBody, sResponseHeaders, iResponseTime) {
-		//TODO add error handling. what to do if something is fishy?
+		//TODO this method is way to long
 		try {
 			var sAssertProperty = this.getAssertProperty();
 			var sOperation = this.getOperation();
@@ -89,27 +89,46 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			//get the value to run the assertion for
 			var sValue = null;
 			switch (sAssertProperty) {
-				case Helper.ASSERTPROPERTY_STATUS:
+				case Constants.ASSERTPROPERTY_STATUS:
 				    sValue = "" + iStatus;
 					break;
-				case Helper.ASSERTPROPERTY_RESPONSEBODY:
+				case Constants.ASSERTPROPERTY_RESPONSEBODY:
 				    sValue = sResponseBody;
 					break;
-				case Helper.ASSERTPROPERTY_HEADER:
+				case Constants.ASSERTPROPERTY_HEADER:
 				    sValue = sResponseHeaders;
 					break;
-				case Helper.ASSERTPROPERTY_JSONBODY:
-					//TODO implement evaluation of json path
+				case Constants.ASSERTPROPERTY_JSONBODY:
 					var oJsonObject = JSON.parse(sResponseBody);
 					var vRes = jsonPath(oJsonObject, sPath, {evalType:'RESULT',safeEval:true});
 					sValue = JSON.stringify(vRes);
 					break;
-				case Helper.ASSERTPROPERTY_XMLBODY:
-					//TODO implement evaluation of xml path
+				case Constants.ASSERTPROPERTY_XMLBODY:
 					var oParser = new DOMParser();
-					sValue = oParser.parseFromString(sResponseBody, "text/xml");
+					var oXmlDoc = oParser.parseFromString(sResponseBody, "text/xml");
+					//var nsResolver = oXmlDoc.createNSResolver( oXmlDoc.ownerDocument == null ? oXmlDoc.documentElement : oXmlDoc.ownerDocument.documentElement);
+					var nsResolver = function(prefix) {
+					    switch (prefix) {
+					        case 'xhtml':
+					            return 'http://www.w3.org/1999/xhtml';
+					        case 'mathml':
+					            return 'http://www.w3.org/1998/Math/MathML';
+							case 'atom':
+					            return 'http://www.w3.org/2005/Atom';
+							case 'd':
+					            return 'http://schemas.microsoft.com/ado/2007/08/dataservices';
+							case 'm':
+					            return 'http://schemas.microsoft.com/ado/2007/08/dataservices/metadata';
+					        default:
+					            return 'http://www.w3.org/2005/Atom';
+					    }
+					};
+					var vRes = oXmlDoc.evaluate(sPath, oXmlDoc, nsResolver, XPathResult.ANY_TYPE, null);
+					sValue = Helper.xpathResultToString(vRes);
+					//TODO use other logging
+					console.log(sValue);
 					break;
-				case Helper.ASSERTPROPERTY_RESPONSETIME:
+				case Constants.ASSERTPROPERTY_RESPONSETIME:
 				    sValue = "" + iResponseTime;
 					break;
 			  default:
@@ -119,34 +138,34 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			//get the operation to run against the value
 			var fOp = null;
 			switch (sOperation) {
-				case Helper.ASSERTOPERATION_EQUALS:
+				case Constants.ASSERTOPERATION_EQUALS:
 				    fOp = this._opEquals;
 					break;
-				case Helper.ASSERTOPERATION_EQUALSNOT:
+				case Constants.ASSERTOPERATION_EQUALSNOT:
 				    fOp = this._opEqualsNot;
 					break;
-				case Helper.ASSERTOPERATION_LESS:
+				case Constants.ASSERTOPERATION_LESS:
 				    fOp = this._opLess;
 					break;
-				case Helper.ASSERTOPERATION_LESSOREQUAL:
+				case Constants.ASSERTOPERATION_LESSOREQUAL:
 				    fOp = this._opLessOrEqual;
 					break;
-				case Helper.ASSERTOPERATION_GREATER:
+				case Constants.ASSERTOPERATION_GREATER:
 				    fOp = this._opGreater;
 					break;
-				case Helper.ASSERTOPERATION_GREATEROREQUAL:
+				case Constants.ASSERTOPERATION_GREATEROREQUAL:
 				    fOp = this._opGreaterOrEqual;
 					break;
-				case Helper.ASSERTOPERATION_EXISTS:
+				case Constants.ASSERTOPERATION_EXISTS:
 				    fOp = this._opExists;
 					break;
-				case Helper.ASSERTOPERATION_EXISTSNOT:
+				case Constants.ASSERTOPERATION_EXISTSNOT:
 				    fOp = this._opExistsNot;
 					break;
-				case Helper.ASSERTOPERATION_CONTAINS:
+				case Constants.ASSERTOPERATION_CONTAINS:
 				    fOp = this._opContains;
 					break;
-				case Helper.ASSERTOPERATION_CONTAINSNOT:
+				case Constants.ASSERTOPERATION_CONTAINSNOT:
 				    fOp = this._opContainsNot;
 					break;
 			  default:

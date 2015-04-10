@@ -1,6 +1,6 @@
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion', 'projectX/util/Helper'],
-	function(jQuery, ManagedObject, Assertion, Helper) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion', 'projectX/util/Constants'],
+	function(jQuery, ManagedObject, Assertion, Constants) {
 	"use strict";
 
 	var AssertionEditListController = ManagedObject.extend("projectX.util.AssertionEditListController", { metadata : {
@@ -22,8 +22,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * create a new assertion and add it to the local ui model.
 	 */
 	AssertionEditListController.prototype.onBtnAddAssertion = function() {
-		var sProperty = Helper.ASSERTPROPERTY_STATUS;
-		var sOperation = Helper.ASSERTOPERATION_EQUALS; 
+		var sProperty = Constants.ASSERTPROPERTY_STATUS;
+		var sOperation = Constants.ASSERTOPERATION_EQUALS; 
 		var oAssertion = new Assertion();
 		oAssertion.setAssertProperty(sProperty);
 		oAssertion.setOperation(sOperation);
@@ -64,8 +64,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this._localUIModel = new sap.ui.model.json.JSONModel();
 		this._localUIModel.setData({
 			assertions: [],
-			ASSERTPROPERTIES: Helper.ASSERTPROPERTIES, //for assert property select control
-			ASSERTOPERATIONS: Helper.ASSERTOPERATIONS //for assert operation select control
+			ASSERTPROPERTIES: Constants.ASSERTPROPERTIES, //for assert property select control
+			ASSERTOPERATIONS: Constants.ASSERTOPERATIONS //for assert operation select control
 		});
 		this.getView().setModel(this._localUIModel);
 		this._oTable = sap.ui.core.Fragment.byId(sIdPrefix, "idTableAssertions");
