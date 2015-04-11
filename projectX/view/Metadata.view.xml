@@ -18,7 +18,7 @@
 			   expanded="true"
 			   headerText="EntitySets">
 		    <content>	
-				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/entitySet}"
+				<Table items="{/entitySets}"
 						rememberSelections="false"
 						mode="MultiSelect"
 						id="idTableEntitySets"
@@ -59,7 +59,7 @@
 			   expanded="false"
 			   headerText="Association Sets">
 		    <content>	
-				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/associationSet}"
+				<Table items="{/associationSets}"
 						rememberSelections="false"
 						>
 					<columns>
@@ -105,7 +105,7 @@
 			   expanded="false"
 			   headerText="Fuction Imports">
 		    <content>	
-				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/functionImport}"
+				<Table items="{/functionImports}"
 						rememberSelections="false"
 						>
 					<columns>

@@ -81,10 +81,22 @@ projectX.util.Controller.extend("projectX.view.Metadata", {
 	// /// private methods
 	// /////////////////////////////////////////////////////////////////////////////
 
-	_createRequest : function() {
-		
-		
+	_extractFromMetadata : function(oMetaData, sTarget) {
+		var aRes = oMetaData && 
+			oMetaData.dataServices &&
+			oMetaData.dataServices.schema &&
+			oMetaData.dataServices.schema[0] &&
+			oMetaData.dataServices.schema[0][sTarget];
+		return aRes;
 	},
+	
+	_extractFromEntityContainer : function(aEntityContainer, sTarget) {
+		var aRes = aEntityContainer && 
+			aEntityContainer[0] &&
+			aEntityContainer[0][sTarget];
+		return aRes;
+	},
+	
 	
 	/**
 	 * check if the given base url points to a valid odata service
@@ -94,17 +106,30 @@ projectX.util.Controller.extend("projectX.view.Metadata", {
 		var oDeferred = projectX.util.Helper.getODataServiceMetadata(sServiceUrl);
 
 		var that = this;
-		oDeferred.done(function(oServiceMetadata) {
-			console.log(oServiceMetadata);
+		oDeferred.done(function(oMetaData) {
+			console.log(JSON.stringify(oMetaData, null, 2));
+			console.log(oMetaData);
 			console.log("successfully loaded service metadata");
 			that._localUIModel.setProperty("/odataServiceCheckRes", "metadata loaded successfully");
-			that._localUIModel.setProperty("/serviceMetadata", oServiceMetadata);
+			that._localUIModel.setProperty("/serviceMetadata", oMetaData);
+			that._localUIModel.setProperty("/entityTypes", that._extractFromMetadata(oMetaData, "entityType"));
+			that._localUIModel.setProperty("/associations", that._extractFromMetadata(oMetaData, "association"));
+			that._localUIModel.setProperty("/complexTypes", that._extractFromMetadata(oMetaData, "complexType"));
+			var aEntityContainer = that._extractFromMetadata(oMetaData, "entityContainer");
+			that._localUIModel.setProperty("/associationSets",
+				that._extractFromEntityContainer(aEntityContainer, "associationSet"));
+			that._localUIModel.setProperty("/entitySets",
+				that._extractFromEntityContainer(aEntityContainer, "entitySet"));
+			that._localUIModel.setProperty("/functionImports", 
+				that._extractFromEntityContainer(aEntityContainer, "functionImport"));
+			
 		});
 
 		oDeferred.fail(function() {
 			console.log("Service Metadata could not be loaded");
 			that._localUIModel.setProperty("/odataServiceCheckRes", "failed to load metadata");
 			that._localUIModel.setProperty("/serviceMetadata", null);
+			that._localUIModel.setProperty("/entityTypes", null);
 		});
 	},
 	
