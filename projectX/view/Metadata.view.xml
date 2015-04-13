@@ -15,10 +15,10 @@
 		ENTITY SETS
 		-->
 		<Panel expandable="true" 
-			   expanded="true"
+			   expanded="false"
 			   headerText="EntitySets">
 		    <content>	
-				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/entitySet}"
+				<Table items="{/entitySets}"
 						rememberSelections="false"
 						mode="MultiSelect"
 						id="idTableEntitySets"
@@ -32,12 +32,8 @@
 				      </Toolbar>
 				    </headerToolbar>
 					<columns>
-						<Column>
-							<Text text="Name" />
-						</Column>
-						<Column>
-							<Text text="EntityType" />
-						</Column>
+						<Column><Text text="Name" /></Column>
+						<Column><Text text="EntityType" /></Column>
 					</columns>
 					<items>
 						<ColumnListItem>
@@ -51,6 +47,48 @@
 		    </content>
 	  	</Panel>
 		
+		<!--  
+		FUNCTION IMPORTS
+		-->
+		<Panel expandable="true" 
+			   expanded="false"
+			   headerText="Fuction Imports">
+		    <content>	
+				<Table items="{/functionImports}"
+						rememberSelections="false"
+						>
+					<columns>
+						<Column>
+							<Text text="Name"/>
+						</Column>
+						<Column>
+							<Text text="EntitySet"/>
+						</Column>
+						<Column>
+							<Text text="httpMethod"/>
+						</Column>
+						<Column>
+							<Text text="Return Type"/>
+						</Column>
+						<Column>
+							<Text text="Parameters"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<Label text="{name}"/>
+								<Text text="{entitySet}"/>
+								<Text text="{httpMethod}"/>
+								<Text text="{returnType}"/>
+								<Text text="{parameter}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+		
 		
 		<!--  
 		ASSOCIATION SET
@@ -59,7 +97,7 @@
 			   expanded="false"
 			   headerText="Association Sets">
 		    <content>	
-				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/associationSet}"
+				<Table items="{/associationSets}"
 						rememberSelections="false"
 						>
 					<columns>
@@ -98,48 +136,62 @@
 			</content>
 		</Panel>
 		
-		<!--  
-		FUNCTION IMPORTS
-		-->
+		
 		<Panel expandable="true" 
-			   expanded="false"
-			   headerText="Fuction Imports">
-		    <content>	
-				<Table items="{/serviceMetadata/dataServices/schema/0/entityContainer/0/functionImport}"
-						rememberSelections="false"
-						>
-					<columns>
-						<Column>
-							<Text text="Name"/>
-						</Column>
-						<Column>
-							<Text text="EntitySet"/>
-						</Column>
-						<Column>
-							<Text text="httpMethod"/>
-						</Column>
-						<Column>
-							<Text text="Return Type"/>
-						</Column>
-						<Column>
-							<Text text="Parameters"/>
-						</Column>
-					</columns>
-					<items>
-						<ColumnListItem>
-							<cells>
-								<Label text="{name}"/>
-								<Text text="{entitySet}"/>
-								<Text text="{httpMethod}"/>
-								<Text text="{returnType}"/>
-								<Text text="{parameter}"/>
-							</cells>
-						</ColumnListItem>
-					</items>
-				</Table>
-			</content>
+			   expanded="true"
+			   headerText="EntityTypes">
+			<VBox items="{/entityTypes}">
+				<items>
+					<CustomListItem>
+						<Table items="{property}"
+								rememberSelections="false"
+								mode="MultiSelect"
+								selectionChange="onEntityTypeTableSelectionChange"
+								>
+							<columns>
+								<Column><Text text="Name" /></Column>
+								<Column><Text text="Type" /></Column>
+								<Column><Text text="Nullable" /></Column>
+								<Column><Text text="Key" /></Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Label text="{name}"/>
+										<Text text="{type}"/>
+										<Text text="{nullable}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>	
+						<f:SimpleForm
+							editable="true"
+							layout="ResponsiveGridLayout"
+							labelSpanL="1"
+							labelSpanM="1"
+							emptySpanL="0"
+							emptySpanM="0"
+							>
+							<f:content>
+								<!-- Basic info -->
+								<c:Title text="{name}" />
+								<Label text="Key" />
+								<TextArea value="{calculatedKeys}" rows="4"/>
+								<Label text="OrderBy" />
+								<TextArea value="{calculatedOrderBy}" rows="4"/>
+								<Label text="Filter" />
+								<TextArea value="{calculatedFilter}" rows="4"/>
+								<Label text="Select" />
+								<TextArea value="{calculatedSelect}" rows="4"/>
+							</f:content>
+						</f:SimpleForm>	      
+					</CustomListItem>
+				</items>
+			</VBox>
 		</Panel>
+		
 		</VBox>
+		
 		
 		
 		

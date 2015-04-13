@@ -1,7 +1,7 @@
-<core:FragmentDefinition
+<c:FragmentDefinition
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
-	xmlns:core="sap.ui.core"
+	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
 	<Table items="{/assertions}"
 			mode="MultiSelect"
@@ -28,6 +28,9 @@
 				<Text text="Operation" />
 			</Column>
 			<Column>
+				<Text text="JSON/XML Path" />
+			</Column>
+			<Column>
 				<Text text="Expected Value" />
 			</Column>
 			<Column>
@@ -37,24 +40,25 @@
 		<items>
 			<ColumnListItem>
 				<cells>
-					<Select selectedKey="{mProperties/assertProperty}">
-						<items>
-							<!--These have to be a match of the assertProperties in Assertions.js-->
-							<core:Item key="STATUS" text="STATUS" />
-							<core:Item key="RESPONSEBODY" text="RESPONSEBODY" />
-						</items>
+					<Select selectedKey="{mProperties/assertProperty}"
+							items="{/ASSERTPROPERTIES}">
+							<c:Item text="{key}" key="{key}"/>
 					</Select>
-					<Select selectedKey="{mProperties/operation}">
-						<items>
-							<!--These have to be a match of the assertOperations in Assertions.js-->
-							<core:Item key="EQUALS" text="EQUALS" />
-							<core:Item key="EQUALSNOT" text="EQUALSNOT" />
-						</items>
+					<Select selectedKey="{mProperties/operation}"
+							items="{/ASSERTOPERATIONS}">
+							<c:Item text="{key}" key="{key}"/>
 					</Select>
+					<Input value="{mProperties/path}"/>
 					<Input value="{mProperties/expected}"/>
-					<Text text="{mProperties/success}"/>
+					<c:Icon
+						src="{ parts : [
+							{ path : 'mProperties/result' },
+							{ path : 'mProperties/resultReady' }
+						],
+						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
+					
 				</cells>
 			</ColumnListItem>
 		</items>
 	</Table>
-</core:FragmentDefinition>
+</c:FragmentDefinition>

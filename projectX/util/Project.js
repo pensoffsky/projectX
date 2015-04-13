@@ -19,6 +19,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		}
 	}});
 
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// public functions
+	// /////////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * create a new request.
 	 * calculate a new id for the request. (highest id + 1)
@@ -82,6 +86,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.addNewRequest( "Service Document", this.getBaseUrl() );
 		this.addNewRequest( "Metadata Document", this.getBaseUrl() + "$metadata" );
 	};
+	
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// private functions
+	// /////////////////////////////////////////////////////////////////////////////
 	
 	Project.prototype._getNextId = function() {
 		var aRequests = this.getRequests();

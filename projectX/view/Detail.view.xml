@@ -90,17 +90,17 @@
 
 				<VBox>
 					<Label text="Response Header" />
-					<TextArea height="200px" width="100%"
+					<Text height="200px" width="100%"
 							enabled="true"
 							editable="false"
-							value="{localUIModel>/Response/Header}" />
+							text="{localUIModel>/Response/Header}" />
 				</VBox>
 				<VBox>
 					<Label text="Response Body" />
-					<TextArea height="200px" width="100%"
+					<Text height="200px" width="100%"
 							enabled="true"
 							editable="false"
-							value="{localUIModel>/Response/Body}" />
+							text="{localUIModel>/Response/Body}" />
 				</VBox>
 
 
