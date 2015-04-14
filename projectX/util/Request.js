@@ -1,19 +1,20 @@
 
-// Provides control sap.m.App.
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion'],
-	function(jQuery, ManagedObject, Assertion) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion', 'projectX/util/RequestHeader', 'projectX/util/Constants'],
+	function(jQuery, ManagedObject, Assertion, RequestHeader, Constants) {
 	"use strict";
 
 	var Request = ManagedObject.extend("projectX.util.Request", { metadata : {
-	
+
 		properties : {
-			url : {type : "string", defaultValue : null},
-			name : {type : "string", defaultValue : null},
 			identifier : {type : "int", defaultValue : null},
-			httpMethod : {type : "string", defaultValue : "GET"},
-			
-			
-			//INFO these properties should not be serialized
+			name : {type : "string", defaultValue : null},
+			description : {type : "string", defaultValue : null},
+			httpMethod : {type : "string", defaultValue : Constants.GET},
+			url : {type : "string", defaultValue : null},
+			tags : {type : "string", defaultValue : null},
+			requestBody : {type : "string", defaultValue : null},
+
+			//TODO the status should not be serialized
 			status : {type : "string", defaultValue : null},
 			responseHeaders : {type : "string", defaultValue : null},
 			responseBody : {type : "string", defaultValue : null},
@@ -22,17 +23,18 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			assertionsResult : {type : "boolean", defaultValue : false}
 		},
 		events : {
-	
+
 		},
 		aggregations : {
-			assertions : {type : "projectX.util.Assertion", multiple : true}
+			assertions : {type : "projectX.util.Assertion", multiple : true},
+			requestHeaders : {type : "projectX.util.RequestHeader", multiple : true}
 		}
 	}});
-	
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Methods
 	// /////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * create a serialized version of this request.
 	 * set temporary data to null.
@@ -44,14 +46,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.resetTempData();
 		//TODO really delete status from mProperties, create copy first
 		var oRequest = this.mProperties;
-		
+
 		var aSerializedAssertions = [];
 		var aAssertions = this.getAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
 			aSerializedAssertions.push(aAssertions[i].serialize());
 		}
 		oRequest.assertions = aSerializedAssertions;
-		
+
 		return oRequest;
 	};
 
@@ -73,7 +75,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	};
 
 	/**
-	 * creates and send a jquery ajax request with the parameters defined 
+	 * creates and send a jquery ajax request with the parameters defined
 	 * in this request instance.
 	 * @return {object} jQuery deferred
 	 */
@@ -94,10 +96,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			var iResponseTime = new Date() - oStartTime;
 			that._setAjaxResult(jqXHR, iResponseTime);
 		});
-		
+
 		return oDeferred;
 	};
-	
+
 	Request.prototype.checkAssertions = function(jqXHR, iResponseTime) {
 		var aAssertions = this.getAssertions();
 
@@ -105,26 +107,26 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		var sResponseBody = jqXHR ? jqXHR.responseText : this.getResponseBody();
 		var sResponseHeaders = jqXHR ? jqXHR.getAllResponseHeaders() : this.getResponseHeaders();
 		var iResponseT = iResponseTime ? iResponseTime : this.getResponseTime();
-		
-		var bAssertionsResult = true; 
-		
+
+		var bAssertionsResult = true;
+
 		for (var i = 0; i < aAssertions.length; i++) {
 			var bRes = aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders, iResponseT);
 			if (bRes !== true){
 				bAssertionsResult = false;
 			}
 		}
-		
+
 		this.setAssertionsResult(bAssertionsResult);
 		this.setAssertionsResultReady(true);
 		return bAssertionsResult;
 	};
-	
-	
+
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * helper function that sets the status of the finished ajax call.
 	 * @param {object} jqXHR the reuslt form the ajax call

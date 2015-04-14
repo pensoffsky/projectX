@@ -6,30 +6,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	"use strict";
 
 	var Constants = Object.extend("projectX.util.Constants", { metadata : {
-		// properties : {
-		//
-		// 	RequestHeaderFields : {
-		// 			type : "string",
-		// 			defaultValue : [
-		// 				"Accept",
-		// 				"Accept-Charset",
-		// 				"Accept-Encoding",
-		// 				"Accept-Lanugage",
-		// 				"Accept-Datetime",
-		// 				"Authorization",
-		// 				"Cache-Control"
-		// 			]},
-		// 	RequestHeaderFieldsExample : {
-		// 			type : "string",
-		// 			defaultValue : [
-		// 				"Accept: text/plain",
-		// 				"Accept-Charset: utf-8"
-		// 			]}
-		// },
-		// events : {
-		//
-		// }
+
 	}});
+
+
+		// /////////////////////////////////////////////////////////////////////////////
+		// /// Public Attributes
+		// /////////////////////////////////////////////////////////////////////////////
 
 	/*
 	 * Constants for the Assertion Property
@@ -86,16 +69,74 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	];
 
 
+	/*
+	 * Constants for the HTTP method
+	 */
+	Constants.HTTP_METHOD_GET = "GET";
+	Constants.HTTP_METHOD_POST = "POST";
+	Constants.HTTP_METHOD_PUT = "PUT";
+	Constants.HTTP_METHOD_PATCH = "PATCH";
+	Constants.HTTP_METHOD_DELETE = "DELETE";
+	Constants.HTTP_METHOD_HEAD = "HEAD";
+	Constants.HTTP_METHOD_OPTIONS = "OPTIONS";
+	Constants.HTTP_METHOD_CONNECT = "CONNECT";
+	Constants.HTTP_METHOD_TRACE = "TRACE";
 
+	/**
+	* array of keys for http methods select control.
+	* @type {Array}
+	*/
+	Constants.HTTP_METHODS = [
+		{key : Constants.HTTP_METHOD_GET},
+		{key : Constants.HTTP_METHOD_POST},
+		{key : Constants.HTTP_METHOD_PUT},
+		{key : Constants.HTTP_METHOD_PATCH},
+		{key : Constants.HTTP_METHOD_DELETE},
+		{key : Constants.HTTP_METHOD_HEAD},
+		{key : Constants.HTTP_METHOD_OPTIONS}
+		// {key : Constants.HTTP_METHOD_CONNECT},
+		// {key : Constants.HTTP_METHOD_TRACE}
+	];
 
-	// /////////////////////////////////////////////////////////////////////////////
-	// /// Public Functions
-	// /////////////////////////////////////////////////////////////////////////////
+	/*
+	 * Constants for the request header field
+	 */
+	Constants.REQUEST_HEADER_FIELD_ACCEPT = "Accept";
+	Constants.REQUEST_HEADER_FIELD_ACCEPT_CHARSET = "Accept-Charset";
+	Constants.REQUEST_HEADER_FIELD_ACCEPT_ENCODING = "Accept-Encoding";
+	Constants.REQUEST_HEADER_FIELD_ACCEPT_LANGUAGE = "Accept-Lanugage";
+	Constants.REQUEST_HEADER_FIELD_ACCEPT_DATETIME = "Accept-Datetime";
+	Constants.REQUEST_HEADER_FIELD_ACCEPT_AUTHORIZATION = "Authorization";
+	Constants.REQUEST_HEADER_FIELD_CACHE_CONTROL = "Cache-Control";
 
-	Constants.httpMethod = {
-		GET : "GET",
-		POST : "POST"
-	};
+	/**
+	* array of keys for request header field name select control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_FIELDS = [
+		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT},
+		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_CHARSET},
+		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_ENCODING},
+		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_LANGUAGE},
+		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_DATETIME},
+		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_AUTHORIZATION},
+		{key : Constants.REQUEST_HEADER_FIELD_CACHE_CONTROL}
+	];
+
+	/*
+	 * Constants for the request header value
+	 */
+	Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML = "application/atom+xml";
+	Constants.REQUEST_HEADER_VALUE_APPL_JSON = "application/json";
+
+	/**
+	* array of keys for request header field value select control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_VALUES = [
+		{key : Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML},
+		{key : Constants.REQUEST_HEADER_VALUE_APPL_JSON}
+	];
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Functions

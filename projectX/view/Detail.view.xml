@@ -15,23 +15,9 @@
 			<FlexBox
 					width="100%"
 					alignItems="Start">
-					<Select>
-					<!-- <Select
-							selectedKey="{/Constants/httpMethod}"
-							items="{
-								path: '{/Constants/httpMethod}'
-							}"> -->
-							<!-- <core:Item key="{'httpMethod'}" text="{httpMethod}" /> -->
-
-						<items>
-							<core:Item text="GET"     key="GET"/>
-							<core:Item text="POST"    key="POST"/>
-							<core:Item text="PUT"     key="PUT"/>
-							<core:Item text="DELETE"  key="DELETE"/>
-							<core:Item text="HEAD"    key="HEAD"/>
-							<core:Item text="OPTIONS" key="OPTIONS"/>
-							<core:Item text="PATCH"   key="PATCH"/>
-						</items>
+					<Select selectedKey="{localUIModel>/httpMethod}"
+							items="{/HTTP_METHODS}">
+							<core:Item text="{key}" key="{key}"/>
 					</Select>
 					<Input
 						value="{localUIModel>/url}"
@@ -45,48 +31,8 @@
 					<Button press="onBtnSendPress" text="Send"/>
 			</FlexBox>
 
-			<!-- REQUEST HEADER & BODY -->
-			<FlexBox>
+			<VBox id="idVBoxRequestHeaderPlaceholder" />
 
-					<VBox>
-					<Label text="Request Header" />
-
-						<!-- TODO bind values to localUIModel>/Request/Header/[0 .. x] -->
-						<FlexBox >
-							<Input
-									value="Accept-Encoding"
-									placeholder="Request header field name"
-									showSuggestion="true"
-									suggestionItems="{localUIModel>/Constants/RequestHeaderFields}" >
-									<suggestionItems>
-					          <core:ListItem text="{RequestHeaderFields}"/>
-					          <!-- <core:ListItem text="{RequestHeaderFields}" additionalText="{RequestHeaderFieldsExample}"/> -->
-					        </suggestionItems>
-								</Input>
-							<Input value="UTF-8" />
-						</FlexBox>
-
-						<FlexBox>
-							<Input value="Content-Type" />
-							<Input value="application/json" />
-						</FlexBox>
-						<layoutData>
-                <FlexItemData growFactor="0.1" />
-            </layoutData>
-					</VBox>
-
-					<VBox>
-						<Label text="Request Body" />
-						<TextArea height="200px" width="100%"
-								enabled="true"
-								editable="true"
-								value="{localUIModel>/Request/Body}" />
-						<layoutData>
-	            <FlexItemData growFactor="1" />
-	          </layoutData>
-					</VBox>
-
-			</FlexBox>
 
 				<VBox>
 					<Label text="Response Header" />

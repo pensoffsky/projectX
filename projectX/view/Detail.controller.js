@@ -2,6 +2,7 @@ jQuery.sap.require("projectX.util.Constants");
 jQuery.sap.require("projectX.util.Formatter");
 jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.view.AssertionEditListController");
+jQuery.sap.require("projectX.view.RequestHeaderEditListController");
 
 projectX.util.Controller.extend("projectX.view.Detail", {
 
@@ -9,7 +10,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 
 	onInit: function() {
 
-		// var oConstants = new projectX.util.Constants();
+		this._oConstants = new projectX.util.Constants();
 
 		this._localUIModel = new sap.ui.model.json.JSONModel();
 		this._localUIModel.setData({
@@ -24,7 +25,11 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		//use a name when addressing the local ui model from xml
 		this.getView().setModel(this._localUIModel, "localUIModel");
 
-		//create fragment controller
+		this.getView().setModel(this._localUIModel._oConstants, "Constants");
+
+		/////////////////////////////////////////////////////////////////////
+		//create Assertion fragment controller
+		/////////////////////////////////////////////////////////////////////
 		this._oAssertionEditController = new projectX.util.AssertionEditListController();
 		//create fragment view
 		var oAssertionEditFragment = sap.ui.xmlfragment(this.createId("Assertions"), "projectX.view.AssertionEditList", this._oAssertionEditController);
@@ -36,7 +41,23 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		//initialize the fragement controller
 		this._oAssertionEditController.onInit(this.createId("Assertions"));
 
+		/////////////////////////////////////////////////////////////////////
+		//create requestHeader fragment controller
+		/////////////////////////////////////////////////////////////////////
+		this._oRequestHeaderEditController = new projectX.util.RequestHeaderEditListController();
+		// //create fragment view
+		var oRequestHeaderEditFragment = sap.ui.xmlfragment(this.createId("RequestHeaders"), "projectX.view.RequestHeaderEditList", this._oRequestHeaderEditController);
+		//set fragment view to fragment controller
+		this._oRequestHeaderEditController.setView(oRequestHeaderEditFragment);
+		//add fragment view to page
+		var oRequestHeaderContainer = this.getView().byId("idVBoxRequestHeaderPlaceholder");
+		oRequestHeaderContainer.addItem(oRequestHeaderEditFragment);
+		//initialize the fragement controller
+		this._oRequestHeaderEditController.onInit(this.createId("RequestHeaders"));
+
+		/////////////////////////////////////////////////////////////////////
 		//hook navigation event
+		/////////////////////////////////////////////////////////////////////
 		this.getRouter().getRoute("product").attachMatched(this.onRouteMatched, this);
 	},
 

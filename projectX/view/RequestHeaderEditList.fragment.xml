@@ -1,0 +1,53 @@
+<c:FragmentDefinition
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+	xmlns="sap.m">
+	<Table items="{/requestHeaders}"
+			mode="MultiSelect"
+			id="idTableRequestHeaders"
+			rememberSelections="false"
+			>
+		<headerToolbar>
+				<Toolbar>
+						<Label text="Request Headers" />
+					<ToolbarSpacer />
+					<Button icon="sap-icon://add"
+					tooltip="Add header field"
+					press="onBtnAddRequestHeader"/>
+			<Button icon="sap-icon://delete"
+					tooltip="Delete selected request header"
+					press="onBtnDeleteRequestHeaders"/>
+				</Toolbar>
+			</headerToolbar>
+		<columns>
+			<Column>
+				<Text text="Field name" />
+			</Column>
+			<Column>
+				<Text text="Value" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Select selectedKey="{mProperties/fieldName}"
+							items="{/REQUEST_HEADER_FIELDS}">
+							<c:Item text="{key}" key="{key}"/>
+					</Select>
+					<Select selectedKey="{mProperties/fieldValue}"
+							items="{/REQUEST_HEADER_VALUES}">
+							<c:Item text="{key}" key="{key}"/>
+					</Select>
+					<!-- <c:Icon
+						src="{ parts : [
+							{ path : 'mProperties/result' },
+							{ path : 'mProperties/resultReady' }
+						],
+						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/> -->
+
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</c:FragmentDefinition>
