@@ -1,0 +1,58 @@
+<c:FragmentDefinition
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+	xmlns="sap.m">
+			
+	<VBox items="{/entityTypes}" width="100%">
+		<items>
+			<VBox>
+				<Panel expandable="true" 
+					   expanded="false"
+					   headerText="{name}">
+					<Table items="{property}"
+							rememberSelections="false"
+							mode="MultiSelect"
+							selectionChange="onEntityTypeTableSelectionChange"
+							>
+						<columns>
+							<Column><Text text="Name" /></Column>
+							<Column><Text text="Type" /></Column>
+							<Column><Text text="Nullable" /></Column>
+							<Column><Text text="Key" /></Column>
+						</columns>
+						<items>
+							<ColumnListItem>
+								<cells>
+									<Label text="{name}"/>
+									<Text text="{type}"/>
+									<Text text="{nullable}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>	
+					<f:SimpleForm
+						editable="true"
+						layout="ResponsiveGridLayout"
+						labelSpanL="1"
+						labelSpanM="1"
+						emptySpanL="0"
+						emptySpanM="0"
+						>
+						<f:content>
+							<Label text="Key" />
+							<Text text="{calculatedKeys}" rows="4"/>
+							<Label text="OrderBy" />
+							<Text text="{calculatedOrderBy}" rows="4"/>
+							<Label text="Filter" />
+							<Text text="{calculatedFilter}" rows="4"/>
+							<Label text="Select" />
+							<Text text="{calculatedSelect}" rows="4"/>
+						</f:content>
+					</f:SimpleForm>	
+				</Panel>      
+			</VBox>
+		</items>
+	</VBox>
+		
+</c:FragmentDefinition>

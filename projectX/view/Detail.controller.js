@@ -3,6 +3,7 @@ jQuery.sap.require("projectX.util.Formatter");
 jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.view.AssertionEditListController");
 jQuery.sap.require("projectX.view.RequestHeaderEditListController");
+jQuery.sap.require("projectX.view.Metadata.MetadataTypesController");
 
 projectX.util.Controller.extend("projectX.view.Detail", {
 
@@ -19,7 +20,10 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 			Request: {},
 			Response: {},
 			name: "",
-			httpMethod: "GET"
+			httpMethod: "GET",
+			requestVisible: true,
+			assertionsVisible: false,
+			metadataVisible: false
 		});
 		//set the local ui model to the view
 		//use a name when addressing the local ui model from xml
@@ -54,6 +58,16 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		oRequestHeaderContainer.addItem(oRequestHeaderEditFragment);
 		//initialize the fragement controller
 		this._oRequestHeaderEditController.onInit(this.createId("RequestHeaders"));
+		
+		
+		/////////////////////////////////////////////////////////////////////
+		//create MetaData fragment controller
+		/////////////////////////////////////////////////////////////////////
+		//create Metadata fragment controller and set fragment to view placeholder
+		this._oMetadataTypesController = new projectX.view.Metadata.MetadataTypesController();
+		this._oMetadataTypesController.onInit(this.createId("Metadata"));
+		var oMetadataTypes = this.getView().byId("idVBoxMetadataTypesPlaceholder");
+		oMetadataTypes.addItem(this._oMetadataTypesController.getView());
 
 		/////////////////////////////////////////////////////////////////////
 		//hook navigation event
@@ -74,6 +88,8 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		if (!oRequest) {
 			return;
 		}
+		
+		this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
 
 		this._selectedRequest = oRequest;
 		this._localUIModel.setProperty("/name", oRequest.getName());
@@ -128,6 +144,29 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Event Handler
 	// /////////////////////////////////////////////////////////////////////////////
+
+	onSegmentedButtonSelect : function(oEvent){
+		var sSelectedId = oEvent.getParameter("id");
+		switch (sSelectedId) {
+			case this.createId("idButtonRequest"):
+				this._localUIModel.setProperty("/requestVisible", true);
+				this._localUIModel.setProperty("/assertionsVisible", false);
+				this._localUIModel.setProperty("/metadataVisible", false);
+				break;
+			case this.createId("idButtonAssertions"):
+				this._localUIModel.setProperty("/requestVisible", false);
+				this._localUIModel.setProperty("/assertionsVisible", true);
+				this._localUIModel.setProperty("/metadataVisible", false);
+				break;
+			case this.createId("idButtonMetadata"):
+				this._localUIModel.setProperty("/requestVisible", false);
+				this._localUIModel.setProperty("/assertionsVisible", false);
+				this._localUIModel.setProperty("/metadataVisible", true);
+				break;
+		default:
+			console.log("problem with segmented button on detail page");
+		}
+	},
 
 	onBtnDeletePress: function() {
 		var oModel = this.getView().getModel();

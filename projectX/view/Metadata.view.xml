@@ -26,7 +26,7 @@
 					<headerToolbar>
 				    	<Toolbar>
 							<ToolbarSpacer/>
-					        <Button icon="sap-icon://add"
+					        <Button text="Add new request"
 									tooltip="Add requests for selected items"
 									press="onBtnAddEntitySetRequest"/>
 				      </Toolbar>
@@ -137,58 +137,7 @@
 		</Panel>
 		
 		
-		<Panel expandable="true" 
-			   expanded="true"
-			   headerText="EntityTypes">
-			<VBox items="{/entityTypes}">
-				<items>
-					<CustomListItem>
-						<Table items="{property}"
-								rememberSelections="false"
-								mode="MultiSelect"
-								selectionChange="onEntityTypeTableSelectionChange"
-								>
-							<columns>
-								<Column><Text text="Name" /></Column>
-								<Column><Text text="Type" /></Column>
-								<Column><Text text="Nullable" /></Column>
-								<Column><Text text="Key" /></Column>
-							</columns>
-							<items>
-								<ColumnListItem>
-									<cells>
-										<Label text="{name}"/>
-										<Text text="{type}"/>
-										<Text text="{nullable}"/>
-									</cells>
-								</ColumnListItem>
-							</items>
-						</Table>	
-						<f:SimpleForm
-							editable="true"
-							layout="ResponsiveGridLayout"
-							labelSpanL="1"
-							labelSpanM="1"
-							emptySpanL="0"
-							emptySpanM="0"
-							>
-							<f:content>
-								<!-- Basic info -->
-								<c:Title text="{name}" />
-								<Label text="Key" />
-								<TextArea value="{calculatedKeys}" rows="4"/>
-								<Label text="OrderBy" />
-								<TextArea value="{calculatedOrderBy}" rows="4"/>
-								<Label text="Filter" />
-								<TextArea value="{calculatedFilter}" rows="4"/>
-								<Label text="Select" />
-								<TextArea value="{calculatedSelect}" rows="4"/>
-							</f:content>
-						</f:SimpleForm>	      
-					</CustomListItem>
-				</items>
-			</VBox>
-		</Panel>
+		
 		
 		</VBox>
 		

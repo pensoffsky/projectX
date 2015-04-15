@@ -13,6 +13,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		}
 	}});
 	
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// Constructor & Initialization
+	// /////////////////////////////////////////////////////////////////////////////
+	
+	AssertionEditListController.prototype.constructor = function(s) {
+		ManagedObject.apply(this, arguments);
+		
+	};
 	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Event Handler
@@ -122,8 +130,3 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	return AssertionEditListController;
 
 }, /* bExport= */ true);
-
-//TODO implement save of assertions
-//TODO create new assertions
-//TODO delete assertions
-//TODO edit assertion
