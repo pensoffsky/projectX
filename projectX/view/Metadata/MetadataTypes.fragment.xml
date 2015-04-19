@@ -8,7 +8,7 @@
 		<items>
 			<VBox>
 				<Panel expandable="true" 
-					   expanded="false"
+					   expanded="true"
 					   headerText="{name}">
 					<Table items="{property}"
 							rememberSelections="false"
@@ -20,6 +20,7 @@
 							<Column><Text text="Type" /></Column>
 							<Column><Text text="Nullable" /></Column>
 							<Column><Text text="Key" /></Column>
+							<Column><Text text="Value" /></Column>
 						</columns>
 						<items>
 							<ColumnListItem>
@@ -27,6 +28,27 @@
 									<Label text="{name}"/>
 									<Text text="{type}"/>
 									<Text text="{nullable}"/>
+									<c:Icon src="{path:'calculatedIsKey',
+										 formatter:'projectX.util.Formatter.entityPropertyKeyToImage'}"/>
+									<VBox>
+										<Input visible="{path:'type',
+											formatter:'projectX.util.Formatter.entitytypeString'}"
+											value="{___userInput}"
+											/>
+										<Switch visible="{path:'type',
+											formatter:'projectX.util.Formatter.entitytypeSwitch'}"
+											/>
+										<DateTimeInput type="DateTime"
+											visible="{path:'type',
+											formatter:'projectX.util.Formatter.entitytypeDateTime'}"
+											placeholder="Enter DateTime"
+									      />
+										<DateTimeInput type="Time"
+											visible="{path:'type',
+											formatter:'projectX.util.Formatter.entitytypeTime'}"
+											placeholder="Enter Time"
+									      />
+									</VBox>
 								</cells>
 							</ColumnListItem>
 						</items>
@@ -41,13 +63,15 @@
 						>
 						<f:content>
 							<Label text="Key" />
-							<Text text="{calculatedKeys}" rows="4"/>
+							<Text text="{calculatedKeys}"/>
 							<Label text="OrderBy" />
-							<Text text="{calculatedOrderBy}" rows="4"/>
+							<Text text="{calculatedOrderBy}"/>
 							<Label text="Filter" />
-							<Text text="{calculatedFilter}" rows="4"/>
+							<Text text="{calculatedFilter}"/>
 							<Label text="Select" />
-							<Text text="{calculatedSelect}" rows="4"/>
+							<Text text="{calculatedSelect}"/>
+							<Label text="Payload" />
+							<Text text="{calculatedPayload}"/>
 						</f:content>
 					</f:SimpleForm>	
 				</Panel>      

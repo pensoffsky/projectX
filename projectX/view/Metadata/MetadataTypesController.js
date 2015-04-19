@@ -77,16 +77,23 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 				console.log("successfully loaded service metadata");
 				that._localUIModel.setProperty("/odataServiceCheckRes", "metadata loaded successfully");
 				that._localUIModel.setProperty("/serviceMetadata", oMetaData);
-				that._localUIModel.setProperty("/entityTypes", that._extractFromMetadata(oMetaData, "entityType"));
-				that._localUIModel.setProperty("/associations", that._extractFromMetadata(oMetaData, "association"));
 				that._localUIModel.setProperty("/complexTypes", that._extractFromMetadata(oMetaData, "complexType"));
-				var aEntityContainer = that._extractFromMetadata(oMetaData, "entityContainer");
-				that._localUIModel.setProperty("/associationSets",
-					that._extractFromEntityContainer(aEntityContainer, "associationSet"));
-				that._localUIModel.setProperty("/entitySets",
-					that._extractFromEntityContainer(aEntityContainer, "entitySet"));
-				that._localUIModel.setProperty("/functionImports",
-					that._extractFromEntityContainer(aEntityContainer, "functionImport"));
+				var aEntityTypes = that._extractFromMetadata(oMetaData, "entityType");
+
+				//set the keys of an entitytype to the corresponding properties
+				aEntityTypes.map(function(oEntityType) {
+					//loop over the keys
+					oEntityType.key.propertyRef.map(function(oKey) {
+						oEntityType.property.map(function(oProperty) {
+							if (oProperty.name === oKey.name) {
+								oProperty.calculatedIsKey = true;
+							} else {
+								oProperty.calculatedIsKey = false;
+							}
+						});
+					});
+				});
+				that._localUIModel.setProperty("/entityTypes", aEntityTypes);
 
 			});
 
@@ -125,32 +132,36 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			//create keys string
 			this._createAndSetCalculatedURLPart(aSelectedItems, oModel,
 				sBasePath + "/calculatedKeys",
-				jQuery.proxy(function(oEntityType) {
-					return oEntityType.name + "=" + this._getDefaultValueForEdmType(oEntityType.type);
+				jQuery.proxy(function(oProperty) {
+					if (oProperty.___userInput) {
+						return oProperty.name + "=" + oProperty.___userInput;
+					} else {
+						return oProperty.name + "=" + this._getDefaultValueForEdmType(oProperty.type);
+					}
 				}, this),
 				"(", ", ", ")");
 
 			//create orderBy string
 			this._createAndSetCalculatedURLPart(aSelectedItems, oModel,
 				sBasePath + "/calculatedOrderBy",
-				function(oEntityType) {
-					return oEntityType.name;
+				function(oProperty) {
+					return oProperty.name;
 				},
 				"$orderby=", ",", " asc");
 
 			//create filter string
 			this._createAndSetCalculatedURLPart(aSelectedItems, oModel,
 				sBasePath + "/calculatedFilter",
-				jQuery.proxy(function(oEntityType) {
-					return oEntityType.name + " eq " + this._getDefaultValueForEdmType(oEntityType.type);
+				jQuery.proxy(function(oProperty) {
+					return oProperty.name + " eq " + this._getDefaultValueForEdmType(oProperty.type);
 				}, this),
 				"$filter=", " or ", "");
 
 			//create select string
 			this._createAndSetCalculatedURLPart(aSelectedItems, oModel,
 				sBasePath + "/calculatedSelect",
-				function(oEntityType) {
-					return oEntityType.name;
+				function(oProperty) {
+					return oProperty.name;
 				},
 				"$select=", ",", "");
 

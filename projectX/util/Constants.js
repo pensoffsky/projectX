@@ -14,6 +14,27 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		// /// Public Attributes
 		// /////////////////////////////////////////////////////////////////////////////
 
+
+	/*
+	 * Constants for OData Types
+	 */
+	
+	Constants.ODATATYPE_BINARY = "Edm.Binary";
+	Constants.ODATATYPE_BOOLEAN = "Edm.Boolean";
+	Constants.ODATATYPE_BYTE = "Edm.Byte";
+	Constants.ODATATYPE_DATETIME = "Edm.DateTime";
+	Constants.ODATATYPE_DECIMAL = "Edm.Decimal";
+	Constants.ODATATYPE_DOUBLE = "Edm.Double";
+	Constants.ODATATYPE_SINGLE = "Edm.Single";
+	Constants.ODATATYPE_GUID = "Edm.Guid";
+	Constants.ODATATYPE_INT16 = "Edm.Int16";
+	Constants.ODATATYPE_INT32 = "Edm.Int32";
+	Constants.ODATATYPE_INT64 = "Edm.Int64";
+	Constants.ODATATYPE_SBYTE = "Edm.SByte";
+	Constants.ODATATYPE_STRING = "Edm.String";
+	Constants.ODATATYPE_TIME = "Edm.Time";
+	Constants.ODATATYPE_DATETIMEOFFSET = "Edm.DateTimeOffset";
+
 	/*
 	 * Constants for the Assertion Property
 	 */

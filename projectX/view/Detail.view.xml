@@ -19,6 +19,7 @@
 	          <Button text="Metadata" id="idButtonMetadata" />
 	        </SegmentedButton>
 	        <ToolbarSpacer/>
+			<Button text="Send Request" press="onBtnSendPress"/>
 	      </Toolbar>
     	</subHeader>
 		
