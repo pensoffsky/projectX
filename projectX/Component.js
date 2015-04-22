@@ -49,6 +49,12 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 							transition : "show"
 						},
 						{
+							pattern : "sequence/{sequenceID}/:reason:",
+							name : "sequence",
+							view : "Sequence.Sequence",
+							transition : "show"
+						},
+						{
 							pattern : "testrun",
 							name : "testrun",
 							view : "TestRun",

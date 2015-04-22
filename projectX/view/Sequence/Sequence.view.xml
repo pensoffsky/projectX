@@ -1,0 +1,42 @@
+<mvc:View
+	controllerName="projectX.view.Sequence.Sequence"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+	xmlns="sap.m">
+	<Page
+		title="{localUIModel>/reason}">
+		<l:Grid
+			defaultSpan="L12 M12 S12"
+			width="auto">
+			<l:content>
+				<f:SimpleForm
+					editable="true"
+					layout="ResponsiveGridLayout">
+					<f:content>
+						<!-- Basic info -->
+						<c:Title text="Sequence Info" />
+						<Label text="Name" />
+						<Input value="{localUIModel>/sequence/mProperties/name}" />
+					</f:content>
+				</f:SimpleForm>
+			</l:content>
+		</l:Grid>
+		
+		
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="Save" 
+						type="Emphasized" 
+						press="onSave"
+						visible="{localUIModel>/reasonEdit}"/>
+				<Button text="Create" 
+						type="Emphasized" 
+						press="onCreate" 
+						visible="{localUIModel>/reasonNew}"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

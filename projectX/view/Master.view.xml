@@ -59,14 +59,28 @@
 			</Bar>
     	</subHeader>
 		<content>
+			<SegmentedButton selectedButton="idButtonRequests"
+							select="onSegmentedButtonSelect">
+	          <Button text="Requests" id="idButtonRequests" />
+	          <Button text="Sequences" id="idButtonSequences" />
+	        </SegmentedButton>
+			
 			<List
-				id="list"
+				id="idListRequests"
 				items="{/SelectedProject/mAggregations/requests}"
 				mode="{device>/listMode}"
-				select="onSelect"
-				growing="true"
-				growingScrollToLoad="true"
+				select="onRequestsListSelect"
 				updateFinished="onListUpdateFinished">
+				<items>
+					<StandardListItem title="{mProperties/name}"/>
+				</items>
+			</List>
+			<List
+				id="idListSequences"
+				items="{/SelectedProject/mAggregations/sequences}"
+				mode="{device>/listMode}"
+				select="onSequencesListSelect"
+				>
 				<items>
 					<StandardListItem title="{mProperties/name}"/>
 				</items>
@@ -88,6 +102,10 @@
 					tooltip="TestRun"
 					press="onTestRun" />
 				<ToolbarSpacer/>
+				<Button
+					icon="sap-icon://add"
+					tooltip="Add Sequence"
+					press="onAddNewSequence" />
 				<Button
 					icon="sap-icon://sys-add"
 					tooltip="Add Request from metadata"
