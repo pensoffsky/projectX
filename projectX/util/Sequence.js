@@ -1,6 +1,6 @@
 
 // Provides control sap.m.App.
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
+sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/SequenceItem'],
 	function(jQuery, ManagedObject) {
 	"use strict";
 
@@ -11,11 +11,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 			name : {type : "string", defaultValue : null},
 			description : {type : "string", defaultValue : null}
 		},
-		events : {
-
-		},
 		aggregations : {
-			requests : {type : "string", multiple : true}
+			sequenceItems : {type : "projectX.util.SequenceItem", multiple : true}
 		}
 	}});
 
@@ -28,21 +25,43 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	 * set temporary data to null.
 	 * @return {object} a javascript object containing the data that has to be saved to disk.
 	 */
-	Request.prototype.serialize = function() {
+	Sequence.prototype.serialize = function() {
 		this.resetTempData();
 		var oSequence = this.mProperties;
+		
+		var aSerializedSequenceItems = [];
+		var aSequenceItems = this.getSequenceItems();
+		for (var i = 0; i < aSequenceItems.length; i++) {
+			aSerializedSequenceItems.push(aSequenceItems[i].serialize());
+		}
+		oSequence.sequenceItems = aSerializedSequenceItems;
+		
 		return oSequence;
 	};
 
 	/**
 	 * reset temporary data.
 	 */
-	Request.prototype.resetTempData = function() {
+	Sequence.prototype.resetTempData = function() {
 		
 	};
 
-	Sequence.prototype.addRequestId = function(sRequestId) {
-		
+	Sequence.prototype.getRequestIds = function(sRequestId) {
+		var aRequestIds = [];
+		var aSequenceItems = this.getSequenceItems();
+		for (var i = 0; i < aSequenceItems.length; i++) {
+			aRequestIds.push(aSequenceItems[i].getIdentifier());
+		}
+		return aRequestIds;
+	};
+
+	Sequence.prototype.addRequestIds = function(aRequests) {
+		this.removeAllSequenceItems();
+		for (var i = 0; i < aRequests.length; i++) {
+			this.addSequenceItem(new projectX.util.SequenceItem({
+				identifier : aRequests[i].getIdentifier()
+			}));
+		}	
 	};
 
 	return Sequence;

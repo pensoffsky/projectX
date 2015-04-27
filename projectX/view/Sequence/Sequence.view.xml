@@ -6,7 +6,22 @@
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
 	<Page
+		showHeader="false"
+		enableScrolling="true"
 		title="{localUIModel>/reason}">
+		<subHeader>
+		<Toolbar>
+			<SegmentedButton selectedButton="idButtonRequest"
+							select="onSegmentedButtonSelect">
+			<Button text="a" id="idButtonRequest" />
+			<Button text="b" id="idButtonAssertions" />
+			<Button text="c" id="idButtonMetadata" />
+			</SegmentedButton>
+			<ToolbarSpacer/>
+			<Button text="Send Request" press="onBtnSendPress"/>
+		</Toolbar>
+		</subHeader>
+
 		<l:Grid
 			defaultSpan="L12 M12 S12"
 			width="auto">
@@ -24,6 +39,43 @@
 			</l:content>
 		</l:Grid>
 		
+		
+		<FlexBox
+	        width="100%"
+	        alignItems="Stretch">
+	        <items>
+				<List
+				id="idListRequests"
+				items="{localUIModel>/requests}"
+				mode="{device>/listMode}"
+				select="onRequestsListSelect">
+			
+	            <layoutData>
+	              <FlexItemData growFactor="1" />
+	            </layoutData>
+				<items>
+					<StandardListItem title="{localUIModel>mProperties/name}"/>
+				</items>
+			</List>
+			<VBox>
+				<Button text="right" press="onButtonRight"/>
+				<Button text="left" press="onButtonLeft"/>
+			</VBox>
+			<List
+				id="idListSelectedRequests"
+				items="{localUIModel>/selectedRequests}"
+				mode="{device>/listMode}"
+				select="onSelectedRequestsListSelect">
+			
+				<layoutData>
+					<FlexItemData growFactor="1" />
+				</layoutData>
+				<items>
+					<StandardListItem title="{localUIModel>mProperties/name}"/>
+				</items>
+			</List>
+	        </items>
+	      </FlexBox>
 		
 		<footer>
 			<Toolbar>

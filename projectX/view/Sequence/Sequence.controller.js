@@ -14,7 +14,9 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 
 	//TODO create enum for the binding targets
 
-//initialization and routing
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// initialization and routing
+	// /////////////////////////////////////////////////////////////////////////////
 
 	onInit : function() {
 		this._localProjectModel = new sap.ui.model.json.JSONModel({
@@ -31,13 +33,11 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var iSequenceId = parseInt(oParameters.arguments.sequenceID, 10);
 		var sReason = oParameters.arguments.reason;
 		this._sReason = sReason;
+		var oModel = this.getView().getModel();
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
 		
 		if (sReason === "edit"){
-			//user wants to edit the currently selected model
-			var oModel = this.getView().getModel();
-			var oSelectedProject = oModel.getProperty("/SelectedProject");
-			
-			//TODO deep copy
+			//user wants to edit the currently selected model	
 			var oSelectedSequence = oSelectedProject.getSequenceByIdentifier(iSequenceId);
 			this._oOriginalSequence = oSelectedSequence;
 			this._oSequence = jQuery.extend(true, [], oSelectedSequence);
@@ -47,6 +47,12 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			this._localProjectModel.setProperty("/reasonNew", false);
 			this._localProjectModel.setProperty("/reasonEdit", true);
 			this._localProjectModel.setProperty("/reason", "Edit sequence");
+			
+			//get requests for requestIds and set to local ui model
+			var aSelectedRequests = this._oSequence.getRequestIds().map(function(iId){
+				return oSelectedProject.getRequestByIdentifier(iId);
+			});
+			this._localProjectModel.setProperty("/selectedRequests", aSelectedRequests);
 		} else/* if (sReason === "new")*/{
 			this._oSequence = new projectX.util.Sequence({
 				name : "new sequence"
@@ -58,7 +64,11 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			this._localProjectModel.setProperty("/reasonNew", true);
 			this._localProjectModel.setProperty("/reasonEdit", false);
 			this._localProjectModel.setProperty("/reason", "Create new sequence");
+			this._localProjectModel.setProperty("/selectedRequests",[]);
 		}
+		
+		//add list of requests to local ui model
+		this._localProjectModel.setProperty("/requests", oSelectedProject.getRequests());
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -73,6 +83,8 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		}
 		
 		this._oOriginalSequence.setName(this._oSequence.getName());
+		var aRequests = this._localProjectModel.getProperty("/selectedRequests");
+		this._oOriginalSequence.addRequestIds(aRequests);
 		var oModel = this.getView().getModel();
 		oModel.updateBindings();
 	},
@@ -95,6 +107,38 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		sap.ui.core.UIComponent.getRouterFor(this).backWithoutHash(this.getView());
 	},
 	
+	/**
+	 * move selected request from request list to selected requests.
+	 */
+	onButtonRight : function() {
+		var oRequestList = this.getView().byId("idListRequests");
+		var oSelectedItem = oRequestList.getSelectedItem();
+		if (!oSelectedItem){
+			return;
+		}
+		
+		var oRequest = oSelectedItem.getBindingContext("localUIModel").getObject();
+		var aSelectedRequests = this._localProjectModel.getProperty("/selectedRequests");
+		aSelectedRequests.push(oRequest);
+		this._localProjectModel.setProperty("/selectedRequests",aSelectedRequests);
+	},
+	
+	/**
+	 * remove selected request from the right list of selected requests.
+	 */
+	onButtonLeft : function() {
+		var oSelectedRequestList = this.getView().byId("idListSelectedRequests");
+		var oSelectedItem = oSelectedRequestList.getSelectedItem();
+		if (!oSelectedItem){
+			return;
+		}
+		
+		var oRequest = oSelectedItem.getBindingContext("localUIModel").getObject();
+		var aSelectedRequests =  this._localProjectModel.getProperty("/selectedRequests");
+		aSelectedRequests.splice(aSelectedRequests.indexOf(oRequest), 1);
+		this._localProjectModel.setProperty("/selectedRequests",aSelectedRequests);
+		this._oTable.removeSelections(true);
+	},
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// private methods
