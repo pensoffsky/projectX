@@ -11,75 +11,146 @@
 		title="{localUIModel>/reason}">
 		<subHeader>
 		<Toolbar>
-			<SegmentedButton selectedButton="idButtonRequest"
+			<SegmentedButton selectedButton="idButtonConfig"
 							select="onSegmentedButtonSelect">
-			<Button text="a" id="idButtonRequest" />
-			<Button text="b" id="idButtonAssertions" />
-			<Button text="c" id="idButtonMetadata" />
+			<Button text="Config" id="idButtonConfig" />
+			<Button text="Test" id="idButtonTest" />
 			</SegmentedButton>
 			<ToolbarSpacer/>
 			<Button text="Send Request" press="onBtnSendPress"/>
 		</Toolbar>
 		</subHeader>
-
-		<l:Grid
-			defaultSpan="L12 M12 S12"
-			width="auto">
-			<l:content>
-				<f:SimpleForm
-					editable="true"
-					layout="ResponsiveGridLayout">
-					<f:content>
-						<!-- Basic info -->
-						<c:Title text="Sequence Info" />
-						<Label text="Name" />
-						<Input value="{localUIModel>/sequence/mProperties/name}" />
-					</f:content>
-				</f:SimpleForm>
-			</l:content>
-		</l:Grid>
 		
-		
-		<FlexBox
-	        width="100%"
-	        alignItems="Stretch">
-	        <items>
-				<List
-				id="idListRequests"
-				items="{localUIModel>/requests}"
-				mode="{device>/listMode}"
-				select="onRequestsListSelect">
-			
-	            <layoutData>
-	              <FlexItemData growFactor="1" />
-	            </layoutData>
+		<ScrollContainer
+			visible="{localUIModel>/configVisible}"
+			height="100%"
+			width="100%"
+			horizontal="false"
+			vertical="true">
+			<l:Grid
+				defaultSpan="L12 M12 S12"
+				width="auto">
+				<l:content>
+					<f:SimpleForm
+						editable="true"
+						layout="ResponsiveGridLayout">
+						<f:content>
+							<!-- Basic info -->
+							<c:Title text="Sequence Info" />
+							<Label text="Name" />
+							<Input value="{localUIModel>/sequence/mProperties/name}" />
+							<Label text="Description" />
+							<Input value="{localUIModel>/sequence/mProperties/description}" />
+						</f:content>
+					</f:SimpleForm>
+				</l:content>
+			</l:Grid>
+			<FlexBox
+				width="100%"
+				alignItems="Stretch">
 				<items>
-					<StandardListItem title="{localUIModel>mProperties/name}"/>
-				</items>
-			</List>
-			<VBox>
-				<Button text="right" press="onButtonRight"/>
-				<Button text="left" press="onButtonLeft"/>
-			</VBox>
-			<List
-				id="idListSelectedRequests"
-				items="{localUIModel>/selectedRequests}"
-				mode="{device>/listMode}"
-				select="onSelectedRequestsListSelect">
-			
-				<layoutData>
+					<List
+					id="idListRequests"
+					items="{localUIModel>/requests}"
+					mode="{device>/listMode}"
+					select="onRequestsListSelect">
+				
+					<layoutData>
 					<FlexItemData growFactor="1" />
-				</layoutData>
-				<items>
-					<StandardListItem title="{localUIModel>mProperties/name}"/>
+					</layoutData>
+					<items>
+						<StandardListItem title="{localUIModel>mProperties/name}"/>
+					</items>
+				</List>
+				<VBox>
+					<Button text="right" press="onButtonRight"/>
+					<Button text="left" press="onButtonLeft"/>
+				</VBox>
+				<List
+					id="idListSelectedRequests"
+					items="{localUIModel>/selectedRequests}"
+					mode="{device>/listMode}"
+					select="onSelectedRequestsListSelect">
+				
+					<layoutData>
+						<FlexItemData growFactor="1" />
+					</layoutData>
+					<items>
+						<StandardListItem title="{localUIModel>mProperties/name}"/>
+					</items>
+				</List>
 				</items>
-			</List>
-	        </items>
-	      </FlexBox>
+			</FlexBox>
+		</ScrollContainer>
+		
+		<ScrollContainer
+			visible="{localUIModel>/testVisible}"
+			height="100%"
+			width="100%"
+			horizontal="true"
+			vertical="true" >
+			<Table 
+				items="{localUIModel>/selectedRequests}">
+				<columns>
+				<Column
+					>
+					<Text text="Request" />
+				</Column>
+					<Column
+					width="5em">
+					<Text text="Assertions" />
+					</Column>
+				<Column
+					hAlign="Right"
+					width="3em">
+					<Text text="Status" />
+				</Column>
+					<Column
+					width="1em">
+						<Text text="Time" />
+					</Column>
+				</columns>
+				<items>
+				<ColumnListItem>
+					<cells>
+						<VBox>
+						<ObjectIdentifier
+							title="{localUIModel>mProperties/name}"
+							text="{localUIModel>mProperties/url}"
+							titleActive="true" 
+							titlePress="onRequestNamePress"/>
+						</VBox>
+						<c:Icon
+							src="{ parts : [
+								{ path : 'localUIModel>mProperties/assertionsResult' },
+								{ path : 'localUIModel>mProperties/assertionsResultReady' }
+							],
+							formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
+						<Text text="{localUIModel>mProperties/status}"/>
+						<Text text="{localUIModel>mProperties/responseTime}"/>
+					</cells>
+				</ColumnListItem>
+				</items>
+			</Table>
+		</ScrollContainer>
+		
 		
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
+				<Button text="Clear"  
+						press="onClearResults"
+						/>
+				<Button text="Run Sequence" 
+						type="Emphasized" 
+						press="onRunSequence"
+						visible="{localUIModel>/testNotRunning}"
+						/>
+				<Button text="Stop" 
+						type="Emphasized" 
+						press="onStopSequence"
+						visible="{localUIModel>/testRunning}"
+						/>
 				<Button text="Save" 
 						type="Emphasized" 
 						press="onSave"
