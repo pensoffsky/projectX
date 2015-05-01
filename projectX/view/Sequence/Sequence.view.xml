@@ -106,7 +106,7 @@
 					<Text text="Status" />
 				</Column>
 					<Column
-					width="1em">
+					width="3em">
 						<Text text="Time" />
 					</Column>
 				</columns>

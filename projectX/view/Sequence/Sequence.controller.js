@@ -241,7 +241,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		
 		//execute the request
 		var oRequest = aRequests[iIndex];
-		var oDeferred = oRequest.execute();
+		var oDeferred = oRequest.execute(aRequests[iIndex - 1]);
 		//add hanlder that gets called once the request finishes
 		oDeferred.always(function() {
 			oRequest.checkAssertions();

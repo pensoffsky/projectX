@@ -13,6 +13,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			url : {type : "string", defaultValue : null},
 			tags : {type : "string", defaultValue : null},
 			requestBody : {type : "string", defaultValue : null},
+			scriptCode : {type : "string", defaultValue : null},
 
 			//TODO the status should not be serialized
 			status : {type : "string", defaultValue : null},
@@ -73,17 +74,50 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			aAssertions[i].resetTempData();
 		}
 	};
-
+	
 	/**
 	 * creates and send a jquery ajax request with the parameters defined
 	 * in this request instance.
+	 * @param {object} oPreviousRequest the request that was executed before this one
+	 * in case the request is run in a sequence 
 	 * @return {object} jQuery deferred
 	 */
-	Request.prototype.execute = function() {
+	Request.prototype.execute = function(oPreviousRequest) {
 		var oStartTime = new Date();
-		var oDeferred = jQuery.ajax({
-			method: this.getHttpMethod(),
+
+		//create the objects that can be modified inside the script
+		var oReqParam = {
+			httpMethod: this.getHttpMethod(),
 			url: this.getUrl()
+		};
+
+		var oPrevReqParam = null;
+		if (oPreviousRequest) {
+			oPrevReqParam = {
+				httpMethod: oPreviousRequest.getHttpMethod(),
+				url: oPreviousRequest.getUrl(),
+				requestBody: oPreviousRequest.getRequestBody(),
+				status: oPreviousRequest.getStatus(), 
+				responseHeaders: oPreviousRequest.getResponseHeaders(), 
+				responseBody: oPreviousRequest.getResponseBody(), 
+				responseTime: oPreviousRequest.getResponseTime(), 
+				assertionsResult: oPreviousRequest.getAssertionsResult()
+			};
+		}
+
+		//get the javascript code and put into function
+		var sScriptCode = this.getScriptCode();
+		var f = new Function("req", "prevReq", sScriptCode);
+		//execute custom javascript code
+		try {
+			f(oReqParam, oPrevReqParam);
+		} catch (e) {
+			console.log(e);
+		}
+
+		var oDeferred = jQuery.ajax({
+			method: oReqParam.httpMethod,
+			url: oReqParam.url
 		});
 
 		var that = this;
@@ -99,7 +133,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 		return oDeferred;
 	};
-
+	
 	Request.prototype.checkAssertions = function(jqXHR, iResponseTime) {
 		var aAssertions = this.getAssertions();
 

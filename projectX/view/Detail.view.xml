@@ -34,6 +34,7 @@
 				<VBox>
 					<HBox>
 						<Input value="{localUIModel>/name}"/>
+						<TextArea value="{localUIModel>/scriptCode}"/>
 					</HBox>
 					<FlexBox
 							width="100%"

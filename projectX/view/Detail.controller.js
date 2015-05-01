@@ -20,6 +20,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 			Request: {},
 			Response: {},
 			name: "",
+			scriptCode: "",
 			httpMethod: "GET",
 			requestVisible: true,
 			assertionsVisible: false,
@@ -93,6 +94,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 
 		this._selectedRequest = oRequest;
 		this._localUIModel.setProperty("/name", oRequest.getName());
+		this._localUIModel.setProperty("/scriptCode", oRequest.getScriptCode());
 		this._localUIModel.setProperty("/url", oRequest.getUrl());
 		this._localUIModel.setProperty("/httpMethod", oRequest.getHttpMethod());
 
@@ -179,6 +181,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		//write localui data to model
 		var oData = this._localUIModel.getData();
 		this._selectedRequest.setName(oData.name);
+		this._selectedRequest.setScriptCode(oData.scriptCode);
 		this._selectedRequest.setUrl(oData.url);
 		this._selectedRequest.setHttpMethod(oData.httpMethod);
 
