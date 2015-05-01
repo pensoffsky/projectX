@@ -47,7 +47,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			 * true if assert was successfull.
 			 * @type {boolean}
 			 */
-			result : {type : "boolean", defaultValue : false}
+			result : {type : "boolean", defaultValue : false},
+			
+			/**
+			 * evaluated value of the assert function. Can be used for databinding purposes.
+			 * string representation of what was selected with this assertion.
+			 * @type {string}
+			 */
+			evaluatedValue : {type : "string", defaultValue : null}
 			},
 		events : {
 	
@@ -64,6 +71,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	Assertion.prototype.resetTempData = function() {
 		this.setResult(false);
 		this.setResultReady(false);
+		this.setEvaluatedValue(null);
 	};
 	
 	/**
@@ -134,6 +142,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			  default:
 			    return false;
 			}
+			
+			this.setEvaluatedValue(sValue);
 			
 			//get the operation to run against the value
 			var fOp = null;

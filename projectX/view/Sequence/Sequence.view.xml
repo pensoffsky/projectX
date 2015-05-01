@@ -17,7 +17,9 @@
 			<Button text="Testrun" id="idButtonTest" />
 			</SegmentedButton>
 			<ToolbarSpacer/>
-			<Button text="Send Request" press="onBtnSendPress"/>
+			<Button text="Run Sequence" 
+					press="onRunSequence"
+					visible="{localUIModel>/testNotRunning}"/>
 		</Toolbar>
 		</subHeader>
 		
@@ -111,7 +113,7 @@
 					</Column>
 				</columns>
 				<items>
-				<ColumnListItem>
+				<ColumnListItem vAlign="Top">
 					<cells>
 						<VBox>
 						<ObjectIdentifier

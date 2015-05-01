@@ -108,9 +108,18 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		this.getRouter().myNavBack("main");
 	},
 
+	/**
+	 * called when the user clicks the "send request" button.
+	 * clear the result form all assertions.
+	 * build up the request and execute it.
+	 * evaluate assertions.
+	 */
 	onBtnSendPress: function() {
 		var sUrl = this._localUIModel.getProperty("/url");
 		var sHttpMethod = this._localUIModel.getProperty("/httpMethod");
+
+		//reset assertions
+		this._resetAssertionResults(this._oAssertionEditController.getAssertions());
 
 		var oStartTime = new Date();
 		var oDeferred = jQuery.ajax({
@@ -139,6 +148,13 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		var aAssertions = this._oAssertionEditController.getAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
 			aAssertions[i].assert(jqXHR.status, jqXHR.responseText, jqXHR.getAllResponseHeaders(), iResponseTime);
+		}
+		this._oAssertionEditController.updateBindings();
+	},
+	
+	_resetAssertionResults: function(aAssertions){
+		for (var i = 0; i < aAssertions.length; i++) {
+			aAssertions[i].resetTempData();
 		}
 		this._oAssertionEditController.updateBindings();
 	},

@@ -25,30 +25,34 @@
 				<Text text="Property" />
 			</Column>
 			<Column>
-				<Text text="Operation" />
+				<Text text="JSON/XML Path" />
 			</Column>
 			<Column>
-				<Text text="JSON/XML Path" />
+				<Text text="Operation" />
 			</Column>
 			<Column>
 				<Text text="Expected Value" />
 			</Column>
-			<Column>
+			<Column width="2em">
 				<Text text="Success" />
+			</Column>
+			<Column>
+				<Text text="Evaluated Value" />
 			</Column>
 		</columns>
 		<items>
-			<ColumnListItem>
+			<ColumnListItem vAlign="Top">
 				<cells>
 					<Select selectedKey="{mProperties/assertProperty}"
 							items="{/ASSERTPROPERTIES}">
 							<c:Item text="{key}" key="{key}"/>
 					</Select>
+					<Input value="{mProperties/path}"/>
 					<Select selectedKey="{mProperties/operation}"
 							items="{/ASSERTOPERATIONS}">
 							<c:Item text="{key}" key="{key}"/>
 					</Select>
-					<Input value="{mProperties/path}"/>
+					
 					<Input value="{mProperties/expected}"/>
 					<c:Icon
 						src="{ parts : [
@@ -56,7 +60,7 @@
 							{ path : 'mProperties/resultReady' }
 						],
 						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
-					
+					<Text text="{mProperties/evaluatedValue}"/>
 				</cells>
 			</ColumnListItem>
 		</items>
