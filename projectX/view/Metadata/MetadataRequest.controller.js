@@ -18,7 +18,10 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 
 	onInit: function() {
 		this._localUIModel = new sap.ui.model.json.JSONModel({
-			serviceMetadata: {} //the metadata object loaded from the odata service
+			serviceMetadata: {}, //the metadata object loaded from the odata service
+			associationSets: [],
+			entitySets: [],
+			functionImports: []
 		});
 
 		var oBindingContainer = this.getView().byId("idBindingContainer");
@@ -112,16 +115,19 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			console.log("successfully loaded service metadata");
 			that._localUIModel.setProperty("/odataServiceCheckRes", "metadata loaded successfully");
 			that._localUIModel.setProperty("/serviceMetadata", oMetaData);
-			that._localUIModel.setProperty("/entityTypes", that._extractFromMetadata(oMetaData, "entityType"));
-			that._localUIModel.setProperty("/complexTypes", that._extractFromMetadata(oMetaData, "complexType"));
+			var aEntityContainer = that._extractFromMetadata(oMetaData, "entityContainer");
+			that._localUIModel.setProperty("/associationSets", that._extractFromEntityContainer(aEntityContainer, "associationSet"));
+			that._localUIModel.setProperty("/entitySets", that._extractFromEntityContainer(aEntityContainer, "entitySet"));
+			that._localUIModel.setProperty("/functionImports", that._extractFromEntityContainer(aEntityContainer, "functionImport"));
 		});
 
 		oDeferred.fail(function() {
 			console.log("Service Metadata could not be loaded");
 			that._localUIModel.setProperty("/odataServiceCheckRes", "failed to load metadata");
 			that._localUIModel.setProperty("/serviceMetadata", null);
-			that._localUIModel.setProperty("/entityTypes", null);
-			that._localUIModel.setProperty("/complexTypes", null);
+			that._localUIModel.setProperty("/entitySets", null);
+			that._localUIModel.setProperty("/functionImports", null);
+			that._localUIModel.setProperty("/associationSet", null);
 			//TODO clear data
 		});
 	},
