@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="projectX.view.Metadata"
+	controllerName="projectX.view.Metadata.MetadataRequest"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
@@ -7,6 +7,7 @@
 	xmlns="sap.m">
 	<Page
 		title="Add Request based on OData MetaData">
+		
 		<VBox id="idBindingContainer">
 			<Label text="{/odataServiceCheckRes}\"/>
 			<Label text="TODO this currently only works against http://services.odata.org/V2/OData/OData.svc/ because only one schema is supported a the moment."/>
@@ -147,7 +148,7 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				
+				<Button text="Refresh Metadata" press="onRefreshMetadata"/>
 			</Toolbar>
 		</footer>
 	</Page>

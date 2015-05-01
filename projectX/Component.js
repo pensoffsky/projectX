@@ -63,7 +63,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 						{
 							pattern : "metadata/{projectID}",
 							name : "metadata",
-							view : "Metadata",
+							view : "Metadata.MetadataRequest",
 							transition : "show"
 						}
 					]

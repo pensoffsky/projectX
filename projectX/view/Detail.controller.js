@@ -24,7 +24,8 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 			httpMethod: "GET",
 			requestVisible: true,
 			assertionsVisible: false,
-			metadataVisible: false
+			metadataVisible: false,
+			scriptExamples: projectX.util.Constants.SCRIPTEXAMPLES
 		});
 		//set the local ui model to the view
 		//use a name when addressing the local ui model from xml
@@ -219,6 +220,21 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 	onBtnDuplicatePress: function(){
 		var oComponent = this.getComponent();
 		oComponent.duplicateRequest(this._selectedRequest);
+	},
+	
+	onButtonScriptExamples : function(oEvent) {
+		var oButton = oEvent.getSource();
+		var oMenu = this.getView().byId("idMenuScriptExamples");
+	    var eDock = sap.ui.core.Popup.Dock;
+		oMenu.open(false, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
+	},
+	
+	onMenuItemScriptExampleSelected : function(oEvent) {
+		var oItem = oEvent.getParameter("item");
+		var oScriptExample = oItem.getBindingContext("localUIModel").getObject();
+		var sScript = this._localUIModel.getProperty("/scriptCode");
+		sScript += "\n" + oScriptExample.script; 
+		this._localUIModel.setProperty("/scriptCode", sScript);
 	}
 
 });

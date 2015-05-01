@@ -91,7 +91,7 @@ projectX.util.Controller.extend("projectX.view.AddProduct", {
 
 		var that = this;
 		oDeferred.done(function(oServiceMetadata) {
-			console.log(oServiceMetadata);
+			//console.log(oServiceMetadata);
 			console.log("successfully loaded service metadata");
 			that._localProjectModel.setProperty("/odataServiceCheckRes", "ok");
 		});

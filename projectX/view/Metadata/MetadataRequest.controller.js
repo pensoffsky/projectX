@@ -1,3 +1,4 @@
+jQuery.sap.declare("projectX.view.Metadata.MetadataRequest");
 jQuery.sap.require("projectX.util.Project");
 jQuery.sap.require("projectX.util.Request");
 jQuery.sap.require("projectX.util.Controller");
@@ -7,7 +8,7 @@ jQuery.sap.require("projectX.util.Helper");
 //TODO fix binding to entitySets and so on. on Northwind the 
 //servicedata is structured differently compared to OData(Read/Write)
 
-projectX.util.Controller.extend("projectX.view.Metadata", {
+projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 
 	_localUIModel: undefined,
 

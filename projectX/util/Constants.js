@@ -158,6 +158,26 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		{key : Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML},
 		{key : Constants.REQUEST_HEADER_VALUE_APPL_JSON}
 	];
+	
+	/**
+	 * array of script examples used for adding the examples to the textarea.
+	 * @type {Array}
+	 */
+	Constants.SCRIPTEXAMPLES = [
+		{
+			text: "Breakpoint",
+			script: "debugger;"
+		},{
+			text: "Set Request URL",
+			script: "req.url = 'http://www.example.com';"
+		}, {
+			text: "Change Request URL",
+			script: "req.url = req.url + '/example';"
+		}, {
+			text: "Set Request HTTP Method",
+			script: "req.httpMethod = 'GET';"
+		}
+	];
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Functions

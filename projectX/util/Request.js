@@ -89,6 +89,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		var oReqParam = {
 			httpMethod: this.getHttpMethod(),
 			url: this.getUrl()
+			//TODO add more parameters here
 		};
 
 		var oPrevReqParam = null;
@@ -158,6 +159,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		return bAssertionsResult;
 	};
 
+	/**
+	 * @return {object} get a map object of the named assertions with result and evaluated value.
+	 */
 	Request.prototype.getNamedAssertionsMap = function() {
 		var aAssertions = this.getAssertions();
 		if (!aAssertions){
