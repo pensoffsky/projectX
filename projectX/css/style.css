@@ -1,7 +1,12 @@
-.spacerTop {
-	margin-top: 2rem;
+
+.invisible {
+	display: none;
 }
 
 .columnListItemExpanded {
-	height: 200px;
+	/*height: 200px;*/
+}
+
+.columnListItemExpanded .visibleWhenExpanded {
+	display: block;
 }

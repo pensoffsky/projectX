@@ -14,7 +14,7 @@
 			<SegmentedButton selectedButton="idButtonConfig"
 							select="onSegmentedButtonSelect">
 			<Button text="Config" id="idButtonConfig" />
-			<Button text="Test" id="idButtonTest" />
+			<Button text="Testrun" id="idButtonTest" />
 			</SegmentedButton>
 			<ToolbarSpacer/>
 			<Button text="Send Request" press="onBtnSendPress"/>
@@ -119,6 +119,22 @@
 							text="{localUIModel>mProperties/url}"
 							titleActive="true" 
 							titlePress="onRequestNamePress"/>
+							<!-- TODO script exceptions / script input variables -->
+							<TextArea value="{localUIModel>mProperties/scriptCode}"
+										placeholder="no script code supplied"
+										editable="false"
+										rows="6"
+										class="invisible visibleWhenExpanded"/>
+							<TextArea value="{localUIModel>mProperties/responseHeaders}"
+										placeholder="response headers will be filled after running the sequence..."
+										editable="false"
+										rows="6"
+										class="invisible visibleWhenExpanded"/>
+							<TextArea value="{localUIModel>mProperties/responseBody}"
+										placeholder="response body will be filled after running the sequence..."
+										editable="false"
+										rows="6"
+										class="invisible visibleWhenExpanded"/>
 						</VBox>
 						<c:Icon
 							src="{ parts : [
