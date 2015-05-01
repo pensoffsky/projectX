@@ -97,11 +97,7 @@
 					tooltip="Move request down"
 					press="onMoveRequestDown" />
 				<ToolbarSpacer/>
-				<Button
-					icon="sap-icon://play"
-					tooltip="TestRun"
-					press="onTestRun" />
-				<ToolbarSpacer/>
+			
 				<Button
 					icon="sap-icon://add"
 					tooltip="Add Sequence"

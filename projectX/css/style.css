@@ -1,12 +1,12 @@
+.sapMSplitContainerMaster {
+  width: 250px;
+}
 
 .invisible {
 	display: none;
 }
 
-.columnListItemExpanded {
-	/*height: 200px;*/
-}
-
+/*used to open and collapse testrun list elements*/
 .columnListItemExpanded .visibleWhenExpanded {
 	display: block;
 }

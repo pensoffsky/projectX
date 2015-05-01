@@ -9,6 +9,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	
 		properties : {
 			/**
+			 * the name of the assertion. can be used to reference the assertion in 
+			 * the javascript supplied by the user in a sequence.
+			 * @type {string}
+			 */
+			name : {type : "string", defaultValue : null},
+			
+			/**
 			 * the property of the response that will be evaluated.
 			 * e.g. ResponseText, ResponseHeader, Status
 			 * @type {string}

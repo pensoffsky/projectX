@@ -101,9 +101,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 				responseHeaders: oPreviousRequest.getResponseHeaders(), 
 				responseBody: oPreviousRequest.getResponseBody(), 
 				responseTime: oPreviousRequest.getResponseTime(), 
-				assertionsResult: oPreviousRequest.getAssertionsResult()
+				assertionsResult: oPreviousRequest.getAssertionsResult(),
+				namedAssertions: oPreviousRequest.getNamedAssertionsMap()
 			};
 		}
+		
 
 		//get the javascript code and put into function
 		var sScriptCode = this.getScriptCode();
@@ -156,6 +158,27 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		return bAssertionsResult;
 	};
 
+	Request.prototype.getNamedAssertionsMap = function() {
+		var aAssertions = this.getAssertions();
+		if (!aAssertions){
+			return null;
+		}
+		
+		var oRes = {};
+		for (var i = 0; i < aAssertions.length; i++) {
+			var sName = aAssertions[i].getName();
+			if (!sName || sName.length <= 0) {
+				continue;
+			}
+			
+			oRes[sName] = {
+				result: aAssertions[i].getResult(),
+				evaluatedValue: aAssertions[i].getEvaluatedValue()
+			};
+		}
+		
+		return oRes;
+	};
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods

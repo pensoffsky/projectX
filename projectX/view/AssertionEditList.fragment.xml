@@ -39,6 +39,9 @@
 			<Column>
 				<Text text="Evaluated Value" />
 			</Column>
+			<Column width="2em">
+				<Text text="Var" />
+			</Column>
 		</columns>
 		<items>
 			<ColumnListItem vAlign="Top">
@@ -52,7 +55,6 @@
 							items="{/ASSERTOPERATIONS}">
 							<c:Item text="{key}" key="{key}"/>
 					</Select>
-					
 					<Input value="{mProperties/expected}"/>
 					<c:Icon
 						src="{ parts : [
@@ -61,6 +63,7 @@
 						],
 						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
 					<Text text="{mProperties/evaluatedValue}"/>
+					<Input value="{mProperties/name}"/>
 				</cells>
 			</ColumnListItem>
 		</items>
