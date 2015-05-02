@@ -36,6 +36,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	// /// Public Methods
 	// /////////////////////////////////////////////////////////////////////////////
 
+	
+	Request.prototype.setDataFromRequest = function(oRequest) {
+		this.mProperties = oRequest.mProperties;
+		this.mAggregations = oRequest.mAggregations;
+	};
+
 	/**
 	 * create a serialized version of this request.
 	 * set temporary data to null.

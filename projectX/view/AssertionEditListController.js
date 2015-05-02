@@ -37,9 +37,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		oAssertion.setOperation(sOperation);
 		oAssertion.setExpected("200");
 		
-		var aAssertions =  this._localUIModel.getProperty("/assertions");
-		aAssertions.push(oAssertion);
-		this._localUIModel.setProperty("/assertions", aAssertions);
+		var oRequest =  this._localUIModel.getProperty("/request");
+		oRequest.addAssertion(oAssertion);
+		this.updateBindings();
 	};
 	
 	AssertionEditListController.prototype.onBtnDeleteAssertions = function() {
@@ -48,16 +48,15 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		if (!aSelectedItems){
 			return;
 		}
-		
-		var aAssertions =  this._localUIModel.getProperty("/assertions");
+
+		var oRequest =  this._localUIModel.getProperty("/request");
 		for (var i = 0; i < aSelectedItems.length; i++) {
 			var oAssertion = this._getBoundObjectForItem(aSelectedItems[i]);
 			//remove this assertion from array
-			aAssertions.splice(aAssertions.indexOf(oAssertion), 1);
+			oRequest.removeAssertion(oAssertion);
 		}
-		this._localUIModel.setProperty("/assertions", aAssertions);
 		this._oTable.removeSelections(true);
-		
+		this.updateBindings();
 	};
 	
 	// /////////////////////////////////////////////////////////////////////////////
@@ -71,7 +70,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	AssertionEditListController.prototype.onInit = function(sIdPrefix) {
 		this._localUIModel = new sap.ui.model.json.JSONModel();
 		this._localUIModel.setData({
-			assertions: [],
+			request: null,
 			ASSERTPROPERTIES: Constants.ASSERTPROPERTIES, //for assert property select control
 			ASSERTOPERATIONS: Constants.ASSERTOPERATIONS //for assert operation select control
 		});
@@ -80,39 +79,16 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	};
 	
 	/**
-	 * copy assertions and set to local ui model for editing
-	 * @param {object} oSelectedRequest the currently selected request
+	 * set the request to the local ui model for binding
+	 * @param {object} oRequest the currently selected request
 	 */
-	AssertionEditListController.prototype.setSelectedRequest = function(oSelectedRequest) {
-		//TODO use array of assertions as input?
-		
-		var aAssertions = oSelectedRequest.getAssertions();
-		//create a deep copy of the assertions because 
-		//we do not want to edit the original data
-		var aCopyAssertions = jQuery.extend(true, [], aAssertions);
-		//copy assertions from request to local ui model
-		this._localUIModel.setProperty("/assertions", aCopyAssertions);
+	AssertionEditListController.prototype.setSelectedRequest = function(oRequest) {
+		this._localUIModel.setProperty("/request", oRequest);
 	};
 
-	/**
-	 * @return {array} returns the edited assertions from the local ui model
-	 */
-	AssertionEditListController.prototype.getAssertionsCopy = function() {
-		var aAssertions =  this._localUIModel.getProperty("/assertions");
-		var aCopyAssertions = jQuery.extend(true, [], aAssertions);
-		return aCopyAssertions;
-	};
-	
-	AssertionEditListController.prototype.getAssertions = function() {
-		var aAssertions =  this._localUIModel.getProperty("/assertions");
-		return aAssertions;
-	};
-	
 	AssertionEditListController.prototype.updateBindings = function() {
 		this._localUIModel.updateBindings();
 	};
-	
-	
 	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods

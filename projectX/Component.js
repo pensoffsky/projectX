@@ -39,7 +39,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 						{
 							pattern : "product/{projectID}/{requestID}/:tab:",
 							name : "product",
-							view : "Detail",
+							view : "Request.Request",
 							transition : "show"
 						},
 						{

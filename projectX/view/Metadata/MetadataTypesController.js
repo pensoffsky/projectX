@@ -72,9 +72,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 			var that = this;
 			oDeferred.done(function(oMetaData) {
-				console.log(JSON.stringify(oMetaData, null, 2));
-				console.log(oMetaData);
-				console.log("successfully loaded service metadata");
+				// console.log(JSON.stringify(oMetaData, null, 2));
+				// console.log(oMetaData);
+				// console.log("successfully loaded service metadata");
 				that._localUIModel.setProperty("/odataServiceCheckRes", "metadata loaded successfully");
 				that._localUIModel.setProperty("/serviceMetadata", oMetaData);
 				that._localUIModel.setProperty("/complexTypes", that._extractFromMetadata(oMetaData, "complexType"));

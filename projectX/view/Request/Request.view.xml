@@ -1,0 +1,134 @@
+<mvc:View
+	controllerName="projectX.view.Request.Request"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.m"
+	xmlns:u="sap.ui.unified">
+	<Page
+		showNavButton="{device>/isPhone}"
+		navButtonPress="onNavBack"
+		enableScrolling="false"
+		showHeader="false"
+		title="{localUIModel>/name}">
+		<subHeader>
+	      <Toolbar>
+	        <SegmentedButton selectedButton="idButtonRequest"
+							select="onSegmentedButtonSelect">
+	          <Button text="Request" id="idButtonRequest" />
+	          <Button text="Assertions" id="idButtonAssertions" />
+	          <Button text="Metadata" id="idButtonMetadata" />
+	        </SegmentedButton>
+	        <ToolbarSpacer/>
+			<Button text="Send Request" press="onBtnSendPress"/>
+	      </Toolbar>
+    	</subHeader>
+		
+		<content>
+				
+			<ScrollContainer
+				visible="{localUIModel>/requestVisible}"
+				height="100%"
+				width="100%"
+				horizontal="false"
+				vertical="true" >
+				<VBox>
+					<VBox>
+						<Input value="{localUIModel>/request/mProperties/name}"
+								placeholder="name of request"/>
+						<Panel expandable="true" 
+							   expanded="true"
+							   headerText="Pre-request script">
+							<FlexBox width="100%">
+								<TextArea value="{localUIModel>/request/mProperties/scriptCode}"
+											width="100%"
+											placeholder="Pre-request script"
+											rows="10"
+											>
+											<layoutData>
+								                <FlexItemData growFactor="8" />
+								            </layoutData>
+								</TextArea>
+								<VBox>
+									<layoutData>
+						                <FlexItemData shrinkFactor="0"
+											/>
+						            </layoutData>
+									<Button text="Snippets" press="onButtonScriptExamples"/>
+									<u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
+											id="idMenuScriptExamples">
+											<u:MenuItem text="{localUIModel>text}"
+												select="onMenuItemScriptExampleSelected"/>
+									</u:Menu>
+								</VBox>
+							</FlexBox>
+						</Panel>
+					</VBox>
+					<FlexBox
+							width="100%"
+							alignItems="Start">
+							<Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
+									items="{localUIModel>/HTTP_METHODS}">
+									<core:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
+							</Select>
+							<Input
+								value="{localUIModel>/request/mProperties/url}"
+								type="Url"
+								maxLength="4096"
+								placeholder="Enter valid Service-URL ..." >
+								<layoutData>
+					                <FlexItemData growFactor="1" />
+					            </layoutData>
+							</Input>
+							<Button press="onBtnSendPress" text="Send"/>
+					</FlexBox>
+
+					<VBox id="idVBoxRequestHeaderPlaceholder" />
+
+
+						<VBox>
+							<Label text="Response Header" />
+							<Text height="200px" width="100%"
+									enabled="true"
+									editable="false"
+									text="{localUIModel>/request/mProperties/responseHeaders}" />
+						</VBox>
+						<VBox>
+							<Label text="Response Body" />
+							<Text height="200px" width="100%"
+									enabled="true"
+									editable="false"
+									text="{localUIModel>/request/mProperties/responseBody}" />
+						</VBox>	
+				</VBox>
+			</ScrollContainer>
+
+			<ScrollContainer
+				visible="{localUIModel>/assertionsVisible}"
+				height="100%"
+				width="100%"
+				horizontal="false"
+				vertical="true" >
+				<VBox id="idVBoxAssertionPlaceholder"/>
+			</ScrollContainer>
+			<ScrollContainer
+				visible="{localUIModel>/metadataVisible}"
+				height="100%"
+				width="100%"
+				horizontal="true"
+				vertical="true" >
+				<VBox id="idVBoxMetadataTypesPlaceholder"/>
+			</ScrollContainer>
+				
+		</content>
+			<footer>
+				<Toolbar>
+				<ToolbarSpacer/>
+				<Button press="onBtnSavePress" type="Emphasized" text="Save" icon="sap-icon://save"/>
+				<Button press="onBtnDuplicatePress" text="Duplicate" icon="sap-icon://duplicate"/>
+				<Button press="onBtnDeletePress" text="Delete" icon="sap-icon://delete"/>
+			</Toolbar>
+		</footer>
+
+	</Page>
+</mvc:View>

@@ -3,7 +3,7 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
-	<Table items="{/assertions}"
+	<Table items="{/request/mAggregations/assertions}"
 			mode="MultiSelect"
 			id="idTableAssertions"
 			rememberSelections="false"
