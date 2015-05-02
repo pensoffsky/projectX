@@ -164,34 +164,28 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	 * @type {Array}
 	 */
 	Constants.SCRIPTEXAMPLES = [
-		{
+		{//TODO add comments; read named assertions
 			text: "Breakpoint",
 			script: "debugger;"
 		},{
 			text: "Set Request URL",
-			script: "req.url = 'http://www.example.com';"
+			script: "req.url = 'http://www.EXAMPLE.com';"
 		}, {
 			text: "Change Request URL",
-			script: "req.url = req.url + '/example';"
+			script: "req.url = req.url + '/EXAMPLE';"
 		}, {
 			text: "Set Request HTTP Method",
 			script: "req.httpMethod = 'GET';"
+		}, {
+			text: "Get Named Assertion Result",
+			script: "//get the value of assertion named VARNAME from previous request" + "\n" +
+					"var sVarname = prevReq.namedAssertions.VARNAME.evaluatedValue;"
+		}, {
+			text: "Get Named Assertion Result",
+			script: "//check if assertion named VARNAME was checked successfully" + "\n" +
+					"var bAssertResult = prevReq.namedAssertions.VARNAME.result;"
 		}
 	];
-
-	// /////////////////////////////////////////////////////////////////////////////
-	// /// Public Functions
-	// /////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * static function doing stuff or not
-	 */
-
-
-	// /////////////////////////////////////////////////////////////////////////////
-	// /// Private Methods
-	// /////////////////////////////////////////////////////////////////////////////
-
 
 	return Constants;
 

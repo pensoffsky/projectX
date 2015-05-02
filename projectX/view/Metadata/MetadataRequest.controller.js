@@ -110,8 +110,8 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 
 		var that = this;
 		oDeferred.done(function(oMetaData) {
-			console.log(JSON.stringify(oMetaData, null, 2));
-			console.log(oMetaData);
+			// console.log(JSON.stringify(oMetaData, null, 2));
+			// console.log(oMetaData);
 			console.log("successfully loaded service metadata");
 			that._localUIModel.setProperty("/odataServiceCheckRes", "metadata loaded successfully");
 			that._localUIModel.setProperty("/serviceMetadata", oMetaData);
