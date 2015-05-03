@@ -40,36 +40,27 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
 		
-		if (sReason === "edit"){
-			//user wants to edit the currently selected model	
-			var oSelectedSequence = oSelectedProject.getSequenceByIdentifier(iSequenceId);
-			this._oOriginalSequence = oSelectedSequence;
-			this._oSequence = jQuery.extend(true, {}, oSelectedSequence);
-			//set data from selected sequence into local project model
-			this._localUIModel.setProperty("/sequence", this._oSequence);
-			//set helper values to modify the page between edit and new
-			this._localUIModel.setProperty("/reasonNew", false);
-			this._localUIModel.setProperty("/reasonEdit", true);
-			this._localUIModel.setProperty("/reason", "Edit sequence");
-			
-			//get requests for requestIds and set to local ui model
-			var aSelectedRequests = this._oSequence.getRequestIds().map(function(iId){
-				return oSelectedProject.getRequestByIdentifier(iId);
-			});
-			this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
-		} else/* if (sReason === "new")*/{
-			this._oSequence = new projectX.util.Sequence({
-				name : "new sequence"
-			});
-			//user wants to create a new sequence
-			//clear the local project model
-			this._localUIModel.setProperty("/sequence", this._oSequence);
-			//set helper values to modify the page between edit and new
-			this._localUIModel.setProperty("/reasonNew", true);
-			this._localUIModel.setProperty("/reasonEdit", false);
-			this._localUIModel.setProperty("/reason", "Create new sequence");
-			this._localUIModel.setProperty("/selectedRequests",[]);
+		//user wants to edit the currently selected model	
+		var oSelectedSequence = oSelectedProject.getSequenceByIdentifier(iSequenceId);
+		if (!oSelectedSequence) {
+			return;
 		}
+		
+		this._oOriginalSequence = oSelectedSequence;
+		this._oSequence = jQuery.extend(true, {}, oSelectedSequence);
+		//set data from selected sequence into local project model
+		this._localUIModel.setProperty("/sequence", this._oSequence);
+		//set helper values to modify the page between edit and new
+		this._localUIModel.setProperty("/reasonNew", false);
+		this._localUIModel.setProperty("/reasonEdit", true);
+		this._localUIModel.setProperty("/reason", "Edit sequence");
+		
+		//get requests for requestIds and set to local ui model
+		var aSelectedRequests = this._oSequence.getRequestIds().map(function(iId){
+			return oSelectedProject.getRequestByIdentifier(iId);
+		});
+		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
+	
 		
 		//add list of requests to local ui model
 		this._localUIModel.setProperty("/requests", oSelectedProject.getRequests());
@@ -137,7 +128,9 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		}
 		
 		var oRequest = oSelectedItem.getBindingContext("localUIModel").getObject();
+		oRequest = new projectX.util.Request(oRequest.serialize());
 		var aSelectedRequests = this._localUIModel.getProperty("/selectedRequests");
+		
 		aSelectedRequests.push(oRequest);
 		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
 	},
@@ -209,22 +202,43 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	
 	/**
 	* the user clicked on the title of a specific request.
+	* expand the item to show the results of the request.
 	*/
 	onRequestNamePress : function (oEvent) {
-		//TODO what logic to implement here?
-		//navigate to the request?
-		//show details for the request?
-		//show the result of the assertions (not yet implemented)
-		var oParameters = oEvent.getParameters();
-		// var oItem = this.getView().byId(sId);
 		var oObjectHeader = oEvent.getSource();
 		var oColumnListItem = oObjectHeader.getParent(); //the columListItem control
 		oColumnListItem.toggleStyleClass("columnListItemExpanded");
 	},
 	
+	onMoveRequestUp : function(){
+		this._moveSelectedListItem(projectX.util.Helper.moveArrayElementUp);
+	},
+	
+	onMoveRequestDown : function(){
+		this._moveSelectedListItem(projectX.util.Helper.moveArrayElementDown);
+	},
+	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
+
+	_moveSelectedListItem : function(fMove) {
+		//get the selected item
+		var oList = this.getView().byId("idListSelectedRequests");
+		var oSelectedItem = oList.getSelectedItem();
+		if (!oSelectedItem){
+			return;
+		}
+		var oSelectedObject = projectX.util.Helper.getBoundObjectForItem(oSelectedItem, "localUIModel");
+		var aArray = this._localUIModel.getProperty("/selectedRequests");
+		
+		var iNewPos = fMove(aArray, oSelectedObject);
+		this._localUIModel.setProperty("/selectedRequests", aArray);
+		
+		//restore the selection
+		var aItems = oList.getItems();
+		oList.setSelectedItem(aItems[iNewPos]);
+	},
 
 	/**
 	* use recursion to go through the request and execute them one by one.

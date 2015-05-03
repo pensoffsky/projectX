@@ -88,12 +88,43 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		return oDeferred;
 	};
 	
-	Helper.getBoundObjectForItem = function(oItem) {
-		var oBindingContext = oItem.getBindingContext();
-		var oModel = oBindingContext.getModel();
-		var sPath = oBindingContext.getPath();
-		var oboundObject = oModel.getProperty(sPath);
-		return oboundObject;
+	Helper.getBoundObjectForItem = function(oItem, sModelName) {
+		var oBindingContext = oItem.getBindingContext(sModelName);
+		return oBindingContext.getObject();
+	};
+	
+	Helper.moveArrayElementUp = function(aArray, value, by) {
+		var index = aArray.indexOf(value),     
+			newPos = index - (by || 1);
+		
+		if (index === -1) {
+			throw new Error("Element not found in array");
+		}
+		
+		if (newPos < 0) {
+			newPos = 0;
+		}
+			
+		aArray.splice(index,1);
+		aArray.splice(newPos,0,value);
+		return newPos;
+	};
+
+	Helper.moveArrayElementDown = function(aArray, value, by) {
+		var index = aArray.indexOf(value),     
+			newPos = index + (by || 1);
+		
+		if (index === -1) {
+			throw new Error("Element not found in array");
+		}
+		
+		if (newPos >= aArray.length) {
+			newPos = aArray.length;
+		}
+		
+			aArray.splice(index, 1);
+		aArray.splice(newPos,0,value);
+		return newPos;
 	};
 	
 	// /////////////////////////////////////////////////////////////////////////////

@@ -8,7 +8,7 @@
 		<items>
 			<VBox>
 				<Panel expandable="true" 
-					   expanded="true"
+					   expanded="false"
 					   headerText="{name}">
 					<Table items="{property}"
 							rememberSelections="false"

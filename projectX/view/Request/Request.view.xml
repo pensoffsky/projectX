@@ -115,7 +115,7 @@
 				visible="{localUIModel>/metadataVisible}"
 				height="100%"
 				width="100%"
-				horizontal="true"
+				horizontal="false"
 				vertical="true" >
 				<VBox id="idVBoxMetadataTypesPlaceholder"/>
 			</ScrollContainer>

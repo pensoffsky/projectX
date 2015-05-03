@@ -102,11 +102,11 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.setModel(i18nModel, "i18n");
 
 		//create test project
-		var sDemoService = "http://services.odata.org/V2/Northwind/Northwind.svc/";
+		var sDemoService = "http://services.odata.org/V2/OData/OData.svc/";
 
 		var oProject = new projectX.util.Project({
 			identifier: 0,
-			name: "Northwind Demo",
+			name: "OData Demo",
 			baseUrl: sDemoService
 		});
 		oProject.generateBasicOdataRequests();

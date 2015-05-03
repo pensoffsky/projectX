@@ -8,6 +8,7 @@
 	xmlns="sap.m">
 	<Page
 		id="page"
+		enableScrolling="false"
 		>
 		<customHeader>
 			<Bar>
@@ -65,26 +66,40 @@
 	          <Button text="Sequences" id="idButtonSequences" />
 	        </SegmentedButton>
 			
-			<List
-				id="idListRequests"
-				items="{/SelectedProject/mAggregations/requests}"
-				mode="{device>/listMode}"
-				select="onRequestsListSelect"
-				updateFinished="onListUpdateFinished">
-				<items>
-					<StandardListItem title="{mProperties/name}"/>
-				</items>
-			</List>
-			<List
-				id="idListSequences"
-				items="{/SelectedProject/mAggregations/sequences}"
-				mode="{device>/listMode}"
-				select="onSequencesListSelect"
-				>
-				<items>
-					<StandardListItem title="{mProperties/name}"/>
-				</items>
-			</List>
+			<ScrollContainer
+				visible="{localUIModel>/requestsVisible}"
+				height="100%"
+				width="100%"
+				horizontal="false"
+				vertical="true" >
+				<List
+					id="idListRequests"
+					items="{/SelectedProject/mAggregations/requests}"
+					mode="{device>/listMode}"
+					select="onRequestsListSelect"
+					updateFinished="onListUpdateFinished">
+					<items>
+						<StandardListItem title="{mProperties/name}"/>
+					</items>
+				</List>
+			</ScrollContainer>
+			<ScrollContainer
+				visible="{localUIModel>/sequencesVisible}"
+				height="100%"
+				width="100%"
+				horizontal="false"
+				vertical="true" >
+				<List
+					id="idListSequences"
+					items="{/SelectedProject/mAggregations/sequences}"
+					mode="{device>/listMode}"
+					select="onSequencesListSelect"
+					>
+					<items>
+						<StandardListItem title="{mProperties/name}"/>
+					</items>
+				</List>
+			</ScrollContainer>
 		</content>
 		<footer>
 			<Toolbar>

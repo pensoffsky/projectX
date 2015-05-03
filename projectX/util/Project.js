@@ -42,6 +42,25 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			}
 		);
 		this.addRequest(oRequest);
+		return oRequest;
+	};
+	
+	/**
+	 * create a new sequence.
+	 * calculate a new id for the sequence. (highest id + 1)
+	 * add it to the project.
+	 */
+	Project.prototype.addNewSequence = function() {
+		
+		var iNewID = this.getNextSequenceId();
+
+		var oSequence = new Sequence({	
+			identifier: iNewID,
+			name: "new sequence"
+			}
+		);
+		this.addSequence(oSequence);
+		return oSequence;
 	};
 	
 	/**
@@ -49,14 +68,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	*/
 	Project.prototype.addCopyOfRequest = function(oRequest) {
 		var iNewID = this._getNextId();
-		var oNewRequest = new projectX.util.Request({
-				identifier: iNewID,	
-				name: oRequest.getName(),
-				url: oRequest.getUrl(),
-				httpMethod: oRequest.getHttpMethod(),
-				assertions: oRequest.getAssertions()
-				}
-			);
+		var oNewRequest = new projectX.util.Request(oRequest.serialize());
+		oNewRequest.setIdentifier(iNewID);
 		this.addRequest(oNewRequest);
 	};
 
