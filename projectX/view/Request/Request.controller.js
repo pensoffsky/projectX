@@ -8,7 +8,8 @@ sap.ui.define([
 	'projectX/util/Constants',
 	'projectX/view/AssertionEditListController',
 	'projectX/view/RequestHeaderEditListController',
-	'projectX/view/Metadata/MetadataTypesController'
+	'projectX/view/Metadata/MetadataTypesController',
+	'projectX/util/Request'
 	],
 	function(jQuery, 
 			Controller, 
@@ -16,7 +17,8 @@ sap.ui.define([
 			Constants, 
 			AssertionEditListController,
 			RequestHeaderEditListController,
-			MetadataTypesController
+			MetadataTypesController,
+			RequestObject
 			) {
 		"use strict";
 
@@ -109,6 +111,9 @@ sap.ui.define([
 		};
 
 		Request.prototype.onRouteMatched = function(oEvent) {
+			this._oOriginalRequest = null;
+			this._oRequest = null;
+			
 			var oParameters = oEvent.getParameters();
 			var iRequestID = parseInt(oParameters.arguments.requestID, 10);
 			var oModel = this.getView().getModel();
@@ -123,15 +128,13 @@ sap.ui.define([
 			}
 			
 			this._oOriginalRequest = oRequest;
-			//create a copy of the request to edit and test on this screen
-			this._oRequest = jQuery.extend(true, [], oRequest);
+			//create a copy of the request to edit and test on this screen.
+			//somehow jquery extend does not create a deep copy 
+			this._oRequest = new RequestObject(this._oOriginalRequest.serialize());
+			this._localUIModel.setProperty("/request", this._oRequest);
 			
 			this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
-
-			
-			this._localUIModel.setProperty("/request", this._oOriginalRequest);
-			
-			//TODO check this and how the assertioneditcontroller works
+				
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
 		};
 

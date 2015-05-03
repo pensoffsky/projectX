@@ -44,7 +44,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			//user wants to edit the currently selected model	
 			var oSelectedSequence = oSelectedProject.getSequenceByIdentifier(iSequenceId);
 			this._oOriginalSequence = oSelectedSequence;
-			this._oSequence = jQuery.extend(true, [], oSelectedSequence);
+			this._oSequence = jQuery.extend(true, {}, oSelectedSequence);
 			//set data from selected sequence into local project model
 			this._localUIModel.setProperty("/sequence", this._oSequence);
 			//set helper values to modify the page between edit and new

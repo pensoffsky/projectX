@@ -166,16 +166,20 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.SCRIPTEXAMPLES = [
 		{//TODO add comments; read named assertions
 			text: "Breakpoint",
-			script: "debugger;"
+			script: "//use the development tools of the browser to debug the pre-request script" + "\n" +
+					"debugger;"
 		},{
 			text: "Set Request URL",
-			script: "req.url = 'http://www.EXAMPLE.com';"
+			script: "//set a new url for this request. this can also be based on result values from the previous request" + "\n" +
+					"req.url = 'http://www.EXAMPLE.com';"
 		}, {
 			text: "Change Request URL",
-			script: "req.url = req.url + '/EXAMPLE';"
+			script: "//change the url of this request. this can also be based on result values from the previous request" + "\n" +
+					"req.url = req.url + '/EXAMPLE';"
 		}, {
 			text: "Set Request HTTP Method",
-			script: "req.httpMethod = 'GET';"
+			script: "//supported http methods: GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS" + "\n" +
+					"req.httpMethod = 'GET'"
 		}, {
 			text: "Get Named Assertion Result",
 			script: "//get the value of assertion named VARNAME from previous request" + "\n" +

@@ -33,13 +33,13 @@
 			<Column>
 				<Text text="Expected Value" />
 			</Column>
-			<Column width="2em">
+			<Column width="2rem">
 				<Text text="Success" />
 			</Column>
 			<Column>
 				<Text text="Evaluated Value" />
 			</Column>
-			<Column width="2em">
+			<Column width="2rem">
 				<Text text="Var" />
 			</Column>
 		</columns>
