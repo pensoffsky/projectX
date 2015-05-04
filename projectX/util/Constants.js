@@ -18,7 +18,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	/*
 	 * Constants for OData Types
 	 */
-	
+
 	Constants.ODATATYPE_BINARY = "Edm.Binary";
 	Constants.ODATATYPE_BOOLEAN = "Edm.Boolean";
 	Constants.ODATATYPE_BYTE = "Edm.Byte";
@@ -158,9 +158,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		{key : Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML},
 		{key : Constants.REQUEST_HEADER_VALUE_APPL_JSON}
 	];
-<<<<<<< HEAD
-	
-=======
 
 	/*
 	 * Constants for the request header value for ACCEPT-CHARSET field
@@ -183,13 +180,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	///////////////////////////////////////////////////////////////////////////
 	/// Public Functions
   ///////////////////////////////////////////////////////////////////////////
-
->>>>>>> Reqeuest Header
 	/**
 	 * array of script examples used for adding the examples to the textarea.
 	 * @type {Array}
 	 */
-<<<<<<< HEAD
 	Constants.SCRIPTEXAMPLES = [
 		{//TODO add comments; read named assertions
 			text: "Breakpoint",
@@ -217,14 +211,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 					"var bAssertResult = prevReq.namedAssertions.VARNAME.result;"
 		}
 	];
-=======
 
-
-	/////////////////////////////////////////////////////////////////////////////
-	/// Private Methods
-	/////////////////////////////////////////////////////////////////////////////
-
->>>>>>> Reqeuest Header
 
 	return Constants;
 

@@ -17,21 +17,21 @@
 			<Button text="Testrun" id="idButtonTest" />
 			</SegmentedButton>
 			<ToolbarSpacer/>
-			<Button text="Clear"  
+			<Button text="Clear"
 					press="onClearResults"
 					visible="{localUIModel>/testNotRunning}"
 					/>
-			<Button text="Run Sequence" 
+			<Button text="Run Sequence"
 					press="onRunSequence"
 					visible="{localUIModel>/testNotRunning}"/>
-			<Button text="Stop" 
-					type="Emphasized" 
+			<Button text="Stop"
+					type="Emphasized"
 					press="onStopSequence"
 					visible="{localUIModel>/testRunning}"
 					/>
 		</Toolbar>
 		</subHeader>
-		
+
 		<ScrollContainer
 			visible="{localUIModel>/configVisible}"
 			height="100%"
@@ -63,13 +63,13 @@
 					<layoutData>
 						<FlexItemData growFactor="1" />
 					</layoutData>
-					<Label text="Selected Requests"/>
+					<Label text="Available Requests"/>
 					<List
 						id="idListRequests"
 						items="{localUIModel>/requests}"
 						mode="{device>/listMode}"
 						select="onRequestsListSelect">
-					
+
 						<layoutData>
 						<FlexItemData growFactor="1" />
 						</layoutData>
@@ -78,7 +78,7 @@
 						</items>
 					</List>
 				</VBox>
-				
+
 				<VBox justifyContent="Start">
 					<layoutData>
 						<FlexItemData shrinkFactor="0" />
@@ -86,7 +86,7 @@
 					<Button icon="sap-icon://arrow-right" press="onButtonRight"/>
 					<Button icon="sap-icon://arrow-left" press="onButtonLeft"/>
 				</VBox>
-				
+
 				<VBox>
 					<layoutData>
 						<FlexItemData growFactor="1" />
@@ -97,8 +97,8 @@
 						items="{localUIModel>/selectedRequests}"
 						mode="{device>/listMode}"
 						select="onSelectedRequestsListSelect">
-					
-						
+
+
 						<items>
 							<StandardListItem title="{localUIModel>mProperties/name}"/>
 						</items>
@@ -110,14 +110,14 @@
 				</VBox>
 			</FlexBox>
 		</ScrollContainer>
-		
+
 		<ScrollContainer
 			visible="{localUIModel>/testVisible}"
 			height="100%"
 			width="100%"
 			horizontal="true"
 			vertical="true" >
-			<Table 
+			<Table
 				items="{localUIModel>/selectedRequests}">
 				<columns>
 				<Column
@@ -145,7 +145,7 @@
 						<ObjectIdentifier
 							title="{localUIModel>mProperties/name}"
 							text="{localUIModel>mProperties/url}"
-							titleActive="true" 
+							titleActive="true"
 							titlePress="onRequestNamePress"/>
 							<!-- TODO script exceptions / script input variables -->
 							<TextArea value="{localUIModel>mProperties/scriptCode}"
@@ -177,31 +177,31 @@
 				</items>
 			</Table>
 		</ScrollContainer>
-		
-		
+
+
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button text="Clear"  
+				<Button text="Clear"
 						press="onClearResults"
 						/>
-				<Button text="Run Sequence" 
-						type="Emphasized" 
+				<Button text="Run Sequence"
+						type="Emphasized"
 						press="onRunSequence"
 						visible="{localUIModel>/testNotRunning}"
 						/>
-				<Button text="Stop" 
-						type="Emphasized" 
+				<Button text="Stop"
+						type="Emphasized"
 						press="onStopSequence"
 						visible="{localUIModel>/testRunning}"
 						/>
-				<Button text="Save" 
-						type="Emphasized" 
+				<Button text="Save"
+						type="Emphasized"
 						press="onSave"
 						visible="{localUIModel>/reasonEdit}"/>
-				<Button text="Create" 
-						type="Emphasized" 
-						press="onCreate" 
+				<Button text="Create"
+						type="Emphasized"
+						press="onCreate"
 						visible="{localUIModel>/reasonNew}"/>
 			</Toolbar>
 		</footer>
