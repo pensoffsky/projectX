@@ -32,7 +32,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 				{
 					pattern : "",
 					name : "main",
-					view : "Master",
+					view : "Master.Master",
 					targetAggregation : "masterPages",
 					targetControl : "idAppControl",
 					subroutes : [
@@ -45,7 +45,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 						{
 							pattern : "project/{projectID}/:reason:",
 							name : "project",
-							view : "AddProduct",
+							view : "Project.Project",
 							transition : "show"
 						},
 						{

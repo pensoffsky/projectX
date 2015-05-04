@@ -5,7 +5,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 	function(jQuery, Controller, Constants, Formatter, Helper) {
 		"use strict";
 
-		var Master = Controller.extend("projectX.view.Master", {
+		var Master = Controller.extend("projectX.view.Master.Master", {
 			metadata: {}
 		});
 
@@ -258,17 +258,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			this._removeSelectionFromSequenceList();
 		};
 		
-		// 
-		// /**
-		// * show the TestRun page
-		// */
-		// Master.prototype.onTestRun = function() {
-		// 	var bReplace = jQuery.device.is.phone ? false : true;
-		// 	this.getRouter().navTo("testrun", bReplace);
-		// 	//remove the selection from the master list to allow easy switch back
-		// 	var oList = this.getView().byId("idListRequests");
-		// 	oList.removeSelections(true);
-		// };
 		
 		Master.prototype.onAddNewSequence = function() {
 			var oModel = this.getView().getModel();

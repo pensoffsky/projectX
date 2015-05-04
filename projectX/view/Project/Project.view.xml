@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="projectX.view.AddProduct"
+	controllerName="projectX.view.Project.Project"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"

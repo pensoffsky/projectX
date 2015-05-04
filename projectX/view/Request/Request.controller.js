@@ -6,8 +6,8 @@ sap.ui.define([
 	'projectX/util/Controller',
 	'projectX/util/Formatter',
 	'projectX/util/Constants',
-	'projectX/view/AssertionEditListController',
-	'projectX/view/RequestHeaderEditListController',
+	'projectX/view/Request/AssertionEditListController',
+	'projectX/view/Request/RequestHeaderEditListController',
 	'projectX/view/Metadata/MetadataTypesController',
 	'projectX/util/Request'
 	],
@@ -71,7 +71,7 @@ sap.ui.define([
 			/////////////////////////////////////////////////////////////////////
 			this._oAssertionEditController = new AssertionEditListController();
 			//create fragment view
-			var oAssertionEditFragment = sap.ui.xmlfragment(this.createId("Assertions"), "projectX.view.AssertionEditList", this._oAssertionEditController);
+			var oAssertionEditFragment = sap.ui.xmlfragment(this.createId("Assertions"), "projectX.view.Request.AssertionEditList", this._oAssertionEditController);
 			//set fragment view to fragment controller
 			this._oAssertionEditController.setView(oAssertionEditFragment);
 			//add fragment view to page
@@ -85,7 +85,7 @@ sap.ui.define([
 			/////////////////////////////////////////////////////////////////////
 			this._oRequestHeaderEditController = new RequestHeaderEditListController();
 			// //create fragment view
-			var oRequestHeaderEditFragment = sap.ui.xmlfragment(this.createId("RequestHeaders"), "projectX.view.RequestHeaderEditList", this._oRequestHeaderEditController);
+			var oRequestHeaderEditFragment = sap.ui.xmlfragment(this.createId("RequestHeaders"), "projectX.view.Request.RequestHeaderEditList", this._oRequestHeaderEditController);
 			//set fragment view to fragment controller
 			this._oRequestHeaderEditController.setView(oRequestHeaderEditFragment);
 			//add fragment view to page

@@ -3,7 +3,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	function(jQuery, ManagedObject, Assertion, Constants) {
 	"use strict";
 
-	var AssertionEditListController = ManagedObject.extend("projectX.util.AssertionEditListController", { metadata : {
+	var AssertionEditListController = ManagedObject.extend("projectX.view.Request.AssertionEditListController", { metadata : {
 	
 		properties : {
 			view : {type : "object", defaultValue : null}

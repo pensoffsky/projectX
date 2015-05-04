@@ -3,9 +3,7 @@ jQuery.sap.require("projectX.util.Request");
 jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.util.Helper");
 
-
-
-projectX.util.Controller.extend("projectX.view.AddProduct", {
+projectX.util.Controller.extend("projectX.view.Project.Project", {
 	
 	_localProjectModel : undefined,
 	_sReason : null,

@@ -1,7 +1,7 @@
 jQuery.sap.require("projectX.util.Constants");
 jQuery.sap.require("projectX.util.Formatter");
 jQuery.sap.require("projectX.util.Controller");
-jQuery.sap.require("projectX.view.AssertionEditListController");
+jQuery.sap.require("projectX.view.Request.AssertionEditListController");
 jQuery.sap.require("projectX.view.RequestHeaderEditListController");
 jQuery.sap.require("projectX.view.Metadata.MetadataTypesController");
 
@@ -40,9 +40,9 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		/////////////////////////////////////////////////////////////////////
 		//create Assertion fragment controller
 		/////////////////////////////////////////////////////////////////////
-		this._oAssertionEditController = new projectX.util.AssertionEditListController();
+		this._oAssertionEditController = new projectX.view.Request.AssertionEditListController();
 		//create fragment view
-		var oAssertionEditFragment = sap.ui.xmlfragment(this.createId("Assertions"), "projectX.view.AssertionEditList", this._oAssertionEditController);
+		var oAssertionEditFragment = sap.ui.xmlfragment(this.createId("Assertions"), "projectX.view.Request.AssertionEditList", this._oAssertionEditController);
 		//set fragment view to fragment controller
 		this._oAssertionEditController.setView(oAssertionEditFragment);
 		//add fragment view to page

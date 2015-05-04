@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="projectX.view.Master"
+	controllerName="projectX.view.Master.Master"
 	displayBlock="true"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout"
