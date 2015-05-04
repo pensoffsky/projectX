@@ -11,13 +11,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			 * e.g. Accept, Accept-Encoding, Cache-Control, ...
 			 * @type {string}
 			 */
-			fieldName : {type : "string", defaultValue : Constants.REQUEST_HEADER_FIELD_ACCEPT},
+			fieldName : {type : "string", defaultValue : null},
 
 			/**
 			 * the value of the HTTP request head item
 			 * @type {string}
 			 */
-			fieldValue : {type : "string", defaultValue : Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML}
+			fieldValue : {type : "string", defaultValue : null}
 
 			},
 		events : {

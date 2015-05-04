@@ -100,6 +100,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		this._localUIModel.setProperty("/httpMethod", oRequest.getHttpMethod());
 
 		this._oAssertionEditController.setSelectedRequest(this._selectedRequest);
+		this._oRequestHeaderEditController.setSelectedRequest(this._selectedRequest);
 
 		//TODO bind view to /SelectedProject/aAggregations/requests/[index]
 	},
@@ -208,6 +209,13 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		for (var i = 0; i < aAssertions.length; i++) {
 			this._selectedRequest.addAssertion(aAssertions[i]);
 		}
+
+		// //set the edited request headers to the selected request
+		// var aAssertions = this._oAssertionEditController.getAssertionsCopy();
+		// this._selectedRequest.removeAllAssertions();
+		// for (var i = 0; i < aAssertions.length; i++) {
+		// 	this._selectedRequest.addAssertion(aAssertions[i]);
+		// }
 
 		//update bindings to show e.g. an updated name of the request in master list
 		var oModel = this.getView().getModel();

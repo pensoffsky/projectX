@@ -10,9 +10,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	}});
 
 
-		// /////////////////////////////////////////////////////////////////////////////
-		// /// Public Attributes
-		// /////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+	/// Public Attributes
+	/////////////////////////////////////////////////////////////////////////////
 
 
 	/*
@@ -145,24 +145,51 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	];
 
 	/*
-	 * Constants for the request header value
+	 * Constants for the request header value for ACCEPT field
 	 */
 	Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML = "application/atom+xml";
 	Constants.REQUEST_HEADER_VALUE_APPL_JSON = "application/json";
 
 	/**
-	* array of keys for request header field value select control.
+	* array of value-keys for ACCEPT field in select control.
 	* @type {Array}
 	*/
-	Constants.REQUEST_HEADER_VALUES = [
+	Constants.REQUEST_HEADER_VALUES_ACCEPT = [
 		{key : Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML},
 		{key : Constants.REQUEST_HEADER_VALUE_APPL_JSON}
 	];
+<<<<<<< HEAD
 	
+=======
+
+	/*
+	 * Constants for the request header value for ACCEPT-CHARSET field
+	 */
+	Constants.REQUEST_HEADER_VALUE_UTF_8 = "utf-8";
+	Constants.REQUEST_HEADER_VALUE_ISO_8859_1 = "ISO-8859-1";
+
+	/**
+	* array of value-keys for ACCEPT field in select control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_VALUES_ACCEPT_CHARSET = [
+		{key : Constants.REQUEST_HEADER_VALUE_UTF_8},
+		{key : Constants.REQUEST_HEADER_VALUE_ISO_8859_1}
+	];
+
+
+
+
+	///////////////////////////////////////////////////////////////////////////
+	/// Public Functions
+  ///////////////////////////////////////////////////////////////////////////
+
+>>>>>>> Reqeuest Header
 	/**
 	 * array of script examples used for adding the examples to the textarea.
 	 * @type {Array}
 	 */
+<<<<<<< HEAD
 	Constants.SCRIPTEXAMPLES = [
 		{//TODO add comments; read named assertions
 			text: "Breakpoint",
@@ -190,6 +217,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 					"var bAssertResult = prevReq.namedAssertions.VARNAME.result;"
 		}
 	];
+=======
+
+
+	/////////////////////////////////////////////////////////////////////////////
+	/// Private Methods
+	/////////////////////////////////////////////////////////////////////////////
+
+>>>>>>> Reqeuest Header
 
 	return Constants;
 

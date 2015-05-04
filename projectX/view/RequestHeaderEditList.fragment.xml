@@ -4,20 +4,20 @@
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
 	<Table items="{/requestHeaders}"
-			mode="MultiSelect"
-			id="idTableRequestHeaders"
-			rememberSelections="false"
+		  mode="MultiSelect"
+		  id="idTableRequestHeaders"
+		  rememberSelections="false"
 			>
 		<headerToolbar>
 				<Toolbar>
 						<Label text="Request Headers" />
 					<ToolbarSpacer />
 					<Button icon="sap-icon://add"
-					tooltip="Add header field"
-					press="onBtnAddRequestHeader"/>
+					  tooltip="Add header field"
+					  press="onBtnAddRequestHeader"/>
 			<Button icon="sap-icon://delete"
-					tooltip="Delete selected request header"
-					press="onBtnDeleteRequestHeaders"/>
+					  tooltip="Delete selected request header"
+					  press="onBtnDeleteRequestHeaders"/>
 				</Toolbar>
 			</headerToolbar>
 		<columns>
@@ -31,21 +31,27 @@
 		<items>
 			<ColumnListItem>
 				<cells>
-					<Select selectedKey="{mProperties/fieldName}"
-							items="{/REQUEST_HEADER_FIELDS}">
-							<c:Item text="{key}" key="{key}"/>
-					</Select>
-					<Select selectedKey="{mProperties/fieldValue}"
-							items="{/REQUEST_HEADER_VALUES}">
-							<c:Item text="{key}" key="{key}"/>
-					</Select>
-					<!-- <c:Icon
-						src="{ parts : [
-							{ path : 'mProperties/result' },
-							{ path : 'mProperties/resultReady' }
-						],
-						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/> -->
-
+				<Input
+					  value="{mProperties/fieldName}"
+					  type="Text"
+			      placeholder="Field name ..."
+      		  showSuggestion="true"
+      	    suggestionItems="{/V_REQUEST_HEADER_FIELDS}"
+					  suggestionItemSelected="handleRequestHeaderFieldNameChanged">
+					<suggestionItems>
+      			<c:Item text="{key}" key="{key}" />
+    			</suggestionItems>
+				</Input>
+				<Input
+					  value="{mProperties/fieldValue}"
+					  type="Text"
+			      placeholder="Value name ..."
+      		  showSuggestion="true"
+      	    suggestionItems="{/V_REQUEST_HEADER_VALUES}">
+					<suggestionItems>
+      			<c:Item text="{key}" key="{key}" />
+    			</suggestionItems>
+				</Input>
 				</cells>
 			</ColumnListItem>
 		</items>

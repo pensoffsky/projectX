@@ -1,6 +1,8 @@
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/RequestHeader', 'projectX/util/Constants'],
-	function(jQuery, ManagedObject, RequestHeader, Constants) {
+sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/RequestHeader',
+							 'projectX/util/Constants',
+							 'projectX/util/Helper'],
+	function(jQuery, ManagedObject, RequestHeader, Constants, Helper) {
 	"use strict";
 
 	var RequestHeaderEditListController = ManagedObject.extend("projectX.util.RequestHeaderEditListController", { metadata : {
@@ -9,30 +11,25 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			view : {type : "object", defaultValue : null}
 			},
 		events : {
-
 		}
 	}});
 
 
-	// /////////////////////////////////////////////////////////////////////////////
-	// /// Event Handler
-	// /////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+	/// Event Handler
+	/////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * create a new requestHeader and add it to the local ui model.
 	 */
 	RequestHeaderEditListController.prototype.onBtnAddRequestHeader = function() {
 		var oRequestHeader = new RequestHeader();
-		oRequestHeader.setFieldName(Constants.REQUEST_HEADER_FIELD_ACCEPT);
-		oRequestHeader.setFieldValue(Constants.REQUEST_HEADER_VALUE_APPL_JSON);
-
 		var aRequestHeaders =  this._localUIModel.getProperty("/requestHeaders");
 		aRequestHeaders.push(oRequestHeader);
 		this._localUIModel.setProperty("/requestHeaders", aRequestHeaders);
 	};
 
 	RequestHeaderEditListController.prototype.onBtnDeleteRequestHeaders = function() {
-		// debugger;
 		var aSelectedItems = this._oTable.getSelectedItems();
 		if (!aSelectedItems){
 			return;
@@ -49,6 +46,26 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 	};
 
+	RequestHeaderEditListController.prototype.handleRequestHeaderFieldNameChanged = function(oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem");
+			var oRequestHeader = Helper.getBoundObjectForItem(oSelectedItem);
+
+			// delete current entry on UI
+
+
+			// set new suggestion list
+			switch (oRequestHeader.key) {
+				case Constants.REQUEST_HEADER_FIELD_ACCEPT:
+					this._localUIModel.setProperty("/V_REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_ACCEPT);
+					break;
+			  case Constants.REQUEST_HEADER_FIELD_ACCEPT_CHARSET:
+					this._localUIModel.setProperty("/V_REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_ACCEPT_CHARSET);
+					break;
+			default:
+				return "";
+			}
+	};
+
 	/////////////////////////////////////////////////////////////////////////////
 	/// Public Methods
 	/////////////////////////////////////////////////////////////////////////////
@@ -62,8 +79,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this._localUIModel = new sap.ui.model.json.JSONModel();
 		this._localUIModel.setData({
 			requestHeaders: [],
-			REQUEST_HEADER_FIELDS: Constants.REQUEST_HEADER_FIELDS,	// for request header field select control
-			REQUEST_HEADER_VALUES: Constants.REQUEST_HEADER_VALUES 	// for request header value select control
+			V_REQUEST_HEADER_FIELDS: Constants.REQUEST_HEADER_FIELDS,	// for request header field select control
+			V_REQUEST_HEADER_VALUES: null // for request header value select control
 		});
 		this.getView().setModel(this._localUIModel);
 		this._oTable = sap.ui.core.Fragment.byId(sIdPrefix, "idTableRequestHeaders");
@@ -104,9 +121,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 
 
-	// /////////////////////////////////////////////////////////////////////////////
-	// /// Private Methods
-	// /////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////
+	/// Private Methods
+	/////////////////////////////////////////////////////////////////////////////
 
 	//TODO move to helper
 	/**

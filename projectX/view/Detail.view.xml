@@ -86,6 +86,7 @@
 					<VBox id="idVBoxRequestHeaderPlaceholder" />
 
 
+<<<<<<< Updated upstream
 						<VBox>
 							<Label text="Response Header" />
 							<Text height="200px" width="100%"
@@ -100,6 +101,21 @@
 									editable="false"
 									text="{localUIModel>/Response/Body}" />
 						</VBox>	
+=======
+				<VBox>
+					<Label text="Response Header" />
+					<Text height="200px" width="100%"
+							enabled="true"
+							editable="false"
+							text="{localUIModel>/responseHeader}" />
+				</VBox>
+				<VBox>
+					<Label text="Response Body" />
+					<Text height="200px" width="100%"
+							enabled="true"
+							editable="false"
+							text="{localUIModel>/responseBody}" />
+>>>>>>> Stashed changes
 				</VBox>
 			</ScrollContainer>
 
