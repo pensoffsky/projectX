@@ -23,9 +23,9 @@
 			<Button text="Send Request" press="onBtnSendPress"/>
 	      </Toolbar>
     	</subHeader>
-		
+
 		<content>
-				
+
 			<ScrollContainer
 				visible="{localUIModel>/requestVisible}"
 				height="100%"
@@ -68,7 +68,7 @@
 							width="100%"
 							alignItems="Start">
 							<Select selectedKey="{localUIModel>/httpMethod}"
-									items="{/HTTP_METHODS}">
+									items="{/V_HTTP_METHOD}">
 									<core:Item text="{key}" key="{key}"/>
 							</Select>
 							<Input
@@ -85,8 +85,6 @@
 
 					<VBox id="idVBoxRequestHeaderPlaceholder" />
 
-
-<<<<<<< Updated upstream
 						<VBox>
 							<Label text="Response Header" />
 							<Text height="200px" width="100%"
@@ -100,22 +98,8 @@
 									enabled="true"
 									editable="false"
 									text="{localUIModel>/Response/Body}" />
-						</VBox>	
-=======
-				<VBox>
-					<Label text="Response Header" />
-					<Text height="200px" width="100%"
-							enabled="true"
-							editable="false"
-							text="{localUIModel>/responseHeader}" />
-				</VBox>
-				<VBox>
-					<Label text="Response Body" />
-					<Text height="200px" width="100%"
-							enabled="true"
-							editable="false"
-							text="{localUIModel>/responseBody}" />
->>>>>>> Stashed changes
+						</VBox>
+
 				</VBox>
 			</ScrollContainer>
 
@@ -135,7 +119,7 @@
 				vertical="true" >
 				<VBox id="idVBoxMetadataTypesPlaceholder"/>
 			</ScrollContainer>
-				
+
 		</content>
 			<footer>
 				<Toolbar>

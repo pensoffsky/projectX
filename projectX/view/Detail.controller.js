@@ -27,11 +27,15 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 			metadataVisible: false,
 			scriptExamples: projectX.util.Constants.SCRIPTEXAMPLES
 		});
+
+		this._localUIModel.setProperty("/V_HTTP_METHOD", this._oConstants.HTTP_METHODS);
 		//set the local ui model to the view
 		//use a name when addressing the local ui model from xml
 		this.getView().setModel(this._localUIModel, "localUIModel");
 
 		this.getView().setModel(this._localUIModel._oConstants, "Constants");
+
+
 
 		/////////////////////////////////////////////////////////////////////
 		//create Assertion fragment controller
@@ -60,8 +64,8 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		oRequestHeaderContainer.addItem(oRequestHeaderEditFragment);
 		//initialize the fragement controller
 		this._oRequestHeaderEditController.onInit(this.createId("RequestHeaders"));
-		
-		
+
+
 		/////////////////////////////////////////////////////////////////////
 		//create MetaData fragment controller
 		/////////////////////////////////////////////////////////////////////
@@ -90,7 +94,7 @@ projectX.util.Controller.extend("projectX.view.Detail", {
 		if (!oRequest) {
 			return;
 		}
-		
+
 		this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
 
 		this._selectedRequest = oRequest;

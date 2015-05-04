@@ -1,7 +1,10 @@
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/RequestHeader',
+sap.ui.define(['jquery.sap.global',
+							 'sap/ui/base/ManagedObject',
+							 'projectX/util/RequestHeader',
 							 'projectX/util/Constants',
 							 'projectX/util/Helper'],
+
 	function(jQuery, ManagedObject, RequestHeader, Constants, Helper) {
 	"use strict";
 
