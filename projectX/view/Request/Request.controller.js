@@ -9,7 +9,8 @@ sap.ui.define([
 	'projectX/view/Request/AssertionEditListController',
 	'projectX/view/Request/RequestHeaderEditListController',
 	'projectX/view/Metadata/MetadataTypesController',
-	'projectX/util/Request'
+	'projectX/util/Request',
+	'projectX/util/AceEditor'
 	],
 	function(jQuery, 
 			Controller, 
@@ -18,7 +19,8 @@ sap.ui.define([
 			AssertionEditListController,
 			RequestHeaderEditListController,
 			MetadataTypesController,
-			RequestObject
+			RequestObject,
+			AceEditor
 			) {
 		"use strict";
 
@@ -42,30 +44,6 @@ sap.ui.define([
 		// /// Initialization
 		// /////////////////////////////////////////////////////////////////////////////
 
-		Request.prototype.onAfterRendering = function() {
-			if(this._renderedOnce === true){
-				return;
-			}
-			this._renderedOnce = true;
-			
-			var sEditID = this.createId("editor");
-			this._editor = ace.edit(sEditID);
-			this._editor.setTheme("ace/theme/tomorrow");
-			this._editor.getSession().setMode("ace/mode/javascript");
-			var that = this;
-			this._editor.getSession().on('change', function(e) {
-				if (!that._oRequest) {
-					return;
-				}
-				that._oRequest.setScriptCode(that._editor.getValue());
-			});
-			
-			if (this._oRequest){
-				this._editor.setValue(this._oRequest.getScriptCode(), 1);
-			}
-		};
-
-
 		Request.prototype.onInit = function() {
 
 			// this._oConstants = new Constants();
@@ -77,7 +55,8 @@ sap.ui.define([
 				assertionsVisible: false,
 				metadataVisible: false,
 				SCRIPT_EXAMPLES: Constants.SCRIPTEXAMPLES,
-				HTTP_METHODS: Constants.HTTP_METHODS
+				HTTP_METHODS: Constants.HTTP_METHODS,
+				responseBodyDisplayMode : "text"
 			});
 			//set the local ui model to the view
 			//use a name when addressing the local ui model from xml
@@ -147,11 +126,6 @@ sap.ui.define([
 			this._oRequest = oRequest;
 			this._localUIModel.setProperty("/request", this._oRequest);
 			
-			if (this._editor){
-				this._editor.setValue(this._oRequest.getScriptCode(), 1);
-			}
-				
-			
 			this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
 				
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
@@ -219,9 +193,7 @@ sap.ui.define([
 			var oSelectedProject = oModel.getProperty("/SelectedProject");
 			oSelectedProject.removeRequest(this._oRequest);
 			oModel.updateBindings();
-			//TODO check navigation after delete
-			this.getRouter().navTo("catchallMaster", {
-			}, true);			
+			//TODO check navigation after delete		
 		};
 
 		/**
@@ -244,12 +216,8 @@ sap.ui.define([
 			var oScriptExample = oItem.getBindingContext("localUIModel").getObject();
 			var sScript = this._oRequest.getScriptCode();
 			sScript += "\n" + oScriptExample.script; 
-			this._oRequest.setScriptCode(sScript);
-			if (this._editor){
-				this._editor.setValue(this._oRequest.getScriptCode(), 1);
-			}
-			
-			//this._localUIModel.updateBindings();
+			this._oRequest.setScriptCode(sScript);			
+			this._localUIModel.updateBindings();
 		};
 		
 		/**
@@ -260,6 +228,27 @@ sap.ui.define([
 			this.triggerWithInputDelay(function() {
 				this.updateMasterList();
 			});
+		};
+		
+		Request.prototype.onResponseBodyModeRAW = function() {	
+			this._localUIModel.setProperty("/responseBodyDisplayMode", "text");
+		};
+		
+		Request.prototype.onResponseBodyModeHTML = function() {	
+			this._localUIModel.setProperty("/responseBodyDisplayMode", "html");
+		};
+		
+		Request.prototype.onResponseBodyModeJSON = function() {	
+			this._localUIModel.setProperty("/responseBodyDisplayMode", "json");
+		};
+		
+		Request.prototype.onResponseBodyModeXML = function() {	
+			this._localUIModel.setProperty("/responseBodyDisplayMode", "xml");
+		};
+		
+		Request.prototype.onPanelPrescriptExpand = function() {	
+			var oScriptEditor = this.getView().byId("superEditor");
+			oScriptEditor.rerender();
 		};
 
 		return Request;
