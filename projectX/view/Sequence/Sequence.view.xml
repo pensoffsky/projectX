@@ -203,6 +203,9 @@
 						type="Emphasized"
 						press="onCreate"
 						visible="{localUIModel>/reasonNew}"/>
+				<Button press="onBtnDeletePress" 
+						text="Delete"
+						icon="sap-icon://delete"/>
 			</Toolbar>
 		</footer>
 	</Page>

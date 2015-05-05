@@ -6,7 +6,7 @@ jQuery.sap.require("projectX.util.Helper");
 
 
 projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
-	
+
 	_localProjectModel : undefined,
 	_sReason : null,
 	_oSequence : null,
@@ -27,7 +27,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			testNotRunning : true
 		});
 		this.getView().setModel(this._localUIModel, "localUIModel");
-		
+
 		//hook navigation event
 		this.getRouter().getRoute("sequence").attachPatternMatched(this.onRouteMatched, this);
 	},
@@ -39,13 +39,13 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._sReason = sReason;
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
-		
-		//user wants to edit the currently selected model	
+
+		//user wants to edit the currently selected model
 		var oSelectedSequence = oSelectedProject.getSequenceByIdentifier(iSequenceId);
 		if (!oSelectedSequence) {
 			return;
 		}
-		
+
 		this._oOriginalSequence = oSelectedSequence;
 		this._oSequence = jQuery.extend(true, {}, oSelectedSequence);
 		//set data from selected sequence into local project model
@@ -54,14 +54,14 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._localUIModel.setProperty("/reasonNew", false);
 		this._localUIModel.setProperty("/reasonEdit", true);
 		this._localUIModel.setProperty("/reason", "Edit sequence");
-		
+
 		//get requests for requestIds and set to local ui model
 		var aSelectedRequests = this._oSequence.getRequestIds().map(function(iId){
 			return oSelectedProject.getRequestByIdentifier(iId);
 		});
 		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
-	
-		
+
+
 		//add list of requests to local ui model
 		this._localUIModel.setProperty("/requests", oSelectedProject.getRequests());
 	},
@@ -92,20 +92,24 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			alert("name field is required");
 			return;
 		}
-		
+
 		this._oOriginalSequence.setName(this._oSequence.getName());
 		var aRequests = this._localUIModel.getProperty("/selectedRequests");
 		this._oOriginalSequence.addRequestIds(aRequests);
 		this._localUIModel.updateBindings();
+
+		//update bindings to show e.g. an updated name of the sequence in master list
+		var oModel = this.getView().getModel();
+		oModel.updateBindings();
 	},
-	
+
 	onCreate : function() {
 		//basic input validation
 		if (!this._oSequence.getName()){
 			alert("name field is required");
 			return;
 		}
-		
+
 		//get id for sequence. set sequence to project
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
@@ -116,7 +120,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		//nav back
 		sap.ui.core.UIComponent.getRouterFor(this).backWithoutHash(this.getView());
 	},
-	
+
 	/**
 	 * move selected request from request list to selected requests.
 	 */
@@ -126,15 +130,15 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		if (!oSelectedItem){
 			return;
 		}
-		
+
 		var oRequest = oSelectedItem.getBindingContext("localUIModel").getObject();
 		oRequest = new projectX.util.Request(oRequest.serialize());
 		var aSelectedRequests = this._localUIModel.getProperty("/selectedRequests");
-		
+
 		aSelectedRequests.push(oRequest);
 		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
 	},
-	
+
 	/**
 	 * remove selected request from the right list of selected requests.
 	 */
@@ -144,7 +148,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		if (!oSelectedItem){
 			return;
 		}
-		
+
 		var oRequest = oSelectedItem.getBindingContext("localUIModel").getObject();
 		var aSelectedRequests =  this._localUIModel.getProperty("/selectedRequests");
 		aSelectedRequests.splice(aSelectedRequests.indexOf(oRequest), 1);
@@ -164,10 +168,10 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		}
 		//TODO create deep copy of single requests
 		//maybe on entering the screen
-		
+
 		//clear existing results
 		this.onClearResults();
-		
+
 		this._setRunning(true);
 		this._executeRequests(0, aRequests);
 	},
@@ -181,7 +185,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			this._bAbortSequence = true;
 		}
 	},
-	
+
 	/**
 	* loop over the requests and clear out the result data from the last test run.
 	*/
@@ -191,7 +195,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		if (!aRequests || aRequests.length <= 0) {
 			return;
 		}
-		
+
 		//loop over requests and reset the result data
 		for (var i = 0; i < aRequests.length; i++) {
 			//clear old request results
@@ -199,7 +203,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		}
 		this._localUIModel.updateBindings();
 	},
-	
+
 	/**
 	* the user clicked on the title of a specific request.
 	* expand the item to show the results of the request.
@@ -209,15 +213,23 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var oColumnListItem = oObjectHeader.getParent(); //the columListItem control
 		oColumnListItem.toggleStyleClass("columnListItemExpanded");
 	},
-	
+
 	onMoveRequestUp : function(){
 		this._moveSelectedListItem(projectX.util.Helper.moveArrayElementUp);
 	},
-	
+
 	onMoveRequestDown : function(){
 		this._moveSelectedListItem(projectX.util.Helper.moveArrayElementDown);
 	},
-	
+
+	onBtnDeletePress : function() {
+		var oModel = this.getView().getModel();
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
+		oSelectedProject.removeSequence(this._oOriginalSequence);
+		oModel.updateBindings();
+	},
+
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
@@ -231,10 +243,10 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		}
 		var oSelectedObject = projectX.util.Helper.getBoundObjectForItem(oSelectedItem, "localUIModel");
 		var aArray = this._localUIModel.getProperty("/selectedRequests");
-		
+
 		var iNewPos = fMove(aArray, oSelectedObject);
 		this._localUIModel.setProperty("/selectedRequests", aArray);
-		
+
 		//restore the selection
 		var aItems = oList.getItems();
 		oList.setSelectedItem(aItems[iNewPos]);
@@ -246,13 +258,13 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	* @param  {array} aRequests array of all requests to execute one after another
 	*/
 	_executeRequests : function(iIndex, aRequests) {
-		var that = this;		
+		var that = this;
 		if (aRequests.length <= iIndex){
 			//abort
 			this._setRunning(false);
 			return;
 		}
-		
+
 		//execute the request
 		var oRequest = aRequests[iIndex];
 		var oDeferred = oRequest.execute(aRequests[iIndex - 1]);
@@ -261,16 +273,16 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			oRequest.checkAssertions();
 			//update bindings so that the status will be displayed
 			that._localUIModel.updateBindings(false);
-			
+
 			if (that._bAbortSequence === true){
 				that._bAbortSequence = false;
 				that._setRunning(false);
 				return;
 			}
-			
+
 			that._executeRequests(iIndex + 1, aRequests);
 			//TODO add positiliy to abort on failure
-		});		
+		});
 	},
 
 	/**
@@ -282,10 +294,10 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._localUIModel.setProperty("/testRunning", bIsRunning);
 		this._localUIModel.setProperty("/testNotRunning", !bIsRunning);
 	},
-	
+
 	_getRunning : function() {
 		return this._localUIModel.getProperty("/testRunning");
 	}
-	
+
 
 });

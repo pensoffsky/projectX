@@ -23,9 +23,9 @@
 			<Button text="Send Request" press="onBtnSendPress"/>
 	      </Toolbar>
     	</subHeader>
-		
+
 		<content>
-				
+
 			<ScrollContainer
 				visible="{localUIModel>/requestVisible}"
 				height="100%"
@@ -36,7 +36,7 @@
 					<VBox>
 						<Input value="{localUIModel>/request/mProperties/name}"
 								placeholder="name of request"/>
-						<Panel expandable="true" 
+						<Panel expandable="true"
 							   expanded="true"
 							   headerText="Pre-request script">
 							<FlexBox width="100%">
@@ -71,15 +71,15 @@
 									items="{localUIModel>/HTTP_METHODS}">
 									<core:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
 							</Select>
-							<Input
-								value="{localUIModel>/request/mProperties/url}"
-								type="Url"
-								maxLength="4096"
-								placeholder="Enter valid Service-URL ..." >
+							<TextArea value="{localUIModel>/request/mProperties/url}"
+										placeholder="Enter valid Service-URL ..."
+										rows="6"
+										width="100%"
+										>
 								<layoutData>
 					                <FlexItemData growFactor="1" />
 					            </layoutData>
-							</Input>
+							</TextArea>
 							<Button press="onBtnSendPress" text="Send"/>
 					</FlexBox>
 
@@ -99,7 +99,7 @@
 									enabled="true"
 									editable="false"
 									text="{localUIModel>/request/mProperties/responseBody}" />
-						</VBox>	
+						</VBox>
 				</VBox>
 			</ScrollContainer>
 
@@ -119,7 +119,7 @@
 				vertical="true" >
 				<VBox id="idVBoxMetadataTypesPlaceholder"/>
 			</ScrollContainer>
-				
+
 		</content>
 			<footer>
 				<Toolbar>
