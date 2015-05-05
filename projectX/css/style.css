@@ -10,3 +10,7 @@
 .columnListItemExpanded .visibleWhenExpanded {
 	display: block;
 }
+
+.projectXEditor {
+    height: 300px;
+}

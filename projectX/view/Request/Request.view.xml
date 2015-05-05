@@ -4,7 +4,8 @@
 	xmlns:core="sap.ui.core"
 	xmlns:l="sap.ui.layout"
 	xmlns="sap.m"
-	xmlns:u="sap.ui.unified">
+	xmlns:u="sap.ui.unified"
+	xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page
 		showNavButton="{device>/isPhone}"
 		navButtonPress="onNavBack"
@@ -25,7 +26,7 @@
     	</subHeader>
 
 		<content>
-
+			
 			<ScrollContainer
 				visible="{localUIModel>/requestVisible}"
 				height="100%"
@@ -40,10 +41,16 @@
 								valueLiveUpdate="true"
 								/>
 						<Panel expandable="true"
-							   expanded="true"
+							   expanded="false"
 							   headerText="Pre-request script">
 							<FlexBox width="100%">
-								<TextArea value="{localUIModel>/request/mProperties/scriptCode}"
+								<VBox>
+									<html:div id="editor" class="projectXEditor"></html:div>
+									<layoutData>
+										<FlexItemData growFactor="8" />
+									</layoutData>
+								</VBox>
+								<!-- <TextArea value="{localUIModel>/request/mProperties/scriptCode}"
 											width="100%"
 											placeholder="Pre-request script"
 											rows="10"
@@ -51,7 +58,7 @@
 											<layoutData>
 								                <FlexItemData growFactor="8" />
 								            </layoutData>
-								</TextArea>
+								</TextArea> -->
 								<VBox>
 									<layoutData>
 						                <FlexItemData shrinkFactor="0"
@@ -102,6 +109,8 @@
 									enabled="true"
 									editable="false"
 									text="{localUIModel>/request/mProperties/responseBody}" />
+									
+							
 						</VBox>
 				</VBox>
 			</ScrollContainer>

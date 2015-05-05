@@ -42,6 +42,30 @@ sap.ui.define([
 		// /// Initialization
 		// /////////////////////////////////////////////////////////////////////////////
 
+		Request.prototype.onAfterRendering = function() {
+			if(this._renderedOnce === true){
+				return;
+			}
+			this._renderedOnce = true;
+			
+			var sEditID = this.createId("editor");
+			this._editor = ace.edit(sEditID);
+			this._editor.setTheme("ace/theme/tomorrow");
+			this._editor.getSession().setMode("ace/mode/javascript");
+			var that = this;
+			this._editor.getSession().on('change', function(e) {
+				if (!that._oRequest) {
+					return;
+				}
+				that._oRequest.setScriptCode(that._editor.getValue());
+			});
+			
+			if (this._oRequest){
+				this._editor.setValue(this._oRequest.getScriptCode(), 1);
+			}
+		};
+
+
 		Request.prototype.onInit = function() {
 
 			// this._oConstants = new Constants();
@@ -122,6 +146,11 @@ sap.ui.define([
 			
 			this._oRequest = oRequest;
 			this._localUIModel.setProperty("/request", this._oRequest);
+			
+			if (this._editor){
+				this._editor.setValue(this._oRequest.getScriptCode(), 1);
+			}
+				
 			
 			this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
 				
@@ -216,7 +245,11 @@ sap.ui.define([
 			var sScript = this._oRequest.getScriptCode();
 			sScript += "\n" + oScriptExample.script; 
 			this._oRequest.setScriptCode(sScript);
-			this._localUIModel.updateBindings();
+			if (this._editor){
+				this._editor.setValue(this._oRequest.getScriptCode(), 1);
+			}
+			
+			//this._localUIModel.updateBindings();
 		};
 		
 		/**
