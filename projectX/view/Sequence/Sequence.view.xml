@@ -49,7 +49,10 @@
 							<!-- Basic info -->
 							<c:Title text="Sequence Info" />
 							<Label text="Name" />
-							<Input value="{localUIModel>/sequence/mProperties/name}" />
+							<Input value="{localUIModel>/sequence/mProperties/name}"
+									liveChange="onNameChanged"
+									valueLiveUpdate="true"
+									/>
 							<Label text="Description" />
 							<Input value="{localUIModel>/sequence/mProperties/description}" />
 						</f:content>
@@ -195,10 +198,6 @@
 						press="onStopSequence"
 						visible="{localUIModel>/testRunning}"
 						/>
-				<Button text="Save"
-						type="Emphasized"
-						press="onSave"
-						visible="{localUIModel>/reasonEdit}"/>
 				<Button text="Create"
 						type="Emphasized"
 						press="onCreate"

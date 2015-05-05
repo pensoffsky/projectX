@@ -30,12 +30,6 @@ sap.ui.define([
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Members
 		// /////////////////////////////////////////////////////////////////////////////
-
-		/**
-		 * ref to the original request the user updates when he clicks save.
-		 * @type {object}
-		 */
-		Request.prototype._oOriginalRequest = null;
 		
 		/**
 		 * copy of the request used to temporary store the changes from the user 
@@ -111,7 +105,6 @@ sap.ui.define([
 		};
 
 		Request.prototype.onRouteMatched = function(oEvent) {
-			this._oOriginalRequest = null;
 			this._oRequest = null;
 			
 			var oParameters = oEvent.getParameters();
@@ -127,10 +120,7 @@ sap.ui.define([
 				return;
 			}
 			
-			this._oOriginalRequest = oRequest;
-			//create a copy of the request to edit and test on this screen.
-			//somehow jquery extend does not create a deep copy 
-			this._oRequest = new RequestObject(this._oOriginalRequest.serialize());
+			this._oRequest = oRequest;
 			this._localUIModel.setProperty("/request", this._oRequest);
 			
 			this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
@@ -198,18 +188,11 @@ sap.ui.define([
 		Request.prototype.onBtnDeletePress = function() {
 			var oModel = this.getView().getModel();
 			var oSelectedProject = oModel.getProperty("/SelectedProject");
-			oSelectedProject.removeRequest(this._oOriginalRequest);
+			oSelectedProject.removeRequest(this._oRequest);
 			oModel.updateBindings();
 			//TODO check navigation after delete
-		};
-
-		Request.prototype.onBtnSavePress = function() {
-			
-			this._oOriginalRequest.setDataFromRequest(this._oRequest);
-						
-			//update bindings to show e.g. an updated name of the request in master list
-			var oModel = this.getView().getModel();
-			oModel.updateBindings();
+			this.getRouter().navTo("catchallMaster", {
+			}, true);			
 		};
 
 		/**
@@ -234,6 +217,16 @@ sap.ui.define([
 			sScript += "\n" + oScriptExample.script; 
 			this._oRequest.setScriptCode(sScript);
 			this._localUIModel.updateBindings();
+		};
+		
+		/**
+		 * called from the name input control when the name changes.
+		 * after a delay triggers the updating of the master list to show the new name.
+		 */
+		Request.prototype.onNameChanged = function() {	
+			this.triggerWithInputDelay(function() {
+				this.updateMasterList();
+			});
 		};
 
 		return Request;

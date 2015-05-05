@@ -35,7 +35,10 @@
 				<VBox>
 					<VBox>
 						<Input value="{localUIModel>/request/mProperties/name}"
-								placeholder="name of request"/>
+								placeholder="name of request"
+								liveChange="onNameChanged"
+								valueLiveUpdate="true"
+								/>
 						<Panel expandable="true"
 							   expanded="true"
 							   headerText="Pre-request script">
@@ -124,7 +127,6 @@
 			<footer>
 				<Toolbar>
 				<ToolbarSpacer/>
-				<Button press="onBtnSavePress" type="Emphasized" text="Save" icon="sap-icon://save"/>
 				<Button press="onBtnDuplicatePress" text="Duplicate" icon="sap-icon://duplicate"/>
 				<Button press="onBtnDeletePress" text="Delete" icon="sap-icon://delete"/>
 			</Toolbar>

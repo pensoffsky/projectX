@@ -55,9 +55,9 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 							transition : "show"
 						},
 						{
-							pattern : "testrun",
-							name : "testrun",
-							view : "TestRun",
+							pattern : "notfound",
+							name : "notfound",
+							view : "NotFound",
 							transition : "show"
 						},
 						{
@@ -70,7 +70,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 				},
 				{
 					name : "catchallMaster",
-					view : "Master",
+					view : "Master.Master",
 					targetAggregation : "masterPages",
 					targetControl : "idAppControl",
 					subroutes : [

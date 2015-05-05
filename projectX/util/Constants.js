@@ -175,7 +175,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	];
 
 
-
+	/**
+	 * delay between input event and triggering of action in ms. (debounce)
+	 * @type {int}
+	 */
+	Constants.INPUTDELAY = 300;
 
 	///////////////////////////////////////////////////////////////////////////
 	/// Public Functions

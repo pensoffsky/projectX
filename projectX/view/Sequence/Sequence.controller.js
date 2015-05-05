@@ -10,7 +10,6 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	_localProjectModel : undefined,
 	_sReason : null,
 	_oSequence : null,
-	_oOriginalSequence : null,
 
 	//TODO create enum for the binding targets
 
@@ -46,8 +45,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			return;
 		}
 
-		this._oOriginalSequence = oSelectedSequence;
-		this._oSequence = jQuery.extend(true, {}, oSelectedSequence);
+		this._oSequence = oSelectedSequence;
 		//set data from selected sequence into local project model
 		this._localUIModel.setProperty("/sequence", this._oSequence);
 		//set helper values to modify the page between edit and new
@@ -56,11 +54,19 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._localUIModel.setProperty("/reason", "Edit sequence");
 
 		//get requests for requestIds and set to local ui model
-		var aSelectedRequests = this._oSequence.getRequestIds().map(function(iId){
-			return oSelectedProject.getRequestByIdentifier(iId);
-		});
+		var aSelectedRequests = [];
+		var aRequestIds = this._oSequence.getRequestIds();
+		for (var i = 0; i < aRequestIds.length; i++) {
+			var oRequest = oSelectedProject.getRequestByIdentifier(aRequestIds[i]);
+			//create deep copy of request because in testrun the same
+			//request can be executed multiple times
+			if (oRequest) {
+				var oRequestCopy = new projectX.util.Request(oRequest.serialize());
+				aSelectedRequests.push(oRequestCopy);
+			}
+		}
+		
 		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
-
 
 		//add list of requests to local ui model
 		this._localUIModel.setProperty("/requests", oSelectedProject.getRequests());
@@ -84,23 +90,6 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		default:
 			console.log("problem with segmented button on sequence page");
 		}
-	},
-
-	onSave : function() {
-		//basic input validation
-		if (!this._oSequence.getName()){
-			alert("name field is required");
-			return;
-		}
-
-		this._oOriginalSequence.setName(this._oSequence.getName());
-		var aRequests = this._localUIModel.getProperty("/selectedRequests");
-		this._oOriginalSequence.addRequestIds(aRequests);
-		this._localUIModel.updateBindings();
-
-		//update bindings to show e.g. an updated name of the sequence in master list
-		var oModel = this.getView().getModel();
-		oModel.updateBindings();
 	},
 
 	onCreate : function() {
@@ -136,7 +125,10 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var aSelectedRequests = this._localUIModel.getProperty("/selectedRequests");
 
 		aSelectedRequests.push(oRequest);
+		
+		//set the selected requests to localuimodel and to the sequence object
 		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
+		this._oSequence.addRequestIds(aSelectedRequests);
 	},
 
 	/**
@@ -153,6 +145,8 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var aSelectedRequests =  this._localUIModel.getProperty("/selectedRequests");
 		aSelectedRequests.splice(aSelectedRequests.indexOf(oRequest), 1);
 		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
+		this._oSequence.addRequestIds(aSelectedRequests);
+		
 		this._oTable.removeSelections(true);
 	},
 
@@ -225,10 +219,19 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	onBtnDeletePress : function() {
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
-		oSelectedProject.removeSequence(this._oOriginalSequence);
+		oSelectedProject.removeSequence(this._oSequence);
 		oModel.updateBindings();
 	},
 
+	/**
+	 * called from the name input control when the name changes.
+	 * after a delay triggers the updating of the master list to show the new name.
+	 */
+	onNameChanged : function() {	
+		this.triggerWithInputDelay(function() {
+			this.updateMasterList();
+		});
+	},
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
