@@ -119,12 +119,14 @@
 						/>
 
 					<Label text="Response Body" />
-					<HBox>
-						<Button press="onResponseBodyModeXML" text="XML"/>
-						<Button press="onResponseBodyModeJSON" text="JSON"/>
-						<Button press="onResponseBodyModeHTML" text="HTML"/>
-						<Button press="onResponseBodyModeRAW" text="RAW"/>
-					</HBox>
+					
+					<SegmentedButton selectedButton="idButtonResponseRAW"
+								select="onResponseBodyFormat">
+						<Button text="XML" id="idButtonResponseXML" />
+						<Button text="JSON" id="idButtonResponseJSON" />
+						<Button text="HTML" id="idButtonResponseHTML" />
+						<Button text="RAW" id="idButtonResponseRAW" />
+					</SegmentedButton>
 					<custom:AceEditor width="100%" height="auto" class="projectXAceNoScroll"
 						mode="{localUIModel>/responseBodyDisplayMode}"
 						readOnly="true"

@@ -127,7 +127,7 @@ sap.ui.define([
 			
 			this._oRequest = oRequest;
 			this._localUIModel.setProperty("/request", this._oRequest);
-			this._localUIModel.setProperty("/responseBodyFormatted", "");
+			this._prettyPrintResponseBody(this._localUIModel.getProperty("/responseBodyDisplayMode"));
 			
 			this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
 				
@@ -155,7 +155,7 @@ sap.ui.define([
 			var that = this;
 			oDeferred.always(function(){
 				oRequest.checkAssertions();
-				that._localUIModel.setProperty("/responseBodyFormatted", oRequest.getResponseBody());
+				that._prettyPrintResponseBody(that._localUIModel.getProperty("/responseBodyDisplayMode"));
 				that._localUIModel.updateBindings();
 				that._oAssertionEditController.updateBindings();
 			});
@@ -235,50 +235,57 @@ sap.ui.define([
 			});
 		};
 		
-		Request.prototype.onResponseBodyModeRAW = function() {	
-			var sResponseBody = this._oRequest.getResponseBody();
-			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
-			this._localUIModel.setProperty("/responseBodyDisplayMode", "text");
-		};
-		
-		Request.prototype.onResponseBodyModeHTML = function() {	
-			var sResponseBody = this._oRequest.getResponseBody();
-			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
-			this._localUIModel.setProperty("/responseBodyDisplayMode", "html");
-		};
-		
-		Request.prototype.onResponseBodyModeJSON = function() {	
-			var sResponseBody = this._oRequest.getResponseBody();
-			
-			//use json parse and stringify to try to format the responseBody if it contains 
-			//valid json
-			try {
-				sResponseBody = vkbeautify.json(sResponseBody); 
-				// var oJSON = JSON.parse(sResponseBody);
-				// sResponseBody = JSON.stringify(oJSON, null, 1);
-			} catch (e) {
-				console.log("onResponseBodyModeJSON: " + e);
-			}
-			
-			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
-			this._localUIModel.setProperty("/responseBodyDisplayMode", "json");
-		};
-		
-		Request.prototype.onResponseBodyModeXML = function() {	
-			var sResponseBody = this._oRequest.getResponseBody();
-			try {
-				sResponseBody = vkbeautify.xml(sResponseBody); 
-			} catch (e) {
-				console.log("onResponseBodyModeXML: " + e);
-			}
-			
-			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
-			this._localUIModel.setProperty("/responseBodyDisplayMode", "xml");
-		};
-		
 		Request.prototype.onPanelPrescriptExpand = function() {	
 			var oScriptEditor = this.getView().byId("superEditor");
 			oScriptEditor.rerender();
+		};
+		
+		Request.prototype.onResponseBodyFormat  = function(oEvent){
+			var sSelectedId = oEvent.getParameter("id");
+			var sMode = "text";
+			switch (sSelectedId) {
+				case this.createId("idButtonResponseXML"):
+					sMode = "xml";
+					break;
+				case this.createId("idButtonResponseJSON"):
+					sMode = "json";
+					break;
+				case this.createId("idButtonResponseHTML"):
+					sMode = "html";
+					break;
+				case this.createId("idButtonResponseRAW"):
+					sMode = "text";
+					break;
+			default:
+				console.log("problem with response body format segmented button on detail page");
+			}
+			
+			this._prettyPrintResponseBody(sMode);
+			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
+		};
+		
+		// /////////////////////////////////////////////////////////////////////////////
+		// /// Private Functions
+		// /////////////////////////////////////////////////////////////////////////////
+
+		Request.prototype._prettyPrintResponseBody = function(sMode) {
+			var sResponseBody = this._oRequest.getResponseBody();
+			
+			try {
+				switch (sMode) {
+					case "xml":
+						sResponseBody = vkbeautify.xml(sResponseBody);
+						break;
+					case "json":
+						sResponseBody = vkbeautify.json(sResponseBody);
+						break;
+					default:
+				}
+			} catch (e) {
+				console.log("_prettyPrintResponseBody: " + e);
+			}
+			
+			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
 		};
 
 		return Request;
