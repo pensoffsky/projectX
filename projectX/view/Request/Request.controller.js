@@ -11,6 +11,7 @@ sap.ui.define([
 	'projectX/view/Metadata/MetadataTypesController',
 	'projectX/util/Request',
 	'projectX/util/AceEditor'
+	
 	],
 	function(jQuery, 
 			Controller, 
@@ -56,7 +57,8 @@ sap.ui.define([
 				metadataVisible: false,
 				SCRIPT_EXAMPLES: Constants.SCRIPTEXAMPLES,
 				HTTP_METHODS: Constants.HTTP_METHODS,
-				responseBodyDisplayMode : "text"
+				responseBodyDisplayMode : "text",
+				responseBodyFormatted : ""
 			});
 			//set the local ui model to the view
 			//use a name when addressing the local ui model from xml
@@ -125,6 +127,7 @@ sap.ui.define([
 			
 			this._oRequest = oRequest;
 			this._localUIModel.setProperty("/request", this._oRequest);
+			this._localUIModel.setProperty("/responseBodyFormatted", "");
 			
 			this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
 				
@@ -145,12 +148,14 @@ sap.ui.define([
 			
 			var oRequest = this._oRequest;
 			oRequest.resetTempData();
+			this._localUIModel.setProperty("/responseBodyFormatted", "");
 			this._localUIModel.updateBindings();
 			
 			var oDeferred = oRequest.execute();
 			var that = this;
 			oDeferred.always(function(){
 				oRequest.checkAssertions();
+				that._localUIModel.setProperty("/responseBodyFormatted", oRequest.getResponseBody());
 				that._localUIModel.updateBindings();
 				that._oAssertionEditController.updateBindings();
 			});
@@ -231,18 +236,43 @@ sap.ui.define([
 		};
 		
 		Request.prototype.onResponseBodyModeRAW = function() {	
+			var sResponseBody = this._oRequest.getResponseBody();
+			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", "text");
 		};
 		
 		Request.prototype.onResponseBodyModeHTML = function() {	
+			var sResponseBody = this._oRequest.getResponseBody();
+			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", "html");
 		};
 		
 		Request.prototype.onResponseBodyModeJSON = function() {	
+			var sResponseBody = this._oRequest.getResponseBody();
+			
+			//use json parse and stringify to try to format the responseBody if it contains 
+			//valid json
+			try {
+				sResponseBody = vkbeautify.json(sResponseBody); 
+				// var oJSON = JSON.parse(sResponseBody);
+				// sResponseBody = JSON.stringify(oJSON, null, 1);
+			} catch (e) {
+				console.log("onResponseBodyModeJSON: " + e);
+			}
+			
+			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", "json");
 		};
 		
 		Request.prototype.onResponseBodyModeXML = function() {	
+			var sResponseBody = this._oRequest.getResponseBody();
+			try {
+				sResponseBody = vkbeautify.xml(sResponseBody); 
+			} catch (e) {
+				console.log("onResponseBodyModeXML: " + e);
+			}
+			
+			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", "xml");
 		};
 		

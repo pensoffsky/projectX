@@ -21,10 +21,20 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
                         defaultValue: false
                     },
                     
+                    enableWrapMode: {
+                        type: "boolean",
+                        defaultValue: false
+                    },
+                    
+                    autoHeightMode: {
+                        type: "boolean",
+                        defaultValue: false
+                    },
+                    
                     mode: {
                         type: "string",
                         defaultValue: "javascript"
-                    }
+                    }, 
                 },
                 events: {
 			        someEvent : {}
@@ -54,7 +64,15 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 			this._editor.getSession().setMode("ace/mode/" + this.getMode());
     
             this._editor.setReadOnly(this.getReadOnly());
-        
+            
+            if (this.getAutoHeightMode()) {
+                this._editor.setOptions({
+                    maxLines: Infinity
+                });
+            }
+            
+            this._editor.getSession().setUseWrapMode(this.getEnableWrapMode());
+            
             this._editor.setValue(this.getValue(), 1);
             
             var that = this;

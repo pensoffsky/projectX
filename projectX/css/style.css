@@ -14,3 +14,7 @@
 .projectXEditor {
     height: 300px;
 }
+
+/*.projectXAceNoScroll .ace_scrollbar {
+    display: none !important;
+}*/

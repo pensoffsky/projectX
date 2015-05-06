@@ -80,7 +80,14 @@
 								</VBox>
 							</FlexBox>
 						</Panel>
+						<Panel expandable="true"
+							expanded="false"
+							headerText="Request Headers"
+							>
+							<VBox id="idVBoxRequestHeaderPlaceholder" />
+						</Panel>
 					</VBox>
+					
 					<FlexBox
 							width="100%"
 							alignItems="Start">
@@ -90,7 +97,7 @@
 							</Select>
 							<TextArea value="{localUIModel>/request/mProperties/url}"
 										placeholder="Enter valid Service-URL ..."
-										rows="6"
+										rows="4"
 										width="100%"
 										>
 								<layoutData>
@@ -100,41 +107,33 @@
 							<Button press="onBtnSendPress" text="Send"/>
 					</FlexBox>
 
-					<VBox id="idVBoxRequestHeaderPlaceholder" />
 
+					<Label text="Response Header" />
+					<custom:AceEditor width="100%" height="auto" 
+						mode="text"
+						readOnly="true"
+						value="{localUIModel>/request/mProperties/responseHeaders}"
+						id="superEditor3"
+						autoHeightMode="true"
+						enableWrapMode="true"
+						/>
 
-						<VBox>
-							<Label text="Response Header" />
-							<!-- <Text height="200px" width="100%"
-									enabled="true"
-									editable="false"
-									text="{localUIModel>/request/mProperties/responseHeaders}" /> -->
-							<custom:AceEditor width="80%" height="200px" 
-								mode="text"
-								readOnly="true"
-								value="{localUIModel>/request/mProperties/responseHeaders}"
-								id="superEditor3"
-								/>
-						</VBox>
-						<VBox>
-							<Label text="Response Body" />
-							<!-- <Text height="200px" width="100%"
-									enabled="true"
-									editable="false"
-									text="{localUIModel>/request/mProperties/responseBody}" /> -->
-							<HBox>
-								<Button press="onResponseBodyModeXML" text="XML"/>
-								<Button press="onResponseBodyModeJSON" text="JSON"/>
-								<Button press="onResponseBodyModeHTML" text="HTML"/>
-								<Button press="onResponseBodyModeRAW" text="RAW"/>
-							</HBox>
-							<custom:AceEditor width="80%" height="400px" 
-								mode="{localUIModel>/responseBodyDisplayMode}"
-								readOnly="true"
-								value="{localUIModel>/request/mProperties/responseBody}"
-								id="superEditor2"
-								/>
-						</VBox>
+					<Label text="Response Body" />
+					<HBox>
+						<Button press="onResponseBodyModeXML" text="XML"/>
+						<Button press="onResponseBodyModeJSON" text="JSON"/>
+						<Button press="onResponseBodyModeHTML" text="HTML"/>
+						<Button press="onResponseBodyModeRAW" text="RAW"/>
+					</HBox>
+					<custom:AceEditor width="100%" height="auto" class="projectXAceNoScroll"
+						mode="{localUIModel>/responseBodyDisplayMode}"
+						readOnly="true"
+						value="{localUIModel>/responseBodyFormatted}"
+						id="superEditor2"
+						autoHeightMode="true"
+						enableWrapMode="true"
+						/>
+
 				</VBox>
 			</ScrollContainer>
 
