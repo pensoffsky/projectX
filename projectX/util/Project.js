@@ -16,7 +16,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		},
 		aggregations : {
 			requests : {type : "projectX.util.Request", multiple : true},
-			sequences : {type : "projectX.util.Sequence", multiple : true}
+			sequences : {type : "projectX.util.Sequence", multiple : true},
+			prefixUrls : {type : "projectX.util.PrefixUrl", multiple : true}
 		}
 	}});
 
@@ -32,29 +33,29 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	Project.prototype.addNewRequest = function(sName, sUrl) {
 		sUrl = (!!sUrl) ? sUrl : "http://localhost:3000";
 		sName = (!!sName) ? sName : "New request";
-		
+
 		var iNewID = this._getNextId();
 
-		var oRequest = new projectX.util.Request({	
-			identifier: iNewID,	
-			name: sName,	
-			url: sUrl 
+		var oRequest = new projectX.util.Request({
+			identifier: iNewID,
+			name: sName,
+			url: sUrl
 			}
 		);
 		this.addRequest(oRequest);
 		return oRequest;
 	};
-	
+
 	/**
 	 * create a new sequence.
 	 * calculate a new id for the sequence. (highest id + 1)
 	 * add it to the project.
 	 */
 	Project.prototype.addNewSequence = function() {
-		
+
 		var iNewID = this.getNextSequenceId();
 
-		var oSequence = new Sequence({	
+		var oSequence = new Sequence({
 			identifier: iNewID,
 			name: "new sequence"
 			}
@@ -62,7 +63,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.addSequence(oSequence);
 		return oSequence;
 	};
-	
+
 	/**
 	 * create a copy of the given request and add it to the requests.
 	*/
@@ -84,7 +85,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		}
 		return null;
 	};
-	
+
 	Project.prototype.getSequenceByIdentifier = function(iIdentifier) {
 		var aSequences = this.getSequences();
 
@@ -98,22 +99,28 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 	Project.prototype.serialize = function(iIdentifier) {
 		var oProject = this.mProperties;
-		
+
 		var aSerializedRequests = [];
 		var aRequests = this.getRequests();
 		for (var i = 0; i < aRequests.length; i++) {
 			aSerializedRequests.push(aRequests[i].serialize());
 		}
 		oProject.requests = aSerializedRequests;
-		
+
 		var aSerializedSequences = [];
 		var aSequences = this.getSequences();
 		for (var i = 0; i < aSequences.length; i++) {
 			aSerializedSequences.push(aSequences[i].serialize());
 		}
 		oProject.sequences = aSerializedSequences;
-		
-		
+
+		var aSerializedPrefixUrls = [];
+		var aPrefixUrls = this.getPrefixUrls();
+		for (var i = 0; i < aPrefixUrls.length; i++) {
+			aSerializedPrefixUrls.push(aPrefixUrls[i].serialize());
+		}
+		oProject.prefixUrls = aSerializedPrefixUrls;
+
 		return oProject;
 	};
 
@@ -121,7 +128,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.addNewRequest( "Service Document", this.getBaseUrl() );
 		this.addNewRequest( "Metadata Document", this.getBaseUrl() + "$metadata" );
 	};
-	
+
 	Project.prototype.getNextSequenceId = function() {
 		var aSequences = this.getSequences();
 		var iHighestID = 0;
@@ -131,11 +138,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		var iNewID = iHighestID + 1;
 		return iNewID;
 	};
-	
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// private functions
 	// /////////////////////////////////////////////////////////////////////////////
-	
+
 	Project.prototype._getNextId = function() {
 		var aRequests = this.getRequests();
 		var iHighestID = 0;

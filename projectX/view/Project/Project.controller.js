@@ -4,99 +4,76 @@ jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.util.Helper");
 
 projectX.util.Controller.extend("projectX.view.Project.Project", {
-	
-	_localProjectModel : undefined,
+
+	_localUIModel : undefined,
 	_sReason : null,
+	_oProject : null,
 
 	//TODO create enum for the binding targets
 
 //initialization and routing
 
 	onInit : function() {
-		this._localProjectModel = new sap.ui.model.json.JSONModel({
-			
+		this._localUIModel = new sap.ui.model.json.JSONModel({
+			project: null,
+			odataServiceCheckRes : "",
+			odataServiceCheckRes : "",
 		});
-		this.getView().setModel(this._localProjectModel, "projectModel");
-		
+		//set the local ui model to the view
+		//use a name when addressing the local ui model from xml
+		this.getView().setModel(this._localUIModel, "localUIModel");
+
 		//hook navigation event
 		this.getRouter().getRoute("project").attachPatternMatched(this.onRouteMatched, this);
 	},
 
 	onRouteMatched : function(oEvent) {
+		this._oProject =  null;
+
 		var oParameters = oEvent.getParameters();
-		var iProjectID = parseInt(oParameters.arguments.projectID, 10);
-		var sReason = oParameters.arguments.reason;
-		this._sReason = sReason;
-		
-		if (sReason === "edit"){
-			//user wants to edit the currently selected model
-			var oModel = this.getView().getModel();
-			var oSelectedProject = oModel.getProperty("/SelectedProject");
-			//set data from selected project into local project model
-			this._localProjectModel.setProperty("/name", oSelectedProject.getName());
-			this._localProjectModel.setProperty("/baseUrl", oSelectedProject.getBaseUrl());
-			//set helper values to modify the page between edit and new
-			this._localProjectModel.setProperty("/reasonNew", false);
-			this._localProjectModel.setProperty("/reasonEdit", true);
-			this._localProjectModel.setProperty("/reason", "Edit project");
-		} else/* if (sReason === "new")*/{
-			//user wants to create a new project
-			//clear the local project model
-			this._localProjectModel.setProperty("/name", "");
-			this._localProjectModel.setProperty("/baseUrl", "");
-			//set helper values to modify the page between edit and new
-			this._localProjectModel.setProperty("/reasonNew", true);
-			this._localProjectModel.setProperty("/reasonEdit", false);
-			this._localProjectModel.setProperty("/reason", "Create new project");
-		}
-		
+		//var iProjectID = parseInt(oParameters.arguments.projectID, 10);
 		var oModel = this.getView().getModel();
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
+		if (!oSelectedProject) {
+			return;
+		}
+
+		this._oProject = oSelectedProject;
+		this._localUIModel.setProperty("/project", oSelectedProject);
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// event handler
 	// /////////////////////////////////////////////////////////////////////////////
 
-	onSave : function() {
-		//basic input validation
-		if (!this._localProjectModel.getProperty("/name")){
-			alert("name field is required");
-			return;
-		}
-		
-		this._saveProject();
-		sap.ui.core.UIComponent.getRouterFor(this).backWithoutHash(this.getView());
+	/**
+	* called from the name input control when the name changes.
+	* after a delay triggers the updating of the master list to show the new name.
+	*/
+	onNameChanged : function() {
+		this.triggerWithInputDelay(function() {
+			this.updateMasterList();
+		});
 	},
-	
-	onCreate : function() {
-		//basic input validation
-		if (!this._localProjectModel.getProperty("/name")){
-			alert("name field is required");
-			return;
-		}
-		
-		this._createProject();
-		sap.ui.core.UIComponent.getRouterFor(this).backWithoutHash(this.getView());
-	},
-	
+
 	/**
 	 * check if the given base url points to a valid odata service
 	 */
 	onCheckODataService : function() {
-		this._localProjectModel.setProperty("/odataServiceCheckRes", "checking ...");
-		var sBaseUrl = this._localProjectModel.getProperty("/baseUrl");
+		this._localUIModel.setProperty("/odataServiceCheckRes", "checking ...");
+		var sBaseUrl = this._oProject.getBaseUrl();
 		var oDeferred = projectX.util.Helper.getODataServiceMetadata(sBaseUrl);
 
 		var that = this;
 		oDeferred.done(function(oServiceMetadata) {
 			//console.log(oServiceMetadata);
 			console.log("successfully loaded service metadata");
-			that._localProjectModel.setProperty("/odataServiceCheckRes", "ok");
+			that._localUIModel.setProperty("/odataServiceCheckRes", "ok");
 		});
 
 		oDeferred.fail(function() {
 			console.log("Service Metadata could not be loaded");
-			that._localProjectModel.setProperty("/odataServiceCheckRes", "failed");
+			that._localUIModel.setProperty("/odataServiceCheckRes", "failed");
 		});
 	},
 
@@ -104,21 +81,13 @@ projectX.util.Controller.extend("projectX.view.Project.Project", {
 	// /// private methods
 	// /////////////////////////////////////////////////////////////////////////////
 
-	_createProject : function() {
-		var oComponent = this.getComponent();
-		oComponent.createNewProject(
-			this._localProjectModel.getProperty("/name"),
-			this._localProjectModel.getProperty("/baseUrl")
-			);
-	},
-	
 	_saveProject : function() {
 		//get currently selected model
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
 		//write data from local project model back to selected project
-		oSelectedProject.setName(this._localProjectModel.getProperty("/name"));
-		oSelectedProject.setBaseUrl(this._localProjectModel.getProperty("/baseUrl"));
+		oSelectedProject.setName(this._localUIModel.getProperty("/name"));
+		oSelectedProject.setBaseUrl(this._localUIModel.getProperty("/baseUrl"));
 		oModel.setProperty("/SelectedProject", null);
 		oModel.setProperty("/SelectedProject", oSelectedProject);
 	},

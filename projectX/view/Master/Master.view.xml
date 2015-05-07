@@ -12,32 +12,8 @@
 		>
 		<customHeader>
 			<Bar>
-				<contentMiddle>
-					<l:FixFlex 	vertical="false" 
-								fixFirst="false">
-						<l:fixContent>
-							<Button icon="sap-icon://edit"
-									tooltip="Edit project"
-									press="onEditProject"/>
-							<Button icon="sap-icon://create"
-									tooltip="Add new project"
-									press="onAddNewProject"/>
-						 </l:fixContent>
-						 <l:flexContent>
-						     <Select width="100%"
-						     		 items="{/Projects}"
-						     		 change="onSelectProjectChange"
-						     		>
-						     	<core:Item text="{mProperties/name}" />
-							</Select>
-					     </l:flexContent>
-					</l:FixFlex>
-				</contentMiddle>
-			</Bar>
-    	</customHeader>
-		<subHeader>
-			<Bar>
 				<contentRight>
+					<Label text="{/SelectedProject/mProperties/name}"/>
 					<u:FileUploader
 						change="onFileUploaderChange"
 						buttonText="Import"
@@ -49,25 +25,39 @@
 						tooltip="Export"
 						press="onExport" />
 					<Button
-						text="Load"
-						tooltip="Load"
-						press="onLoad" />
-					<Button
 						text="Save"
 						tooltip="Save"
 						press="onSave" />
 				</contentRight>
 			</Bar>
-    	</subHeader>
+    	</customHeader>
 		<content>
-			<SegmentedButton selectedButton="idButtonRequests"
+			<SegmentedButton selectedButton="idButtonProjects"
 							select="onSegmentedButtonSelect">
-	          <Button text="Requests" id="idButtonRequests" />
+						<Button text="Projects" id="idButtonProjects" />
+						<Button text="Requests" id="idButtonRequests" />
 	          <Button text="Sequences" id="idButtonSequences" />
-	        </SegmentedButton>
-			
+        </SegmentedButton>
+
 			<ScrollContainer
-				visible="{localUIModel>/requestsVisible}"
+				visible="{= ${localUIModel>/visibleTab} === 'PROJECTS'}"
+				height="100%"
+				width="100%"
+				horizontal="false"
+				vertical="true">
+				<List
+					id="idListProjects"
+					items="{/Projects}"
+					mode="SingleSelectMaster"
+					select="onProjectsListSelect"
+					>
+					<items>
+						<StandardListItem title="{mProperties/name}"/>
+					</items>
+				</List>
+			</ScrollContainer>
+			<ScrollContainer
+				visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}"
 				height="100%"
 				width="100%"
 				horizontal="false"
@@ -84,7 +74,7 @@
 				</List>
 			</ScrollContainer>
 			<ScrollContainer
-				visible="{localUIModel>/sequencesVisible}"
+				visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}"
 				height="100%"
 				width="100%"
 				horizontal="false"
@@ -103,6 +93,10 @@
 		</content>
 		<footer>
 			<Toolbar>
+				<Button icon="sap-icon://create"
+						tooltip="Add new project"
+						press="onAddNewProject"/>
+				<ToolbarSpacer/>
 				<Button
 					icon="sap-icon://up"
 					tooltip="Move request up"
@@ -112,7 +106,7 @@
 					tooltip="Move request down"
 					press="onMoveRequestDown" />
 				<ToolbarSpacer/>
-			
+
 				<Button
 					icon="sap-icon://add"
 					tooltip="Add Sequence"

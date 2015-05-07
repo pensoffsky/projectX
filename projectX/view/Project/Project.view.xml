@@ -6,7 +6,7 @@
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
 	<Page
-		title="{projectModel>/reason}">
+		showHeader="false">
 		<l:Grid
 			defaultSpan="L12 M12 S12"
 			width="auto">
@@ -28,34 +28,61 @@
 						<!-- Basic info -->
 						<c:Title text="Project Info" />
 						<Label text="Project Name" />
-						<Input value="{projectModel>/name}" />
+						<Input value="{localUIModel>/project/mProperties/name}"
+							placeholder="name of project"
+							liveChange="onNameChanged"
+							valueLiveUpdate="true"
+							/>
 						<Label text="OData Service URL" />
-						
-							<Input value="{projectModel>/baseUrl}"
+
+							<Input value="{localUIModel>/project/mProperties/baseUrl}"
 									/>
 							<Button text="Check"
 								 	tooltip="Check for valid OData service"
 									press="onCheckODataService"
 									/>
-							<Text text="{projectModel>/odataServiceCheckRes}"/>
-						
+							<Text text="{localUIModel>/odataServiceCheckRes}"/>
+
 					</f:content>
 				</f:SimpleForm>
 			</l:content>
 		</l:Grid>
-		
-		
+
+		<Table items="{/project/mAggregations/prefixUrls}"
+				mode="MultiSelect"
+				id="idTablUrls"
+				rememberSelections="false"
+				>
+			<headerToolbar>
+		    	<Toolbar>
+		        	<Label text="Prefix URLs" />
+		        <ToolbarSpacer />
+		        <Button icon="sap-icon://add"
+						tooltip="Add url"
+						press="onBtnAddUrl"/>
+				<Button icon="sap-icon://delete"
+						tooltip="Delete selected url"
+						press="onBtnDeleteUrl"/>
+		      </Toolbar>
+		    </headerToolbar>
+			<columns>
+				<Column>
+					<Text text="URL" />
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Top">
+					<cells>
+						<Input value="{mProperties/url}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button text="Save" 
-						type="Emphasized" 
-						press="onSave"
-						visible="{projectModel>/reasonEdit}"/>
-				<Button text="Create" 
-						type="Emphasized" 
-						press="onCreate" 
-						visible="{projectModel>/reasonNew}"/>
+
 			</Toolbar>
 		</footer>
 	</Page>

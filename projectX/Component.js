@@ -237,7 +237,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	 * create a new project and add to global model.
 	 * select the new project
 	 */
-	createNewProject : function(sName, sBaseUrl) {
+	createNewProject : function() {
 		var aProjects = this._oModel.getProperty("/Projects");
 		var iHighestID = 0;
 		for (var i = 0; i < aProjects.length; i++) {
@@ -248,8 +248,8 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		//create new Project object and fill in data from local project model
 		var oProject = new projectX.util.Project({
 			identifier: iNewID,
-			name: sName,
-			baseUrl: sBaseUrl
+			name: projectX.util.Constants.DEFAULT_PROJECT_NAME,
+			baseUrl: projectX.util.Constants.DEFAULT_PROJECT_URL
 		});
 
 		//add test requests

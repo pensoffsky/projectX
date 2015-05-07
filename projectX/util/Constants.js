@@ -181,6 +181,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	 */
 	Constants.INPUTDELAY = 300;
 
+	Constants.DEFAULT_PROJECT_NAME = "New Project";
+
+	Constants.DEFAULT_PROJECT_URL = "http://services.odata.org/V2/OData/OData.svc/";
+
 	///////////////////////////////////////////////////////////////////////////
 	/// Public Functions
   ///////////////////////////////////////////////////////////////////////////
