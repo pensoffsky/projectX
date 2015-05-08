@@ -82,43 +82,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
-		// /// Project Event Handler
-		// /////////////////////////////////////////////////////////////////////////////
-
-		/**
-		* the user selected a project.
-		* make sure the master list shows the request of this project
-		*/
-		Master.prototype.onProjectsListSelect = function(){
-			var oList = this.getView().byId("idListProjects");
-			var oItem = oList.getSelectedItem();
-			var oSelectedProject = Helper.getBoundObjectForItem(oItem);
-
-			var oModel = this.getView().getModel();
-			oModel.setProperty("/SelectedProject", oSelectedProject);
-
-			var iProjectID = oSelectedProject.getIdentifier();
-			this.getRouter().navTo("project", {
-				projectID : iProjectID
-			}, true);
-
-			this._removeSelectionFromRequestList();
-			this._removeSelectionFromSequenceList();
-		};
-
-		/**
-		* the user wants to add a new project.
-		* navigate to the new project screen.
-		*/
-		Master.prototype.onAddNewProject = function() {
-			var oComponent = this.getComponent();
-			oComponent.createNewProject();
-			//remove selection from request and sequences list
-			this._removeSelectionFromRequestList();
-			this._removeSelectionFromSequenceList();
-		};
-
-		// /////////////////////////////////////////////////////////////////////////////
 		// /// SubHeader Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
 
@@ -150,22 +113,52 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		// /// List Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
 
-		Master.prototype.onSequencesListSelect = function(oEvent) {
-			var oItem = oEvent.getParameter("listItem") || oEvent.getSource();
+
+		/**
+		* the user selected a project.
+		* make sure the master list shows the request of this project
+		*/
+		Master.prototype.onProjectsListSelect = function() {
+			var oList = this.getView().byId("idListProjects");
+			var oItem = oList.getSelectedItem();			
+			var oSelectedProject = Helper.getBoundObjectForItem(oItem);
+
+			var oModel = this.getView().getModel();
+			oModel.setProperty("/SelectedProject", oSelectedProject);
+
+			var iProjectID = oSelectedProject.getIdentifier();
+			this.getRouter().navTo("project", {
+				projectID : iProjectID
+			}, true);
+
+			// this._removeSelectionFromRequestList();
+			// this._removeSelectionFromSequenceList();
+		};
+
+		Master.prototype.onSequencesListSelect = function() {
+			var oList = this.getView().byId("idListSequences");
+			var oItem = oList.getSelectedItem();
 			var oSelectedSequence = Helper.getBoundObjectForItem(oItem);
 
 			this.getRouter().navTo("sequence", {
 				sequenceID : oSelectedSequence.getIdentifier(),
 				reason : "edit"
 			}, true);
-			this._removeSelectionFromRequestList();
+			//this._removeSelectionFromRequestList();
 		};
 
-		Master.prototype.onRequestsListSelect = function(oEvent) {
-			// Get the list item, either from the listItem parameter or from the event's
-			// source itself (will depend on the device-dependent mode).
-			this._showSelectedRequest(oEvent.getParameter("listItem") || oEvent.getSource());
-			this._removeSelectionFromSequenceList();
+		Master.prototype.onRequestsListSelect = function() {
+			var oList = this.getView().byId("idListRequests");
+			var oItem = oList.getSelectedItem();
+			var oSelectedRequest = Helper.getBoundObjectForItem(oItem);
+			
+			var oModel = this.getView().getModel();
+			var oSelectedProject = oModel.getProperty("/SelectedProject");
+			
+			this.getRouter().navTo("product", {
+				requestID : oSelectedRequest.getIdentifier(),
+				projectID : oSelectedProject.getIdentifier()
+			}, true);
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -177,12 +170,15 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			switch (sSelectedId) {
 				case this.createId("idButtonRequests"):
 					this._localUIModel.setProperty("/visibleTab", Master.TABS.REQUESTS);
+					this.onRequestsListSelect();
 					break;
 				case this.createId("idButtonSequences"):
-				this._localUIModel.setProperty("/visibleTab", Master.TABS.SEQUENCES);
+					this._localUIModel.setProperty("/visibleTab", Master.TABS.SEQUENCES);
+					this.onSequencesListSelect();
 					break;
 				case this.createId("idButtonProjects"):
-				this._localUIModel.setProperty("/visibleTab", Master.TABS.PROJECTS);
+					this._localUIModel.setProperty("/visibleTab", Master.TABS.PROJECTS);
+					this.onProjectsListSelect();
 					break;
 			default:
 				console.log("problem with segmented button on master page");
@@ -284,6 +280,18 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 
 		};
 
+		/**
+		* the user wants to add a new project.
+		* navigate to the new project screen.
+		*/
+		Master.prototype.onAddNewProject = function() {
+			var oComponent = this.getComponent();
+			oComponent.createNewProject();
+			//remove selection from request and sequences list
+			this._removeSelectionFromRequestList();
+			this._removeSelectionFromSequenceList();
+		};
+
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Methods
 		// /////////////////////////////////////////////////////////////////////////////
@@ -317,17 +325,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			//restore the selection
 			var aItems = oList.getItems();
 			oList.setSelectedItem(aItems[iNewPos]);
-		};
-
-		Master.prototype._showSelectedRequest = function(oItem) {
-			var oModel = this.getView().getModel();
-			var oSelectedProject = oModel.getProperty("/SelectedProject");
-			var oSelectedRequest = Helper.getBoundObjectForItem(oItem);
-
-			this.getRouter().navTo("product", {
-				requestID : oSelectedRequest.getIdentifier(),
-				projectID : oSelectedProject.getIdentifier()
-			}, true);
 		};
 
 		Master.prototype._selectFirstProject = function() {
