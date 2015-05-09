@@ -18,7 +18,7 @@
 	        <SegmentedButton selectedButton="idButtonRequest"
 							select="onSegmentedButtonSelect">
 	          <Button text="Request" id="idButtonRequest" />
-	          <Button text="Assertions" id="idButtonAssertions" />
+	          <Button text="Assertions {localUIModel>/request/mProperties/assertionsResult}" id="idButtonAssertions" />
 	          <Button text="Metadata" id="idButtonMetadata" />
 	        </SegmentedButton>
 	        <ToolbarSpacer/>
@@ -57,15 +57,6 @@
 										id="superEditor"
 										/>
 								</VBox>
-								<!-- <TextArea value="{localUIModel>/request/mProperties/scriptCode}"
-											width="100%"
-											placeholder="Pre-request script"
-											rows="10"
-											>
-											<layoutData>
-								                <FlexItemData growFactor="8" />
-								            </layoutData>
-								</TextArea> -->
 								<VBox>
 									<layoutData>
 						                <FlexItemData shrinkFactor="0"
@@ -88,6 +79,8 @@
 						</Panel>
 					</VBox>
 
+					<CheckBox text="use project prefix url: {localUIModel>/project/mProperties/prefixUrl}"
+						selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"/>
 					<FlexBox
 							width="100%"
 							alignItems="Start">
@@ -96,6 +89,7 @@
 									<core:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
 							</Select>
 							<TextArea value="{localUIModel>/request/mProperties/url}"
+										id="idTextAreaUrl"
 										placeholder="Enter valid Service-URL ..."
 										rows="4"
 										width="100%"

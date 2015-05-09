@@ -19,8 +19,8 @@
 					layout="ResponsiveGridLayout"
 					labelSpanL="3"
 					labelSpanM="3"
-					emptySpanL="4"
-					emptySpanM="4"
+					emptySpanL="1"
+					emptySpanM="1"
 					columnsL="1"
 					columnsM="1"
 					class="editableForm">
@@ -43,6 +43,10 @@
 									/>
 							<Text text="{localUIModel>/odataServiceCheckRes}"/>
 
+							<Label text="Prefix URL" />
+							<Input value="{localUIModel>/project/mProperties/prefixUrl}"
+								placeholder="url to use as prefix for requests"
+								/>
 					</f:content>
 				</f:SimpleForm>
 			</l:content>

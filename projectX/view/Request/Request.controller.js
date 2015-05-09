@@ -52,9 +52,7 @@ sap.ui.define([
 			this._localUIModel = new sap.ui.model.json.JSONModel();
 			this._localUIModel.setData({
 				request: null,
-				requestVisible: true,
-				assertionsVisible: false,
-				metadataVisible: false,
+				project: null,
 				SCRIPT_EXAMPLES: Constants.SCRIPTEXAMPLES,
 				HTTP_METHODS: Constants.HTTP_METHODS,
 				responseBodyDisplayMode : "text",
@@ -64,6 +62,12 @@ sap.ui.define([
 			//use a name when addressing the local ui model from xml
 			this.getView().setModel(this._localUIModel, "localUIModel");
 
+			var that = this;
+			this.getView().byId("idTextAreaUrl").onsapentermodifiers =  function(oEvent, a ,b){
+				if (oEvent.metaKey === true) {
+					that.onBtnSendPress();
+				}
+			};
 
 			/////////////////////////////////////////////////////////////////////
 			//create Assertion fragment controller
@@ -111,6 +115,7 @@ sap.ui.define([
 
 		Request.prototype.onRouteMatched = function(oEvent) {
 			this._oRequest = null;
+			this._oProject = null;
 			
 			var oParameters = oEvent.getParameters();
 			var iRequestID = parseInt(oParameters.arguments.requestID, 10);
@@ -126,18 +131,19 @@ sap.ui.define([
 			}
 			
 			this._oRequest = oRequest;
+			this._oProject = oSelectedProject;
 			this._localUIModel.setProperty("/request", this._oRequest);
+			this._localUIModel.setProperty("/project", oSelectedProject);
 			this._prettyPrintResponseBody(this._localUIModel.getProperty("/responseBodyDisplayMode"));
 			
 			this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
-				
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Request Sending
 		// /////////////////////////////////////////////////////////////////////////////
-
+		
 		/**
 		* called when the user clicks the "send request" button.
 		* clear the result form all assertions.
@@ -145,13 +151,13 @@ sap.ui.define([
 		* evaluate assertions.
 		*/
 		Request.prototype.onBtnSendPress = function() {
-			
 			var oRequest = this._oRequest;
 			oRequest.resetTempData();
 			this._localUIModel.setProperty("/responseBodyFormatted", "");
 			this._localUIModel.updateBindings();
+			this._oAssertionEditController.updateBindings();
 			
-			var oDeferred = oRequest.execute();
+			var oDeferred = oRequest.execute(this._oProject);
 			var that = this;
 			oDeferred.always(function(){
 				oRequest.checkAssertions();

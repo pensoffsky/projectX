@@ -70,12 +70,8 @@
 					<List
 						id="idListRequests"
 						items="{localUIModel>/requests}"
-						mode="{device>/listMode}"
+						mode="MultiSelect"
 						select="onRequestsListSelect">
-
-						<layoutData>
-						<FlexItemData growFactor="1" />
-						</layoutData>
 						<items>
 							<StandardListItem title="{localUIModel>mProperties/name}"/>
 						</items>
@@ -98,10 +94,8 @@
 					<List
 						id="idListSelectedRequests"
 						items="{localUIModel>/selectedRequests}"
-						mode="{device>/listMode}"
+						mode="MultiSelect"
 						select="onSelectedRequestsListSelect">
-
-
 						<items>
 							<StandardListItem title="{localUIModel>mProperties/name}"/>
 						</items>

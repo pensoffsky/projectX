@@ -9,7 +9,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		properties : {
 			identifier : {type : "int", defaultValue : null},
 			name : {type : "string", defaultValue : null},
-			baseUrl : {type : "string", defaultValue : null}
+			baseUrl : {type : "string", defaultValue : null},
+			prefixUrl : {type : "string", defaultValue : null}
 		},
 		events : {
 

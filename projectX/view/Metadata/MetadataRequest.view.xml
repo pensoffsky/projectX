@@ -58,6 +58,14 @@
 				<Table items="{/functionImports}"
 						rememberSelections="false"
 						>
+					<headerToolbar>
+				    	<Toolbar>
+							<ToolbarSpacer/>
+					        <Button text="Add new request"
+									tooltip="Add requests for selected items"
+									press="onBtnAddEntitySetRequest"/>
+				      </Toolbar>
+				    </headerToolbar>
 					<columns>
 						<Column>
 							<Text text="Name"/>

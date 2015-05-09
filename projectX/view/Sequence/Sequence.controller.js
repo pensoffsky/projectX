@@ -46,6 +46,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		}
 
 		this._oSequence = oSelectedSequence;
+		this._oProject = oSelectedProject;
 		//set data from selected sequence into local project model
 		this._localUIModel.setProperty("/sequence", this._oSequence);
 		//set helper values to modify the page between edit and new
@@ -115,20 +116,21 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	 */
 	onButtonRight : function() {
 		var oRequestList = this.getView().byId("idListRequests");
-		var oSelectedItem = oRequestList.getSelectedItem();
-		if (!oSelectedItem){
+		var aSelectedItems = oRequestList.getSelectedItems();
+		if (!aSelectedItems){
 			return;
 		}
 
-		var oRequest = oSelectedItem.getBindingContext("localUIModel").getObject();
-		oRequest = new projectX.util.Request(oRequest.serialize());
 		var aSelectedRequests = this._localUIModel.getProperty("/selectedRequests");
-
-		aSelectedRequests.push(oRequest);
+		for (var i = 0; i < aSelectedItems.length; i++) {
+			var oRequest = aSelectedItems[i].getBindingContext("localUIModel").getObject();
+			oRequest = new projectX.util.Request(oRequest.serialize());
+			aSelectedRequests.push(oRequest);
+		}
 		
 		//set the selected requests to localuimodel and to the sequence object
 		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
-		this._oSequence.addRequestIds(aSelectedRequests);
+		this._oSequence.addRequestIds(aSelectedRequests);	
 	},
 
 	/**
@@ -136,17 +138,22 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	 */
 	onButtonLeft : function() {
 		var oSelectedRequestList = this.getView().byId("idListSelectedRequests");
-		var oSelectedItem = oSelectedRequestList.getSelectedItem();
-		if (!oSelectedItem){
+		var aSelectedItems = oSelectedRequestList.getSelectedItems();
+		if (!aSelectedItems){
 			return;
 		}
-
-		var oRequest = oSelectedItem.getBindingContext("localUIModel").getObject();
+		debugger
+		//TODO fix this
+		aSelectedItems = jQuery.extend(true, [], aSelectedItems);
 		var aSelectedRequests =  this._localUIModel.getProperty("/selectedRequests");
-		aSelectedRequests.splice(aSelectedRequests.indexOf(oRequest), 1);
+		
+		for (var i = 0; i < aSelectedItems.length; i++) {
+			var oRequest = aSelectedItems[i].getBindingContext("localUIModel").getObject();
+			aSelectedRequests.splice(aSelectedRequests.indexOf(oRequest), 1);
+		}
+
 		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
 		this._oSequence.addRequestIds(aSelectedRequests);
-		
 		this._oTable.removeSelections(true);
 	},
 
@@ -167,7 +174,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this.onClearResults();
 
 		this._setRunning(true);
-		this._executeRequests(0, aRequests);
+		this._executeRequests(this._oProject, 0, aRequests);
 	},
 
 	/**
@@ -260,7 +267,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	* @param  {int} iIndex    the index of the request to execute next
 	* @param  {array} aRequests array of all requests to execute one after another
 	*/
-	_executeRequests : function(iIndex, aRequests) {
+	_executeRequests : function(oProject, iIndex, aRequests) {
 		var that = this;
 		if (aRequests.length <= iIndex){
 			//abort
@@ -270,7 +277,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 
 		//execute the request
 		var oRequest = aRequests[iIndex];
-		var oDeferred = oRequest.execute(aRequests[iIndex - 1]);
+		var oDeferred = oRequest.execute(oProject, aRequests[iIndex - 1]);
 		//add hanlder that gets called once the request finishes
 		oDeferred.always(function() {
 			oRequest.checkAssertions();
@@ -283,7 +290,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 				return;
 			}
 
-			that._executeRequests(iIndex + 1, aRequests);
+			that._executeRequests(oProject, iIndex + 1, aRequests);
 			//TODO add positiliy to abort on failure
 		});
 	},

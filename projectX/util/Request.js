@@ -10,12 +10,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			name : {type : "string", defaultValue : null},
 			description : {type : "string", defaultValue : null},
 			httpMethod : {type : "string", defaultValue : Constants.GET},
+			useProjectPrefixUrl : {type : "boolean", defaultValue : false},
 			url : {type : "string", defaultValue : null},
 			tags : {type : "string", defaultValue : null},
 			requestBody : {type : "string", defaultValue : null},
 			scriptCode : {type : "string", defaultValue : null},
 
-			//TODO the status should not be serialized
+			//these fields are only temporary variables. they will not be persisted
 			status : {type : "string", defaultValue : null},
 			responseHeaders : {type : "string", defaultValue : null},
 			responseBody : {type : "string", defaultValue : null},
@@ -87,15 +88,22 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * in this request instance.
 	 * @param {object} oPreviousRequest the request that was executed before this one
 	 * in case the request is run in a sequence
+	 * @param {object} oProject the project this request belongs to
 	 * @return {object} jQuery deferred
 	 */
-	Request.prototype.execute = function(oPreviousRequest) {
+	Request.prototype.execute = function(oProject, oPreviousRequest) {
 		var oStartTime = new Date();
+
+		//create the url. use prefix from project if enabled by user
+		var sUrl = this.getUrl();
+		if (this.getUseProjectPrefixUrl() === true) {
+			sUrl = oProject.getPrefixUrl() + sUrl;
+		}
 
 		//create the objects that can be modified inside the script
 		var oReqParam = {
 			httpMethod: this.getHttpMethod(),
-			url: this.getUrl()
+			url: sUrl
 			//TODO add more parameters here
 		};
 
