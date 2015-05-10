@@ -35,8 +35,9 @@
 			<SegmentedButton selectedButton="idButtonProjects"
 							select="onSegmentedButtonSelect">
 						<Button text="Projects" id="idButtonProjects" />
-						<Button text="Requests" id="idButtonRequests" />
-	          <Button text="Sequences" id="idButtonSequences" />
+						<Button text="Requests {/SelectedProject/mAggregations/requests/length}" 
+							id="idButtonRequests" />
+	          <Button text="Sequences {/SelectedProject/mAggregations/sequences/length}" id="idButtonSequences" />
         </SegmentedButton>
 
 			<ScrollContainer

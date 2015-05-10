@@ -77,12 +77,55 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 
 		oModel.updateBindings();
 	},
+	
+	onBtnAddFunctionImportRequest: function(oEvent) {
+		//get selected items
+		var oTable = this.getView().byId("idTableFunctionImports");
+		var aSelectedItems = oTable.getSelectedItems();
+		if (!aSelectedItems || aSelectedItems.length <= 0) {
+			alert("no items selected");
+			return;
+		}
 
+		//get the selected project
+		var oModel = this.getView().getModel();
+		var oSelectedProject = oModel.getProperty("/SelectedProject");
+		if (!oSelectedProject) {
+			alert("no project selected");
+			return;
+		}
+
+		for (var i = 0; i < aSelectedItems.length; i++) {
+			//get the entityset description that is bound to the selected item
+			var oBoundObject = projectX.util.Helper.getBoundObjectForItem(aSelectedItems[i]);
+			//create request data and add the request to the currently selected project
+			var sName = "FI: " + oBoundObject.name;
+			var sUrl = oSelectedProject.getBaseUrl() + oBoundObject.name;
+			var sHttpMethod = oBoundObject.httpMethod;
+			
+			for (var iParamIndex = 0; iParamIndex < oBoundObject.parameter.length; iParamIndex++) {
+				if (iParamIndex === 0) {
+					sUrl += "?";
+				} else {
+					sUrl += "&";
+				}
+				sUrl += oBoundObject.parameter[iParamIndex].name + "=";
+			}
+			
+			oSelectedProject.addNewRequest(sName, sUrl, sHttpMethod);
+		}
+
+		oModel.updateBindings();
+	},
 
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// private methods
 	// /////////////////////////////////////////////////////////////////////////////
+
+	_createRequest : function(sListId, fCreate){
+		
+	},
 
 	_extractFromMetadata: function(oMetaData, sTarget) {
 		var aRes = oMetaData &&

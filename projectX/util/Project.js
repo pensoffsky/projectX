@@ -31,16 +31,20 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * calculate a new id for the request. (highest id + 1)
 	 * add it to the project.
 	 */
-	Project.prototype.addNewRequest = function(sName, sUrl) {
-		sUrl = (!!sUrl) ? sUrl : "http://localhost:3000";
-		sName = (!!sName) ? sName : "New request";
+	Project.prototype.addNewRequest = function(sName, sUrl, sHttpMethod) {
+		sUrl = sUrl || "http://localhost:3000";
+		sName = sName || "New request";
+		sHttpMethod = sHttpMethod || "GET";
+		
+		
 
 		var iNewID = this._getNextId();
 
 		var oRequest = new projectX.util.Request({
 			identifier: iNewID,
 			name: sName,
-			url: sUrl
+			url: sUrl,
+			httpMethod: sHttpMethod
 			}
 		);
 		this.addRequest(oRequest);

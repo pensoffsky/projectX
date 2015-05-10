@@ -57,13 +57,15 @@
 		    <content>	
 				<Table items="{/functionImports}"
 						rememberSelections="false"
+						mode="MultiSelect"
+						id="idTableFunctionImports"
 						>
 					<headerToolbar>
 				    	<Toolbar>
 							<ToolbarSpacer/>
 					        <Button text="Add new request"
 									tooltip="Add requests for selected items"
-									press="onBtnAddEntitySetRequest"/>
+									press="onBtnAddFunctionImportRequest"/>
 				      </Toolbar>
 				    </headerToolbar>
 					<columns>

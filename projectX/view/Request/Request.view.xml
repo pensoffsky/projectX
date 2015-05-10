@@ -18,7 +18,13 @@
 	        <SegmentedButton selectedButton="idButtonRequest"
 							select="onSegmentedButtonSelect">
 	          <Button text="Request" id="idButtonRequest" />
-	          <Button text="Assertions {localUIModel>/request/mProperties/assertionsResult}" id="idButtonAssertions" />
+	          <Button icon="{ parts : [
+								{ path : 'localUIModel>/request/mProperties/assertionsResult' },
+								{ path : 'localUIModel>/request/mProperties/assertionsResultReady' }
+							],
+							formatter : 'projectX.util.Formatter.assertionsResultToImage' }" 
+				text="Assertions ({localUIModel>/request/mAggregations/assertions/length})" 
+				id="idButtonAssertions" />
 	          <Button text="Metadata" id="idButtonMetadata" />
 	        </SegmentedButton>
 	        <ToolbarSpacer/>
@@ -73,7 +79,7 @@
 						</Panel>
 						<Panel expandable="true"
 							expanded="false"
-							headerText="Request Headers"
+							headerText="Request Headers ({localUIModel>/request/mAggregations/requestHeaders/length})"
 							>
 							<VBox id="idVBoxRequestHeaderPlaceholder" />
 						</Panel>
