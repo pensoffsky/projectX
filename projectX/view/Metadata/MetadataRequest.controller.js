@@ -5,7 +5,7 @@ jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.util.Helper");
 
 //TODO add button to load metadata again
-//TODO fix binding to entitySets and so on. on Northwind the 
+//TODO fix binding to entitySets and so on. on Northwind the
 //servicedata is structured differently compared to OData(Read/Write)
 
 projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
@@ -72,12 +72,12 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			var sName = "ES: " + oBoundObject.name;
 			var sUrl = oSelectedProject.getBaseUrl() + oBoundObject.name;
 			oSelectedProject.addNewRequest(sName, sUrl);
-			//TODO also add entitytype to request to allow filtering and so on ...?	
+			//TODO also add entitytype to request to allow filtering and so on ...?
 		}
 
 		oModel.updateBindings();
 	},
-	
+
 	onBtnAddFunctionImportRequest: function(oEvent) {
 		//get selected items
 		var oTable = this.getView().byId("idTableFunctionImports");
@@ -102,7 +102,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			var sName = "FI: " + oBoundObject.name;
 			var sUrl = oSelectedProject.getBaseUrl() + oBoundObject.name;
 			var sHttpMethod = oBoundObject.httpMethod;
-			
+
 			for (var iParamIndex = 0; iParamIndex < oBoundObject.parameter.length; iParamIndex++) {
 				if (iParamIndex === 0) {
 					sUrl += "?";
@@ -111,7 +111,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 				}
 				sUrl += oBoundObject.parameter[iParamIndex].name + "=";
 			}
-			
+
 			oSelectedProject.addNewRequest(sName, sUrl, sHttpMethod);
 		}
 
@@ -124,25 +124,52 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 	// /////////////////////////////////////////////////////////////////////////////
 
 	_createRequest : function(sListId, fCreate){
-		
+
 	},
 
+	/**
+	 * extracts all instances of of the sTarget element over all schemas.
+	 * @param {object} oMetaData the metadata object
+	 * @param {string} sTarget   name of the object to extract from the schemas
+	 */
 	_extractFromMetadata: function(oMetaData, sTarget) {
-		var aRes = oMetaData &&
-			oMetaData.dataServices &&
-			oMetaData.dataServices.schema &&
-			oMetaData.dataServices.schema[0] &&
-			oMetaData.dataServices.schema[0][sTarget];
+		var aRes = [];
+
+		if(!oMetaData ||
+			!oMetaData.dataServices ||
+			!oMetaData.dataServices.schema) {
+			return aRes;
+		}
+
+		var aSchemas = oMetaData.dataServices.schema;
+		for(var i=0; i < aSchemas.length; i++) {
+			var oContainer = aSchemas[i][sTarget];
+			if(!oContainer){
+				continue;
+			}
+			aRes.push(oContainer);
+		}
+
 		return aRes;
 	},
 
-	_extractFromEntityContainer: function(aEntityContainer, sTarget) {
-		var aRes = aEntityContainer &&
-			aEntityContainer[0] &&
-			aEntityContainer[0][sTarget];
+	_extractFromEntityContainer: function(aEntityContainers, sTarget) {
+		var aRes = [];
+		for(var i=0; i < aEntityContainers.length; i++) {
+			var aContainers =  aEntityContainers[i];
+
+			for(var j=0; j < aContainers.length; j++) {
+				var aTargets = aContainers[j][sTarget];
+				if(!aTargets){
+					continue;
+				}
+				for(var k=0; k<aTargets.length; k++){
+					aRes.push(aTargets[k]);
+				}
+			}
+		}
 		return aRes;
 	},
-
 
 	/**
 	 * check if the given base url points to a valid odata service
@@ -158,10 +185,13 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			console.log("successfully loaded service metadata");
 			that._localUIModel.setProperty("/odataServiceCheckRes", "metadata loaded successfully");
 			that._localUIModel.setProperty("/serviceMetadata", oMetaData);
-			var aEntityContainer = that._extractFromMetadata(oMetaData, "entityContainer");
-			that._localUIModel.setProperty("/associationSets", that._extractFromEntityContainer(aEntityContainer, "associationSet"));
-			that._localUIModel.setProperty("/entitySets", that._extractFromEntityContainer(aEntityContainer, "entitySet"));
-			that._localUIModel.setProperty("/functionImports", that._extractFromEntityContainer(aEntityContainer, "functionImport"));
+
+			//get an array of maybe multiple entityContainers
+			var aEntityContainers = that._extractFromMetadata(oMetaData, "entityContainer");
+
+			that._localUIModel.setProperty("/associationSets", that._extractFromEntityContainer(aEntityContainers, "associationSet"));
+			that._localUIModel.setProperty("/entitySets", that._extractFromEntityContainer(aEntityContainers, "entitySet"));
+			that._localUIModel.setProperty("/functionImports", that._extractFromEntityContainer(aEntityContainers, "functionImport"));
 		});
 
 		oDeferred.fail(function() {

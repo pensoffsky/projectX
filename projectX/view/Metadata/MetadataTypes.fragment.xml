@@ -1,82 +1,104 @@
 <c:FragmentDefinition
-	xmlns:l="sap.ui.layout"
-	xmlns:f="sap.ui.layout.form"
-	xmlns:c="sap.ui.core"
-	xmlns="sap.m">
-			
-	<VBox items="{/entityTypes}" width="100%">
-		<items>
-			<VBox>
-				<Panel expandable="true" 
-					   expanded="false"
-					   headerText="{name}">
-					<Table items="{property}"
-							rememberSelections="false"
-							mode="MultiSelect"
-							selectionChange="onEntityTypeTableSelectionChange"
-							>
-						<columns>
-							<Column><Text text="Name" /></Column>
-							<Column><Text text="Type" /></Column>
-							<Column><Text text="Nullable" /></Column>
-							<Column><Text text="Key" /></Column>
-							<Column><Text text="Value" /></Column>
-						</columns>
-						<items>
-							<ColumnListItem>
-								<cells>
-									<Label text="{name}"/>
-									<Text text="{type}"/>
-									<Text text="{nullable}"/>
-									<c:Icon src="{path:'calculatedIsKey',
+        xmlns:l="sap.ui.layout"
+        xmlns:f="sap.ui.layout.form"
+        xmlns:c="sap.ui.core"
+        xmlns="sap.m"
+        xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <VBox>
+        <HBox>
+            <Button text="format json"/>
+            <Button text="inlinecount=allpages"/>
+        </HBox>
+        <VBox items="{/entityTypes}" width="100%">
+            <items>
+                <VBox>
+                    <Panel expandable="true"
+                           expanded="false"
+                           headerText="{name}">
+                        <Table items="{property}"
+                               rememberSelections="false"
+                               mode="MultiSelect"
+                               selectionChange="onEntityTypeTableSelectionChange"
+                                >
+                            <columns>
+                            <Column>
+                                <Text text="Name"/>
+                            </Column>
+                            <Column>
+                                <Text text="Type"/>
+                            </Column>
+                            <Column>
+                                <Text text="Nullable"/>
+                            </Column>
+                            <Column>
+                                <Text text="Key"/>
+                            </Column>
+                            <Column>
+                                <Text text="Value"/>
+                            </Column>
+                        </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Label text="{name}"/>
+                                        <Text text="{type}"/>
+                                        <Text text="{nullable}"/>
+                                        <c:Icon src="{path:'calculatedIsKey',
 										 formatter:'projectX.util.Formatter.entityPropertyKeyToImage'}"/>
-									<VBox>
-										<Input visible="{path:'type',
+                                        <VBox>
+                                            <Input visible="{path:'type',
 											formatter:'projectX.util.Formatter.entitytypeString'}"
-											value="{___userInput}"
-											/>
-										<Switch visible="{path:'type',
+                                                   value="{___userInput}"
+                                                    />
+                                            <Switch visible="{path:'type',
 											formatter:'projectX.util.Formatter.entitytypeSwitch'}"
-											/>
-										<DateTimeInput type="DateTime"
-											visible="{path:'type',
+                                                    />
+                                            <DateTimeInput type="DateTime"
+                                                           visible="{path:'type',
 											formatter:'projectX.util.Formatter.entitytypeDateTime'}"
-											placeholder="Enter DateTime"
-									      />
-										<DateTimeInput type="Time"
-											visible="{path:'type',
+                                                           placeholder="Enter DateTime"
+                                                    />
+                                            <DateTimeInput type="Time"
+                                                           visible="{path:'type',
 											formatter:'projectX.util.Formatter.entitytypeTime'}"
-											placeholder="Enter Time"
-									      />
-									</VBox>
-								</cells>
-							</ColumnListItem>
-						</items>
-					</Table>	
-					<f:SimpleForm
-						editable="true"
-						layout="ResponsiveGridLayout"
-						labelSpanL="1"
-						labelSpanM="1"
-						emptySpanL="0"
-						emptySpanM="0"
-						>
-						<f:content>
-							<Label text="Key" />
-							<Text text="{calculatedKeys}"/>
-							<Label text="OrderBy" />
-							<Text text="{calculatedOrderBy}"/>
-							<Label text="Filter" />
-							<Text text="{calculatedFilter}"/>
-							<Label text="Select" />
-							<Text text="{calculatedSelect}"/>
-							<Label text="Payload" />
-							<Text text="{calculatedPayload}"/>
-						</f:content>
-					</f:SimpleForm>	
-				</Panel>      
-			</VBox>
-		</items>
-	</VBox>
-		
+                                                           placeholder="Enter Time"
+                                                    />
+                                        </VBox>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        <f:SimpleForm
+                                editable="true"
+                                layout="ResponsiveGridLayout"
+                                labelSpanL="1"
+                                labelSpanM="1"
+                                emptySpanL="0"
+                                emptySpanM="0"
+                                >
+                            <f:content>
+                                <Label text="Key"/>
+                                <Button text="Add to URL" press="onBtnCalculatedKeyPress" app:url="{calculatedKeys}">
+                                    <layoutData>
+                                        <l:GridData span="L1 M1 S1"/>
+                                    </layoutData>
+                                </Button>
+                                <Text text="{calculatedKeys}"/>
+                                <Label text="OrderBy"/>
+                                <Text text="{calculatedOrderBy}"/>
+                                <Label text="Filter"/>
+                                <Text text="{calculatedFilter}"/>
+                                <Label text="Select"/>
+                                <Text text="{calculatedSelect}"/>
+                                <Label text="Payload"/>
+                                <Text text="{calculatedPayload}"/>
+                            </f:content>
+                        </f:SimpleForm>
+                    </Panel>
+                </VBox>
+            </items>
+        </VBox>
+    </VBox>
+
 </c:FragmentDefinition>

@@ -198,6 +198,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 		return oRes;
 	};
+	
+	Request.prototype.appendToUrl = function(sString) {
+		this.setUrl(this.getUrl() + "\n" + sString);
+	};
+	
+	
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods

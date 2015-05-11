@@ -136,13 +136,18 @@ sap.ui.define([
 			this._localUIModel.setProperty("/project", oSelectedProject);
 			this._prettyPrintResponseBody(this._localUIModel.getProperty("/responseBodyDisplayMode"));
 			
-			this._oMetadataTypesController.setServiceUrl(oSelectedProject.getBaseUrl());
+			this._oMetadataTypesController.setSelectedRequest(this._oProject, this._oRequest);
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Request Sending
 		// /////////////////////////////////////////////////////////////////////////////
+		
+		Request.prototype.onBtnMetadataPress = function(oEvent) {
+			var oPopover = this.getView().byId("idMetadataPopover");
+			oPopover.openBy(this.getView().byId("idTextAreaUrl"));
+		};
 		
 		/**
 		* called when the user clicks the "send request" button.
@@ -212,7 +217,7 @@ sap.ui.define([
 		*/
 		Request.prototype.onBtnDuplicatePress = function() {
 			var oComponent = this.getComponent();
-			oComponent.duplicateRequest(this._oOriginalRequest);
+			oComponent.duplicateRequest(this._oRequest);
 		};
 
 		Request.prototype.onButtonScriptExamples = function(oEvent) {

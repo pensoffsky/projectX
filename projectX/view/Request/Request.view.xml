@@ -1,169 +1,182 @@
 <mvc:View
-	controllerName="projectX.view.Request.Request"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:core="sap.ui.core"
-	xmlns:l="sap.ui.layout"
-	xmlns="sap.m"
-	xmlns:u="sap.ui.unified"
-	xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns:custom="projectX.util">
-	<Page
-		showNavButton="{device>/isPhone}"
-		navButtonPress="onNavBack"
-		enableScrolling="false"
-		showHeader="false"
-		title="{localUIModel>/name}">
-		<subHeader>
-	      <Toolbar>
-	        <SegmentedButton selectedButton="idButtonRequest"
-							select="onSegmentedButtonSelect">
-	          <Button text="Request" id="idButtonRequest" />
-	          <Button icon="{ parts : [
+        controllerName="projectX.view.Request.Request"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns:core="sap.ui.core"
+        xmlns:l="sap.ui.layout"
+        xmlns="sap.m"
+        xmlns:u="sap.ui.unified"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:custom="projectX.util">
+    <Page showNavButton="{device>/isPhone}"
+          navButtonPress="onNavBack"
+          enableScrolling="false"
+          showHeader="false"
+          title="{localUIModel>/name}">
+        <subHeader>
+            <Toolbar>
+                <SegmentedButton selectedButton="idButtonRequest"
+                                 select="onSegmentedButtonSelect">
+                    <Button text="Request" id="idButtonRequest"/>
+                    <Button icon="{ parts : [
 								{ path : 'localUIModel>/request/mProperties/assertionsResult' },
 								{ path : 'localUIModel>/request/mProperties/assertionsResultReady' }
 							],
-							formatter : 'projectX.util.Formatter.assertionsResultToImage' }" 
-				text="Assertions ({localUIModel>/request/mAggregations/assertions/length})" 
-				id="idButtonAssertions" />
-	          <Button text="Metadata" id="idButtonMetadata" />
-	        </SegmentedButton>
-	        <ToolbarSpacer/>
-			<Button text="Send Request" press="onBtnSendPress"/>
-	      </Toolbar>
-    	</subHeader>
+							formatter : 'projectX.util.Formatter.assertionsResultToImage' }"
+                            text="Assertions ({localUIModel>/request/mAggregations/assertions/length})"
+                            id="idButtonAssertions"/>
+                    <Button text="Metadata" id="idButtonMetadata"/>
+                </SegmentedButton>
+                <ToolbarSpacer/>
+                <Button text="Send Request" press="onBtnSendPress"/>
+            </Toolbar>
+        </subHeader>
 
-		<content>
+        <content>
 
-			<ScrollContainer
-				visible="{localUIModel>/requestVisible}"
-				height="100%"
-				width="100%"
-				horizontal="false"
-				vertical="true" >
-				<VBox>
-					<VBox>
+            <ScrollContainer
+                    visible="{localUIModel>/requestVisible}"
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
 
-						<Input value="{localUIModel>/request/mProperties/name}"
-								placeholder="name of request"
-								liveChange="onNameChanged"
-								valueLiveUpdate="true"
-								/>
-						<Panel expandable="true"
-							   expanded="false"
-							   headerText="Pre-request script"
-							   expand="onPanelPrescriptExpand">
-							<FlexBox width="100%">
-								<VBox>
-									<layoutData>
-										<FlexItemData growFactor="8" />
-									</layoutData>
+                <Input value="{localUIModel>/request/mProperties/name}"
+                       placeholder="name of request"
+                       liveChange="onNameChanged"
+                       valueLiveUpdate="true"
+                        />
 
-									<custom:AceEditor width="100%" height="200px"
-										value="{localUIModel>/request/mProperties/scriptCode}"
-										id="superEditor"
-										/>
-								</VBox>
-								<VBox>
-									<layoutData>
-						                <FlexItemData shrinkFactor="0"
-											/>
-						            </layoutData>
-									<Button text="Snippets" press="onButtonScriptExamples"/>
-									<u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
-											id="idMenuScriptExamples">
-											<u:MenuItem text="{localUIModel>text}"
-												select="onMenuItemScriptExampleSelected"/>
-									</u:Menu>
-								</VBox>
-							</FlexBox>
-						</Panel>
-						<Panel expandable="true"
-							expanded="false"
-							headerText="Request Headers ({localUIModel>/request/mAggregations/requestHeaders/length})"
-							>
-							<VBox id="idVBoxRequestHeaderPlaceholder" />
-						</Panel>
-					</VBox>
+                <CheckBox text="use project prefix url: {localUIModel>/project/mProperties/prefixUrl}"
+                          selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"/>
+                <FlexBox
+                        width="100%"
+                        alignItems="Start">
+                    <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
+                            items="{localUIModel>/HTTP_METHODS}">
+                        <core:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
+                    </Select>
+                    <TextArea value="{localUIModel>/request/mProperties/url}"
+                              id="idTextAreaUrl"
+                              placeholder="Enter valid Service-URL ..."
+                              rows="4"
+                              width="100%"
+                            >
+                        <layoutData>
+                            <FlexItemData growFactor="1"/>
+                        </layoutData>
+                    </TextArea>
+                    <VBox>
+                        <Button press="onBtnSendPress" text="Send"/>
+                        <Button press="onBtnMetadataPress" text="OData"/>
+                        <Popover id="idMetadataPopover"
+                                 title="OData Request Helper"
+                                 horizontalScrolling="false"
+                                 contentWidth="98%"
+                                 contentHeight="98%"
+                                 placement="Bottom">
+                            <VBox id="idVBoxMetadataTypesPlaceholder"/>
+                        </Popover>
+                    </VBox>
+                </FlexBox>
 
-					<CheckBox text="use project prefix url: {localUIModel>/project/mProperties/prefixUrl}"
-						selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"/>
-					<FlexBox
-							width="100%"
-							alignItems="Start">
-							<Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
-									items="{localUIModel>/HTTP_METHODS}">
-									<core:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
-							</Select>
-							<TextArea value="{localUIModel>/request/mProperties/url}"
-										id="idTextAreaUrl"
-										placeholder="Enter valid Service-URL ..."
-										rows="4"
-										width="100%"
-										>
-								<layoutData>
-					                <FlexItemData growFactor="1" />
-					            </layoutData>
-							</TextArea>
-							<Button press="onBtnSendPress" text="Send"/>
-					</FlexBox>
+                <Panel expandable="true"
+                       expanded="false"
+                       headerText="Pre-request script"
+                       expand="onPanelPrescriptExpand">
+                    <FlexBox width="100%">
+                        <VBox>
+                            <layoutData>
+                                <FlexItemData growFactor="8"/>
+                            </layoutData>
 
+                            <custom:AceEditor width="100%" height="200px"
+                                              value="{localUIModel>/request/mProperties/scriptCode}"
+                                              id="superEditor"
+                                    />
+                        </VBox>
+                        <VBox>
+                            <layoutData>
+                                <FlexItemData shrinkFactor="0"
+                                        />
+                            </layoutData>
+                            <Button text="Snippets" press="onButtonScriptExamples"/>
+                            <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
+                                    id="idMenuScriptExamples">
+                                <u:MenuItem text="{localUIModel>text}"
+                                            select="onMenuItemScriptExampleSelected"/>
+                            </u:Menu>
+                        </VBox>
+                    </FlexBox>
+                </Panel>
+                <Panel expandable="true"
+                       expanded="false"
+                       headerText="Request Headers ({localUIModel>/request/mAggregations/requestHeaders/length})"
+                        >
+                    <VBox id="idVBoxRequestHeaderPlaceholder"/>
+                </Panel>
 
-					<Label text="Response Header" />
-					<custom:AceEditor width="100%" height="auto"
-						mode="text"
-						readOnly="true"
-						value="{localUIModel>/request/mProperties/responseHeaders}"
-						id="superEditor3"
-						autoHeightMode="true"
-						enableWrapMode="true"
-						/>
+                <Panel expandable="true"
+                       expanded="true"
+                       headerText="Response Headers ({localUIModel>/request/mProperties/responseHeaders/length})"
+                        >
+                    <custom:AceEditor width="100%" height="auto"
+                                      mode="text"
+                                      readOnly="true"
+                                      value="{localUIModel>/request/mProperties/responseHeaders}"
+                                      id="superEditor3"
+                                      autoHeightMode="true"
+                                      enableWrapMode="true"
+                            />
+                </Panel>
 
-					<Label text="Response Body" />
+                <VBox>
+                    <Label text="Response Body"/>
+                    <Label text="Status: {localUIModel>/request/mProperties/status}
+                    Time: {localUIModel>/request/mProperties/responseTime}ms"/>
+                    <SegmentedButton selectedButton="idButtonResponseRAW"
+                                     select="onResponseBodyFormat">
+                        <Button text="XML" id="idButtonResponseXML"/>
+                        <Button text="JSON" id="idButtonResponseJSON"/>
+                        <Button text="HTML" id="idButtonResponseHTML"/>
+                        <Button text="RAW" id="idButtonResponseRAW"/>
+                    </SegmentedButton>
+                </VBox>
+                <custom:AceEditor width="100%" height="auto" class="projectXAceNoScroll"
+                                  mode="{localUIModel>/responseBodyDisplayMode}"
+                                  readOnly="true"
+                                  value="{localUIModel>/responseBodyFormatted}"
+                                  id="superEditor2"
+                                  autoHeightMode="true"
+                                  enableWrapMode="true"
+                        />
 
-					<SegmentedButton selectedButton="idButtonResponseRAW"
-								select="onResponseBodyFormat">
-						<Button text="XML" id="idButtonResponseXML" />
-						<Button text="JSON" id="idButtonResponseJSON" />
-						<Button text="HTML" id="idButtonResponseHTML" />
-						<Button text="RAW" id="idButtonResponseRAW" />
-					</SegmentedButton>
-					<custom:AceEditor width="100%" height="auto" class="projectXAceNoScroll"
-						mode="{localUIModel>/responseBodyDisplayMode}"
-						readOnly="true"
-						value="{localUIModel>/responseBodyFormatted}"
-						id="superEditor2"
-						autoHeightMode="true"
-						enableWrapMode="true"
-						/>
+            </ScrollContainer>
 
-				</VBox>
-			</ScrollContainer>
+            <ScrollContainer
+                    visible="{localUIModel>/assertionsVisible}"
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+                <VBox id="idVBoxAssertionPlaceholder"/>
+            </ScrollContainer>
+            <ScrollContainer
+                    visible="{localUIModel>/metadataVisible}"
+                    height="100%"
+                    width="100%"
+                    horizontal="false"
+                    vertical="true">
+                <!--<VBox id="idVBoxMetadataTypesPlaceholder"/>-->
+            </ScrollContainer>
 
-			<ScrollContainer
-				visible="{localUIModel>/assertionsVisible}"
-				height="100%"
-				width="100%"
-				horizontal="false"
-				vertical="true" >
-				<VBox id="idVBoxAssertionPlaceholder"/>
-			</ScrollContainer>
-			<ScrollContainer
-				visible="{localUIModel>/metadataVisible}"
-				height="100%"
-				width="100%"
-				horizontal="false"
-				vertical="true" >
-				<VBox id="idVBoxMetadataTypesPlaceholder"/>
-			</ScrollContainer>
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button press="onBtnDuplicatePress" text="Duplicate" icon="sap-icon://duplicate"/>
+                <Button press="onBtnDeletePress" text="Delete" icon="sap-icon://delete"/>
+            </Toolbar>
+        </footer>
 
-		</content>
-			<footer>
-				<Toolbar>
-				<ToolbarSpacer/>
-				<Button press="onBtnDuplicatePress" text="Duplicate" icon="sap-icon://duplicate"/>
-				<Button press="onBtnDeletePress" text="Delete" icon="sap-icon://delete"/>
-			</Toolbar>
-		</footer>
-
-	</Page>
+    </Page>
 </mvc:View>

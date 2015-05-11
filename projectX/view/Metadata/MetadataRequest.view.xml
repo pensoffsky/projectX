@@ -9,8 +9,7 @@
 		title="Add Request based on OData MetaData">
 		
 		<VBox id="idBindingContainer">
-			<Label text="{/odataServiceCheckRes}\"/>
-			<Label text="TODO this currently only works against http://services.odata.org/V2/OData/OData.svc/ because only one schema is supported a the moment."/>
+			<Label text="{/odataServiceCheckRes}"/>
 		
 		<!--  
 		ENTITY SETS

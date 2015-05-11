@@ -30,6 +30,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		// /// Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
 
+		MetadataTypesController.prototype.onBtnCalculatedKeyPress = function(oEvent) {
+			var sUrl = oEvent.getSource().data("url");
+			this._oRequest.appendToUrl(sUrl);
+		};
 
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -54,8 +58,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			this.getView().setModel(this._localUIModel);
 		};
 
-		MetadataTypesController.prototype.setServiceUrl = function(sServiceUrl) {
-			this._getODataServiceMetadata(sServiceUrl);
+		MetadataTypesController.prototype.setSelectedRequest = function(oProject, oRequest) {
+			this._oProject = oProject;
+			this._oRequest = oRequest;
+			this._getODataServiceMetadata(this._oProject.getBaseUrl());
 		};
 
 
