@@ -180,6 +180,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	 * @type {int}
 	 */
 	Constants.INPUTDELAY = 300;
+	
+	/**
+	 * time to wait between attempts to autosave the current projects in ms.
+	 * @type {int}
+	 */
+	Constants.AUTOSAVEDELAY = 1000;
 
 	Constants.DEFAULT_PROJECT_NAME = "New Project";
 

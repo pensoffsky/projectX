@@ -90,11 +90,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			oComponent.load();
 		};
 
-		Master.prototype.onSave = function() {
-			var oComponent = this.getComponent();
-			oComponent.save();
-		};
-
 		Master.prototype.onExport = function() {
 			var oComponent = this.getComponent();
 			oComponent.export();
@@ -159,6 +154,32 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 				requestID : oSelectedRequest.getIdentifier(),
 				projectID : oSelectedProject.getIdentifier()
 			}, true);
+		};
+		
+		Master.prototype._filterList = function(sQuery, oList){
+			// add filter for search
+			var aFilters = [];
+			
+			if (sQuery && sQuery.length > 0) {
+				var filter = new sap.ui.model.Filter("mProperties/name", 
+					sap.ui.model.FilterOperator.Contains,
+					sQuery);
+				aFilters.push(filter);
+			}
+
+			// update list binding
+			var binding = oList.getBinding("items");
+			binding.filter(aFilters, "Application");
+		};
+		
+		Master.prototype.onRequestSearch = function(oEvent) {
+			var sQuery = oEvent.getSource().getValue();
+			this._filterList(sQuery, this.getView().byId("idListRequests"));
+		};
+		
+		Master.prototype.onSequenceSearch = function(oEvent) {
+			var sQuery = oEvent.getSource().getValue();
+			this._filterList(sQuery, this.getView().byId("idListSequences"));
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////

@@ -33,7 +33,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * @return {object} a javascript object containing the data that has to be saved to disk.
 	 */
 	RequestHeader.prototype.serialize = function() {
-		return this.mProperties;
+		var oRequestHeader = {};
+		oRequestHeader.fieldName = this.getFieldName();
+		oRequestHeader.fieldValue = this.getFieldValue();
+		return oRequestHeader;
 	};
 
 

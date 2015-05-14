@@ -143,55 +143,32 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oAppConstants.setDefaultBindingMode("OneWay");
 		this.setModel(oAppConstants, "constants");
 
+		this.initAutoSave();
 
 		this.getRouter().initialize();
 	},
-
-	_createJsonString : function() {
-		var aProjects = this._oModel.getProperty("/Projects");
-		var aSaveableObject = [];
-
-		if (!aProjects || aProjects.length <= 0) {
-			return;
-		}
-
-		for (var i = 0; i < aProjects.length; i++) {
-			aSaveableObject.push(aProjects[i].serialize());
-		}
-		//create json string indented with 4 spaces
-		var sData = JSON.stringify(aSaveableObject, null, 2);
-		return sData;
+	
+	initAutoSave : function () {
+		jQuery.sap.intervalCall(projectX.util.Constants.AUTOSAVEDELAY, this, function(){
+			this._autoSave();
+		});
 	},
 
-	_parseAndLoadProjects : function(sData) {
-		var aLoadedProjects = JSON.parse(sData);
-		var aProjects = [];
-
-		if (!aLoadedProjects) {
-			return;
-		}
-
-		for (var i = 0; i < aLoadedProjects.length; i++) {
-			var oProject = new projectX.util.Project(aLoadedProjects[i]);
-			aProjects.push(oProject);
-		}
-
-		if (!aProjects || aProjects.length <= 0) {
-			return;
-		}
-
-		this._oModel.setProperty("/Projects", aProjects);
-		this._oModel.setProperty("/SelectedProject", aProjects[0]);
-		this._oModel.updateBindings();
-	},
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// Members
+	// /////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * save projects to lcoalstorage
+	 * the serialized projects array that was stored to the webstorage.
+	 * used to compare if some data has changed and the changes have to be persisted.
+	 * @type {[type]}
 	 */
-	save : function() {
-		var sData = this._createJsonString();
-		window.localStorage.setItem("projects", sData);
-	},
+	_sLastSavedData : null,
+
+
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// Public Functions
+	// /////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * load projects from localstorage
@@ -269,6 +246,65 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	duplicateRequest : function(oRequest) {
 		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
 		oSelectedProject.addCopyOfRequest(oRequest);
+		this._oModel.updateBindings();
+	},
+
+
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// Private Functions
+	// /////////////////////////////////////////////////////////////////////////////
+
+	/**
+	* save projects to lcoalstorage
+	*/
+	_autoSave : function() {		
+		var sData = this._createJsonString();
+		if (this._sLastSavedData === sData) {
+			//console.log("no data changed");
+			return;
+		}
+		
+		//compare sData with last saved data
+		window.localStorage.setItem("projects", sData);
+		this._sLastSavedData = sData;
+		//console.log("saved");
+	},
+
+	_createJsonString : function() {
+		var aProjects = this._oModel.getProperty("/Projects");
+		var aSaveableObject = [];
+
+		if (!aProjects || aProjects.length <= 0) {
+			return;
+		}
+
+		for (var i = 0; i < aProjects.length; i++) {
+			aSaveableObject.push(aProjects[i].serialize());
+		}
+		//create json string indented with 4 spaces
+		var sData = JSON.stringify(aSaveableObject, null, 2);
+		return sData;
+	},
+
+	_parseAndLoadProjects : function(sData) {
+		var aLoadedProjects = JSON.parse(sData);
+		var aProjects = [];
+
+		if (!aLoadedProjects) {
+			return;
+		}
+
+		for (var i = 0; i < aLoadedProjects.length; i++) {
+			var oProject = new projectX.util.Project(aLoadedProjects[i]);
+			aProjects.push(oProject);
+		}
+
+		if (!aProjects || aProjects.length <= 0) {
+			return;
+		}
+
+		this._oModel.setProperty("/Projects", aProjects);
+		this._oModel.setProperty("/SelectedProject", aProjects[0]);
 		this._oModel.updateBindings();
 	}
 

@@ -24,10 +24,6 @@
 						text="Export"
 						tooltip="Export"
 						press="onExport" />
-					<Button
-						text="Save"
-						tooltip="Save"
-						press="onSave" />
 				</contentRight>
 			</Bar>
     	</customHeader>
@@ -63,6 +59,8 @@
 				width="100%"
 				horizontal="false"
 				vertical="true" >
+				<SearchField liveChange="onRequestSearch"
+					width="100%" />
 				<List
 					id="idListRequests"
 					items="{/SelectedProject/mAggregations/requests}"
@@ -80,6 +78,8 @@
 				width="100%"
 				horizontal="false"
 				vertical="true" >
+				<SearchField liveChange="onSequenceSearch"
+					width="100%" />
 				<List
 					id="idListSequences"
 					items="{/SelectedProject/mAggregations/sequences}"

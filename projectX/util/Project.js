@@ -103,7 +103,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	};
 
 	Project.prototype.serialize = function(iIdentifier) {
-		var oProject = this.mProperties;
+		var oProject = {};
+		oProject.identifier = this.getIdentifier();
+		oProject.name = this.getName();
+		oProject.baseUrl = this.getBaseUrl();
+		oProject.prefixUrl = this.getPrefixUrl();
 
 		var aSerializedRequests = [];
 		var aRequests = this.getRequests();

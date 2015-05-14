@@ -22,12 +22,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 	/**
 	 * create a serialized version of this sequence.
-	 * set temporary data to null.
 	 * @return {object} a javascript object containing the data that has to be saved to disk.
 	 */
 	Sequence.prototype.serialize = function() {
-		this.resetTempData();
-		var oSequence = this.mProperties;
+		var oSequence = {};
+		
+		oSequence.identifier = this.getIdentifier();
+		oSequence.name = this.getName();
+		oSequence.description = this.getDescription();
 		
 		var aSerializedSequenceItems = [];
 		var aSequenceItems = this.getSequenceItems();

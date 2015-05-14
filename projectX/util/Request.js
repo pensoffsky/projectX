@@ -46,15 +46,19 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 	/**
 	 * create a serialized version of this request.
-	 * set temporary data to null.
-	 * @return {object} a javascript object containing the data that has to be saved to disk.
+	 * @return {object} a javascript object containing the data that can be persisted.
 	 */
 	Request.prototype.serialize = function() {
-		//set status to null because we dont need this info
-		//in the config file that describes the project and requests
-		this.resetTempData();
-		//TODO really delete status from mProperties, create copy first
-		var oRequest = this.mProperties;
+		var oRequest = {};
+		oRequest.identifier = this.getIdentifier();
+		oRequest.name = this.getName();
+		oRequest.description = this.getDescription();
+		oRequest.httpMethod = this.getHttpMethod();
+		oRequest.useProjectPrefixUrl = this.getUseProjectPrefixUrl();
+		oRequest.url = this.getUrl();
+		oRequest.tags = this.getTags();
+		oRequest.requestBody = this.getRequestBody();
+		oRequest.scriptCode = this.getScriptCode();
 
 		var aSerializedAssertions = [];
 		var aAssertions = this.getAssertions();

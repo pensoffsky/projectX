@@ -52,37 +52,6 @@
 			</l:content>
 		</l:Grid>
 
-		<Table items="{/project/mAggregations/prefixUrls}"
-				mode="MultiSelect"
-				id="idTablUrls"
-				rememberSelections="false"
-				>
-			<headerToolbar>
-		    	<Toolbar>
-		        	<Label text="Prefix URLs" />
-		        <ToolbarSpacer />
-		        <Button icon="sap-icon://add"
-						tooltip="Add url"
-						press="onBtnAddUrl"/>
-				<Button icon="sap-icon://delete"
-						tooltip="Delete selected url"
-						press="onBtnDeleteUrl"/>
-		      </Toolbar>
-		    </headerToolbar>
-			<columns>
-				<Column>
-					<Text text="URL" />
-				</Column>
-			</columns>
-			<items>
-				<ColumnListItem vAlign="Top">
-					<cells>
-						<Input value="{mProperties/url}"/>
-					</cells>
-				</ColumnListItem>
-			</items>
-		</Table>
-
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>

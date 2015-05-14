@@ -83,8 +83,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 				// console.log("successfully loaded service metadata");
 				that._localUIModel.setProperty("/odataServiceCheckRes", "metadata loaded successfully");
 				that._localUIModel.setProperty("/serviceMetadata", oMetaData);
-				that._localUIModel.setProperty("/complexTypes", that._extractFromMetadata(oMetaData, "complexType"));
-				var aEntityTypes = that._extractFromMetadata(oMetaData, "entityType");
+				var aComplexTypes = that._extractFromMetadata(oMetaData, "complexType", true);
+				that._localUIModel.setProperty("/complexTypes", aComplexTypes);
+				
+				var aEntityTypes = that._extractFromMetadata(oMetaData, "entityType", false);
+				
+				that._extendEntityTypeWithComplexTypes(aEntityTypes, aComplexTypes);				
 
 				//set the keys of an entitytype to the corresponding properties
 				aEntityTypes.map(function(oEntityType) {
@@ -112,21 +116,54 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			});
 		};
 
-		MetadataTypesController.prototype._extractFromMetadata = function(oMetaData, sTarget) {
-			var aRes = oMetaData &&
-				oMetaData.dataServices &&
-				oMetaData.dataServices.schema &&
-				oMetaData.dataServices.schema[0] &&
-				oMetaData.dataServices.schema[0][sTarget];
+		MetadataTypesController.prototype._extendEntityTypeWithComplexTypes = function(aEntityTypes, aComplexTypes) {
+			for (var i = 0; i < aEntityTypes.length; i++) {
+				var oEntityType = aEntityTypes[i];
+				for (var k = 0; k < oEntityType.property.length; k++) {
+					var oProperty = oEntityType.property[k];
+				
+					if(oProperty.type.indexOf("Edm.") === 0) {
+						//we are searching for complex types and not normal edm types
+						continue;
+					}
+					
+					for (var j = 0; j < aComplexTypes.length; j++) {
+						var oComplexType = aComplexTypes[j];
+						if(oComplexType.name !== oProperty.type) {
+							continue;
+						}
+						//debugger
+					}
+				}
+			}
+		};
+
+		MetadataTypesController.prototype._extractFromMetadata = function(oMetaData, sTarget, bComplexType) {
+			var aRes = [];
+
+			if (!oMetaData ||
+				!oMetaData.dataServices ||
+				!oMetaData.dataServices.schema) {
+				return aRes;
+			}
+
+			var aSchemas = oMetaData.dataServices.schema;
+			for (var i = 0; i < aSchemas.length; i++) {
+				var aContainer = aSchemas[i][sTarget];
+				if (!aContainer) {
+					continue;
+				}
+				for (var j = 0; j < aContainer.length; j++) {
+					if (bComplexType === true) {
+						aContainer[j].name = aSchemas[i].namespace + "." + aContainer[j].name;
+					}
+					aRes.push(aContainer[j]);
+				}
+			}
+
 			return aRes;
 		};
 
-		MetadataTypesController.prototype._extractFromEntityContainer = function(aEntityContainer, sTarget) {
-			var aRes = aEntityContainer &&
-				aEntityContainer[0] &&
-				aEntityContainer[0][sTarget];
-			return aRes;
-		};
 
 		MetadataTypesController.prototype.onEntityTypeTableSelectionChange = function(oEvent) {
 			var oTable = oEvent.getSource();

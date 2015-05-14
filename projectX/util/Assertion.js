@@ -42,6 +42,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			 */
 			expected : {type : "string", defaultValue : null},
 			
+			//TEMP DATA
 			
 			/**
 			 * true if the result variable represent the result of the assertion check.
@@ -86,7 +87,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	 * @return {object} a javascript object containing the data that has to be saved to disk.
 	 */
 	Assertion.prototype.serialize = function() {
-		return this.mProperties;
+		var oAssertion = {};
+		oAssertion.name = this.getName();
+		oAssertion.assertProperty = this.getAssertProperty();
+		oAssertion.operation = this.getOperation();
+		oAssertion.path = this.getPath();
+		oAssertion.expected = this.getExpected();
+		return oAssertion;
 	};
 
 	/**
