@@ -4,55 +4,24 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:l="sap.ui.layout"
 	xmlns:core="sap.ui.core"
-	xmlns:u="sap.ui.unified"
 	xmlns="sap.m">
 	<Page
 		id="page"
 		enableScrolling="false"
+		showHeader="false"
 		>
-		<customHeader>
-			<Bar>
-				<contentRight>
-					<Label text="{/SelectedProject/mProperties/name}"/>
-					<u:FileUploader
-						change="onFileUploaderChange"
-						buttonText="Import"
-						tooltip="Load a local file from disk"
-						buttonOnly="true"
-						/>
-					<Button
-						text="Export"
-						tooltip="Export"
-						press="onExport" />
-				</contentRight>
-			</Bar>
-    	</customHeader>
 		<content>
-			<SegmentedButton selectedButton="idButtonProjects"
-							select="onSegmentedButtonSelect">
-						<Button text="Projects" id="idButtonProjects" />
-						<Button text="Requests {/SelectedProject/mAggregations/requests/length}" 
-							id="idButtonRequests" />
-	          <Button text="Sequences {/SelectedProject/mAggregations/sequences/length}" id="idButtonSequences" />
-        </SegmentedButton>
-
-			<ScrollContainer
-				visible="{= ${localUIModel>/visibleTab} === 'PROJECTS'}"
-				height="100%"
-				width="100%"
-				horizontal="false"
-				vertical="true">
-				<List
-					id="idListProjects"
-					items="{/Projects}"
-					mode="SingleSelectMaster"
-					select="onProjectsListSelect"
-					>
-					<items>
-						<StandardListItem title="{mProperties/name}"/>
-					</items>
-				</List>
-			</ScrollContainer>
+			
+			<SegmentedButton selectedButton="idButtonRequests"
+							select="onSegmentedButtonSelect"
+							id="idSegmentedButton"
+							width="100%">
+				<Button text="Requests {/SelectedProject/mAggregations/requests/length}" 
+					id="idButtonRequests" />
+		        <Button text="Sequences {/SelectedProject/mAggregations/sequences/length}" 
+					id="idButtonSequences" />
+			</SegmentedButton>
+			
 			<ScrollContainer
 				visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}"
 				height="100%"

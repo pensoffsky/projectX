@@ -2,9 +2,52 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	displayBlock="true"
 	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:u="sap.ui.unified"
+	xmlns:l="sap.ui.layout"
 	class="sapUiSizeCompact"
+	controllerName="projectX.view.App"
 	>
-	<SplitApp 	id="idAppControl" 
-				mode="StretchCompressMode"
-				/>
+	<l:FixFlex 	fitContainer="true">
+		<l:fixContent> <Panel>
+			<FlexBox alignItems="Center"> 
+				
+					<Label text="Project:"/>
+					<Select 
+						 items="{/Projects}"
+						 change="onSelectProjectChange"
+						 selectedKey="{localUIModel>/selectedProjectIdentifier}"
+						>
+						<core:Item text="{mProperties/name}" key="{mProperties/identifier}" />
+					</Select>
+					<Button icon="sap-icon://edit"
+							tooltip="Edit project"
+							press="onEditProject"/>
+					<Button icon="sap-icon://add"
+							tooltip="Add new project"
+							press="onAddNewProject"/>
+					<Button icon="sap-icon://delete"
+							tooltip="Delete selected project"
+							press="onDeleteSelectedProject"/>
+					<u:FileUploader
+						change="onFileUploaderChange"
+						buttonText="Import"
+						tooltip="Load a local file from disk"
+						buttonOnly="true"
+						/>
+					<Button
+						text="Export"
+						tooltip="Export"
+						press="onExport" />
+				
+			</FlexBox></Panel>
+    </l:fixContent>
+    <l:flexContent>
+		<SplitApp 	id="idAppControl" 
+					mode="StretchCompressMode"
+					/>
+    </l:flexContent>
+		
+	</l:FixFlex>
+	
 </mvc:View>

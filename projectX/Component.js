@@ -134,6 +134,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oDeviceModel.setDefaultBindingMode("OneWay");
 		this.setModel(oDeviceModel, "device");
 
+		//TODO do we really need this?
 		// set application contants
 		var oConstants = new projectX.util.Constants();
 
@@ -161,7 +162,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	/**
 	 * the serialized projects array that was stored to the webstorage.
 	 * used to compare if some data has changed and the changes have to be persisted.
-	 * @type {[type]}
+	 * @type {string}
 	 */
 	_sLastSavedData : null,
 
@@ -212,7 +213,8 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 
 	/**
 	 * create a new project and add to global model.
-	 * select the new project
+	 * select the new project.
+	 * @return {object} the newly created project
 	 */
 	createNewProject : function() {
 		var aProjects = this._oModel.getProperty("/Projects");
@@ -237,6 +239,36 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		aProjects.push(oProject);
 		this._oModel.setProperty("/Projects", aProjects);
 		this._oModel.setProperty("/SelectedProject", oProject);
+		this._fireSelectedProjectChanged();
+		return oProject;
+	},
+	
+	/**
+	* finds the project with the given identifier and sets it as the selected project.
+	* @param {string} sIdentifier id of the project to select
+	*/
+	setSelectedProject : function(sIdentifier) {
+		var aProjects = this._oModel.getProperty("/Projects");
+		var oProject = null;
+		for (var i = 0; i < aProjects.length; i++) {
+			if (aProjects[i].getIdentifier() == sIdentifier) {
+				oProject = aProjects[i];
+			}
+		}
+		this._oModel.setProperty("/SelectedProject", oProject);
+		this._fireSelectedProjectChanged();
+	},
+	
+	deletedProject : function(sIdentifier) {
+		var aProjects = this._oModel.getProperty("/Projects");
+		var oProject = null;
+		for (var i = 0; i < aProjects.length; i++) {
+			if (aProjects[i].getIdentifier() == sIdentifier) {
+				oProject = aProjects[i];
+			}
+		}
+		aProjects.splice(aProjects.indexOf(oProject), 1);
+		this._oModel.setProperty("/Projects", aProjects);
 	},
 
 	/**
@@ -253,6 +285,13 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Functions
 	// /////////////////////////////////////////////////////////////////////////////
+
+	_fireSelectedProjectChanged : function () {
+		var oEventBus = sap.ui.getCore().getEventBus();
+		var sChannel = projectX.util.Constants.EVENTCHANNEL_SELECTEDPROJECT;
+		var sEvent = projectX.util.Constants.EVENT_SELECTEDPROJECT_CHANGED;
+		oEventBus.publish(sChannel, sEvent, {});
+	},
 
 	/**
 	* save projects to lcoalstorage
@@ -305,7 +344,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 
 		this._oModel.setProperty("/Projects", aProjects);
 		this._oModel.setProperty("/SelectedProject", aProjects[0]);
-		this._oModel.updateBindings();
+		this._fireSelectedProjectChanged();
 	}
 
 });

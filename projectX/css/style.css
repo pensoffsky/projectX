@@ -1,6 +1,6 @@
-/*.sapMSplitContainerMaster {
-  width: 280px;
-}*/
+.sapMSplitContainerMaster {
+  width: 240px;
+}
 
 .invisible {
 	display: none;

@@ -25,7 +25,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		};
 
 		Master.TABS = {
-			PROJECTS : "PROJECTS",
 			REQUESTS : "REQUESTS",
 			SEQUENCES : "SEQUENCES"
 		};
@@ -40,11 +39,25 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			this._localUIModel.setData({
 				requestsVisible: true,
 				sequencesVisible: false,
-				visibleTab: "PROJECTS"
+				visibleTab: "REQUESTS"
 			});
 			this.getView().setModel(this._localUIModel, "localUIModel");
 
 			this.getRouter().getRoute("main").attachPatternMatched(this.onRouteMatched, this);
+
+
+			
+			var oEventBus = sap.ui.getCore().getEventBus();
+			oEventBus.subscribe(Constants.EVENTCHANNEL_SELECTEDPROJECT, 
+				Constants.EVENT_SELECTEDPROJECT_CHANGED, 
+				function(){
+					//this._localUIModel.setProperty("/visibleTab", Master.TABS.REQUESTS);
+					this._removeSelectionFromRequestList();
+					this._removeSelectionFromSequenceList();
+					var oSegmentedButton = this.getView().byId("idSegmentedButton");
+					oSegmentedButton.setSelectedButton(this.getView().byId("idButtonRequests"));
+					this._localUIModel.setProperty("/visibleTab", Master.TABS.REQUESTS);
+			}, this);
 
 			//if ?sequence=true exists in url then switch to sequence page after 2 seconds
 			if(jQuery.sap.getUriParameters().get("sequence") === "true"){
@@ -78,17 +91,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		},
 
 		Master.prototype.onRouteMatched = function(oEvent) {
-			this._selectFirstProject();
+			
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// SubHeader Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
-
-		Master.prototype.onLoad = function() {
-			var oComponent = this.getComponent();
-			oComponent.load();
-		};
 
 		Master.prototype.onExport = function() {
 			var oComponent = this.getComponent();
@@ -107,28 +115,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// List Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
-
-
-		/**
-		* the user selected a project.
-		* make sure the master list shows the request of this project
-		*/
-		Master.prototype.onProjectsListSelect = function() {
-			var oList = this.getView().byId("idListProjects");
-			var oItem = oList.getSelectedItem();			
-			var oSelectedProject = Helper.getBoundObjectForItem(oItem);
-
-			var oModel = this.getView().getModel();
-			oModel.setProperty("/SelectedProject", oSelectedProject);
-
-			var iProjectID = oSelectedProject.getIdentifier();
-			this.getRouter().navTo("project", {
-				projectID : iProjectID
-			}, true);
-
-			// this._removeSelectionFromRequestList();
-			// this._removeSelectionFromSequenceList();
-		};
 
 		Master.prototype.onSequencesListSelect = function() {
 			var oList = this.getView().byId("idListSequences");
@@ -196,10 +182,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 				case this.createId("idButtonSequences"):
 					this._localUIModel.setProperty("/visibleTab", Master.TABS.SEQUENCES);
 					this.onSequencesListSelect();
-					break;
-				case this.createId("idButtonProjects"):
-					this._localUIModel.setProperty("/visibleTab", Master.TABS.PROJECTS);
-					this.onProjectsListSelect();
 					break;
 			default:
 				console.log("problem with segmented button on master page");
@@ -301,18 +283,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 
 		};
 
-		/**
-		* the user wants to add a new project.
-		* navigate to the new project screen.
-		*/
-		Master.prototype.onAddNewProject = function() {
-			var oComponent = this.getComponent();
-			oComponent.createNewProject();
-			//remove selection from request and sequences list
-			this._removeSelectionFromRequestList();
-			this._removeSelectionFromSequenceList();
-		};
-
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Methods
 		// /////////////////////////////////////////////////////////////////////////////
@@ -346,15 +316,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			//restore the selection
 			var aItems = oList.getItems();
 			oList.setSelectedItem(aItems[iNewPos]);
-		};
-
-		Master.prototype._selectFirstProject = function() {
-			var oList = this.getView().byId("idListProjects");
-			var aItems = oList.getItems();
-			if (aItems.length) {
-				oList.setSelectedItem(aItems[0], true);
-				this.onProjectsListSelect();
-			}
 		};
 
 		Master.prototype._removeSelectionFromRequestList = function () {

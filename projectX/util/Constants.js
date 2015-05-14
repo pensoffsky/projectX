@@ -191,6 +191,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 
 	Constants.DEFAULT_PROJECT_URL = "http://services.odata.org/V2/OData/OData.svc/";
 
+
+	/*EVENTS*/
+	Constants.EVENTCHANNEL_SELECTEDPROJECT = "SELECTEDPROJECT";
+	Constants.EVENT_SELECTEDPROJECT_CHANGED = "CHANGED";
+
+
+
 	///////////////////////////////////////////////////////////////////////////
 	/// Public Functions
   ///////////////////////////////////////////////////////////////////////////
