@@ -34,6 +34,16 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			var sUrl = oEvent.getSource().data("url");
 			this._oRequest.appendToUrl(sUrl);
 		};
+		
+		MetadataTypesController.prototype.onEntityTypesListSelect = function(oEvent) {
+			var oItem = this._oEntityTypesList.getSelectedItem();
+			var oBindingContext = oItem.getBindingContext();
+			var sPath = oBindingContext.getPath();
+						
+			this._oEntityTypeTree.bindRows(sPath);
+		};
+
+
 
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -51,10 +61,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			//set fragment view to fragment controller
 			this.setView(oMetadataTypesFragment);
 
+			this._oEntityTypesList = sap.ui.core.Fragment.byId(sIdPrefix, "idListEntityTypes");
+			this._oEntityTypeTree = sap.ui.core.Fragment.byId(sIdPrefix, "idTableDemo");
+
 			this._localUIModel = new sap.ui.model.json.JSONModel();
 			this._localUIModel.setData({
 
 			});
+			//TODO do not set as global model, fix get bound object
 			this.getView().setModel(this._localUIModel);
 		};
 
@@ -102,6 +116,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 							}
 						});
 					});
+					//remove the key info because it will cause the tree control
+					//to show an extra expandable line
+					oEntityType.key = null;
+					//remove the navigationProperty out of the same reasons
+					oEntityType.navigationProperty = null;
 				});
 				that._localUIModel.setProperty("/entityTypes", aEntityTypes);
 
@@ -132,7 +151,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 						if(oComplexType.name !== oProperty.type) {
 							continue;
 						}
-						//debugger
+						oProperty._complexTypeChild = oComplexType.property;
+					//	debugger
 					}
 				}
 			}

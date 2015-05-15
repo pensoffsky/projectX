@@ -1,104 +1,57 @@
 <c:FragmentDefinition
+        xmlns:mvc="sap.ui.core.mvc"
         xmlns:l="sap.ui.layout"
         xmlns:f="sap.ui.layout.form"
         xmlns:c="sap.ui.core"
+        xmlns:t="sap.ui.table"
         xmlns="sap.m"
         xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
-    <VBox>
-        <HBox>
-            <Button text="format json"/>
-            <Button text="inlinecount=allpages"/>
-        </HBox>
-        <VBox items="{/entityTypes}" width="100%">
+
+    <FlexBox height="90%" > 
+        <List
+            id="idListEntityTypes"
+            items="{/entityTypes}"
+            mode="{device>/listMode}"
+            select="onEntityTypesListSelect"
+            >
             <items>
-                <VBox>
-                    <Panel expandable="true"
-                           expanded="false"
-                           headerText="{name}">
-                        <Table items="{property}"
-                               rememberSelections="false"
-                               mode="MultiSelect"
-                               selectionChange="onEntityTypeTableSelectionChange"
-                                >
-                            <columns>
-                            <Column>
-                                <Text text="Name"/>
-                            </Column>
-                            <Column>
-                                <Text text="Type"/>
-                            </Column>
-                            <Column>
-                                <Text text="Nullable"/>
-                            </Column>
-                            <Column>
-                                <Text text="Key"/>
-                            </Column>
-                            <Column>
-                                <Text text="Value"/>
-                            </Column>
-                        </columns>
-                            <items>
-                                <ColumnListItem>
-                                    <cells>
-                                        <Label text="{name}"/>
-                                        <Text text="{type}"/>
-                                        <Text text="{nullable}"/>
-                                        <c:Icon src="{path:'calculatedIsKey',
-										 formatter:'projectX.util.Formatter.entityPropertyKeyToImage'}"/>
-                                        <VBox>
-                                            <Input visible="{path:'type',
-											formatter:'projectX.util.Formatter.entitytypeString'}"
-                                                   value="{___userInput}"
-                                                    />
-                                            <Switch visible="{path:'type',
-											formatter:'projectX.util.Formatter.entitytypeSwitch'}"
-                                                    />
-                                            <DateTimeInput type="DateTime"
-                                                           visible="{path:'type',
-											formatter:'projectX.util.Formatter.entitytypeDateTime'}"
-                                                           placeholder="Enter DateTime"
-                                                    />
-                                            <DateTimeInput type="Time"
-                                                           visible="{path:'type',
-											formatter:'projectX.util.Formatter.entitytypeTime'}"
-                                                           placeholder="Enter Time"
-                                                    />
-                                        </VBox>
-                                    </cells>
-                                </ColumnListItem>
-                            </items>
-                        </Table>
-                        <f:SimpleForm
-                                editable="true"
-                                layout="ResponsiveGridLayout"
-                                labelSpanL="1"
-                                labelSpanM="1"
-                                emptySpanL="0"
-                                emptySpanM="0"
-                                >
-                            <f:content>
-                                <Label text="Key"/>
-                                <Button text="Add to URL" press="onBtnCalculatedKeyPress" app:url="{calculatedKeys}">
-                                    <layoutData>
-                                        <l:GridData span="L1 M1 S1"/>
-                                    </layoutData>
-                                </Button>
-                                <Text text="{calculatedKeys}"/>
-                                <Label text="OrderBy"/>
-                                <Text text="{calculatedOrderBy}"/>
-                                <Label text="Filter"/>
-                                <Text text="{calculatedFilter}"/>
-                                <Label text="Select"/>
-                                <Text text="{calculatedSelect}"/>
-                                <Label text="Payload"/>
-                                <Text text="{calculatedPayload}"/>
-                            </f:content>
-                        </f:SimpleForm>
-                    </Panel>
-                </VBox>
+                <StandardListItem title="{name}"/>
             </items>
+            <layoutData>
+              <FlexItemData growFactor="1" />
+            </layoutData>
+        </List>
+        <VBox>
+            <t:TreeTable id="idTableDemo" 
+                         t:selectionMode="MultiToggle"
+                         width="500px"
+                         >  
+                  <t:title><Label text="Table header"></Label></t:title>  
+                  <t:columns>  
+                            <t:Column>  
+                                      <Label text="Name"/>  
+                                            <t:template><Label text="{name}" /></t:template>  
+                            </t:Column>  
+                            <t:Column>  
+                                      <Label text="Type"/>  
+                                            <t:template><Label text="{type}" /></t:template>  
+                            </t:Column>  
+                            <t:Column>  
+                                      <Label text="Key"/>  
+                                            <t:template><Label text="{calculatedIsKey}" /></t:template>  
+                            </t:Column>  
+                            <t:Column>  
+                                      <Label text="Nullable"/>  
+                                            <t:template><Label text="{nullable}" /></t:template>  
+                            </t:Column>  
+                  </t:columns>  
+            </t:TreeTable>  
+            <layoutData>
+                <FlexItemData growFactor="1"/>
+            </layoutData>
         </VBox>
-    </VBox>
+        
+    </FlexBox>
 
 </c:FragmentDefinition>
