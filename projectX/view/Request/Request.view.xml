@@ -27,6 +27,8 @@
                     <Button text="Metadata" id="idButtonMetadata"/>
                 </SegmentedButton>
                 <ToolbarSpacer/>
+                <Label text="Status: {localUIModel>/request/mProperties/status}
+                Time: {localUIModel>/request/mProperties/responseTime}ms"/>
                 <Button text="Send Request" press="onBtnSendPress"/>
             </Toolbar>
         </subHeader>
@@ -131,8 +133,6 @@
 
                 <VBox>
                     <Label text="Response Body"/>
-                    <Label text="Status: {localUIModel>/request/mProperties/status}
-                    Time: {localUIModel>/request/mProperties/responseTime}ms"/>
                     <SegmentedButton selectedButton="idButtonResponseRAW"
                                      select="onResponseBodyFormat">
                         <Button text="XML" id="idButtonResponseXML"/>

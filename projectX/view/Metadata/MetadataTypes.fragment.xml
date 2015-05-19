@@ -25,26 +25,26 @@
         <VBox>
             <t:TreeTable id="idTableDemo" 
                          t:selectionMode="MultiToggle"
-                         width="500px"
+                         width="700px"
                          >  
                   <t:title><Label text="Table header"></Label></t:title>  
                   <t:columns>  
-                            <t:Column>  
-                                      <Label text="Name"/>  
-                                            <t:template><Label text="{name}" /></t:template>  
-                            </t:Column>  
-                            <t:Column>  
-                                      <Label text="Type"/>  
-                                            <t:template><Label text="{type}" /></t:template>  
-                            </t:Column>  
-                            <t:Column>  
-                                      <Label text="Key"/>  
-                                            <t:template><Label text="{calculatedIsKey}" /></t:template>  
-                            </t:Column>  
-                            <t:Column>  
-                                      <Label text="Nullable"/>  
-                                            <t:template><Label text="{nullable}" /></t:template>  
-                            </t:Column>  
+                    <t:Column>  
+                        <Label text="Name"/>  
+                        <t:template><Label text="{name}" /></t:template>  
+                    </t:Column>  
+                    <t:Column>  
+                        <Label text="Type"/>  
+                        <t:template><Label text="{type}" /></t:template>  
+                    </t:Column>  
+                    <t:Column width="5rem">  
+                        <Label text="Key"/>  
+                        <t:template><Label text="{calculatedIsKey}" /></t:template>  
+                    </t:Column>  
+                    <t:Column width="5rem">  
+                        <Label text="Nullable"/>  
+                        <t:template><Label text="{nullable}" /></t:template>  
+                    </t:Column>  
                   </t:columns>  
             </t:TreeTable>  
             <layoutData>
