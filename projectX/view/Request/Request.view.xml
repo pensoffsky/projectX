@@ -14,22 +14,12 @@
           title="{localUIModel>/name}">
         <subHeader>
             <Toolbar>
-                <SegmentedButton selectedButton="idButtonRequest"
-                                 select="onSegmentedButtonSelect">
-                    <Button text="Request" id="idButtonRequest"/>
-                    <Button icon="{ parts : [
-								{ path : 'localUIModel>/request/mProperties/assertionsResult' },
-								{ path : 'localUIModel>/request/mProperties/assertionsResultReady' }
-							],
-							formatter : 'projectX.util.Formatter.assertionsResultToImage' }"
-                            text="Assertions ({localUIModel>/request/mAggregations/assertions/length})"
-                            id="idButtonAssertions"/>
-                    <Button text="Metadata" id="idButtonMetadata"/>
-                </SegmentedButton>
                 <ToolbarSpacer/>
                 <Label text="Status: {localUIModel>/request/mProperties/status}
                 Time: {localUIModel>/request/mProperties/responseTime}ms"/>
-                <Button text="Send Request" press="onBtnSendPress"/>
+                <Button text="Send Request"
+                        press="onBtnSendPress"
+                        type="Emphasized"/>
             </Toolbar>
         </subHeader>
 
@@ -83,8 +73,29 @@
 
                 <Panel expandable="true"
                        expanded="false"
-                       headerText="Pre-request script"
+                       >
+                       <headerToolbar>
+                         <Toolbar design="Transparent" height="3rem">
+                          <Text text="Assertions ({localUIModel>/request/mAggregations/assertions/length})"/>
+                          <core:Icon src="{ parts : [
+                            								{ path : 'localUIModel>/request/mProperties/assertionsResult' },
+                            								{ path : 'localUIModel>/request/mProperties/assertionsResultReady' }
+                            							],
+                            							formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
+                        </Toolbar>
+                       </headerToolbar>
+                  <VBox id="idVBoxAssertionPlaceholder"/>
+                </Panel>
+
+
+                <Panel expandable="true"
+                       expanded="false"
                        expand="onPanelPrescriptExpand">
+                       <headerToolbar>
+                         <Toolbar design="Transparent" height="3rem">
+                          <Text text="Pre-request script ({localUIModel>/request/mProperties/scriptCode/length})"/>
+                        </Toolbar>
+                       </headerToolbar>
                     <FlexBox width="100%">
                         <VBox>
                             <layoutData>
@@ -119,8 +130,12 @@
 
                 <Panel expandable="true"
                        expanded="true"
-                       headerText="Response Headers ({localUIModel>/request/mProperties/responseHeaders/length})"
                         >
+                        <headerToolbar>
+                          <Toolbar design="Transparent" height="3rem">
+                           <Text text="Response Headers ({localUIModel>/request/mProperties/responseHeaders/length})"/>
+                         </Toolbar>
+                        </headerToolbar>
                     <custom:AceEditor width="100%" height="auto"
                                       mode="text"
                                       readOnly="true"
@@ -151,32 +166,6 @@
                         />
 
             </ScrollContainer>
-
-            <ScrollContainer
-                    visible="{localUIModel>/assertionsVisible}"
-                    height="100%"
-                    width="100%"
-                    horizontal="false"
-                    vertical="true">
-                <VBox id="idVBoxAssertionPlaceholder"/>
-            </ScrollContainer>
-            <ScrollContainer
-                    visible="{localUIModel>/metadataVisible}"
-                    height="100%"
-                    width="100%"
-                    horizontal="false"
-                    vertical="true">
-                <!--<VBox id="idVBoxMetadataTypesPlaceholder"/>-->
-            </ScrollContainer>
-
         </content>
-        <footer>
-            <Toolbar>
-                <ToolbarSpacer/>
-                <Button press="onBtnDuplicatePress" text="Duplicate" icon="sap-icon://duplicate"/>
-                <Button press="onBtnDeletePress" text="Delete" icon="sap-icon://delete"/>
-            </Toolbar>
-        </footer>
-
     </Page>
 </mvc:View>

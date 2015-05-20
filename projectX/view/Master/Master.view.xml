@@ -11,17 +11,17 @@
 		showHeader="false"
 		>
 		<content>
-			
+
 			<SegmentedButton selectedButton="idButtonRequests"
 							select="onSegmentedButtonSelect"
 							id="idSegmentedButton"
 							width="100%">
-				<Button text="Requests {/SelectedProject/mAggregations/requests/length}" 
+				<Button text="Requests {/SelectedProject/mAggregations/requests/length}"
 					id="idButtonRequests" />
-		        <Button text="Sequences {/SelectedProject/mAggregations/sequences/length}" 
+		        <Button text="Sequences {/SelectedProject/mAggregations/sequences/length}"
 					id="idButtonSequences" />
 			</SegmentedButton>
-			
+
 			<ScrollContainer
 				visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}"
 				height="100%"
@@ -37,7 +37,22 @@
 					select="onRequestsListSelect"
 					updateFinished="onListUpdateFinished">
 					<items>
-						<StandardListItem title="{mProperties/name}"/>
+						<CustomListItem>
+							<Toolbar width="100%">
+								<Text text="{mProperties/name}"/>
+								<ToolbarSpacer/>
+								<Button press="onBtnDuplicateRequestPress"
+												tooltip="Duplicate"
+												icon="sap-icon://duplicate"
+												type="Transparent"/>
+								<Button press="onBtnDeleteRequestPress"
+												tooltip="Delete"
+												icon="sap-icon://delete"
+												type="Transparent"/>
+
+							</Toolbar>
+
+						</CustomListItem>
 					</items>
 				</List>
 			</ScrollContainer>

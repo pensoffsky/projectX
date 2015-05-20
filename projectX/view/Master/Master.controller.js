@@ -46,10 +46,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			this.getRouter().getRoute("main").attachPatternMatched(this.onRouteMatched, this);
 
 
-			
+
 			var oEventBus = sap.ui.getCore().getEventBus();
-			oEventBus.subscribe(Constants.EVENTCHANNEL_SELECTEDPROJECT, 
-				Constants.EVENT_SELECTEDPROJECT_CHANGED, 
+			oEventBus.subscribe(Constants.EVENTCHANNEL_SELECTEDPROJECT,
+				Constants.EVENT_SELECTEDPROJECT_CHANGED,
 				function(){
 					//this._localUIModel.setProperty("/visibleTab", Master.TABS.REQUESTS);
 					this._removeSelectionFromRequestList();
@@ -91,7 +91,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		},
 
 		Master.prototype.onRouteMatched = function(oEvent) {
-			
+
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -132,22 +132,22 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			var oList = this.getView().byId("idListRequests");
 			var oItem = oList.getSelectedItem();
 			var oSelectedRequest = Helper.getBoundObjectForItem(oItem);
-			
+
 			var oModel = this.getView().getModel();
 			var oSelectedProject = oModel.getProperty("/SelectedProject");
-			
+
 			this.getRouter().navTo("product", {
 				requestID : oSelectedRequest.getIdentifier(),
 				projectID : oSelectedProject.getIdentifier()
 			}, true);
 		};
-		
+
 		Master.prototype._filterList = function(sQuery, oList){
 			// add filter for search
 			var aFilters = [];
-			
+
 			if (sQuery && sQuery.length > 0) {
-				var filter = new sap.ui.model.Filter("mProperties/name", 
+				var filter = new sap.ui.model.Filter("mProperties/name",
 					sap.ui.model.FilterOperator.Contains,
 					sQuery);
 				aFilters.push(filter);
@@ -157,16 +157,33 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			var binding = oList.getBinding("items");
 			binding.filter(aFilters, "Application");
 		};
-		
+
 		Master.prototype.onRequestSearch = function(oEvent) {
 			var sQuery = oEvent.getSource().getValue();
 			this._filterList(sQuery, this.getView().byId("idListRequests"));
 		};
-		
+
 		Master.prototype.onSequenceSearch = function(oEvent) {
 			var sQuery = oEvent.getSource().getValue();
 			this._filterList(sQuery, this.getView().byId("idListSequences"));
 		};
+
+
+		Master.prototype.onBtnDuplicateRequestPress = function(oEvent) {
+			var oRequest = Helper.getBoundObjectForItem(oEvent.getSource());
+			var oComponent = this.getComponent();
+			oComponent.duplicateRequest(oRequest);
+		};
+
+		Master.prototype.onBtnDeleteRequestPress = function(oEvent) {
+			var oRequest = Helper.getBoundObjectForItem(oEvent.getSource());
+			var oComponent = this.getComponent();
+			oComponent.deleteRequest(oRequest);
+			this._selectFirstRequest();
+		};
+
+
+
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Segmented Button Event Handler
@@ -304,9 +321,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			var oSelectedObject = Helper.getBoundObjectForItem(oSelectedItem);
 			// var aRequests = oSelectedProject.removeAllRequests();
 			var aArray = fRemoveAllAggregation(oSelectedProject);
-
 			var iNewPos = fMove(aArray, oSelectedObject);
-
 			for (var i = 0; i < aArray.length; i++) {
 				fAddObject(oSelectedProject, aArray[i]);
 			}
@@ -319,13 +334,43 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		};
 
 		Master.prototype._removeSelectionFromRequestList = function () {
-			var oList = this.getView().byId("idListRequests")
+			var oList = this.getView().byId("idListRequests");
 			oList.removeSelections(true);
 		};
 
 		Master.prototype._removeSelectionFromSequenceList = function () {
-			var oList = this.getView().byId("idListSequences")
+			var oList = this.getView().byId("idListSequences");
 			oList.removeSelections(true);
+		};
+
+		Master.prototype._selectFirstRequest = function () {
+			var bItemSelected = this._selectFirstItem("idListRequests", "");
+			if (bItemSelected === true) {
+				this.onRequestsListSelect();
+			} else {
+				//TODO detail page to "NOT FOUND"
+			}
+		};
+
+		Master.prototype._selectFirstSequence = function () {
+			var bItemSelected = this._selectFirstItem("idListSequences");
+			if (bItemSelected === true) {
+				this.onSequencesListSelect();
+			} else {
+				//TODO detail page to "NOT FOUND"
+			}
+		};
+
+		Master.prototype._selectFirstItem = function (sListId) {
+			var oList = this.getView().byId(sListId);
+			var aItems = oList.getItems();
+
+			if (aItems.length) {
+				oList.setSelectedItem(aItems[0], true);
+				return true;
+			}
+
+			return false;
 		};
 
 		return Master;

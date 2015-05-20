@@ -148,7 +148,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 
 		this.getRouter().initialize();
 	},
-	
+
 	initAutoSave : function () {
 		jQuery.sap.intervalCall(projectX.util.Constants.AUTOSAVEDELAY, this, function(){
 			this._autoSave();
@@ -242,7 +242,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this._fireSelectedProjectChanged();
 		return oProject;
 	},
-	
+
 	/**
 	* finds the project with the given identifier and sets it as the selected project.
 	* @param {string} sIdentifier id of the project to select
@@ -258,7 +258,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this._oModel.setProperty("/SelectedProject", oProject);
 		this._fireSelectedProjectChanged();
 	},
-	
+
 	deletedProject : function(sIdentifier) {
 		var aProjects = this._oModel.getProperty("/Projects");
 		var oProject = null;
@@ -281,6 +281,16 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this._oModel.updateBindings();
 	},
 
+	/**
+	 * delete this request from the currently selected project.
+	 * @param {object} oRequest request to delete
+	 */
+	deleteRequest : function(oRequest) {
+		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
+		oSelectedProject.removeRequest(oRequest);
+		this._oModel.updateBindings();
+	},
+
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Functions
@@ -296,13 +306,13 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	/**
 	* save projects to lcoalstorage
 	*/
-	_autoSave : function() {		
+	_autoSave : function() {
 		var sData = this._createJsonString();
 		if (this._sLastSavedData === sData) {
 			//console.log("no data changed");
 			return;
 		}
-		
+
 		//compare sData with last saved data
 		window.localStorage.setItem("projects", sData);
 		this._sLastSavedData = sData;

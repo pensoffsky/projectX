@@ -10,7 +10,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 		});
 
 		/**
-		 * 
+		 *
 		 * @param {boolean} bAssertionsResult representing the result of the assertions.
 		 * @param {boolean} bAssertionsResultReady true if the assertions were checked.
 		 * @return returns checkmark if result of all assertions is true.
@@ -23,7 +23,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 			}
 
 			if (bAssertionsResult === true) {
-				return "sap-icon://message-success";
+				return "sap-icon://accept";
 			} else if (bAssertionsResult === false) {
 				return "sap-icon://message-error";
 			} else {

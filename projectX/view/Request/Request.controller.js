@@ -2,7 +2,7 @@
  * TODO add description of file
  */
 sap.ui.define([
-	'jquery.sap.global', 
+	'jquery.sap.global',
 	'projectX/util/Controller',
 	'projectX/util/Formatter',
 	'projectX/util/Constants',
@@ -11,12 +11,12 @@ sap.ui.define([
 	'projectX/view/Metadata/MetadataTypesController',
 	'projectX/util/Request',
 	'projectX/util/AceEditor'
-	
+
 	],
-	function(jQuery, 
-			Controller, 
-			Formatter, 
-			Constants, 
+	function(jQuery,
+			Controller,
+			Formatter,
+			Constants,
 			AssertionEditListController,
 			RequestHeaderEditListController,
 			MetadataTypesController,
@@ -33,9 +33,9 @@ sap.ui.define([
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Members
 		// /////////////////////////////////////////////////////////////////////////////
-		
+
 		/**
-		 * copy of the request used to temporary store the changes from the user 
+		 * copy of the request used to temporary store the changes from the user
 		 * until save or discard.
 		 * @type {object}
 		 */
@@ -64,7 +64,7 @@ sap.ui.define([
 
 			var that = this;
 			this.getView().byId("idTextAreaUrl").onsapentermodifiers =  function(oEvent, a ,b){
-				if (oEvent.metaKey === true) {
+				if (oEvent.metaKey === true || oEvent.altKey === true) {
 					that.onBtnSendPress();
 				}
 			};
@@ -96,8 +96,8 @@ sap.ui.define([
 			oRequestHeaderContainer.addItem(oRequestHeaderEditFragment);
 			//initialize the fragement controller
 			this._oRequestHeaderEditController.onInit(this.createId("RequestHeaders"));
-			
-			
+
+
 			/////////////////////////////////////////////////////////////////////
 			//create MetaData fragment controller
 			/////////////////////////////////////////////////////////////////////
@@ -116,7 +116,7 @@ sap.ui.define([
 		Request.prototype.onRouteMatched = function(oEvent) {
 			this._oRequest = null;
 			this._oProject = null;
-			
+
 			var oParameters = oEvent.getParameters();
 			var iRequestID = parseInt(oParameters.arguments.requestID, 10);
 			var oModel = this.getView().getModel();
@@ -129,13 +129,13 @@ sap.ui.define([
 			if (!oRequest) {
 				return;
 			}
-			
+
 			this._oRequest = oRequest;
 			this._oProject = oSelectedProject;
 			this._localUIModel.setProperty("/request", this._oRequest);
 			this._localUIModel.setProperty("/project", oSelectedProject);
 			this._prettyPrintResponseBody(this._localUIModel.getProperty("/responseBodyDisplayMode"));
-			
+
 			this._oMetadataTypesController.setSelectedRequest(this._oProject, this._oRequest);
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
 		};
@@ -143,12 +143,12 @@ sap.ui.define([
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Request Sending
 		// /////////////////////////////////////////////////////////////////////////////
-		
+
 		Request.prototype.onBtnMetadataPress = function(oEvent) {
 			var oPopover = this.getView().byId("idMetadataPopover");
 			oPopover.openBy(this.getView().byId("idTextAreaUrl"));
 		};
-		
+
 		/**
 		* called when the user clicks the "send request" button.
 		* clear the result form all assertions.
@@ -161,7 +161,7 @@ sap.ui.define([
 			this._localUIModel.setProperty("/responseBodyFormatted", "");
 			this._localUIModel.updateBindings();
 			this._oAssertionEditController.updateBindings();
-			
+
 			var oDeferred = oRequest.execute(this._oProject);
 			var that = this;
 			oDeferred.always(function(){
@@ -170,13 +170,13 @@ sap.ui.define([
 				that._localUIModel.updateBindings();
 				that._oAssertionEditController.updateBindings();
 			});
-			
+
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
-		
+
 		/**
 		 * tab control implementation using a segmented button and scrollviews
 		 * @param {object} oEvent event object
@@ -204,22 +204,6 @@ sap.ui.define([
 			}
 		};
 
-		Request.prototype.onBtnDeletePress = function() {
-			var oModel = this.getView().getModel();
-			var oSelectedProject = oModel.getProperty("/SelectedProject");
-			oSelectedProject.removeRequest(this._oRequest);
-			oModel.updateBindings();
-			//TODO check navigation after delete		
-		};
-
-		/**
-		* duplicate the currently selected request.
-		*/
-		Request.prototype.onBtnDuplicatePress = function() {
-			var oComponent = this.getComponent();
-			oComponent.duplicateRequest(this._oRequest);
-		};
-
 		Request.prototype.onButtonScriptExamples = function(oEvent) {
 			var oButton = oEvent.getSource();
 			var oMenu = this.getView().byId("idMenuScriptExamples");
@@ -231,26 +215,26 @@ sap.ui.define([
 			var oItem = oEvent.getParameter("item");
 			var oScriptExample = oItem.getBindingContext("localUIModel").getObject();
 			var sScript = this._oRequest.getScriptCode();
-			sScript += "\n" + oScriptExample.script; 
-			this._oRequest.setScriptCode(sScript);			
+			sScript += "\n" + oScriptExample.script;
+			this._oRequest.setScriptCode(sScript);
 			this._localUIModel.updateBindings();
 		};
-		
+
 		/**
 		 * called from the name input control when the name changes.
 		 * after a delay triggers the updating of the master list to show the new name.
 		 */
-		Request.prototype.onNameChanged = function() {	
+		Request.prototype.onNameChanged = function() {
 			this.triggerWithInputDelay(function() {
 				this.updateMasterList();
 			});
 		};
-		
-		Request.prototype.onPanelPrescriptExpand = function() {	
+
+		Request.prototype.onPanelPrescriptExpand = function() {
 			var oScriptEditor = this.getView().byId("superEditor");
 			oScriptEditor.rerender();
 		};
-		
+
 		Request.prototype.onResponseBodyFormat  = function(oEvent){
 			var sSelectedId = oEvent.getParameter("id");
 			var sMode = "text";
@@ -270,18 +254,18 @@ sap.ui.define([
 			default:
 				console.log("problem with response body format segmented button on detail page");
 			}
-			
+
 			this._prettyPrintResponseBody(sMode);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
 		};
-		
+
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Functions
 		// /////////////////////////////////////////////////////////////////////////////
 
 		Request.prototype._prettyPrintResponseBody = function(sMode) {
 			var sResponseBody = this._oRequest.getResponseBody();
-			
+
 			try {
 				switch (sMode) {
 					case "xml":
@@ -295,11 +279,10 @@ sap.ui.define([
 			} catch (e) {
 				console.log("_prettyPrintResponseBody: " + e);
 			}
-			
+
 			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);
 		};
 
 		return Request;
 
 	}, /* bExport= */ true);
-
