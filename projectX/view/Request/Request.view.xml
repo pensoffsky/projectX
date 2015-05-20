@@ -90,7 +90,7 @@
 
                 <Panel expandable="true"
                        expanded="false"
-                       expand="onPanelPrescriptExpand">
+                       expand="onPanelPrescriptExpandx">
                        <headerToolbar>
                          <Toolbar design="Transparent" height="3rem">
                           <Text text="Pre-request script ({localUIModel>/request/mProperties/scriptCode/length})"/>
