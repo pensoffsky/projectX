@@ -10,5 +10,8 @@
 # Ignore local ui5 resources folder
 /resources
 
+# Ignore node modules installed by npm install
+/node_modules
+
 # Ignore Cloud9 config filder
 .c9
