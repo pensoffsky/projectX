@@ -53,12 +53,19 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._localUIModel.setProperty("/reasonNew", false);
 		this._localUIModel.setProperty("/reasonEdit", true);
 		this._localUIModel.setProperty("/reason", "Edit sequence");
+		this._setSelectedRequests();
 
+
+		//add list of requests to local ui model
+		this._localUIModel.setProperty("/requests", oSelectedProject.getRequests());
+	},
+	
+	_setSelectedRequests : function() {
 		//get requests for requestIds and set to local ui model
 		var aSelectedRequests = [];
 		var aRequestIds = this._oSequence.getRequestIds();
 		for (var i = 0; i < aRequestIds.length; i++) {
-			var oRequest = oSelectedProject.getRequestByIdentifier(aRequestIds[i]);
+			var oRequest = this._oProject.getRequestByIdentifier(aRequestIds[i]);
 			//create deep copy of request because in testrun the same
 			//request can be executed multiple times
 			if (oRequest) {
@@ -68,62 +75,34 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		}
 		
 		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
-
-		//add list of requests to local ui model
-		this._localUIModel.setProperty("/requests", oSelectedProject.getRequests());
 	},
+	
 
 	// /////////////////////////////////////////////////////////////////////////////
-	// /// event handler
+	// /// Request Select Dialog Event handler
 	// /////////////////////////////////////////////////////////////////////////////
 
-	onSegmentedButtonSelect : function(oEvent){
-		var sSelectedId = oEvent.getParameter("id");
-		switch (sSelectedId) {
-			case this.createId("idButtonConfig"):
-				this._localUIModel.setProperty("/configVisible", true);
-				this._localUIModel.setProperty("/testVisible", false);
-				break;
-			case this.createId("idButtonTest"):
-				this._localUIModel.setProperty("/configVisible", false);
-				this._localUIModel.setProperty("/testVisible", true);
-				break;
-		default:
-			console.log("problem with segmented button on sequence page");
-		}
+	onRequestSelectDialogSearch : function(oEvent) {
+		var sValue = oEvent.getParameter("value");
+	  var oFilter = new sap.ui.model.Filter("mProperties/name", sap.ui.model.FilterOperator.Contains, sValue);
+	  var oBinding = oEvent.getSource().getBinding("items");
+	  oBinding.filter([oFilter]);
 	},
-
-	onCreate : function() {
-		//basic input validation
-		if (!this._oSequence.getName()){
-			alert("name field is required");
-			return;
-		}
-
-		//get id for sequence. set sequence to project
-		var oModel = this.getView().getModel();
-		var oSelectedProject = oModel.getProperty("/SelectedProject");
-		var iSequenceId = oSelectedProject.getNextSequenceId();
-		this._oSequence.setIdentifier(iSequenceId);
-		oSelectedProject.addSequence(this._oSequence);
-		oModel.updateBindings();
-		//nav back
-		sap.ui.core.UIComponent.getRouterFor(this).backWithoutHash(this.getView());
-	},
-
-	/**
-	 * move selected request from request list to selected requests.
-	 */
-	onButtonRight : function() {
-		var oRequestList = this.getView().byId("idListRequests");
-		var aSelectedItems = oRequestList.getSelectedItems();
-		if (!aSelectedItems){
-			return;
-		}
-
+	
+	onRequestSelectDialogConfirm : function(oEvent) {
+		var aContexts = oEvent.getParameter("selectedContexts");
+    var aRequests = [];
+		if (aContexts.length) {
+			aRequests = aContexts.map(function(oContext) { 
+				//return this._localUIModel.getProperty(oContext.sPath);
+				return oContext.getObject();
+			}, this);
+    }
+    oEvent.getSource().getBinding("items").filter([]);
+		
 		var aSelectedRequests = this._localUIModel.getProperty("/selectedRequests");
-		for (var i = 0; i < aSelectedItems.length; i++) {
-			var oRequest = aSelectedItems[i].getBindingContext("localUIModel").getObject();
+		for (var i = 0; i < aRequests.length; i++) {
+			var oRequest = aRequests[i];
 			oRequest = new projectX.util.Request(oRequest.serialize());
 			aSelectedRequests.push(oRequest);
 		}
@@ -132,30 +111,37 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
 		this._oSequence.addRequestIds(aSelectedRequests);	
 	},
+	
+	onRequestSelectDialogClose : function(oEvent) {
+		
+	},
 
-	/**
-	 * remove selected request from the right list of selected requests.
-	 */
-	onButtonLeft : function() {
-		var oSelectedRequestList = this.getView().byId("idListSelectedRequests");
-		var aSelectedItems = oSelectedRequestList.getSelectedItems();
-		if (!aSelectedItems){
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// event handler
+	// /////////////////////////////////////////////////////////////////////////////
+
+	onBtnAddRequest : function(oEvent) {
+		var oRequestSelectDialog = this.getView().byId("idRequestSelectDialog");
+		jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), oRequestSelectDialog);
+		oRequestSelectDialog.open();
+	},
+	
+	onBtnRemoveRequests : function(oEvent) {
+		var oTable = this.getView().byId("idSelectedRequestsTable");
+		var aSelectedItems = oTable.getSelectedItems();
+		if (!aSelectedItems || aSelectedItems.length <= 0){
 			return;
 		}
-		debugger
-		//TODO fix this
-		aSelectedItems = jQuery.extend(true, [], aSelectedItems);
-		var aSelectedRequests =  this._localUIModel.getProperty("/selectedRequests");
-		
-		for (var i = 0; i < aSelectedItems.length; i++) {
-			var oRequest = aSelectedItems[i].getBindingContext("localUIModel").getObject();
-			aSelectedRequests.splice(aSelectedRequests.indexOf(oRequest), 1);
-		}
 
-		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
-		this._oSequence.addRequestIds(aSelectedRequests);
-		this._oTable.removeSelections(true);
+		var oSequence =  this._localUIModel.getProperty("/sequence");
+		for (var i = 0; i < aSelectedItems.length; i++) {
+			var oRequest = projectX.util.Helper.getBoundObjectForItem(aSelectedItems[i], "localUIModel");			
+			oSequence.removeRequest(oRequest);
+		}
+		oTable.removeSelections(true);
+		this._setSelectedRequests();
 	},
+
 
 	/**
 	* execute the first request. when it finished than execute the next request.

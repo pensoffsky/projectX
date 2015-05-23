@@ -181,6 +181,19 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			oComponent.deleteRequest(oRequest);
 			this._selectFirstRequest();
 		};
+		
+		
+		Master.prototype.onBtnDuplicateSequencePress = function(oEvent) {
+			//TODO implement me
+			sap.m.MessageToast.show("TODO implement me");
+		};
+
+		Master.prototype.onBtnDeleteSequencePress = function(oEvent) {
+			var oSequence = Helper.getBoundObjectForItem(oEvent.getSource());
+			var oComponent = this.getComponent();
+			oComponent.deleteSequence(oSequence);
+			this._selectFirstSequence();
+		};
 
 
 

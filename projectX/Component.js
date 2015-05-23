@@ -290,6 +290,16 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oSelectedProject.removeRequest(oRequest);
 		this._oModel.updateBindings();
 	},
+	
+	/**
+	* delete this sequence from the currently selected project.
+	* @param {object} oSequence sequence to delete
+	*/
+	deleteSequence : function(oSequence) {
+		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
+		oSelectedProject.removeSequence(oSequence);
+		this._oModel.updateBindings();
+	},
 
 
 	// /////////////////////////////////////////////////////////////////////////////

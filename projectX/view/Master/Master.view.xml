@@ -51,7 +51,6 @@
 												type="Transparent"/>
 
 							</Toolbar>
-
 						</CustomListItem>
 					</items>
 				</List>
@@ -71,17 +70,27 @@
 					select="onSequencesListSelect"
 					>
 					<items>
-						<StandardListItem title="{mProperties/name}"/>
+						<CustomListItem>
+							<Toolbar width="100%">
+								<Text text="{mProperties/name}"/>
+								<ToolbarSpacer/>
+								<Button press="onBtnDuplicateSequencePress"
+												tooltip="Duplicate"
+												icon="sap-icon://duplicate"
+												type="Transparent"/>
+								<Button press="onBtnDeleteSequencePress"
+												tooltip="Delete"
+												icon="sap-icon://delete"
+												type="Transparent"/>
+
+							</Toolbar>
+						</CustomListItem>
 					</items>
 				</List>
 			</ScrollContainer>
 		</content>
 		<footer>
 			<Toolbar>
-				<Button icon="sap-icon://create"
-						tooltip="Add new project"
-						press="onAddNewProject"/>
-				<ToolbarSpacer/>
 				<Button
 					icon="sap-icon://up"
 					tooltip="Move request up"

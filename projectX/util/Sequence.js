@@ -65,6 +65,16 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			}));
 		}	
 	};
+	
+	Sequence.prototype.removeRequest = function(oRequest) {
+		var aSequenceItems = this.getSequenceItems();
+		for (var i = 0; i < aSequenceItems.length; i++) {
+			if(aSequenceItems[i].getIdentifier() === oRequest.getIdentifier()) {
+				this.removeSequenceItem(aSequenceItems[i]);
+				return;
+			}
+		}
+	};
 
 	return Sequence;
 

@@ -10,12 +10,7 @@
 		enableScrolling="true"
 		title="{localUIModel>/reason}">
 		<subHeader>
-		<Toolbar>
-			<SegmentedButton selectedButton="idButtonConfig"
-							select="onSegmentedButtonSelect">
-			<Button text="Config" id="idButtonConfig" />
-			<Button text="Testrun" id="idButtonTest" />
-			</SegmentedButton>
+		<Toolbar>			
 			<ToolbarSpacer/>
 			<Button text="Clear"
 					press="onClearResults"
@@ -23,10 +18,11 @@
 					/>
 			<Button text="Run Sequence"
 					press="onRunSequence"
-					visible="{localUIModel>/testNotRunning}"/>
-			<Button text="Stop"
 					type="Emphasized"
+					visible="{localUIModel>/testNotRunning}"/>
+			<Button text="Stop"					
 					press="onStopSequence"
+					type="Reject"
 					visible="{localUIModel>/testRunning}"
 					/>
 		</Toolbar>
@@ -59,63 +55,42 @@
 					</f:SimpleForm>
 				</l:content>
 			</l:Grid>
-			<FlexBox
-				width="100%"
-				alignItems="Stretch">
-				<VBox>
-					<layoutData>
-						<FlexItemData growFactor="1" />
-					</layoutData>
-					<Label text="Available Requests"/>
-					<List
-						id="idListRequests"
-						items="{localUIModel>/requests}"
-						mode="MultiSelect"
-						select="onRequestsListSelect">
-						<items>
-							<StandardListItem title="{localUIModel>mProperties/name}"/>
-						</items>
-					</List>
-				</VBox>
-
-				<VBox justifyContent="Start">
-					<layoutData>
-						<FlexItemData shrinkFactor="0" />
-					</layoutData>
-					<Button icon="sap-icon://arrow-right" press="onButtonRight"/>
-					<Button icon="sap-icon://arrow-left" press="onButtonLeft"/>
-				</VBox>
-
-				<VBox>
-					<layoutData>
-						<FlexItemData growFactor="1" />
-					</layoutData>
-					<Label text="Selected Requests"/>
-					<List
-						id="idListSelectedRequests"
-						items="{localUIModel>/selectedRequests}"
-						mode="MultiSelect"
-						select="onSelectedRequestsListSelect">
-						<items>
-							<StandardListItem title="{localUIModel>mProperties/name}"/>
-						</items>
-					</List>
-					<HBox justifyContent="End">
-						<Button icon="sap-icon://up" press="onMoveRequestUp"/>
-						<Button icon="sap-icon://down" press="onMoveRequestDown"/>
-					</HBox>
-				</VBox>
-			</FlexBox>
-		</ScrollContainer>
-
-		<ScrollContainer
-			visible="{localUIModel>/testVisible}"
-			height="100%"
-			width="100%"
-			horizontal="true"
-			vertical="true" >
+			
+			
 			<Table
-				items="{localUIModel>/selectedRequests}">
+				items="{localUIModel>/selectedRequests}"
+				rememberSelections="false"
+				mode="MultiSelect"
+				id="idSelectedRequestsTable"
+				title="asdf"
+				>
+				<headerToolbar>
+					<Toolbar>
+						<Label text="Requests in Sequence" />
+						<ToolbarSpacer/>
+						<Button text="Add requests"
+						tooltip="Add a request from all available requests in the project"
+						press="onBtnAddRequest"/>
+						<Button text="Remove requests"
+						tooltip="Remove selected request from sequence"
+						press="onBtnRemoveRequests"/>
+						<SelectDialog
+							id="idRequestSelectDialog"
+					    noDataText="No requests found"
+					    title="Select Requests"
+					    search="onRequestSelectDialogSearch"
+					    confirm="onRequestSelectDialogConfirm"
+					    close="onRequestSelectDialogClose"
+					    items="{localUIModel>/requests}"
+							multiSelect="true"
+							>
+					    <StandardListItem
+					      title="{localUIModel>mProperties/name}"
+					      description="{{localUIModel>mProperties/url}}"						      
+					      type="Active"/>
+					  </SelectDialog>
+					</Toolbar>
+				</headerToolbar>
 				<columns>
 				<Column
 					>
@@ -174,32 +149,5 @@
 				</items>
 			</Table>
 		</ScrollContainer>
-
-
-		<footer>
-			<Toolbar>
-				<ToolbarSpacer/>
-				<Button text="Clear"
-						press="onClearResults"
-						/>
-				<Button text="Run Sequence"
-						type="Emphasized"
-						press="onRunSequence"
-						visible="{localUIModel>/testNotRunning}"
-						/>
-				<Button text="Stop"
-						type="Emphasized"
-						press="onStopSequence"
-						visible="{localUIModel>/testRunning}"
-						/>
-				<Button text="Create"
-						type="Emphasized"
-						press="onCreate"
-						visible="{localUIModel>/reasonNew}"/>
-				<Button press="onBtnDeletePress" 
-						text="Delete"
-						icon="sap-icon://delete"/>
-			</Toolbar>
-		</footer>
 	</Page>
 </mvc:View>
