@@ -39,7 +39,8 @@
                         />
 
                 <CheckBox text="use project prefix url: {localUIModel>/project/mProperties/prefixUrl}"
-                          selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"/>
+                          selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
+                          select="onCBPrefixSelected"/>
                 <FlexBox
                         width="100%"
                         alignItems="Start">
@@ -90,7 +91,7 @@
 
                 <Panel expandable="true"
                        expanded="false"
-                       expand="onPanelPrescriptExpandx">
+                       expand="onPanelPrescriptExpand">
                        <headerToolbar>
                          <Toolbar design="Transparent" height="3rem">
                           <Text text="Pre-request script ({localUIModel>/request/mProperties/scriptCode/length})"/>

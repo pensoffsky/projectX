@@ -177,31 +177,20 @@ sap.ui.define([
 		// /// Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
 
-		/**
-		 * tab control implementation using a segmented button and scrollviews
-		 * @param {object} oEvent event object
-		 */
-		Request.prototype.onSegmentedButtonSelect  = function(oEvent){
-			var sSelectedId = oEvent.getParameter("id");
-			switch (sSelectedId) {
-				case this.createId("idButtonRequest"):
-					this._localUIModel.setProperty("/requestVisible", true);
-					this._localUIModel.setProperty("/assertionsVisible", false);
-					this._localUIModel.setProperty("/metadataVisible", false);
-					break;
-				case this.createId("idButtonAssertions"):
-					this._localUIModel.setProperty("/requestVisible", false);
-					this._localUIModel.setProperty("/assertionsVisible", true);
-					this._localUIModel.setProperty("/metadataVisible", false);
-					break;
-				case this.createId("idButtonMetadata"):
-					this._localUIModel.setProperty("/requestVisible", false);
-					this._localUIModel.setProperty("/assertionsVisible", false);
-					this._localUIModel.setProperty("/metadataVisible", true);
-					break;
-			default:
-				console.log("problem with segmented button on detail page");
+		Request.prototype.onCBPrefixSelected = function(oEvent) {
+			var bSelected = oEvent.getParameter("selected");
+			var sUrl = this._oRequest.getUrl();
+			var sPrefixUrl = this._oProject.getPrefixUrl();
+			if (bSelected){
+				//check if the url starts with the prefix url and if so then remove it
+				if (sUrl && sUrl.length > 0 && sUrl.indexOf(sPrefixUrl) === 0) {
+					sUrl = sUrl.substring(sPrefixUrl.length);
+				}
+			} else {
+				sUrl = sPrefixUrl + sUrl;
 			}
+			this._oRequest.setUrl(sUrl);
+			this._localUIModel.updateBindings();
 		};
 
 		Request.prototype.onButtonScriptExamples = function(oEvent) {
