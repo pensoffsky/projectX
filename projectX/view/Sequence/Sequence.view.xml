@@ -41,9 +41,7 @@
 					<f:SimpleForm
 						editable="true"
 						layout="ResponsiveGridLayout">
-						<f:content>
-							<!-- Basic info -->
-							<c:Title text="Sequence Info" />
+						<f:content>						
 							<Label text="Name" />
 							<Input value="{localUIModel>/sequence/mProperties/name}"
 									liveChange="onNameChanged"

@@ -60,8 +60,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			}, this);
 
 			//if ?sequence=true exists in url then switch to sequence page after 2 seconds
-			if(jQuery.sap.getUriParameters().get("sequence") === "true"){
-				setTimeout($.proxy( function() {
+			if (jQuery.sap.getUriParameters().get("sequence") === "true") {
+				setTimeout(jQuery.proxy( function() {
 					var oList = this.getView().byId("idListSequences")
 					var aItems = oList.getItems();
 					if (aItems.length) {
@@ -77,14 +77,14 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 				}, this), 2000);
 			}
 
-			if(jQuery.sap.getUriParameters().get("editproject") === "true"){
-				setTimeout($.proxy( function() {
+			if (jQuery.sap.getUriParameters().get("editproject") === "true") {
+				setTimeout(jQuery.proxy( function() {
 					this.onEditProject();
 				}, this), 1000);
 			}
 
-			if(jQuery.sap.getUriParameters().get("metadata") === "true"){
-				setTimeout($.proxy( function() {
+			if (jQuery.sap.getUriParameters().get("metadata") === "true") {
+				setTimeout(jQuery.proxy( function() {
 					this.onAddRequestMetadata();
 				}, this), 1000);
 			}
@@ -119,6 +119,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		Master.prototype.onSequencesListSelect = function() {
 			var oList = this.getView().byId("idListSequences");
 			var oItem = oList.getSelectedItem();
+			if (!oItem) {
+				this._selectFirstSequence();
+				return;
+			}
 			var oSelectedSequence = Helper.getBoundObjectForItem(oItem);
 
 			this.getRouter().navTo("sequence", {
@@ -131,6 +135,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		Master.prototype.onRequestsListSelect = function() {
 			var oList = this.getView().byId("idListRequests");
 			var oItem = oList.getSelectedItem();
+			if (!oItem) {
+				this._selectFirstRequest();
+				return;
+			}
 			var oSelectedRequest = Helper.getBoundObjectForItem(oItem);
 
 			var oModel = this.getView().getModel();
@@ -194,8 +202,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			oComponent.deleteSequence(oSequence);
 			this._selectFirstSequence();
 		};
-
-
 
 
 		// /////////////////////////////////////////////////////////////////////////////
