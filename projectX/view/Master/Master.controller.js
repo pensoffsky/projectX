@@ -16,14 +16,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 
 		Master.prototype._localUIModel = null;
 
-		/**
-		 * the paths for the local UI model available for binding.
-		 */
-		Master.LOCALPATHS = {
-			REQUESTS_VISIBLE : "/requestsVisible",
-			SEQUENCES_VISIBLE : "/sequencesVisible"
-		};
-
 		Master.TABS = {
 			REQUESTS : "REQUESTS",
 			SEQUENCES : "SEQUENCES"
@@ -37,8 +29,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			//create local ui model
 			this._localUIModel = new sap.ui.model.json.JSONModel();
 			this._localUIModel.setData({
-				requestsVisible: true,
-				sequencesVisible: false,
 				visibleTab: "REQUESTS"
 			});
 			this.getView().setModel(this._localUIModel, "localUIModel");
@@ -287,7 +277,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		* the user can reorder the list
 		*/
 		Master.prototype.onMoveRequestUp = function() {
-			if (this._localUIModel.getProperty("/requestsVisible")) {
+			if (this._localUIModel.getProperty("/visibleTab") === Master.TABS.REQUESTS) {
 				this._moveSelectedListItem(Helper.moveArrayElementUp,
 				function(oProject){ return oProject.removeAllRequests(); },
 				function(oProject, oRequest){ oProject.addRequest(oRequest); },
@@ -305,7 +295,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		* the user can reorder the list
 		*/
 		Master.prototype.onMoveRequestDown = function() {
-			if (this._localUIModel.getProperty("/requestsVisible")) {
+			if (this._localUIModel.getProperty("/visibleTab") === Master.TABS.REQUESTS) {
 				this._moveSelectedListItem(Helper.moveArrayElementDown,
 					function(oProject){ return oProject.removeAllRequests(); },
 					function(oProject, oRequest){ oProject.addRequest(oRequest); },
