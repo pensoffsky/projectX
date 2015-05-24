@@ -4,15 +4,16 @@
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
-	xmlns="sap.m">
+	xmlns="sap.m"
+	height="100%">
 	<Page
-		showHeader="false">
+		showHeader="false"
+		>
 		<l:Grid
 			defaultSpan="L12 M12 S12"
 			width="auto">
 			<l:content>
 				<f:SimpleForm
-					id="idAddProductForm"
 					minWidth="800"
 					maxContainerCols="2"
 					editable="true"
@@ -23,10 +24,8 @@
 					emptySpanM="1"
 					columnsL="1"
 					columnsM="1"
-					class="editableForm">
+					>
 					<f:content>
-						<!-- Basic info -->
-						<c:Title text="Project Info" />
 						<Label text="Project Name" />
 						<Input value="{localUIModel>/project/mProperties/name}"
 							placeholder="name of project"
@@ -35,28 +34,21 @@
 							/>
 						<Label text="OData Service URL" />
 
-							<Input value="{localUIModel>/project/mProperties/baseUrl}"
-									/>
-							<Button text="Check"
-								 	tooltip="Check for valid OData service"
-									press="onCheckODataService"
-									/>
-							<Text text="{localUIModel>/odataServiceCheckRes}"/>
-
-							<Label text="Prefix URL" />
-							<Input value="{localUIModel>/project/mProperties/prefixUrl}"
-								placeholder="url to use as prefix for requests"
+						<Input value="{localUIModel>/project/mProperties/baseUrl}"
 								/>
+						<Button text="Check"
+							 	tooltip="Check for valid OData service"
+								press="onCheckODataService"
+								/>
+						<Text text="{localUIModel>/odataServiceCheckRes}"/>
+
+						<Label text="Prefix URL" />
+						<Input value="{localUIModel>/project/mProperties/prefixUrl}"
+							placeholder="url to use as prefix for requests"
+							/>
 					</f:content>
 				</f:SimpleForm>
 			</l:content>
 		</l:Grid>
-
-		<footer>
-			<Toolbar>
-				<ToolbarSpacer/>
-
-			</Toolbar>
-		</footer>
 	</Page>
 </mvc:View>

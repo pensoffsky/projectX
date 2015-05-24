@@ -42,9 +42,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			var sIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");
 			var oComponent = this.getComponent();
 			oComponent.setSelectedProject(sIdentifier);
-			this.getRouter().navTo("project", {
-				projectID : sIdentifier
-			}, true);
+			// this.getRouter().navTo("project", {
+			// 	projectID : sIdentifier
+			// }, true);
 		};
 		
 		
@@ -66,16 +66,11 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			var oComponent = this.getComponent();
 			var oProject = oComponent.createNewProject();
 			this._localUIModel.setProperty("/selectedProjectIdentifier", oProject.getIdentifier());
-			this.getRouter().navTo("project", {
-				projectID : oProject.getIdentifier()
-			}, true);
+			this._showProjectDialog();
 		};
 		
 		App.prototype.onEditProject = function(oEvent) {
-			var sIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");
-			this.getRouter().navTo("project", {
-				projectID : sIdentifier
-			}, true);
+			this._showProjectDialog();
 		};
 		
 		App.prototype.onDeleteSelectedProject = function(oEvent) {
@@ -87,6 +82,35 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 				that.onSelectProjectChange();
 			}, 0);
 		};
+		
+		// /////////////////////////////////////////////////////////////////////////////
+		// /// Private Functions
+		// /////////////////////////////////////////////////////////////////////////////
+		
+		App.prototype._showProjectDialog = function(oEvent) {
+			var oView = sap.ui.xmlview("projectX.view.Project.Project");
+			var dialog = new sap.m.Dialog({
+		      title: 'Project',
+		      contentWidth: "90%",
+		      contentHeight: "250px",
+		      content: oView,
+		      beginButton: new sap.m.Button({
+		        text: 'OK',
+		        press: function () {
+		          dialog.close();
+		        }
+		      }),
+		      afterClose: function() {
+		        dialog.destroy();
+		      }
+		    });
+
+		    //to get access to the global model
+		    this.getView().addDependent(dialog);
+		    dialog.open();
+			oView.getController().onRouteMatched();
+		};
+		
 		
 		return App;
 

@@ -24,13 +24,13 @@ projectX.util.Controller.extend("projectX.view.Project.Project", {
 		this.getView().setModel(this._localUIModel, "localUIModel");
 
 		//hook navigation event
-		this.getRouter().getRoute("project").attachPatternMatched(this.onRouteMatched, this);
+		//this.getRouter().getRoute("project").attachPatternMatched(this.onRouteMatched, this);
 	},
 
 	onRouteMatched : function(oEvent) {
 		this._oProject =  null;
 
-		var oParameters = oEvent.getParameters();
+		//var oParameters = oEvent.getParameters();
 		//var iProjectID = parseInt(oParameters.arguments.projectID, 10);
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
