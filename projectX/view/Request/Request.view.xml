@@ -74,6 +74,7 @@
 
                 <Panel expandable="true"
                        expanded="false"
+                       class="sapUiNoContentPadding"
                        >
                        <headerToolbar>
                          <Toolbar design="Transparent" height="3rem">
@@ -91,7 +92,9 @@
 
                 <Panel expandable="true"
                        expanded="false"
-                       expand="onPanelPrescriptExpand">
+                       expand="onPanelPrescriptExpand"
+                       class="sapUiNoContentPadding"
+                       >
                        <headerToolbar>
                          <Toolbar design="Transparent" height="3rem">
                           <Text text="Pre-request script ({localUIModel>/request/mProperties/scriptCode/length})"/>
@@ -125,12 +128,14 @@
                 <Panel expandable="true"
                        expanded="false"
                        headerText="Request Headers ({localUIModel>/request/mAggregations/requestHeaders/length})"
+                       class="sapUiNoContentPadding"
                         >
                     <VBox id="idVBoxRequestHeaderPlaceholder"/>
                 </Panel>
 
                 <Panel expandable="true"
                        expanded="true"
+                       class="sapUiNoContentPadding"
                         >
                         <headerToolbar>
                           <Toolbar design="Transparent" height="3rem">

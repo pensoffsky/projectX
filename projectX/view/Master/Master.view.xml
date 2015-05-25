@@ -37,7 +37,7 @@
 				<ToolbarSpacer/>
 		
 				<Button
-					icon="sap-icon://sys-add"
+					text="OData"
 					tooltip="Add Request from metadata"
 					press="onAddRequestMetadata" />
 				<Button

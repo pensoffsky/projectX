@@ -10,7 +10,41 @@
 	>
 	<l:FixFlex 	fitContainer="true">
 		<l:fixContent>
-			<Panel>
+			<Toolbar height="60px">
+				<Label text="Project:"/>
+				<Select 
+					width="15rem"
+					items="{/Projects}"
+					change="onSelectProjectChange"
+					selectedKey="{localUIModel>/selectedProjectIdentifier}"
+					>
+					<core:Item text="{mProperties/name}" key="{mProperties/identifier}" />
+				</Select>
+				<Button icon="sap-icon://edit"
+						tooltip="Edit project"
+						press="onEditProject"/>
+				<Button icon="sap-icon://add"
+						tooltip="Add new project"
+						press="onAddNewProject"/>
+				<Button icon="sap-icon://delete"
+						tooltip="Delete selected project"
+						press="onDeleteSelectedProject"/>
+
+				<ToolbarSpacer/>
+				
+				<u:FileUploader
+					change="onFileUploaderChange"
+					buttonText="Import"
+					tooltip="Load a local file from disk"
+					buttonOnly="true"
+					/>
+				<Button
+					text="Export"
+					tooltip="Export"
+					press="onExport" />
+			</Toolbar>
+			
+			<!-- <Panel>
 				<FlexBox alignItems="Center"> 
 					
 						<Label text="Project:"/>
@@ -42,7 +76,7 @@
 							press="onExport" />
 					
 				</FlexBox>
-			</Panel>
+			</Panel> -->
     </l:fixContent>
     <l:flexContent>
 		<SplitApp 	id="idAppControl" 
