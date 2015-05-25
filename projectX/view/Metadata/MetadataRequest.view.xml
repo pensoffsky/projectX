@@ -4,9 +4,11 @@
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
-	xmlns="sap.m">
+	xmlns="sap.m"
+	height="100%"
+	>
 	<Page
-		title="Add Request based on OData MetaData">
+		showHeader="false">
 		
 		<VBox id="idBindingContainer">
 			<Label text="{/odataServiceCheckRes}"/>
@@ -14,10 +16,6 @@
 		<!--  
 		ENTITY SETS
 		-->
-		<Panel expandable="true" 
-			   expanded="false"
-			   headerText="EntitySets">
-		    <content>	
 				<Table items="{/entitySets}"
 						rememberSelections="false"
 						mode="MultiSelect"
@@ -25,6 +23,7 @@
 						>
 					<headerToolbar>
 				    	<Toolbar>
+								<Label text="EntitySets"/>
 							<ToolbarSpacer/>
 					        <Button text="Add new request"
 									tooltip="Add requests for selected items"
@@ -44,16 +43,10 @@
 						</ColumnListItem>
 					</items>
 				</Table>		      
-		    </content>
-	  	</Panel>
 		
 		<!--  
 		FUNCTION IMPORTS
 		-->
-		<Panel expandable="true" 
-			   expanded="false"
-			   headerText="Fuction Imports">
-		    <content>	
 				<Table items="{/functionImports}"
 						rememberSelections="false"
 						mode="MultiSelect"
@@ -61,6 +54,7 @@
 						>
 					<headerToolbar>
 				    	<Toolbar>
+								<Label text="FunctionImports"/>
 							<ToolbarSpacer/>
 					        <Button text="Add new request"
 									tooltip="Add requests for selected items"
@@ -96,14 +90,12 @@
 						</ColumnListItem>
 					</items>
 				</Table>
-			</content>
-		</Panel>
 		
 		
 		<!--  
 		ASSOCIATION SET
 		-->
-		<Panel expandable="true" 
+		<!-- <Panel expandable="true" 
 			   expanded="false"
 			   headerText="Association Sets">
 		    <content>	
@@ -144,21 +136,9 @@
 					</items>
 				</Table>
 			</content>
-		</Panel>
-		
-		
-		
-		
+		</Panel> -->
+	
 		</VBox>
 		
-		
-		
-		
-		<footer>
-			<Toolbar>
-				<ToolbarSpacer/>
-				<Button text="Refresh Metadata" press="onRefreshMetadata"/>
-			</Toolbar>
-		</footer>
 	</Page>
 </mvc:View>

@@ -107,7 +107,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		//create the objects that can be modified inside the script
 		var oReqParam = {
 			httpMethod: this.getHttpMethod(),
-			url: sUrl
+			url: sUrl,
+			requestBody: this.getRequestBody(),
+			contentType: ""
 			//TODO add more parameters here
 		};
 
@@ -139,7 +141,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 		var oDeferred = jQuery.ajax({
 			method: oReqParam.httpMethod,
-			url: oReqParam.url
+			url: oReqParam.url,
+			data: oReqParam.requestBody,
+			processData: false, 
+			contentType: oReqParam.contentType
 		});
 
 		var that = this;

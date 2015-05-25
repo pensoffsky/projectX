@@ -43,12 +43,6 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 							transition : "show"
 						},
 						{
-							pattern : "project/{projectID}/:reason:",
-							name : "project",
-							view : "Project.Project",
-							transition : "show"
-						},
-						{
 							pattern : "sequence/{sequenceID}/:reason:",
 							name : "sequence",
 							view : "Sequence.Sequence",
@@ -58,12 +52,6 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 							pattern : "notfound",
 							name : "notfound",
 							view : "NotFound",
-							transition : "show"
-						},
-						{
-							pattern : "metadata/{projectID}",
-							name : "metadata",
-							view : "Metadata.MetadataRequest",
 							transition : "show"
 						}
 					]

@@ -52,7 +52,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			//if ?sequence=true exists in url then switch to sequence page after 2 seconds
 			if (jQuery.sap.getUriParameters().get("sequence") === "true") {
 				setTimeout(jQuery.proxy( function() {
-					var oList = this.getView().byId("idListSequences")
+					var oList = this.getView().byId("idListSequences");
 					var aItems = oList.getItems();
 					if (aItems.length) {
 						oList.setSelectedItem(aItems[0], true);
@@ -215,7 +215,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
-		// /// Footer Event Handler
+		// /// Toolbar Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
 
 		/**
@@ -240,18 +240,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		* show the odata service metadata page
 		* to let the user add a request based on odata metadata information.
 		*/
-		Master.prototype.onAddRequestMetadata = function() {
-			//get the model
-			var oModel = this.getView().getModel();
-			//get the selected project
-			var oSelectedProject = oModel.getProperty("/SelectedProject");
-			var iProjectID = oSelectedProject.getIdentifier();
-			this.getRouter().navTo("metadata", {
-				projectID : iProjectID
-			}, true);
-
-			this._removeSelectionFromRequestList();
-			this._removeSelectionFromSequenceList();
+		Master.prototype.onAddRequestMetadata = function() {									
+			this._showODataRequestDialog();
 		};
 
 
@@ -380,6 +370,31 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			}
 
 			return false;
+		};
+
+
+		Master.prototype._showODataRequestDialog = function(oEvent) {
+			var oView = sap.ui.xmlview("projectX.view.Metadata.MetadataRequest");
+			var dialog = new sap.m.Dialog({
+					title: 'Add new request based on OData metadata',
+					contentWidth: "80%",
+					contentHeight: "90%",
+					content: oView,
+					beginButton: new sap.m.Button({
+						text: 'OK',
+						press: function () {
+							dialog.close();
+						}
+					}),
+					afterClose: function() {
+						dialog.destroy();
+					}
+				});
+	
+				//to get access to the global model
+				this.getView().addDependent(dialog);
+				dialog.open();
+			oView.getController().onRouteMatched();
 		};
 
 		return Master;

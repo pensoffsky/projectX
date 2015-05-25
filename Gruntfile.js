@@ -13,6 +13,7 @@ module.exports = function(grunt) {
       },
       options: {
         watchTask: true,
+        open: false,
         server: {
             baseDir: "./"
         }
@@ -39,6 +40,17 @@ module.exports = function(grunt) {
           nospawn: true
         }
       }
+    },
+    
+    connect: {
+      server: {
+        options: {
+          port: 9001,
+          useAvailablePort: true,
+          base: './',
+          keepalive: false
+        }
+      }
     }
   });    
   
@@ -48,7 +60,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');  
   // Load the plugin that provides the "watch" task.
   grunt.loadNpmTasks('grunt-contrib-watch');
+  // Load the plugin that provides the "connect" task.
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserSync', 'watch']);
+  grunt.registerTask('default', ['browserSync', 'connect', 'watch']);
 };

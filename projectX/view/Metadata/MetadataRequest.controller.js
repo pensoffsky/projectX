@@ -29,7 +29,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 		//this.getView().setModel(this._localUIModel, "localUIModel");
 
 		//hook navigation event
-		this.getRouter().getRoute("metadata").attachPatternMatched(this.onRouteMatched, this);
+		//this.getRouter().getRoute("metadata").attachPatternMatched(this.onRouteMatched, this);
 	},
 
 	onRouteMatched: function(oEvent) {
@@ -75,6 +75,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			//TODO also add entitytype to request to allow filtering and so on ...?
 		}
 
+		this.showSuccessMessage(aSelectedItems.length + " requests created");
 		oModel.updateBindings();
 	},
 
@@ -115,6 +116,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			oSelectedProject.addNewRequest(sName, sUrl, sHttpMethod);
 		}
 
+		this.showSuccessMessage(aSelectedItems.length + " requests created");
 		oModel.updateBindings();
 	},
 
@@ -177,7 +179,8 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 	_getODataServiceMetadata: function(sServiceUrl) {
 		this._localUIModel.setProperty("/odataServiceCheckRes", "checking odata service defined in project...");
 		var oDeferred = projectX.util.Helper.getODataServiceMetadata(sServiceUrl);
-
+		this.getView().setBusyIndicatorDelay(0);
+		this.getView().setBusy(true);
 		var that = this;
 		oDeferred.done(function(oMetaData) {
 			// console.log(JSON.stringify(oMetaData, null, 2));
@@ -192,6 +195,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			that._localUIModel.setProperty("/associationSets", that._extractFromEntityContainer(aEntityContainers, "associationSet"));
 			that._localUIModel.setProperty("/entitySets", that._extractFromEntityContainer(aEntityContainers, "entitySet"));
 			that._localUIModel.setProperty("/functionImports", that._extractFromEntityContainer(aEntityContainers, "functionImport"));
+			that.getView().setBusy(false);
 		});
 
 		oDeferred.fail(function() {
@@ -201,6 +205,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			that._localUIModel.setProperty("/entitySets", null);
 			that._localUIModel.setProperty("/functionImports", null);
 			that._localUIModel.setProperty("/associationSet", null);
+			that.getView().setBusy(false);
 			//TODO clear data
 		});
 	},

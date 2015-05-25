@@ -135,6 +135,11 @@ sap.ui.core.mvc.Controller.extend("projectX.util.Controller", {
 		}
 		
 		this._inputDelay = jQuery.sap.delayedCall(projectX.util.Constants.INPUTDELAY, this, fAction);
+	},
+
+	showSuccessMessage : function (sMessage) {
+		sap.m.MessageToast.show(sMessage);
 	}
+
 	
 });
