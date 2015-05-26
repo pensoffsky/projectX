@@ -5,69 +5,78 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	function(jQuery, ManagedObject, Helper, Constants) {
 	"use strict";
 
-	var Assertion = ManagedObject.extend("projectX.util.Assertion", { metadata : {
-	
-		properties : {
-			/**
-			 * the name of the assertion. can be used to reference the assertion in 
-			 * the javascript supplied by the user in a sequence.
-			 * @type {string}
-			 */
-			name : {type : "string", defaultValue : null},
-			
-			/**
-			 * the property of the response that will be evaluated.
-			 * e.g. ResponseText, ResponseHeader, Status
-			 * @type {string}
-			 */
-			assertProperty : {type : "string", defaultValue : null},
-			
-			/**
-			 * the operation that will be used to assert the property.
-			 * e.g. Equals, does not equal, lesser than, ...
-			 * @type {string}
-			 */
-			operation : {type : "string", defaultValue : null},
-			
-			/**
-			 * the path for json or xmldocument asserts
-			 * @type {string}
-			 */
-			path : {type : "string", defaultValue : null},
-			
-			/**
-			 * the expected value for the property and operation.
-			 * e.g. 200 for status code
-			 * @type {string}
-			 */
-			expected : {type : "string", defaultValue : null},
-			
-			//TEMP DATA
-			
-			/**
-			 * true if the result variable represent the result of the assertion check.
-			 * @type {boolean}
-			 */
-			resultReady: {type : "boolean", defaultValue : false},
-			
-			/**
-			 * result of the assert function. Can be used for databinding purposes.
-			 * true if assert was successfull.
-			 * @type {boolean}
-			 */
-			result : {type : "boolean", defaultValue : false},
-			
-			/**
-			 * evaluated value of the assert function. Can be used for databinding purposes.
-			 * string representation of what was selected with this assertion.
-			 * @type {string}
-			 */
-			evaluatedValue : {type : "string", defaultValue : null}
-			},
-		events : {
-	
+	var Assertion = ManagedObject.extend("projectX.util.Assertion", { 
+		constructor : function (oData) {
+			ManagedObject.apply(this, arguments);
+			this.setName(oData.name);
+			this.setAssertProperty(oData.assertProperty);
+			this.setOperation(oData.operation);
+			this.setPath(oData.path);
+			this.setExpected(oData.expected);
+		},
+		metadata : {
+			properties : {
+				/**
+				 * the name of the assertion. can be used to reference the assertion in 
+				 * the javascript supplied by the user in a sequence.
+				 * @type {string}
+				 */
+				name : {type : "string", defaultValue : null},
+				
+				/**
+				 * the property of the response that will be evaluated.
+				 * e.g. ResponseText, ResponseHeader, Status
+				 * @type {string}
+				 */
+				assertProperty : {type : "string", defaultValue : null},
+				
+				/**
+				 * the operation that will be used to assert the property.
+				 * e.g. Equals, does not equal, lesser than, ...
+				 * @type {string}
+				 */
+				operation : {type : "string", defaultValue : null},
+				
+				/**
+				 * the path for json or xmldocument asserts
+				 * @type {string}
+				 */
+				path : {type : "string", defaultValue : null},
+				
+				/**
+				 * the expected value for the property and operation.
+				 * e.g. 200 for status code
+				 * @type {string}
+				 */
+				expected : {type : "string", defaultValue : null},
+				
+				//TEMP DATA
+				
+				/**
+				 * true if the result variable represent the result of the assertion check.
+				 * @type {boolean}
+				 */
+				resultReady: {type : "boolean", defaultValue : false},
+				
+				/**
+				 * result of the assert function. Can be used for databinding purposes.
+				 * true if assert was successfull.
+				 * @type {boolean}
+				 */
+				result : {type : "boolean", defaultValue : false},
+				
+				/**
+				 * evaluated value of the assert function. Can be used for databinding purposes.
+				 * string representation of what was selected with this assertion.
+				 * @type {string}
+				 */
+				evaluatedValue : {type : "string", defaultValue : null}
+				},
+			events : {
+		
+			}
 		}
-	}});
+	});
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Methods

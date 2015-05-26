@@ -3,46 +3,53 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	function(jQuery, ManagedObject, Assertion, RequestHeader, Constants) {
 	"use strict";
 
-	var Request = ManagedObject.extend("projectX.util.Request", { metadata : {
-
-		properties : {
-			identifier : {type : "int", defaultValue : null},
-			name : {type : "string", defaultValue : null},
-			description : {type : "string", defaultValue : null},
-			httpMethod : {type : "string", defaultValue : Constants.GET},
-			useProjectPrefixUrl : {type : "boolean", defaultValue : false},
-			url : {type : "string", defaultValue : null},
-			tags : {type : "string", defaultValue : null},
-			requestBody : {type : "string", defaultValue : null},
-			scriptCode : {type : "string", defaultValue : null},
-
-			//these fields are only temporary variables. they will not be persisted
-			status : {type : "string", defaultValue : null},
-			responseHeaders : {type : "string", defaultValue : null},
-			responseBody : {type : "string", defaultValue : null},
-			responseTime : {type : "int", defaultValue : null},
-			assertionsResultReady : {type : "boolean", defaultValue : false},
-			assertionsResult : {type : "boolean", defaultValue : false}
+	var Request = ManagedObject.extend("projectX.util.Request", { 
+		constructor : function (oData) {
+			ManagedObject.apply(this, arguments);
+			//fix a problem where "{}" were not allowed in script code			
+			this.setIdentifier(oData.identifier);
+			this.setName(oData.name);
+			this.setDescription(oData.description);
+			this.setHttpMethod(oData.httpMethod);
+			this.setUseProjectPrefixUrl(oData.useProjectPrefixUrl);
+			this.setUrl(oData.url);
+			this.setTags(oData.tags);
+			this.setRequestBody(oData.requestBody);
+			this.setScriptCode(oData.scriptCode);
 		},
-		events : {
+		metadata : {
+			properties : {
+				identifier : {type : "int", defaultValue : null},
+				name : {type : "string", defaultValue : null},
+				description : {type : "string", defaultValue : null},
+				httpMethod : {type : "string", defaultValue : Constants.GET},
+				useProjectPrefixUrl : {type : "boolean", defaultValue : false},
+				url : {type : "string", defaultValue : null},
+				tags : {type : "string", defaultValue : null},
+				requestBody : {type : "string", defaultValue : null},
+				scriptCode : {type : "string", defaultValue : null},
 
-		},
-		aggregations : {
-			assertions : {type : "projectX.util.Assertion", multiple : true},
-			requestHeaders : {type : "projectX.util.RequestHeader", multiple : true}
+				//these fields are only temporary variables. they will not be persisted
+				status : {type : "string", defaultValue : null},
+				responseHeaders : {type : "string", defaultValue : null},
+				responseBody : {type : "string", defaultValue : null},
+				responseTime : {type : "int", defaultValue : null},
+				assertionsResultReady : {type : "boolean", defaultValue : false},
+				assertionsResult : {type : "boolean", defaultValue : false}
+			},
+			events : {
+
+			},
+			aggregations : {
+				assertions : {type : "projectX.util.Assertion", multiple : true},
+				requestHeaders : {type : "projectX.util.RequestHeader", multiple : true}
+			}
 		}
-	}});
+	});
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Methods
 	// /////////////////////////////////////////////////////////////////////////////
-
-
-	Request.prototype.setDataFromRequest = function(oRequest) {
-		this.mProperties = oRequest.mProperties;
-		this.mAggregations = oRequest.mAggregations;
-		this.mRequestHeaders = oRequest.mRequestHeaders;
-	};
 
 	/**
 	 * create a serialized version of this request.

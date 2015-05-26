@@ -4,28 +4,32 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	function(jQuery, ManagedObject, Assertion, Sequence) {
 	"use strict";
 
-	var Project = ManagedObject.extend("projectX.util.Project", { metadata : {
-
-		properties : {
-			identifier : {type : "int", defaultValue : null},
-			name : {type : "string", defaultValue : null},
-			baseUrl : {type : "string", defaultValue : null},
-			prefixUrl : {type : "string", defaultValue : null}
+	var Project = ManagedObject.extend("projectX.util.Project", { 
+		constructor : function (oData) {
+			ManagedObject.apply(this, arguments);
 		},
-		events : {
+		metadata : {
+			properties : {
+				identifier : {type : "int", defaultValue : null},
+				name : {type : "string", defaultValue : null},
+				baseUrl : {type : "string", defaultValue : null},
+				prefixUrl : {type : "string", defaultValue : null}
+			},
+			events : {
 
-		},
-		aggregations : {
-			requests : {type : "projectX.util.Request", multiple : true},
-			sequences : {type : "projectX.util.Sequence", multiple : true},
-			prefixUrls : {type : "projectX.util.PrefixUrl", multiple : true}
+			},
+			aggregations : {
+				requests : {type : "projectX.util.Request", multiple : true},
+				sequences : {type : "projectX.util.Sequence", multiple : true},
+				prefixUrls : {type : "projectX.util.PrefixUrl", multiple : true}
+			}
 		}
-	}});
+	});
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// public functions
 	// /////////////////////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * create a new request.
 	 * calculate a new id for the request. (highest id + 1)

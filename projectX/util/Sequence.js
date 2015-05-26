@@ -4,17 +4,24 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	function(jQuery, ManagedObject) {
 	"use strict";
 
-	var Sequence = ManagedObject.extend("projectX.util.Sequence", { metadata : {
-
-		properties : {
-			identifier : {type : "int", defaultValue : null},
-			name : {type : "string", defaultValue : null},
-			description : {type : "string", defaultValue : null}
+	var Sequence = ManagedObject.extend("projectX.util.Sequence", { 
+		constructor : function (oData) {
+			ManagedObject.apply(this, arguments);
+			this.setIdentifier(oData.identifier);
+			this.setName(oData.name);
+			this.setDescription(oData.description);
 		},
-		aggregations : {
-			sequenceItems : {type : "projectX.util.SequenceItem", multiple : true}
+		metadata : {
+			properties : {
+				identifier : {type : "int", defaultValue : null},
+				name : {type : "string", defaultValue : null},
+				description : {type : "string", defaultValue : null}
+			},
+			aggregations : {
+				sequenceItems : {type : "projectX.util.SequenceItem", multiple : true}
+			}
 		}
-	}});
+	});
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// public functions

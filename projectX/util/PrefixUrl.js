@@ -4,15 +4,20 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	function(jQuery, ManagedObject) {
 	"use strict";
 
-	var PrefixUrl = ManagedObject.extend("projectX.util.PrefixUrl", { metadata : {
-
-		properties : {
-			url : {type : "string", defaultValue : null}
+	var PrefixUrl = ManagedObject.extend("projectX.util.PrefixUrl", { 
+		constructor : function (oData) {
+			ManagedObject.apply(this, arguments);
+			this.setUrl(oData.url);
 		},
-		events : {
+		metadata : {
+			properties : {
+				url : {type : "string", defaultValue : null}
+			},
+			events : {
 
+			}
 		}
-	}});
+	});
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// public functions
