@@ -6,6 +6,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	var Request = ManagedObject.extend("projectX.util.Request", { 
 		constructor : function (oData) {
 			ManagedObject.apply(this, arguments);
+			if (!oData) {
+				return;
+			}
 			//fix a problem where "{}" were not allowed in script code			
 			this.setIdentifier(oData.identifier);
 			this.setName(oData.name);

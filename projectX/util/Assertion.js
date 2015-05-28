@@ -8,6 +8,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	var Assertion = ManagedObject.extend("projectX.util.Assertion", { 
 		constructor : function (oData) {
 			ManagedObject.apply(this, arguments);
+			if (!oData) {
+				return;
+			}
 			this.setName(oData.name);
 			this.setAssertProperty(oData.assertProperty);
 			this.setOperation(oData.operation);
