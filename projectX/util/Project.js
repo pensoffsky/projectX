@@ -40,8 +40,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		sName = sName || "New request";
 		sHttpMethod = sHttpMethod || "GET";
 		
-		
-
 		var iNewID = this._getNextId();
 
 		var oRequest = new projectX.util.Request({

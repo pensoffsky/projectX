@@ -3,6 +3,7 @@ jQuery.sap.require("projectX.MyRouter");
 jQuery.sap.require("projectX.util.Project");
 jQuery.sap.require("projectX.util.Request");
 jQuery.sap.require("projectX.util.Constants");
+jQuery.sap.require("projectX.util.Storage");
 
 sap.ui.core.UIComponent.extend("projectX.Component", {
 	metadata : {
@@ -305,7 +306,9 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	* save projects to lcoalstorage
 	*/
 	_autoSave : function() {
-		var sData = this._createJsonString();
+		var aProjects = this._oModel.getProperty("/Projects");
+		var sData = projectX.util.Storage.createJsonString(aProjects);
+		
 		if (this._sLastSavedData === sData) {
 			//console.log("no data changed");
 			return;
@@ -317,35 +320,8 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		//console.log("saved");
 	},
 
-	_createJsonString : function() {
-		var aProjects = this._oModel.getProperty("/Projects");
-		var aSaveableObject = [];
-
-		if (!aProjects || aProjects.length <= 0) {
-			return;
-		}
-
-		for (var i = 0; i < aProjects.length; i++) {
-			aSaveableObject.push(aProjects[i].serialize());
-		}
-		//create json string indented with 4 spaces
-		var sData = JSON.stringify(aSaveableObject, null, 2);
-		return sData;
-	},
-
 	_parseAndLoadProjects : function(sData) {
-		var aLoadedProjects = JSON.parse(sData);
-		var aProjects = [];
-
-		if (!aLoadedProjects) {
-			return;
-		}
-
-		for (var i = 0; i < aLoadedProjects.length; i++) {
-			var oProject = new projectX.util.Project(aLoadedProjects[i]);
-			aProjects.push(oProject);
-		}
-
+		var aProjects = projectX.util.Storage.parseAndLoadProjects(sData);
 		if (!aProjects || aProjects.length <= 0) {
 			return;
 		}

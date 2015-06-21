@@ -1,8 +1,8 @@
 /**
  * the controller for the main view of the application
  */
-sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/Constants', 'projectX/util/Formatter', 'projectX/util/Helper'],
-	function(jQuery, Controller, Constants, Formatter, Helper) {
+sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/Constants', 'projectX/util/Formatter', 'projectX/util/Helper', "sap/m/MessageBox"],
+	function(jQuery, Controller, Constants, Formatter, Helper, MessageBox) {
 		"use strict";
 
 		var App = Controller.extend("projectX.view.App", {
@@ -42,9 +42,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			var sIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");
 			var oComponent = this.getComponent();
 			oComponent.setSelectedProject(sIdentifier);
-			// this.getRouter().navTo("project", {
-			// 	projectID : sIdentifier
-			// }, true);
 		};
 		
 		
@@ -74,6 +71,25 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		};
 		
 		App.prototype.onDeleteSelectedProject = function(oEvent) {
+			var that = this;
+			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+			MessageBox.confirm(
+		      "Do you want to delete this project?", {
+		        styleClass: bCompact ? "sapUiSizeCompact" : "",
+				onClose : function(oAction) {
+					if (oAction === "OK") {
+						that._deleteSelectedProject();
+					}
+				}
+		      }
+		    );
+		};
+		
+		// /////////////////////////////////////////////////////////////////////////////
+		// /// Private Functions
+		// /////////////////////////////////////////////////////////////////////////////
+		
+		App.prototype._deleteSelectedProject = function() {
 			var sIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");
 			var oComponent = this.getComponent();
 			oComponent.deletedProject(sIdentifier);
@@ -82,10 +98,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 				that.onSelectProjectChange();
 			}, 0);
 		};
-		
-		// /////////////////////////////////////////////////////////////////////////////
-		// /// Private Functions
-		// /////////////////////////////////////////////////////////////////////////////
 		
 		App.prototype._showProjectDialog = function(oEvent) {
 			var oView = sap.ui.xmlview("projectX.view.Project.Project");

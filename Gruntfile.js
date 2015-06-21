@@ -8,7 +8,8 @@ module.exports = function(grunt) {
         src : [
           'projectX/**/*.js',
           'projectX/**/*.xml',
-          'projectX/**/*.css'
+          'projectX/**/*.css',
+          'tests/**/*.js',
         ]
       },
       options: {
@@ -41,7 +42,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+    //run a static server that does not refresh with changes of files
     connect: {
       server: {
         options: {
@@ -50,6 +51,11 @@ module.exports = function(grunt) {
           base: './',
           keepalive: false
         }
+      }
+    }, 
+    karma: {
+      unit: {
+        config: "karma.conf.js"
       }
     }
   });    
@@ -62,6 +68,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   // Load the plugin that provides the "connect" task.
   grunt.loadNpmTasks('grunt-contrib-connect');
+  // Load the plugin that provides the "karma" task.
+  grunt.loadNpmTasks('grunt-karma');
 
   // Default task(s).
   grunt.registerTask('default', ['browserSync', 'connect', 'watch']);
