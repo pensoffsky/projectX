@@ -3,13 +3,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	function(jQuery, ManagedObject, Assertion, RequestHeader, Constants) {
 	"use strict";
 
-	var Request = ManagedObject.extend("projectX.util.Request", { 
+	var Request = ManagedObject.extend("projectX.util.Request", {
 		constructor : function (oData) {
 			ManagedObject.apply(this, arguments);
 			if (!oData) {
 				return;
 			}
-			//fix a problem where "{}" were not allowed in script code			
+			//fix a problem where "{}" were not allowed in script code
 			this.setIdentifier(oData.identifier);
 			this.setName(oData.name);
 			this.setDescription(oData.description);
@@ -77,6 +77,14 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		}
 		oRequest.assertions = aSerializedAssertions;
 
+		// attach request headers to request object
+		var aSerializedRequestHeaders = [];
+		var aRequestHeaders = this.getRequestHeaders();
+		for (var i = 0; i < aRequestHeaders.length; i++) {
+			aSerializedRequestHeaders.push(aRequestHeaders[i].serialize());
+		}
+		oRequest.requestHeaders = aSerializedRequestHeaders;
+
 		return oRequest;
 	};
 
@@ -116,11 +124,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 		//create the objects that can be modified inside the script
 		var oReqParam = {
-			httpMethod: this.getHttpMethod(),
-			url: sUrl,
-			requestBody: this.getRequestBody(),
-			contentType: ""
-			//TODO add more parameters here
+			httpMethod: this.getHttpMethod()
 		};
 
 		var oPrevReqParam = null;
@@ -128,9 +132,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			oPrevReqParam = {
 				httpMethod: oPreviousRequest.getHttpMethod(),
 				url: oPreviousRequest.getUrl(),
+				requestHeader: oPreviousRequest.getRequestHeader(),
 				requestBody: oPreviousRequest.getRequestBody(),
 				status: oPreviousRequest.getStatus(),
-				responseHeaders: oPreviousRequest.getResponseHeaders(),
 				responseBody: oPreviousRequest.getResponseBody(),
 				responseTime: oPreviousRequest.getResponseTime(),
 				assertionsResult: oPreviousRequest.getAssertionsResult(),
@@ -149,12 +153,25 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			console.log(e);
 		}
 
+
+		var aRequestHeaders = this.getRequestHeaders();
+		var oRequestHeaders = {};
+
+		for (var i = 0; i < aRequestHeaders.length; i++) {
+			// save this into new array
+			var fieldName  = aRequestHeaders[i].getFieldName();
+			var fieldValue = aRequestHeaders[i].getFieldValue();
+
+			oRequestHeaders[fieldName] = fieldValue;
+		}
+
 		var oDeferred = jQuery.ajax({
 			method: oReqParam.httpMethod,
 			url: oReqParam.url,
 			data: oReqParam.requestBody,
-			processData: false, 
-			contentType: oReqParam.contentType
+			processData: false,
+			contentType: oReqParam.contentType,
+			headers: oRequestHeaders
 		});
 
 		var that = this;
@@ -217,12 +234,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 
 		return oRes;
 	};
-	
+
 	Request.prototype.appendToUrl = function(sString) {
 		this.setUrl(this.getUrl() + "\n" + sString);
 	};
-	
-	
+
+
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods

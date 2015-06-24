@@ -3,7 +3,7 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
-	<Table items="{/requestHeaders}"
+	<Table items="{/request/mAggregations/requestHeaders}"
 		  mode="MultiSelect"
 		  id="idTableRequestHeaders"
 		  rememberSelections="false"

@@ -27,9 +27,10 @@ sap.ui.define(['jquery.sap.global',
 	 */
 	RequestHeaderEditListController.prototype.onBtnAddRequestHeader = function() {
 		var oRequestHeader = new RequestHeader();
-		var aRequestHeaders =  this._localUIModel.getProperty("/requestHeaders");
-		aRequestHeaders.push(oRequestHeader);
-		this._localUIModel.setProperty("/requestHeaders", aRequestHeaders);
+		var oRequest =  this._localUIModel.getProperty("/request");
+		oRequest.addRequestHeader(oRequestHeader);
+		this.updateBindings();
+
 	};
 
 	RequestHeaderEditListController.prototype.onBtnDeleteRequestHeaders = function() {
@@ -38,15 +39,14 @@ sap.ui.define(['jquery.sap.global',
 			return;
 		}
 
-		var aRequestHeaders =  this._localUIModel.getProperty("/requestHeaders");
+		var aRequest =  this._localUIModel.getProperty("/request");
 		for (var i = 0; i < aSelectedItems.length; i++) {
 			var oRequestHeader = this._getBoundObjectForItem(aSelectedItems[i]);
 			//remove this requestHeader from array
-			aRequestHeaders.splice(aRequestHeaders.indexOf(oRequestHeader), 1);
+			aRequest.removeRequestHeader(oRequestHeader);
 		}
-		this._localUIModel.setProperty("/requestHeaders", aRequestHeaders);
 		this._oTable.removeSelections(true);
-
+		this.updateBindings();
 	};
 
 	RequestHeaderEditListController.prototype.handleRequestHeaderFieldNameChanged = function(oEvent) {
@@ -93,30 +93,10 @@ sap.ui.define(['jquery.sap.global',
 	 * copy requestHeaders and set to local ui model for editing
 	 * @param {object} oSelectedRequest the currently selected request
 	 */
-	RequestHeaderEditListController.prototype.setSelectedRequest = function(oSelectedRequest) {
-		//TODO use array of request headers as input?
-
-		var aRequestHeaders = oSelectedRequest.getRequestHeaders();
-		//create a deep copy of the requestHeaders because
-		//we do not want to edit the original data
-		var aCopyRequestHeaders = jQuery.extend(true, [], aRequestHeaders);
-		//copy requestHeaders from request to local ui model
-		this._localUIModel.setProperty("/requestHeaders", aCopyRequestHeaders);
+	RequestHeaderEditListController.prototype.setSelectedRequest = function(oRequest) {
+		this._localUIModel.setProperty("/request", oRequest);
 	};
 
-	/**
-	 * @return {array} returns the edited requestHeaders from the local ui model
-	 */
-	RequestHeaderEditListController.prototype.getRequestHeadersCopy = function() {
-		var aRequestHeaders =  this._localUIModel.getProperty("/requestHeaders");
-		var aCopyRequestHeaders = jQuery.extend(true, [], aRequestHeaders);
-		return aCopyRequestHeaders;
-	};
-
-	RequestHeaderEditListController.prototype.getRequestHeaders = function() {
-		var aRequestHeaders =  this._localUIModel.getProperty("/requestHeaders");
-		return aRequestHeaders;
-	};
 
 	RequestHeaderEditListController.prototype.updateBindings = function() {
 		this._localUIModel.updateBindings();
@@ -144,8 +124,3 @@ sap.ui.define(['jquery.sap.global',
 	return RequestHeaderEditListController;
 
 }, /* bExport= */ true);
-
-//TODO implement save of requestHeaders
-//TODO create new requestHeaders
-//TODO delete requestHeaders
-//TODO edit requestHeader

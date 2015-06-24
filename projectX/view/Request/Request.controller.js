@@ -138,6 +138,7 @@ sap.ui.define([
 
 			this._oMetadataTypesController.setSelectedRequest(this._oProject, this._oRequest);
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
+			this._oRequestHeaderEditController.setSelectedRequest(this._oRequest);
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
