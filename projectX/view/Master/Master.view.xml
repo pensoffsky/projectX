@@ -35,7 +35,7 @@
 					tooltip="Move request down"
 					press="onMoveRequestDown" />
 				<ToolbarSpacer/>
-		
+
 				<Button
 					text="OData"
 					tooltip="Add Request from metadata"
@@ -46,7 +46,7 @@
 					press="onAddRequest" />
 			</Toolbar>
 			<SearchField liveChange="onRequestSearch"
-				width="100%" 
+				width="100%"
 				visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}"/>
 				<!--TODO fix height of scrollcontainer -->
 			<ScrollContainer
@@ -54,7 +54,7 @@
 				height="100%"
 				width="100%"
 				horizontal="false"
-				vertical="true" >			
+				vertical="true" >
 				<List
 					id="idListRequests"
 					items="{/SelectedProject/mAggregations/requests}"
@@ -80,9 +80,9 @@
 					</items>
 				</List>
 			</ScrollContainer>
-			
-			
-			<!-- SEQUENCES -->			
+
+
+			<!-- SEQUENCES -->
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}">
 				<Button
 					icon="sap-icon://up"
@@ -100,7 +100,7 @@
 					press="onAddNewSequence" />
 			</Toolbar>
 			<SearchField liveChange="onSequenceSearch"
-				width="100%" 
+				width="100%"
 				visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}"/>
 			<ScrollContainer
 				visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}"
@@ -133,7 +133,7 @@
 					</items>
 				</List>
 			</ScrollContainer>
-			
+
 		</content>
 	</Page>
 </mvc:View>
