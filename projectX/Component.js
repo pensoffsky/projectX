@@ -174,7 +174,8 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	 * save on disk.
 	 */
 	export : function() {
-		var sData = this._createJsonString();
+		var aProjects = this._oModel.getProperty("/Projects");
+		var sData = projectX.util.Storage.createJsonString(aProjects);
 		var pom = document.createElement('a');
 		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sData));
 		pom.setAttribute('download', "projectX.config");
@@ -279,7 +280,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oSelectedProject.removeRequest(oRequest);
 		this._oModel.updateBindings();
 	},
-	
+
 	/**
 	* delete this sequence from the currently selected project.
 	* @param {object} oSequence sequence to delete
@@ -308,7 +309,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	_autoSave : function() {
 		var aProjects = this._oModel.getProperty("/Projects");
 		var sData = projectX.util.Storage.createJsonString(aProjects);
-		
+
 		if (this._sLastSavedData === sData) {
 			//console.log("no data changed");
 			return;
