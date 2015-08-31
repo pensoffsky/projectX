@@ -26,14 +26,14 @@
 
 			<!-- REQUESTS -->
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}">
-				<Button
+				<!-- <Button
 					icon="sap-icon://up"
 					tooltip="Move request up"
 					press="onMoveRequestUp" />
 				<Button
 					icon="sap-icon://down"
 					tooltip="Move request down"
-					press="onMoveRequestDown" />
+					press="onMoveRequestDown" /> -->
 				<ToolbarSpacer/>
 
 				<Button
@@ -84,14 +84,14 @@
 
 			<!-- SEQUENCES -->
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}">
-				<Button
+				<!-- <Button
 					icon="sap-icon://up"
 					tooltip="Move request up"
 					press="onMoveRequestUp" />
 				<Button
 					icon="sap-icon://down"
 					tooltip="Move request down"
-					press="onMoveRequestDown" />
+					press="onMoveRequestDown" /> -->
 				<ToolbarSpacer/>
 
 				<Button

@@ -78,10 +78,18 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 					this.onAddRequestMetadata();
 				}, this), 1000);
 			}
-		},
+		};
+
+		Master.prototype.onBeforeShow = function() {
+			var oListSequences = this.getView().byId("idListSequences");
+			var oListRequests = this.getView().byId("idListRequests");
+			var oSorter = new sap.ui.model.Sorter("mProperties/name", false);
+			oListSequences.getBinding("items").sort(oSorter);
+			oListRequests.getBinding("items").sort(oSorter);
+		};
 
 		Master.prototype.onRouteMatched = function(oEvent) {
-
+		
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////

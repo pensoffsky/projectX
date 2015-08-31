@@ -122,6 +122,8 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 
 	onBtnAddRequest : function(oEvent) {
 		var oRequestSelectDialog = this.getView().byId("idRequestSelectDialog");
+		var oSorter = new sap.ui.model.Sorter("mProperties/name", false);
+		oRequestSelectDialog.getBinding("items").sort(oSorter);
 		jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), oRequestSelectDialog);
 		oRequestSelectDialog.open();
 	},

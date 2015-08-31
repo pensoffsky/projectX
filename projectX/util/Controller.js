@@ -118,7 +118,7 @@ sap.ui.core.mvc.Controller.extend("projectX.util.Controller", {
 	
 	updateMasterList : function () {
 		var oModel = this.getView().getModel();
-		oModel.updateBindings();
+		oModel.updateBindings(true);
 	},
 	
 	getCurrentProject : function () {
