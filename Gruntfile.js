@@ -52,11 +52,6 @@ module.exports = function(grunt) {
           keepalive: false
         }
       }
-    }, 
-    karma: {
-      unit: {
-        config: "karma.conf.js"
-      }
     }
   });    
   
@@ -68,8 +63,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   // Load the plugin that provides the "connect" task.
   grunt.loadNpmTasks('grunt-contrib-connect');
-  // Load the plugin that provides the "karma" task.
-  grunt.loadNpmTasks('grunt-karma');
 
   // Default task(s).
   grunt.registerTask('default', ['browserSync', 'connect', 'watch']);
