@@ -16,8 +16,7 @@ projectX.util.Controller.extend("projectX.view.Project.Project", {
 	onInit : function() {
 		this._localUIModel = new sap.ui.model.json.JSONModel({
 			project: null,
-			odataServiceCheckRes : "",
-			odataServiceCheckRes : "",
+			odataServiceCheckRes : ""
 		});
 		//set the local ui model to the view
 		//use a name when addressing the local ui model from xml

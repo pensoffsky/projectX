@@ -136,7 +136,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 			oPrevReqParam = {
 				httpMethod: oPreviousRequest.getHttpMethod(),
 				url: oPreviousRequest.getUrl(),
-				requestHeader: oPreviousRequest.getRequestHeader(),
+				requestHeader: oPreviousRequest.getRequestHeaders(),
 				requestBody: oPreviousRequest.getRequestBody(),
 				status: oPreviousRequest.getStatus(),
 				responseBody: oPreviousRequest.getResponseBody(),

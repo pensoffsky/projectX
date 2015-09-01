@@ -91,14 +91,14 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	
 	onRequestSelectDialogConfirm : function(oEvent) {
 		var aContexts = oEvent.getParameter("selectedContexts");
-    var aRequests = [];
+		var aRequests = [];
 		if (aContexts.length) {
 			aRequests = aContexts.map(function(oContext) { 
 				//return this._localUIModel.getProperty(oContext.sPath);
 				return oContext.getObject();
 			}, this);
-    }
-    oEvent.getSource().getBinding("items").filter([]);
+	    }
+	    oEvent.getSource().getBinding("items").filter([]);
 		
 		var aSelectedRequests = this._localUIModel.getProperty("/selectedRequests");
 		for (var i = 0; i < aRequests.length; i++) {
@@ -109,7 +109,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		
 		//set the selected requests to localuimodel and to the sequence object
 		this._localUIModel.setProperty("/selectedRequests",aSelectedRequests);
-		this._oSequence.addRequestIds(aSelectedRequests);	
+		this._oSequence.addRequestIds(aSelectedRequests);
 	},
 	
 	onRequestSelectDialogClose : function(oEvent) {
@@ -234,7 +234,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 
 	_moveSelectedListItem : function(fMove) {
 		//get the selected item
-		var oList = this.getView().byId("idListSelectedRequests");
+		var oList = this.getView().byId("idSelectedRequestsTable");
 		var oSelectedItem = oList.getSelectedItem();
 		if (!oSelectedItem){
 			return;
@@ -247,6 +247,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 
 		//restore the selection
 		var aItems = oList.getItems();
+		oList.removeSelections(true);
 		oList.setSelectedItem(aItems[iNewPos]);
 	},
 

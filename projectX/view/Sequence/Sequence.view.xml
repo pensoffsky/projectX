@@ -66,6 +66,10 @@
 					<Toolbar>
 						<Label text="Requests in Sequence" />
 						<ToolbarSpacer/>
+						<Button text="Up"
+						press="onMoveRequestUp"/>
+						<Button text="Down"
+						press="onMoveRequestDown"/>
 						<Button text="Add requests"
 						tooltip="Add a request from all available requests in the project"
 						press="onBtnAddRequest"/>
