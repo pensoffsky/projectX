@@ -12,3 +12,13 @@
 .projectXEditor {
   height: 300px;
 }
+.masterList .sapMLIBContent {
+  width: 100%;
+}
+.masterList .sapMLIBContent > div {
+  height: auto;
+}
+.masterList .sapMLIBContent > div span {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

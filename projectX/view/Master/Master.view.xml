@@ -60,7 +60,8 @@
 					items="{/SelectedProject/mAggregations/requests}"
 					mode="{device>/listMode}"
 					select="onRequestsListSelect"
-					updateFinished="onListUpdateFinished">
+					updateFinished="onListUpdateFinished"
+					class="masterList">
 					<items>
 						<CustomListItem>
 							<Toolbar width="100%">
@@ -113,6 +114,7 @@
 					items="{/SelectedProject/mAggregations/sequences}"
 					mode="{device>/listMode}"
 					select="onSequencesListSelect"
+					class="masterList"
 					>
 					<items>
 						<CustomListItem>

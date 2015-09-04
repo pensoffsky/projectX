@@ -104,8 +104,8 @@ sap.ui.define([
 			//create Metadata fragment controller and set fragment to view placeholder
 			this._oMetadataTypesController = new MetadataTypesController();
 			this._oMetadataTypesController.onInit(this.createId("Metadata"));
-			var oMetadataTypes = this.getView().byId("idVBoxMetadataTypesPlaceholder");
-			oMetadataTypes.addItem(this._oMetadataTypesController.getView());
+			// var oMetadataTypes = this.getView().byId("idVBoxMetadataTypesPlaceholder");
+			// oMetadataTypes.addItem(this._oMetadataTypesController.getView());
 
 			/////////////////////////////////////////////////////////////////////
 			//hook navigation event
@@ -139,6 +139,11 @@ sap.ui.define([
 			this._oMetadataTypesController.setSelectedRequest(this._oProject, this._oRequest);
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
 			this._oRequestHeaderEditController.setSelectedRequest(this._oRequest);
+			
+			//load response body format from the request and set to segmented button and ace editor
+			var sMode = this._oRequest.getResponseBodyFormat();
+			this._setResponseBodyButtonMode(sMode);
+			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -244,7 +249,7 @@ sap.ui.define([
 			default:
 				console.log("problem with response body format segmented button on detail page");
 			}
-
+			this._oRequest.setResponseBodyFormat(sMode); //save the tab to the request
 			this._prettyPrintResponseBody(sMode);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
 		};
@@ -252,6 +257,29 @@ sap.ui.define([
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Functions
 		// /////////////////////////////////////////////////////////////////////////////
+
+		Request.prototype._setResponseBodyButtonMode = function(sMode) {
+			var sButtonId;
+			switch (sMode) {
+				case "xml":
+					sButtonId = "idButtonResponseXML";
+					break;
+				case "json":
+					sButtonId = "idButtonResponseJSON";
+					break;
+				case "html":
+					sButtonId = "idButtonResponseHTML";
+					break;
+				case "text":
+					sButtonId = "idButtonResponseRAW";
+					break;
+			default:	
+			}
+			//activate the corresponding button
+			var oSegmentedButton = this.byId("idButtonResponseFormat");
+			oSegmentedButton.setSelectedButton(this.byId(sButtonId));
+		};
+
 
 		Request.prototype._prettyPrintResponseBody = function(sMode) {
 			var sResponseBody = this._oRequest.getResponseBody();

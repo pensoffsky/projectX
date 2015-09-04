@@ -6,19 +6,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	var Request = ManagedObject.extend("projectX.util.Request", {
 		constructor : function (oData) {
 			ManagedObject.apply(this, arguments);
-			if (!oData) {
-				return;
-			}
-			//fix a problem where "{}" were not allowed in script code
-			this.setIdentifier(oData.identifier);
-			this.setName(oData.name);
-			this.setDescription(oData.description);
-			this.setHttpMethod(oData.httpMethod);
-			this.setUseProjectPrefixUrl(oData.useProjectPrefixUrl);
-			this.setUrl(oData.url);
-			this.setTags(oData.tags);
-			this.setRequestBody(oData.requestBody);
-			this.setScriptCode(oData.scriptCode);
 		},
 		metadata : {
 			properties : {
@@ -31,6 +18,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 				tags : {type : "string", defaultValue : null},
 				requestBody : {type : "string", defaultValue : null},
 				scriptCode : {type : "string", defaultValue : null},
+				responseBodyFormat : {type : "string", defaultValue : "text"},
 
 				//these fields are only temporary variables. they will not be persisted
 				status : {type : "string", defaultValue : null},
@@ -69,6 +57,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		oRequest.tags = this.getTags();
 		oRequest.requestBody = this.getRequestBody();
 		oRequest.scriptCode = this.getScriptCode();
+		oRequest.responseBodyFormat = this.getResponseBodyFormat();
 
 		var aSerializedAssertions = [];
 		var aAssertions = this.getAssertions();

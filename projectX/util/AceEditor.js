@@ -69,7 +69,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 			this._editor = ace.edit(sEditID);
 			this._editor.setTheme("ace/theme/tomorrow");
 			this._editor.getSession().setMode("ace/mode/" + this.getMode());
-
+			this._editor.commands.removeCommand('find');
 			this._editor.setReadOnly(this.getReadOnly());
 
 			if (this.getAutoHeightMode()) {

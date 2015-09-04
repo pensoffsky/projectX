@@ -60,15 +60,15 @@
                     </TextArea>
                     <VBox>
                         <Button press="onBtnSendPress" text="Send"/>
-                        <Button press="onBtnMetadataPress" text="OData"/>
-                        <Popover id="idMetadataPopover"
+                        <!-- <Button press="onBtnMetadataPress" text="OData"/> -->
+                        <!-- <Popover id="idMetadataPopover"
                                  title="OData Request Helper"
                                  horizontalScrolling="false"
                                  contentWidth="98%"
                                  contentHeight="98%"
                                  placement="Bottom">
                             <VBox id="idVBoxMetadataTypesPlaceholder"/>
-                        </Popover>
+                        </Popover> -->
                     </VBox>
                 </FlexBox>
 
@@ -154,8 +154,9 @@
 
                 <VBox>
                     <Label text="Response Body"/>
-                    <SegmentedButton selectedButton="idButtonResponseRAW"
-                                     select="onResponseBodyFormat">
+                    <SegmentedButton 
+                                     select="onResponseBodyFormat"
+                                     id="idButtonResponseFormat">
                         <Button text="XML" id="idButtonResponseXML"/>
                         <Button text="JSON" id="idButtonResponseJSON"/>
                         <Button text="HTML" id="idButtonResponseHTML"/>
