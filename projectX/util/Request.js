@@ -1,11 +1,11 @@
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion', 'projectX/util/RequestHeader', 'projectX/util/Constants'],
-	function(jQuery, ManagedObject, Assertion, RequestHeader, Constants) {
+sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/util/Assertion', 'projectX/util/RequestHeader', 'projectX/util/Constants'],
+	function(jQuery, MyManagedObject, Assertion, RequestHeader, Constants) {
 	"use strict";
 
-	var Request = ManagedObject.extend("projectX.util.Request", {
+	var Request = MyManagedObject.extend("projectX.util.Request", {
 		constructor : function (oData) {
-			ManagedObject.apply(this, arguments);
+			MyManagedObject.apply(this, arguments);
 		},
 		metadata : {
 			properties : {

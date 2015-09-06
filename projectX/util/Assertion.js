@@ -1,21 +1,16 @@
 
 //TODO add jsonpath as dependency here so we do not have to include it into the whole project?
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Helper', 'projectX/util/Constants'],
-	function(jQuery, ManagedObject, Helper, Constants) {
+sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/util/Helper', 'projectX/util/Constants'],
+	function(jQuery, MyManagedObject, Helper, Constants) {
 	"use strict";
 
-	var Assertion = ManagedObject.extend("projectX.util.Assertion", { 
+	var Assertion = MyManagedObject.extend("projectX.util.Assertion", { 
 		constructor : function (oData) {
-			ManagedObject.apply(this, arguments);
+			MyManagedObject.apply(this, arguments);
 			if (!oData) {
 				return;
 			}
-			this.setName(oData.name);
-			this.setAssertProperty(oData.assertProperty);
-			this.setOperation(oData.operation);
-			this.setPath(oData.path);
-			this.setExpected(oData.expected);
 		},
 		metadata : {
 			properties : {

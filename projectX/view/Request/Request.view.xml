@@ -135,6 +135,23 @@
 
                 <Panel expandable="true"
                        expanded="true"
+                       expand="onPanelRequestBodyExpand"
+                       class="sapUiNoContentPadding"
+                       >
+                       <headerToolbar>
+                         <Toolbar design="Transparent" height="3rem">
+                          <Text text="Request Payload ({localUIModel>/request/mProperties/requestBody/length})"/>
+                        </Toolbar>
+                       </headerToolbar>
+                    <custom:AceEditor width="100%" height="200px"
+                                      value="{localUIModel>/request/mProperties/requestBody}"
+                                      id="superEditorRequestBody"
+                                      />
+                </Panel>
+
+
+                <Panel expandable="true"
+                       expanded="true"
                        class="sapUiNoContentPadding"
                         >
                         <headerToolbar>

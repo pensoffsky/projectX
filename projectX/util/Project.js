@@ -1,12 +1,12 @@
 
 // Provides control sap.m.App.
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion', 'projectX/util/Sequence'],
-	function(jQuery, ManagedObject, Assertion, Sequence) {
+sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/util/Assertion', 'projectX/util/Sequence'],
+	function(jQuery, MyManagedObject, Assertion, Sequence) {
 	"use strict";
 
-	var Project = ManagedObject.extend("projectX.util.Project", { 
+	var Project = MyManagedObject.extend("projectX.util.Project", { 
 		constructor : function (oData) {
-			ManagedObject.apply(this, arguments);
+			MyManagedObject.apply(this, arguments);
 		},
 		metadata : {
 			properties : {

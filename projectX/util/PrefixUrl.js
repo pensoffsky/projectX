@@ -1,13 +1,12 @@
 
 // Provides control sap.m.App.
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
-	function(jQuery, ManagedObject) {
+sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject'],
+	function(jQuery, MyManagedObject) {
 	"use strict";
 
-	var PrefixUrl = ManagedObject.extend("projectX.util.PrefixUrl", { 
+	var PrefixUrl = MyManagedObject.extend("projectX.util.PrefixUrl", { 
 		constructor : function (oData) {
-			ManagedObject.apply(this, arguments);
-			this.setUrl(oData.url);
+			MyManagedObject.apply(this, arguments);
 		},
 		metadata : {
 			properties : {

@@ -229,6 +229,11 @@ sap.ui.define([
 			var oScriptEditor = this.getView().byId("superEditor");
 			oScriptEditor.rerender();
 		};
+		
+		Request.prototype.onPanelRequestBodyExpand = function() {
+			var oEditor = this.getView().byId("superEditorRequestBody");
+			oEditor.rerender();
+		};
 
 		Request.prototype.onResponseBodyFormat  = function(oEvent){
 			var sSelectedId = oEvent.getParameter("id");
