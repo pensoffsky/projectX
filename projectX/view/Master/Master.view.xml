@@ -51,10 +51,10 @@
 				<!--TODO fix height of scrollcontainer -->
 			<ScrollContainer
 				visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}"
-				height="100%"
 				width="100%"
 				horizontal="false"
-				vertical="true" >
+				vertical="true"
+				class="masterScrollContainer">
 				<List
 					id="idListRequests"
 					items="{/SelectedProject/mAggregations/requests}"
@@ -105,10 +105,10 @@
 				visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}"/>
 			<ScrollContainer
 				visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}"
-				height="100%"
 				width="100%"
 				horizontal="false"
-				vertical="true" >
+				vertical="true"
+				class="masterScrollContainer">
 				<List
 					id="idListSequences"
 					items="{/SelectedProject/mAggregations/sequences}"
