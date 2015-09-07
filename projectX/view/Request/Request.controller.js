@@ -176,6 +176,17 @@ sap.ui.define([
 				that._localUIModel.updateBindings();
 				that._oAssertionEditController.updateBindings();
 			});
+			oDeferred.fail(function(vError){				
+				var sErrorMessage = "error sending request";
+				if (vError && vError.statusText) {
+					sErrorMessage = vError.statusText;
+				} else if (typeof vError === 'string') {
+					sErrorMessage = vError;
+				}
+				sap.m.MessageToast.show(sErrorMessage, {
+				    duration: 2000
+				});
+			});
 
 		};
 

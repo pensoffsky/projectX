@@ -14,6 +14,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				description : {type : "string", defaultValue : null},
 				httpMethod : {type : "string", defaultValue : Constants.GET},
 				useProjectPrefixUrl : {type : "boolean", defaultValue : false},
+				fetchCSRFToken : {type : "boolean", defaultValue : false},
 				url : {type : "string", defaultValue : null},
 				tags : {type : "string", defaultValue : null},
 				requestBody : {type : "string", defaultValue : null},
@@ -53,6 +54,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oRequest.description = this.getDescription();
 		oRequest.httpMethod = this.getHttpMethod();
 		oRequest.useProjectPrefixUrl = this.getUseProjectPrefixUrl();
+		oRequest.fetchCSRFToken = this.getFetchCSRFToken();
 		oRequest.url = this.getUrl();
 		oRequest.tags = this.getTags();
 		oRequest.requestBody = this.getRequestBody();
@@ -94,15 +96,55 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		}
 	};
 
+
+Request.prototype.execute = function(oProject, oPreviousRequest) {	
+	var bFetchCSRFToken = this.getFetchCSRFToken();
+	if (!bFetchCSRFToken) {
+		//no csrf token required
+		return this._execute(oProject, oPreviousRequest);
+	}
+	
+	var sBaseUrl = oProject.getBaseUrl();
+	var oCSRFDeferred = jQuery.ajax({
+		method: "GET",
+		headers:{     
+              "X-Requested-With": "XMLHttpRequest",
+              "Content-Type": "application/atom+xml",
+              "DataServiceVersion": "2.0",       
+              "X-CSRF-Token":"Fetch"   
+						},
+		url: sBaseUrl
+	});
+	
+	var oRetDeferred = jQuery.Deferred();
+	
+	var that = this;
+	oCSRFDeferred.done(function(data, textStatus, jqXHR) {
+		var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
+		var oDeferred = that._execute(oProject, oPreviousRequest, sCSRFToken);
+		oDeferred.always(function(){
+			oRetDeferred.resolve();
+		});
+	});
+
+	oCSRFDeferred.fail(function() {
+		oRetDeferred.reject("failed to fetch CSRF token from: " + sBaseUrl);		
+	});
+	
+	return oRetDeferred;
+};
+
+
 	/**
 	 * creates and send a jquery ajax request with the parameters defined
 	 * in this request instance.
 	 * @param {object} oPreviousRequest the request that was executed before this one
 	 * in case the request is run in a sequence
 	 * @param {object} oProject the project this request belongs to
+	 * @param {sCSRFToken} a csrf token if one was fetched before
 	 * @return {object} jQuery deferred
 	 */
-	Request.prototype.execute = function(oProject, oPreviousRequest) {
+	Request.prototype._execute = function(oProject, oPreviousRequest, sCSRFToken) {
 		var oStartTime = new Date();
 
 		//create the url. use prefix from project if enabled by user
@@ -156,6 +198,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			var fieldValue = aRequestHeaders[i].getFieldValue();
 
 			oRequestHeaders[fieldName] = fieldValue;
+		}
+		
+		if(sCSRFToken) {
+			oRequestHeaders["x-csrf-token"] = sCSRFToken;
 		}
 
 		var oDeferred = jQuery.ajax({

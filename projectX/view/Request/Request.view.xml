@@ -37,17 +37,22 @@
                        liveChange="onNameChanged"
                        valueLiveUpdate="true"
                         />
-
-                <CheckBox text="use project prefix url: {localUIModel>/project/mProperties/prefixUrl}"
-                          selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
-                          select="onCBPrefixSelected"/>
+                <VBox>
+                  <CheckBox text="use project prefix url: {localUIModel>/project/mProperties/prefixUrl}"
+                            selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
+                            select="onCBPrefixSelected"/>
+                  <CheckBox text="get CRSF token from {localUIModel>/project/mProperties/baseUrl}"
+                            selected="{localUIModel>/request/mProperties/fetchCSRFToken}"/>  
+                  <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
+                          items="{localUIModel>/HTTP_METHODS}">
+                      <core:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
+                  </Select>
+                </VBox>
+                
                 <FlexBox
                         width="100%"
                         alignItems="Start">
-                    <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
-                            items="{localUIModel>/HTTP_METHODS}">
-                        <core:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
-                    </Select>
+                    
                     <TextArea value="{localUIModel>/request/mProperties/url}"
                               id="idTextAreaUrl"
                               placeholder="Enter valid Service-URL ..."
@@ -134,7 +139,7 @@
                 </Panel>
 
                 <Panel expandable="true"
-                       expanded="true"
+                       expanded="false"
                        expand="onPanelRequestBodyExpand"
                        class="sapUiNoContentPadding"
                        >
