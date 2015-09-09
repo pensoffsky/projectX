@@ -28,6 +28,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 		if (typeof oValue === "string") {
 			// either returns a binding info or an unescaped string or undefined - depending on binding syntax
 			// return ManagedObject.bindingParser(oValue, oScope, true);
+			
+			// in case of our objects which we want to store we do not need the bindingParser
+			// a { without the closing braket would cause an error when restoring the object tree.
+			// so here we disable the bindingparser for all classes inherited from MyManagedObject.
+			// We use managedObject because of the convenience functions that restore an object tree, 
+			// give setter and getter and functions to handle aggregations.
 			return oValue;
 		}
 

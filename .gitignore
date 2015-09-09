@@ -15,3 +15,7 @@
 
 # Ignore Cloud9 config filder
 .c9
+
+# Ignore build folders
+cache
+build
