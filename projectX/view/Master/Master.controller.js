@@ -1,8 +1,13 @@
 /**
  * collection of formatter functions for bindings
  */
-sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/Constants', 'projectX/util/Formatter', 'projectX/util/Helper'],
-	function(jQuery, Controller, Constants, Formatter, Helper) {
+sap.ui.define(['jquery.sap.global',
+				'projectX/util/Controller', 
+				'projectX/util/Constants', 
+				'projectX/util/Formatter', 
+				'projectX/util/Helper', 
+				'projectX/util/Assertion'],
+	function(jQuery, Controller, Constants, Formatter, Helper, Assertion) {
 		"use strict";
 
 		var Master = Controller.extend("projectX.view.Master.Master", {
@@ -238,7 +243,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 				return;
 			}
 
-			oSelectedProject.addNewRequest();
+			var oNewRequest = oSelectedProject.addNewRequest();
+			oNewRequest.addAssertion(Assertion.createDefaultAssertion());
 			oModel.updateBindings();
 			//TODO select the newly created request
 		};

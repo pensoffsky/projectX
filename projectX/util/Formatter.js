@@ -9,6 +9,15 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 			metadata: {}
 		});
 
+		
+		Formatter.assertionsListResultToImage = function(bAssertionsResult, bAssertionsResultReady, iLength) {
+			if(iLength > 0) {
+				return Formatter.assertionsResultToImage(bAssertionsResult, bAssertionsResultReady);
+			}
+			
+			return "";
+		};
+		
 		/**
 		 *
 		 * @param {boolean} bAssertionsResult representing the result of the assertions.

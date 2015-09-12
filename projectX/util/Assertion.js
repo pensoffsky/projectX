@@ -80,6 +80,17 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	// /// Public Methods
 	// /////////////////////////////////////////////////////////////////////////////
 	
+	
+	Assertion.createDefaultAssertion = function() {
+		var sProperty = Constants.ASSERTPROPERTY_STATUS;
+		var sOperation = Constants.ASSERTOPERATION_EQUALS; 
+		var oAssertion = new Assertion();
+		oAssertion.setAssertProperty(sProperty);
+		oAssertion.setOperation(sOperation);
+		oAssertion.setExpected("200");
+		return oAssertion;
+	};
+	
 	/**
 	 * reset temporary data that was set after the ajax request finished.
 	 */

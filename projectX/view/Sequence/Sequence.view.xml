@@ -138,9 +138,10 @@
 						<c:Icon
 							src="{ parts : [
 								{ path : 'localUIModel>mProperties/assertionsResult' },
-								{ path : 'localUIModel>mProperties/assertionsResultReady' }
+								{ path : 'localUIModel>mProperties/assertionsResultReady' },
+								{ path : 'localUIModel>mAggregations/assertions/length' }
 							],
-							formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
+							formatter : 'projectX.util.Formatter.assertionsListResultToImage' }"/>
 						<Text text="{localUIModel>mProperties/status}"/>
 						<Text text="{localUIModel>mProperties/responseTime}"/>
 						<HBox>

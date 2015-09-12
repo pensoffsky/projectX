@@ -27,16 +27,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	// /////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * create a new assertion and add it to the local ui model.
+	 * create a new assertion and add it to the local ui model and the request.
 	 */
 	AssertionEditListController.prototype.onBtnAddAssertion = function() {
-		var sProperty = Constants.ASSERTPROPERTY_STATUS;
-		var sOperation = Constants.ASSERTOPERATION_EQUALS; 
-		var oAssertion = new Assertion();
-		oAssertion.setAssertProperty(sProperty);
-		oAssertion.setOperation(sOperation);
-		oAssertion.setExpected("200");
-		
+		var oAssertion = Assertion.createDefaultAssertion();
 		var oRequest =  this._localUIModel.getProperty("/request");
 		oRequest.addAssertion(oAssertion);
 		this.updateBindings();

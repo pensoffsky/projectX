@@ -86,9 +86,10 @@
                           <Text text="Assertions ({localUIModel>/request/mAggregations/assertions/length})"/>
                           <core:Icon src="{ parts : [
                             								{ path : 'localUIModel>/request/mProperties/assertionsResult' },
-                            								{ path : 'localUIModel>/request/mProperties/assertionsResultReady' }
+                            								{ path : 'localUIModel>/request/mProperties/assertionsResultReady' },
+                                                            { path : 'localUIModel>/request/mAggregations/assertions/length'}
                             							],
-                            							formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
+                            							formatter : 'projectX.util.Formatter.assertionsListResultToImage' }"/>
                         </Toolbar>
                        </headerToolbar>
                   <VBox id="idVBoxAssertionPlaceholder"/>
