@@ -8,7 +8,6 @@ jQuery.sap.require("projectX.util.Helper");
 projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 
 	_localProjectModel : undefined,
-	_sReason : null,
 	_oSequence : null,
 
 	//TODO create enum for the binding targets
@@ -34,8 +33,6 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	onRouteMatched : function(oEvent) {
 		var oParameters = oEvent.getParameters();
 		var iSequenceId = parseInt(oParameters.arguments.sequenceID, 10);
-		var sReason = oParameters.arguments.reason;
-		this._sReason = sReason;
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
 
@@ -50,13 +47,9 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		//set data from selected sequence into local project model
 		this._localUIModel.setProperty("/sequence", this._oSequence);
 		//set helper values to modify the page between edit and new
-		this._localUIModel.setProperty("/reasonNew", false);
-		this._localUIModel.setProperty("/reasonEdit", true);
-		this._localUIModel.setProperty("/reason", "Edit sequence");
 		this._setSelectedRequests();
 
-
-		//add list of requests to local ui model
+		//add list of requests to local ui model for the "add request dialog"
 		this._localUIModel.setProperty("/requests", oSelectedProject.getRequests());
 	},
 	
@@ -76,7 +69,6 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		
 		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
 	},
-	
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Request Select Dialog Event handler
@@ -128,19 +120,10 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		oRequestSelectDialog.open();
 	},
 	
-	onBtnRemoveRequests : function(oEvent) {
-		var oTable = this.getView().byId("idSelectedRequestsTable");
-		var aSelectedItems = oTable.getSelectedItems();
-		if (!aSelectedItems || aSelectedItems.length <= 0){
-			return;
-		}
-
+	onDeleteRequest : function(oEvent) {
+		var oRequest = projectX.util.Helper.getBoundObjectForItem(oEvent.getSource(), "localUIModel");
 		var oSequence =  this._localUIModel.getProperty("/sequence");
-		for (var i = 0; i < aSelectedItems.length; i++) {
-			var oRequest = projectX.util.Helper.getBoundObjectForItem(aSelectedItems[i], "localUIModel");			
-			oSequence.removeRequest(oRequest);
-		}
-		oTable.removeSelections(true);
+		oSequence.removeRequest(oRequest);
 		this._setSelectedRequests();
 	},
 
@@ -203,19 +186,14 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		oColumnListItem.toggleStyleClass("columnListItemExpanded");
 	},
 
-	onMoveRequestUp : function(){
-		this._moveSelectedListItem(projectX.util.Helper.moveArrayElementUp);
+	onMoveRequestUp : function(oEvent){
+		var oRequest = projectX.util.Helper.getBoundObjectForItem(oEvent.getSource(), "localUIModel");
+		this._moveSelectedRequest(oRequest, projectX.util.Helper.moveArrayElementUp);
 	},
 
-	onMoveRequestDown : function(){
-		this._moveSelectedListItem(projectX.util.Helper.moveArrayElementDown);
-	},
-
-	onBtnDeletePress : function() {
-		var oModel = this.getView().getModel();
-		var oSelectedProject = oModel.getProperty("/SelectedProject");
-		oSelectedProject.removeSequence(this._oSequence);
-		oModel.updateBindings();
+	onMoveRequestDown : function(oEvent){
+		var oRequest = projectX.util.Helper.getBoundObjectForItem(oEvent.getSource(), "localUIModel");
+		this._moveSelectedRequest(oRequest, projectX.util.Helper.moveArrayElementDown);
 	},
 
 	/**
@@ -232,23 +210,13 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
 
-	_moveSelectedListItem : function(fMove) {
-		//get the selected item
-		var oList = this.getView().byId("idSelectedRequestsTable");
-		var oSelectedItem = oList.getSelectedItem();
-		if (!oSelectedItem){
-			return;
-		}
-		var oSelectedObject = projectX.util.Helper.getBoundObjectForItem(oSelectedItem, "localUIModel");
+	_moveSelectedRequest : function(oRequest, fMove) {
 		var aArray = this._localUIModel.getProperty("/selectedRequests");
-
-		var iNewPos = fMove(aArray, oSelectedObject);
+		//reorder the array of selected requests
+		fMove(aArray, oRequest);
 		this._localUIModel.setProperty("/selectedRequests", aArray);
-
-		//restore the selection
-		var aItems = oList.getItems();
-		oList.removeSelections(true);
-		oList.setSelectedItem(aItems[iNewPos]);
+		//save the new order to the sequence object
+		this._oSequence.addRequestIds(this._localUIModel.getProperty("/selectedRequests"));
 	},
 
 	/**
@@ -297,6 +265,5 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	_getRunning : function() {
 		return this._localUIModel.getProperty("/testRunning");
 	}
-
 
 });

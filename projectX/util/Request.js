@@ -200,13 +200,19 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 			oRequestHeaders[fieldName] = fieldValue;
 		}
 		
-		if(sCSRFToken) {
+		if (sCSRFToken) {
 			oRequestHeaders["x-csrf-token"] = sCSRFToken;
+		}
+
+		var isEncoded = typeof oReqParam.url == "string" && decodeURI(oReqParam.url) !== oReqParam.url;
+		var sUrl = oReqParam.url;
+		if (!isEncoded) {
+			sUrl = encodeURI(sUrl);
 		}
 
 		var oDeferred = jQuery.ajax({
 			method: oReqParam.httpMethod,
-			url: oReqParam.url,
+			url: sUrl,
 			data: oReqParam.requestBody,
 			processData: false,
 			contentType: oReqParam.contentType,

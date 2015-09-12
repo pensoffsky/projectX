@@ -8,7 +8,7 @@
 	<Page
 		showHeader="false"
 		enableScrolling="true"
-		title="{localUIModel>/reason}">
+		>
 		<subHeader>
 		<Toolbar>			
 			<ToolbarSpacer/>
@@ -58,7 +58,7 @@
 			<Table
 				items="{localUIModel>/selectedRequests}"
 				rememberSelections="false"
-				mode="MultiSelect"
+				mode="None"
 				id="idSelectedRequestsTable"
 				title="asdf"
 				>
@@ -66,16 +66,9 @@
 					<Toolbar>
 						<Label text="Requests in Sequence" />
 						<ToolbarSpacer/>
-						<Button text="Up"
-						press="onMoveRequestUp"/>
-						<Button text="Down"
-						press="onMoveRequestDown"/>
 						<Button text="Add requests"
 						tooltip="Add a request from all available requests in the project"
 						press="onBtnAddRequest"/>
-						<Button text="Remove requests"
-						tooltip="Remove selected request from sequence"
-						press="onBtnRemoveRequests"/>
 						<SelectDialog
 							id="idRequestSelectDialog"
 					    noDataText="No requests found"
@@ -107,10 +100,14 @@
 					width="3em">
 					<Text text="Status" />
 				</Column>
-					<Column
-					width="3em">
-						<Text text="Time" />
-					</Column>
+				<Column
+				width="3em">
+					<Text text="Time" />
+				</Column>
+				<Column
+				width="8em">
+					<Text text="Actions" />
+				</Column>
 				</columns>
 				<items>
 				<ColumnListItem vAlign="Top">
@@ -146,6 +143,14 @@
 							formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
 						<Text text="{localUIModel>mProperties/status}"/>
 						<Text text="{localUIModel>mProperties/responseTime}"/>
+						<HBox>
+							<Button icon="sap-icon://up"
+							press="onMoveRequestUp"/>
+							<Button icon="sap-icon://down"
+							press="onMoveRequestDown"/>
+							<Button icon="sap-icon://delete"
+							press="onDeleteRequest"/>
+						</HBox>
 					</cells>
 				</ColumnListItem>
 				</items>
