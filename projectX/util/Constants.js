@@ -129,6 +129,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.REQUEST_HEADER_FIELD_ACCEPT_DATETIME = "Accept-Datetime";
 	Constants.REQUEST_HEADER_FIELD_ACCEPT_AUTHORIZATION = "Authorization";
 	Constants.REQUEST_HEADER_FIELD_CACHE_CONTROL = "Cache-Control";
+	Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS = "sap-statistics";
 
 	/**
 	* array of keys for request header field name select control.
@@ -141,7 +142,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_LANGUAGE},
 		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_DATETIME},
 		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_AUTHORIZATION},
-		{key : Constants.REQUEST_HEADER_FIELD_CACHE_CONTROL}
+		{key : Constants.REQUEST_HEADER_FIELD_CACHE_CONTROL},
+		{key : Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS}
 	];
 
 	/*
