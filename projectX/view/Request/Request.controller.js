@@ -241,6 +241,11 @@ sap.ui.define([
 			oScriptEditor.rerender();
 		};
 		
+		Request.prototype.onPanelTestExpand = function() {
+			var oScriptEditor = this.getView().byId("superEditorTestScript");
+			oScriptEditor.rerender();
+		};
+		
 		Request.prototype.onPanelRequestBodyExpand = function() {
 			var oEditor = this.getView().byId("superEditorRequestBody");
 			oEditor.rerender();

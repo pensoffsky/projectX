@@ -106,7 +106,7 @@
                        >
                        <headerToolbar>
                          <Toolbar design="Transparent" height="3rem">
-                          <Text text="Pre-request script ({localUIModel>/request/mProperties/scriptCode/length})"/>
+                          <Text text="Pre-Request Script ({localUIModel>/request/mProperties/scriptCode/length})"/>
                         </Toolbar>
                        </headerToolbar>
                     <FlexBox width="100%">
@@ -154,6 +154,24 @@
                   <VBox id="idVBoxAssertionPlaceholder"/>
                 </Panel>
 
+                <!-- TEST SCRIPT -->
+                <Panel expandable="true"
+                       expanded="false"
+                       expand="onPanelTestExpand"
+                       class="sapUiNoContentPadding"
+                       >
+                       <headerToolbar>
+                         <Toolbar design="Transparent" height="3rem">
+                          <Text text="Test Script ({localUIModel>/request/mProperties/testScriptCode/length})"/>
+                        </Toolbar>
+                       </headerToolbar>
+                    
+                            <custom:AceEditor width="100%" height="200px"
+                                              value="{localUIModel>/request/mProperties/testScriptCode}"
+                                              id="superEditorTestScript"
+                                              />
+                </Panel>
+
                 <!-- RESPONSE HEADER -->
                 <Panel expandable="true"
                        expanded="true"
@@ -175,7 +193,7 @@
                 </Panel>
 
 
-                <!-- RESPONSE BODX -->
+                <!-- RESPONSE BODY -->
                 <Panel expandable="true"
                        expanded="true"
                        class="sapUiNoContentPadding"

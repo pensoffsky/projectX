@@ -19,6 +19,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				tags : {type : "string", defaultValue : null},
 				requestBody : {type : "string", defaultValue : null},
 				scriptCode : {type : "string", defaultValue : null},
+				testScriptCode : {type : "string", defaultValue : null},
 				responseBodyFormat : {type : "string", defaultValue : "text"},
 
 				//these fields are only temporary variables. they will not be persisted
@@ -59,6 +60,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oRequest.tags = this.getTags();
 		oRequest.requestBody = this.getRequestBody();
 		oRequest.scriptCode = this.getScriptCode();
+		oRequest.testScriptCode = this.getTestScriptCode();
 		oRequest.responseBodyFormat = this.getResponseBodyFormat();
 
 		var aSerializedAssertions = [];
@@ -134,7 +136,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 	return oRetDeferred;
 };
 
-
+//TODO this method is to long! fix this
 	/**
 	 * creates and send a jquery ajax request with the parameters defined
 	 * in this request instance.
@@ -147,21 +149,36 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 	Request.prototype._execute = function(oProject, oPreviousRequest, sCSRFToken) {
 		var oStartTime = new Date();
 
+		//fill the request headers
+		//TODO move to seperate function
+		var aRequestHeaders = this.getRequestHeaders();
+		var oRequestHeaders = {};
+		for (var i = 0; i < aRequestHeaders.length; i++) {
+			// save this into new array
+			var fieldName  = aRequestHeaders[i].getFieldName();
+			var fieldValue = aRequestHeaders[i].getFieldValue();
+			oRequestHeaders[fieldName] = fieldValue;
+		}
+		
+		//add the csrf token if we have one
+		if (sCSRFToken) {
+			oRequestHeaders["x-csrf-token"] = sCSRFToken;
+		}
+
 		//create the url. use prefix from project if enabled by user
 		var sUrl = this.getUrl();
 		if (this.getUseProjectPrefixUrl() === true) {
 			sUrl = oProject.getPrefixUrl() + sUrl;
 		}
-
+		
+		//pre-request script preparations.
 		//create the objects that can be modified inside the script
-		var oReqParam = {
-			httpMethod: this.getHttpMethod(),
-			url: sUrl,
-			requestBody: this.getRequestBody(),
-			contentType: ""
-			//TODO add more parameters here
-		};
+		//TODO move to sepeate method
+		
+		var oReqParam = this._createRequestObjectForScript(sUrl);
 
+		//create the object that hold the info from the previous requestHeader
+		//TODO move to sepeate method
 		var oPrevReqParam = null;
 		if (oPreviousRequest) {
 			oPrevReqParam = {
@@ -177,39 +194,25 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 			};
 		}
 
-
-		//get the javascript code and put into function
-		var sScriptCode = this.getScriptCode();
-		var f = new Function("req", "prevReq", sScriptCode);
+		//get the pre-request javascript code, put into function and run
+		var sPreRequestScriptCode = this.getScriptCode();
+		var fRunPreRequestScript = new Function("req", "prevReq", sPreRequestScriptCode);
 		//execute custom javascript code
 		try {
-			f(oReqParam, oPrevReqParam);
+			fRunPreRequestScript(oReqParam, oPrevReqParam);
 		} catch (e) {
 			console.log(e);
 		}
 
 
-		var aRequestHeaders = this.getRequestHeaders();
-		var oRequestHeaders = {};
-
-		for (var i = 0; i < aRequestHeaders.length; i++) {
-			// save this into new array
-			var fieldName  = aRequestHeaders[i].getFieldName();
-			var fieldValue = aRequestHeaders[i].getFieldValue();
-
-			oRequestHeaders[fieldName] = fieldValue;
-		}
-		
-		if (sCSRFToken) {
-			oRequestHeaders["x-csrf-token"] = sCSRFToken;
-		}
-
+		//check if the URL needs encoding
 		var isEncoded = typeof oReqParam.url == "string" && decodeURI(oReqParam.url) !== oReqParam.url;
 		var sUrl = oReqParam.url;
 		if (!isEncoded) {
 			sUrl = encodeURI(sUrl);
 		}
-
+		
+		//do the request
 		var oDeferred = jQuery.ajax({
 			method: oReqParam.httpMethod,
 			url: sUrl,
@@ -219,18 +222,52 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 			headers: oRequestHeaders
 		});
 
+		//handle request results
 		var that = this;
 		oDeferred.done(function(data, textStatus, jqXHR) {
 			var iResponseTime = new Date() - oStartTime;
 			that._setAjaxResult(jqXHR, iResponseTime);
+			that._runTestScript();
 		});
-
 		oDeferred.fail(function(jqXHR, textStatus, errorThrown) {
 			var iResponseTime = new Date() - oStartTime;
 			that._setAjaxResult(jqXHR, iResponseTime);
+			that._runTestScript();
 		});
 
 		return oDeferred;
+	};
+	
+	Request.prototype._createRequestObjectForScript = function(sUrl) {
+		var oReqParam = {
+			httpMethod: this.getHttpMethod(),
+			url: sUrl,
+			requestBody: this.getRequestBody(),
+			status: this.getStatus(),
+			responseTime: this.getResponseTime(),
+			responseBody: this.getResponseBody(),
+			responseHeaders: this.getResponseHeaders()
+			//TODO add more parameters here
+		};
+		return oReqParam;
+	};
+	
+	//TODO refactor to execute both scripts with one function
+	Request.prototype._runTestScript = function() {
+		//TODO why is check Assertions called from outside?
+		
+		var oReqParam = this._createRequestObjectForScript(this.getUrl());
+		
+		//get the test script javascript code, put into function and run
+		var sTestScriptCode = this.getTestScriptCode();
+		var fRunTestScript = new Function("req", sTestScriptCode);
+		try {
+			//TODO supply req parameter
+			fRunTestScript(oReqParam);
+		} catch (e) {
+			console.log(e);
+		}
+		
 	};
 
 	Request.prototype.checkAssertions = function(jqXHR, iResponseTime) {
