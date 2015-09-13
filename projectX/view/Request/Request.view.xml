@@ -106,7 +106,7 @@
                        >
                        <headerToolbar>
                          <Toolbar design="Transparent" height="3rem">
-                          <Text text="Pre-Request Script ({localUIModel>/request/mProperties/scriptCode/length})"/>
+                          <Text text="Pre-Request Script ({localUIModel>/request/mProperties/scriptCode/length}) {localUIModel>/request/mProperties/preRequestScriptResult}"/>
                         </Toolbar>
                        </headerToolbar>
                     <FlexBox width="100%">
@@ -162,7 +162,7 @@
                        >
                        <headerToolbar>
                          <Toolbar design="Transparent" height="3rem">
-                          <Text text="Test Script ({localUIModel>/request/mProperties/testScriptCode/length})"/>
+                          <Text text="Test Script ({localUIModel>/request/mProperties/testScriptCode/length}) {localUIModel>/request/mProperties/testScriptResult}"/>
                         </Toolbar>
                        </headerToolbar>
                     
@@ -170,6 +170,14 @@
                                               value="{localUIModel>/request/mProperties/testScriptCode}"
                                               id="superEditorTestScript"
                                               />
+                            <VBox items="{localUIModel>/request/_testResults}">
+                                <HBox>
+                                    <Text text="{localUIModel>name}"/>
+                                    <Text text="{localUIModel>result}"/>
+                                </HBox>
+                            </VBox>
+                                
+                            
                 </Panel>
 
                 <!-- RESPONSE HEADER -->

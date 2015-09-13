@@ -28,7 +28,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				responseBody : {type : "string", defaultValue : null},
 				responseTime : {type : "int", defaultValue : null},
 				assertionsResultReady : {type : "boolean", defaultValue : false},
-				assertionsResult : {type : "boolean", defaultValue : false}
+				assertionsResult : {type : "boolean", defaultValue : false},
+				testScriptResult : {type : "string", defaultValue : null},
+				preRequestScriptResult : {type : "string", defaultValue : null}
 			},
 			events : {
 
@@ -92,10 +94,15 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		this.setResponseTime(null);
 		this.setAssertionsResultReady(false);
 		this.setAssertionsResult(false);
+		this.setTestScriptResult(null);
+		this.setPreRequestScriptResult(null);
 		var aAssertions = this.getAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
 			aAssertions[i].resetTempData();
 		}
+		
+		//reset the results from the test script
+		this._testResults = [];
 	};
 
 
@@ -202,12 +209,13 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 			fRunPreRequestScript(oReqParam, oPrevReqParam);
 		} catch (e) {
 			console.log(e);
+			this.setPreRequestScriptResult("SCRIPT ERROR");
 		}
 
 
 		//check if the URL needs encoding
 		var isEncoded = typeof oReqParam.url == "string" && decodeURI(oReqParam.url) !== oReqParam.url;
-		var sUrl = oReqParam.url;
+		sUrl = oReqParam.url;
 		if (!isEncoded) {
 			sUrl = encodeURI(sUrl);
 		}
@@ -259,15 +267,35 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		var oReqParam = this._createRequestObjectForScript(this.getUrl());
 		
 		//get the test script javascript code, put into function and run
+		var that = this;
+		that._testResults = [];
+		var fTest = function(sName, bResult){
+			that._testResults.push({
+					name: sName,
+				 result: bResult
+			 });
+		};
+		
 		var sTestScriptCode = this.getTestScriptCode();
-		var fRunTestScript = new Function("req", sTestScriptCode);
+		var fRunTestScript = new Function("req", "test", sTestScriptCode);
 		try {
 			//TODO supply req parameter
-			fRunTestScript(oReqParam);
+			fRunTestScript(oReqParam, fTest);
+			//check the test results and generate the result string e.g. "3/20"
+			//3 from 20 test succeeded
+			var iTestCount = 0;
+			var iTestSuccess = 0;
+			for (var i=0; i<this._testResults.length; i++) {
+				iTestCount++;
+				if (this._testResults[i].result === true) {
+					iTestSuccess++;
+				}
+			}
+			this.setTestScriptResult("" + iTestSuccess + "/" + iTestCount);
 		} catch (e) {
 			console.log(e);
+			this.setTestScriptResult("SCRIPT ERROR");
 		}
-		
 	};
 
 	Request.prototype.checkAssertions = function(jqXHR, iResponseTime) {
