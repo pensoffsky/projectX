@@ -206,9 +206,9 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 
 		//get the pre-request javascript code, put into function and run
 		var sPreRequestScriptCode = this.getScriptCode();
-		var fRunPreRequestScript = new Function("req", "prevReq", sPreRequestScriptCode);
 		//execute custom javascript code
 		try {
+			var fRunPreRequestScript = new Function("req", "prevReq", sPreRequestScriptCode);
 			fRunPreRequestScript(oReqParam, oPrevReqParam);
 		} catch (e) {
 			console.log(e);
@@ -280,8 +280,8 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		};
 		
 		var sTestScriptCode = this.getTestScriptCode();
-		var fRunTestScript = new Function("req", "test", sTestScriptCode);
 		try {
+			var fRunTestScript = new Function("req", "test", sTestScriptCode);
 			//TODO supply req parameter
 			fRunTestScript(oReqParam, fTest);
 			//check the test results and generate the result string e.g. "3/20"
