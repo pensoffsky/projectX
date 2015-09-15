@@ -134,7 +134,6 @@ sap.ui.define([
 			this._oProject = oSelectedProject;
 			this._localUIModel.setProperty("/request", this._oRequest);
 			this._localUIModel.setProperty("/project", oSelectedProject);
-			this._prettyPrintResponseBody(this._localUIModel.getProperty("/responseBodyDisplayMode"));
 
 			this._oMetadataTypesController.setSelectedRequest(this._oProject, this._oRequest);
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
@@ -144,6 +143,22 @@ sap.ui.define([
 			var sMode = this._oRequest.getResponseBodyFormat();
 			this._setResponseBodyButtonMode(sMode);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
+			this._prettyPrintResponseBody(sMode);
+		};
+
+		Request.prototype.onBeforeShow = function() {
+			var that = this;
+			this.getComponent().setKeyboardShortcutExecuteRequest(function(){
+				sap.m.MessageToast.show("Sending request ...", {
+					animationDuration: 100,
+				    duration: 300
+				});
+				that.onBtnSendPress();
+			});
+		};
+
+		Request.prototype.onBeforeHide = function() {
+			this.getComponent().setKeyboardShortcutExecuteRequest(null);
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////

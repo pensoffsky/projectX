@@ -53,6 +53,22 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._localUIModel.setProperty("/requests", oSelectedProject.getRequests());
 	},
 	
+	
+	onBeforeShow : function() {
+		var that = this;
+		this.getComponent().setKeyboardShortcutExecuteRequest(function(){
+			sap.m.MessageToast.show("Running sequence ...", {
+				animationDuration: 100,
+				duration: 300
+			});
+			that.onRunSequence();
+		});
+	},
+
+	onBeforeHide : function() {
+		this.getComponent().setKeyboardShortcutExecuteRequest(null);
+	},
+	
 	_setSelectedRequests : function() {
 		//get requests for requestIds and set to local ui model
 		var aSelectedRequests = [];

@@ -32,15 +32,15 @@
 			<ColumnListItem>
 				<cells>
 				<Input
-					  value="{mProperties/fieldName}"
-					  type="Text"
-			      placeholder="Field name ..."
-      		  showSuggestion="true"
-      	    suggestionItems="{/V_REQUEST_HEADER_FIELDS}"
-					  suggestionItemSelected="handleRequestHeaderFieldNameChanged">
+					value="{mProperties/fieldName}"
+				  	type="Text"
+					placeholder="Field name ..."
+					showSuggestion="true"
+					suggestionItems="{/V_REQUEST_HEADER_FIELDS}"
+					suggestionItemSelected="handleRequestHeaderFieldNameChanged">
 					<suggestionItems>
-      			<c:Item text="{key}" key="{key}" />
-    			</suggestionItems>
+						<c:Item text="{key}" key="{key}" />
+    				</suggestionItems>
 				</Input>
 				<Input
 					  value="{mProperties/fieldValue}"

@@ -134,6 +134,19 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.setModel(oAppConstants, "constants");
 
 		this.initAutoSave();
+		
+		var that = this;
+		//add global keyboard hooks
+		jQuery(document).keyup(function(evt){
+			//check for F7 key -> execute request or run sequence depending on current screen
+		   if (evt.keyCode == 118) {// && (evt.ctrlKey)){
+			   evt.preventDefault();
+				if (that._fKeyboardShortcutExecuteRequest 
+					&& typeof that._fKeyboardShortcutExecuteRequest === "function"){
+					that._fKeyboardShortcutExecuteRequest();
+				}
+		   }
+		});
 
 		this.getRouter().initialize();
 	},
@@ -155,10 +168,26 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	 */
 	_sLastSavedData : null,
 
+	/**
+	 * function that is called when the global keyboard shortcut to send the current request
+	 * was executed.
+	 * @type {function}
+	 */
+	_fKeyboardShortcutExecuteRequest : null,
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Functions
 	// /////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * get called from the request screens and sets a function that 
+	 * will execute the currently selected request.
+	 * @param  {function} fFunction function that will be triggered when the user hits 
+	 * the global "execute request" keyboard shortcut
+	 */
+	setKeyboardShortcutExecuteRequest : function(fFunction) {
+		this._fKeyboardShortcutExecuteRequest = fFunction;
+	},
 
 	/**
 	 * load projects from localstorage
