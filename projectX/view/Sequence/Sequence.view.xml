@@ -118,6 +118,9 @@
 							text="{localUIModel>mProperties/url}"
 							titleActive="true"
 							titlePress="onRequestNamePress"/>
+							<Label text=" {localUIModel>mProperties/sapStatistics}"
+										visible="{= ${localUIModel>mProperties/sapStatistics/length} > 0}"
+										/>
 							<!-- TODO script exceptions / script input variables -->
 							<TextArea value="{localUIModel>mProperties/scriptCode}"
 										placeholder="no script code supplied"

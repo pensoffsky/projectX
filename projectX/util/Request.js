@@ -30,7 +30,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				assertionsResultReady : {type : "boolean", defaultValue : false},
 				assertionsResult : {type : "boolean", defaultValue : false},
 				testScriptResult : {type : "string", defaultValue : null},
-				preRequestScriptResult : {type : "string", defaultValue : null}
+				preRequestScriptResult : {type : "string", defaultValue : null},
+				sapStatistics : {type : "string", defaultValue : null}
 			},
 			events : {
 
@@ -96,6 +97,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		this.setAssertionsResult(false);
 		this.setTestScriptResult(null);
 		this.setPreRequestScriptResult(null);
+		this.setSapStatistics(null);
 		var aAssertions = this.getAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
 			aAssertions[i].resetTempData();
@@ -114,6 +116,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 	}
 	
 	var sBaseUrl = oProject.getBaseUrl();
+	//create a CSRF request for sap gateway
 	var oCSRFDeferred = jQuery.ajax({
 		method: "GET",
 		headers:{     
@@ -364,6 +367,8 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		this.setResponseBody(jqXHR.responseText);
 		this.setResponseHeaders(jqXHR.getAllResponseHeaders());
 		this.setResponseTime(iResponseTime);
+		//try to get the sap-statistics data from the response headers
+		this.setSapStatistics(jqXHR.getResponseHeader("sap-statistics"));
 	};
 
 	return Request;

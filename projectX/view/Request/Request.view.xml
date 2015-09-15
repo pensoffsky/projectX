@@ -15,12 +15,13 @@
           title="{localUIModel>/name}">
         <subHeader>
             <Toolbar>
-                <ToolbarSpacer/>
-                <Label text="Status: {localUIModel>/request/mProperties/status}
-                Time: {localUIModel>/request/mProperties/responseTime}ms"/>
-                <Button text="Send Request"
-                        press="onBtnSendPress"
-                        type="Emphasized"/>
+              <Label text=" {localUIModel>/request/mProperties/sapStatistics}"/>
+              <ToolbarSpacer/>
+              <Label text="Status: {localUIModel>/request/mProperties/status}
+              Time: {localUIModel>/request/mProperties/responseTime}ms"/>
+              <Button text="Send Request"
+                      press="onBtnSendPress"
+                      type="Emphasized"/>
             </Toolbar>
         </subHeader>
 
