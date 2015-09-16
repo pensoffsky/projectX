@@ -54,6 +54,7 @@ sap.ui.define([
 				request: null,
 				project: null,
 				SCRIPT_EXAMPLES: Constants.SCRIPTEXAMPLES,
+				TESTSCRIPT_EXAMPLES: Constants.TESTSCRIPTEXAMPLES,
 				HTTP_METHODS: Constants.HTTP_METHODS,
 				responseBodyDisplayMode : "text",
 				responseBodyFormatted : ""
@@ -238,6 +239,22 @@ sap.ui.define([
 			var sScript = this._oRequest.getScriptCode();
 			sScript += "\n" + oScriptExample.script;
 			this._oRequest.setScriptCode(sScript);
+			this._localUIModel.updateBindings();
+		};
+		
+		Request.prototype.onButtonTestScriptExamples = function(oEvent) {
+			var oButton = oEvent.getSource();
+			var oMenu = this.getView().byId("idMenuTestScriptExamples");
+			var eDock = sap.ui.core.Popup.Dock;
+			oMenu.open(false, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
+		};
+
+		Request.prototype.onMenuItemTestScriptExampleSelected = function(oEvent) {
+			var oItem = oEvent.getParameter("item");
+			var oScriptExample = oItem.getBindingContext("localUIModel").getObject();
+			var sScript = this._oRequest.getTestScriptCode();
+			sScript += "\n" + oScriptExample.script;
+			this._oRequest.setTestScriptCode(sScript);
 			this._localUIModel.updateBindings();
 		};
 

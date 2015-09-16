@@ -44,6 +44,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.ASSERTPROPERTY_JSONBODY = "JSONBODY";
 	Constants.ASSERTPROPERTY_XMLBODY = "XMLBODY";
 	Constants.ASSERTPROPERTY_RESPONSETIME = "RESPONSETIME";
+	Constants.ASSERTPROPERTY_SAPSTATISTICS = "SAPSTATISTICS";
 
 	/**
 	 * array of keys for assertion property select control.
@@ -55,7 +56,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		{key : Constants.ASSERTPROPERTY_HEADER},
 		{key : Constants.ASSERTPROPERTY_JSONBODY},
 		{key : Constants.ASSERTPROPERTY_XMLBODY},
-		{key : Constants.ASSERTPROPERTY_RESPONSETIME}
+		{key : Constants.ASSERTPROPERTY_RESPONSETIME},
+		{key : Constants.ASSERTPROPERTY_SAPSTATISTICS}
 	];
 
 	/*
@@ -232,6 +234,27 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 			text: "Get Named Assertion Result",
 			script: "//check if assertion named VARNAME was checked successfully" + "\n" +
 					"var bAssertResult = prevReq.namedAssertions.VARNAME.result;"
+		}
+	];
+	
+	/**
+	 * array of script examples used for adding the examples to the javascript test script text area.
+	 * @type {Array}
+	 */
+	Constants.TESTSCRIPTEXAMPLES = [
+		{//TODO add comments; read named assertions
+			text: "Breakpoint",
+			script: "//use the development tools of the browser to debug the pre-request script" + "\n" +
+					"debugger;"
+		},{
+			text: "Basic tests",
+			script: "//TODO" + "\n" +
+					"test('name of test 1', false);" + "\n" +
+					"test('name of test 2', true);"
+		},{
+			text: "Test requestBody",
+			script: "//TODO " + "\n" +
+					"test('name of test 1', req.responseBody.length > 0);"
 		}
 	];
 

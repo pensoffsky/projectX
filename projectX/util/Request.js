@@ -301,18 +301,19 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		}
 	};
 
-	Request.prototype.checkAssertions = function(jqXHR, iResponseTime) {
+	Request.prototype.checkAssertions = function() {
 		var aAssertions = this.getAssertions();
 
-		var sStatus = jqXHR ? jqXHR.status : this.getStatus();
-		var sResponseBody = jqXHR ? jqXHR.responseText : this.getResponseBody();
-		var sResponseHeaders = jqXHR ? jqXHR.getAllResponseHeaders() : this.getResponseHeaders();
-		var iResponseT = iResponseTime ? iResponseTime : this.getResponseTime();
+		var sStatus = this.getStatus();
+		var sResponseBody = this.getResponseBody();
+		var sResponseHeaders = this.getResponseHeaders();
+		var iResponseT = this.getResponseTime();
+		var sSapStatistics = this.getSapStatistics();
 
 		var bAssertionsResult = true;
 
 		for (var i = 0; i < aAssertions.length; i++) {
-			var bRes = aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders, iResponseT);
+			var bRes = aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders, iResponseT, sSapStatistics);
 			if (bRes !== true){
 				bAssertionsResult = false;
 			}

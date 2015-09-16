@@ -118,13 +118,13 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	 * check response from ajax call for defined condition
 	 * @return {booleean} true if the assertion was ok. false if it failed.
 	 */
-	Assertion.prototype.assert = function(iStatus, sResponseBody, sResponseHeaders, iResponseTime) {
+	Assertion.prototype.assert = function(iStatus, sResponseBody, sResponseHeaders, iResponseTime, sSapStatistics) {
 		//TODO this method is way to long
 		try {
 			var sAssertProperty = this.getAssertProperty();
 			var sOperation = this.getOperation();
 			var sExpected = this.getExpected();
-			var sPath = this.getPath();
+			var sPath = this.getPath(); //value from the xmlpath/jsonpath field
 			
 			//get the value to run the assertion for
 			var sValue = null;
@@ -170,6 +170,15 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 					break;
 				case Constants.ASSERTPROPERTY_RESPONSETIME:
 				    sValue = "" + iResponseTime;
+					break;
+				case Constants.ASSERTPROPERTY_SAPSTATISTICS:
+				    var aStatisticEntries = sSapStatistics.split(",");
+					for (var i = 0; i < aStatisticEntries.length; i++) {
+						var aSingleEntry = aStatisticEntries[i].split("=");
+						if (aSingleEntry[0] === sPath) {
+							sValue = aSingleEntry[1];
+						}
+					}
 					break;
 			  default:
 			    return false;

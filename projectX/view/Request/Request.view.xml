@@ -110,30 +110,17 @@
                           <Text text="Pre-Request Script ({localUIModel>/request/mProperties/scriptCode/length}) {localUIModel>/request/mProperties/preRequestScriptResult}"/>
                         </Toolbar>
                        </headerToolbar>
-                    <FlexBox width="100%">
-                        <VBox>
-                            <layoutData>
-                                <FlexItemData growFactor="8"/>
-                            </layoutData>
-
-                            <custom:AceEditor width="100%" height="200px"
-                                              value="{localUIModel>/request/mProperties/scriptCode}"
-                                              id="superEditor"
-                                    />
-                        </VBox>
-                        <VBox>
-                            <layoutData>
-                                <FlexItemData shrinkFactor="0"
-                                        />
-                            </layoutData>
-                            <Button text="Snippets" press="onButtonScriptExamples"/>
-                            <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
-                                    id="idMenuScriptExamples">
-                                <u:MenuItem text="{localUIModel>text}"
-                                            select="onMenuItemScriptExampleSelected"/>
-                            </u:Menu>
-                        </VBox>
-                    </FlexBox>
+                    
+                        <Button text="Snippets" press="onButtonScriptExamples"/>
+                        <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
+                                id="idMenuScriptExamples">
+                            <u:MenuItem text="{localUIModel>text}"
+                                        select="onMenuItemScriptExampleSelected"/>
+                        </u:Menu>
+                        <custom:AceEditor width="100%" height="200px"
+                                          value="{localUIModel>/request/mProperties/scriptCode}"
+                                          id="superEditor"
+                                          />
                 </Panel>
                 
                 <!-- ASSERTIONS -->
@@ -167,6 +154,12 @@
                         </Toolbar>
                        </headerToolbar>
                     
+                           <Button text="Snippets" press="onButtonTestScriptExamples"/>
+                           <u:Menu items="{localUIModel>/TESTSCRIPT_EXAMPLES}"
+                                   id="idMenuTestScriptExamples">
+                               <u:MenuItem text="{localUIModel>text}"
+                                           select="onMenuItemTestScriptExampleSelected"/>
+                           </u:Menu>
                             <custom:AceEditor width="100%" height="200px"
                                               value="{localUIModel>/request/mProperties/testScriptCode}"
                                               id="superEditorTestScript"
