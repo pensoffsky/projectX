@@ -166,8 +166,8 @@
                                               />
                             <VBox items="{localUIModel>/request/_testResults}">
                                 <HBox>
-                                    <Text text="{localUIModel>name}"/>
-                                    <Text text="{localUIModel>result}"/>
+                                    <Text text="{localUIModel>name} -"/>
+                                    <Text text="- {localUIModel>result}"/>
                                 </HBox>
                             </VBox>
                                 

@@ -308,10 +308,9 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		var sResponseBody = this.getResponseBody();
 		var sResponseHeaders = this.getResponseHeaders();
 		var iResponseT = this.getResponseTime();
-		var sSapStatistics = this.getSapStatistics();
+		var sSapStatistics = this.getSapStatistics();		
 
 		var bAssertionsResult = true;
-
 		for (var i = 0; i < aAssertions.length; i++) {
 			var bRes = aAssertions[i].assert(sStatus, sResponseBody, sResponseHeaders, iResponseT, sSapStatistics);
 			if (bRes !== true){
@@ -370,6 +369,9 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		this.setResponseTime(iResponseTime);
 		//try to get the sap-statistics data from the response headers
 		this.setSapStatistics(jqXHR.getResponseHeader("sap-statistics"));
+		
+		//this is testdata for the statistics feature
+		//this.setSapStatistics("gwtotal=2274,gwhub=138,gwrfcoh=110,gwbe=82,gwapp=1944");		
 	};
 
 	return Request;

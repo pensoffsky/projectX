@@ -40,7 +40,7 @@
 				<Text text="Evaluated Value" />
 			</Column>
 			<Column width="2rem">
-				<Text text="Var" />
+				<Text text="Var"/>
 			</Column>
 		</columns>
 		<items>
@@ -62,7 +62,7 @@
 							{ path : 'mProperties/resultReady' }
 						],
 						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
-					<Text text="{mProperties/evaluatedValue}"/>
+					<Text text="{mProperties/evaluatedValue}" maxLines="2" tooltip="{mProperties/evaluatedValue}"/>
 					<Input value="{mProperties/name}"/>
 				</cells>
 			</ColumnListItem>
