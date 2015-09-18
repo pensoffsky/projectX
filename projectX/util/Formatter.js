@@ -9,15 +9,15 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 			metadata: {}
 		});
 
-		
+
 		Formatter.assertionsListResultToImage = function(bAssertionsResult, bAssertionsResultReady, iLength) {
 			if(iLength > 0) {
 				return Formatter.assertionsResultToImage(bAssertionsResult, bAssertionsResultReady);
 			}
-			
+
 			return "";
 		};
-		
+
 		/**
 		 *
 		 * @param {boolean} bAssertionsResult representing the result of the assertions.
@@ -82,8 +82,43 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 			} else {
 				return "";
 			}
-		}
+		};
 
+		Formatter.requestListHttpMethod = function(sHttpMethod) {
+			var sCssClass;
+
+			switch (sHttpMethod) {
+				case Constants.HTTP_METHOD_GET:
+					sCssClass = Constants.CSS_HTTP_METHOD_GET;
+					break;
+				case Constants.HTTP_METHOD_POST:
+					sCssClass = Constants.CSS_HTTP_METHOD_POST;
+					break;
+				case Constants.HTTP_METHOD_PATCH:
+					sCssClass = Constants.CSS_HTTP_METHOD_PATCH;
+					break;
+				case Constants.HTTP_METHOD_DELETE:
+					sCssClass = Constants.CSS_HTTP_METHOD_DELETE;
+					break;
+				case Constants.HTTP_METHOD_HEAD:
+					sCssClass = Constants.CSS_HTTP_METHOD_HEAD;
+					break;
+				case Constants.HTTP_METHOD_OPTIONS:
+					sCssClass = Constants.CSS_HTTP_METHOD_OPTIONS;
+					break;
+				case Constants.HTTP_METHOD_CONNECT:
+					sCssClass = Constants.CSS_HTTP_METHOD_CONNECT;
+					break;
+				case Constants.HTTP_METHOD_TRACE:
+					sCssClass = Constants.CSS_HTTP_METHOD_TRACE;
+					break;
+				default:
+					sCssClass = Constants.CSS_HTTP_METHOD_GET;
+			}
+
+			return sCssClass;
+
+		};
 
 		return Formatter;
 

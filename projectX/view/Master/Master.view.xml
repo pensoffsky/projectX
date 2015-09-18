@@ -65,6 +65,15 @@
 					<items>
 						<CustomListItem>
 							<Toolbar width="100%">
+								<Text
+									text="{mProperties/httpMethod}"
+									wrapping="false"
+									class="post" />
+									<!-- class="{
+										path : 'mProperties/httpMethod',
+										formatter : 'projectX.util.Formatter.requestListHttpMethod'}"/> -->
+									<!-- toggleStyleClass="toggleStyleHttpMethod"/> -->
+
 								<Text text="{mProperties/name}"/>
 								<ToolbarSpacer/>
 								<Button press="onBtnDuplicateRequestPress"

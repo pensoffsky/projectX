@@ -91,6 +91,19 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		{key : Constants.ASSERTOPERATION_CONTAINSNOT}
 	];
 
+	/*
+	 * Constants for the HTTP method used in CSS file
+	 */
+	Constants.CSS_HTTP_METHOD_GET = "get";
+	Constants.CSS_HTTP_METHOD_POST = "post";
+	Constants.CSS_HTTP_METHOD_PUT = "put";
+	Constants.CSS_HTTP_METHOD_PATCH = "patch";
+	Constants.CSS_HTTP_METHOD_DELETE = "delete";
+	Constants.CSS_HTTP_METHOD_HEAD = "head";
+	Constants.CSS_HTTP_METHOD_OPTIONS = "options";
+	Constants.CSS_HTTP_METHOD_CONNECT = "connect";
+	Constants.CSS_HTTP_METHOD_TRACE = "trace";
+
 
 	/*
 	 * Constants for the HTTP method
@@ -184,7 +197,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	 * @type {int}
 	 */
 	Constants.INPUTDELAY = 300;
-	
+
 	/**
 	 * time to wait between attempts to autosave the current projects in ms.
 	 * @type {int}
@@ -236,7 +249,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 					"var bAssertResult = prevReq.namedAssertions.VARNAME.result;"
 		}
 	];
-	
+
 	/**
 	 * array of script examples used for adding the examples to the javascript test script text area.
 	 * @type {Array}
