@@ -151,9 +151,12 @@
                        <headerToolbar>
                          <Toolbar design="Transparent" height="3rem">
                           <Text text="Test Script ({localUIModel>/request/mProperties/testScriptCode/length}) {localUIModel>/request/mProperties/testScriptResult}"/>
+                         
                         </Toolbar>
                        </headerToolbar>
-                    
+                           <Button icon="sap-icon://media-play"
+                                 tooltip="execute test script again"
+                                 press="onBtnExecuteTestScript"/>
                            <Button text="Snippets" press="onButtonTestScriptExamples"/>
                            <u:Menu items="{localUIModel>/TESTSCRIPT_EXAMPLES}"
                                    id="idMenuTestScriptExamples">

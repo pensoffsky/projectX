@@ -53,6 +53,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.updateBindings();
 	};
 	
+	AssertionEditListController.prototype.onBtnExecuteAssertion = function(){
+		var oRequest =  this._localUIModel.getProperty("/request");
+		oRequest.resetAssertionsData();
+		oRequest.checkAssertions();
+		this.updateBindings();
+	};
+	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Methods
 	// /////////////////////////////////////////////////////////////////////////////

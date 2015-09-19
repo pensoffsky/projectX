@@ -306,6 +306,11 @@ sap.ui.define([
 			this._prettyPrintResponseBody(sMode);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
 		};
+		
+		Request.prototype.onBtnExecuteTestScript = function(){
+			this._oRequest._runTestScript();
+			this._localUIModel.updateBindings();
+		};
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Functions

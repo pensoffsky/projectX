@@ -93,18 +93,26 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		this.setResponseHeaders(null);
 		this.setResponseBody(null);
 		this.setResponseTime(null);
-		this.setAssertionsResultReady(false);
-		this.setAssertionsResult(false);
 		this.setTestScriptResult(null);
 		this.setPreRequestScriptResult(null);
 		this.setSapStatistics(null);
+		this.resetAssertionsData();
+		
+		//reset the results from the test script
+		this._testResults = [];
+	};
+	
+	
+	/**
+	 * reset the temporary assertions data.
+	 */
+	Request.prototype.resetAssertionsData = function() {
+		this.setAssertionsResultReady(false);
+		this.setAssertionsResult(false);
 		var aAssertions = this.getAssertions();
 		for (var i = 0; i < aAssertions.length; i++) {
 			aAssertions[i].resetTempData();
 		}
-		
-		//reset the results from the test script
-		this._testResults = [];
 	};
 
 
