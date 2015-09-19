@@ -10,7 +10,7 @@
 		enableScrolling="true"
 		>
 		<subHeader>
-		<Toolbar>			
+		<Toolbar>
 			<ToolbarSpacer/>
 			<Button text="Clear"
 					press="onClearResults"
@@ -20,7 +20,7 @@
 					press="onRunSequence"
 					type="Emphasized"
 					visible="{localUIModel>/testNotRunning}"/>
-			<Button text="Stop"					
+			<Button text="Stop"
 					press="onStopSequence"
 					type="Reject"
 					visible="{localUIModel>/testRunning}"
@@ -41,7 +41,7 @@
 					<f:SimpleForm
 						editable="true"
 						layout="ResponsiveGridLayout">
-						<f:content>						
+						<f:content>
 							<Label text="Name" />
 							<Input value="{localUIModel>/sequence/mProperties/name}"
 									liveChange="onNameChanged"
@@ -53,8 +53,8 @@
 					</f:SimpleForm>
 				</l:content>
 			</l:Grid>
-			
-			
+
+
 			<Table
 				items="{localUIModel>/selectedRequests}"
 				rememberSelections="false"
@@ -81,7 +81,7 @@
 							>
 					    <StandardListItem
 					      title="{localUIModel>mProperties/name}"
-					      description="{{localUIModel>mProperties/url}}"						      
+					      description="{{localUIModel>mProperties/url}}"
 					      type="Active"/>
 					  </SelectDialog>
 					</Toolbar>
@@ -113,19 +113,20 @@
 				<ColumnListItem vAlign="Top">
 					<cells>
 						<VBox>
-						<ObjectIdentifier
-							title="{localUIModel>mProperties/name}"
-							text="{localUIModel>mProperties/url}"
-							titleActive="true"
-							titlePress="onRequestNamePress"/>
+							<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
+							<ObjectIdentifier
+								title="{localUIModel>mProperties/name}"
+								text="{localUIModel>mProperties/url}"
+								titleActive="true"
+								titlePress="onRequestNamePress"/>
 							<Label text=" {localUIModel>mProperties/sapStatistics}"
 										visible="{= ${localUIModel>mProperties/sapStatistics/length} > 0}"
-										/>							
+										/>
 							<TextArea value="{localUIModel>mProperties/scriptCode}"
 										placeholder="no script code supplied"
 										editable="false"
 										rows="6"
-										class="invisible visibleWhenExpanded"/>	
+										class="invisible visibleWhenExpanded"/>
 							<TextArea value="{localUIModel>mProperties/responseHeaders}"
 										placeholder="response headers will be filled after running the sequence..."
 										editable="false"
@@ -151,7 +152,7 @@
 											<Text text="{localUIModel>name} -" class="invisible visibleWhenExpanded"/>
 											<Text text="- {localUIModel>result}" class="invisible visibleWhenExpanded"/>
 									</HBox>
-							</VBox>							
+							</VBox>
 						</VBox>
 						<c:Icon
 							src="{ parts : [

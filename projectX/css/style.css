@@ -25,27 +25,37 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.get {
+.httpMethodTag {
   font-size: 0.6rem;
-  color: #009525;
   padding: 0.1rem 0.4rem;
   display: inline-block;
   border-radius: 100px;
+}
+.get {
+  color: #009525;
   box-shadow: 0px 0px 0.2rem #009525;
 }
 .post {
-  font-size: 0.6rem;
   color: #0077cd;
-  padding: 0.1rem 0.4rem;
-  display: inline-block;
-  border-radius: 100px;
   box-shadow: 0px 0px 0.2rem #0077cd;
 }
+.put {
+  color: #00c1cd;
+  box-shadow: 0px 0px 0.2rem #00c1cd;
+}
+.patch {
+  color: #cba600;
+  box-shadow: 0px 0px 0.2rem #cba600;
+}
 .delete {
-  font-size: 0.6rem;
   color: #cd0000;
-  padding: 0.1rem 0.4rem;
-  display: inline-block;
-  border-radius: 100px;
   box-shadow: 0px 0px 0.2rem #cd0000;
+}
+.head {
+  color: #151515;
+  box-shadow: 0px 0px 0.2rem #151515;
+}
+.options {
+  color: #919191;
+  box-shadow: 0px 0px 0.2rem #919191;
 }
