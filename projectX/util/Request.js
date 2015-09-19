@@ -116,11 +116,11 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	};
 
 
-Request.prototype.execute = function(oProject, oPreviousRequest) {	
+Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorage) {	
 	var bFetchCSRFToken = this.getFetchCSRFToken();
 	if (!bFetchCSRFToken) {
 		//no csrf token required
-		return this._execute(oProject, oPreviousRequest);
+		return this._execute(oProject, oPreviousRequest, undefined, oSequenceStorage);
 	}
 	
 	var sBaseUrl = oProject.getBaseUrl();
@@ -141,7 +141,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 	var that = this;
 	oCSRFDeferred.done(function(data, textStatus, jqXHR) {
 		var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
-		var oDeferred = that._execute(oProject, oPreviousRequest, sCSRFToken);
+		var oDeferred = that._execute(oProject, oPreviousRequest, sCSRFToken, oSequenceStorage);
 		oDeferred.always(function(){
 			oRetDeferred.resolve();
 		});
@@ -161,10 +161,11 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 	 * @param {object} oPreviousRequest the request that was executed before this one
 	 * in case the request is run in a sequence
 	 * @param {object} oProject the project this request belongs to
-	 * @param {sCSRFToken} a csrf token if one was fetched before
+	 * @param {string} sCSRFToken a csrf token if one was fetched before
+	 * @param {object} oSequenceStorage an object that in a sequence is passed from request to request
 	 * @return {object} jQuery deferred
 	 */
-	Request.prototype._execute = function(oProject, oPreviousRequest, sCSRFToken) {
+	Request.prototype._execute = function(oProject, oPreviousRequest, sCSRFToken, oSequenceStorage) {
 		var oStartTime = new Date();
 
 		//fill the request headers
@@ -216,8 +217,8 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		var sPreRequestScriptCode = this.getScriptCode();
 		//execute custom javascript code
 		try {
-			var fRunPreRequestScript = new Function("req", "prevReq", sPreRequestScriptCode);
-			fRunPreRequestScript(oReqParam, oPrevReqParam);
+			var fRunPreRequestScript = new Function("req", "prevReq", "seqStorage", sPreRequestScriptCode);
+			fRunPreRequestScript(oReqParam, oPrevReqParam, oSequenceStorage);
 		} catch (e) {
 			console.log(e);
 			this.setPreRequestScriptResult("SCRIPT ERROR");
@@ -246,12 +247,12 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		oDeferred.done(function(data, textStatus, jqXHR) {
 			var iResponseTime = new Date() - oStartTime;
 			that._setAjaxResult(jqXHR, iResponseTime);
-			that._runTestScript();
+			that._runTestScript(oSequenceStorage);
 		});
 		oDeferred.fail(function(jqXHR, textStatus, errorThrown) {
 			var iResponseTime = new Date() - oStartTime;
 			that._setAjaxResult(jqXHR, iResponseTime);
-			that._runTestScript();
+			that._runTestScript(oSequenceStorage);
 		});
 
 		return oDeferred;
@@ -272,7 +273,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 	};
 	
 	//TODO refactor to execute both scripts with one function
-	Request.prototype._runTestScript = function() {
+	Request.prototype._runTestScript = function(oSequenceStorage) {
 		//TODO why is check Assertions called from outside?
 		
 		var oReqParam = this._createRequestObjectForScript(this.getUrl());
@@ -289,9 +290,9 @@ Request.prototype.execute = function(oProject, oPreviousRequest) {
 		
 		var sTestScriptCode = this.getTestScriptCode();
 		try {
-			var fRunTestScript = new Function("req", "test", sTestScriptCode);
+			var fRunTestScript = new Function("req", "test", "seqStorage", sTestScriptCode);
 			//TODO supply req parameter
-			fRunTestScript(oReqParam, fTest);
+			fRunTestScript(oReqParam, fTest, oSequenceStorage);
 			//check the test results and generate the result string e.g. "3/20"
 			//3 from 20 test succeeded
 			var iTestCount = 0;

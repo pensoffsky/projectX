@@ -36,7 +36,6 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
 
-		//user wants to edit the currently selected model
 		var oSelectedSequence = oSelectedProject.getSequenceByIdentifier(iSequenceId);
 		if (!oSelectedSequence) {
 			return;
@@ -77,10 +76,11 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			var oRequest = this._oProject.getRequestByIdentifier(aRequestIds[i]);
 			//create deep copy of request because in testrun the same
 			//request can be executed multiple times
-			if (oRequest) {
-				var oRequestCopy = new projectX.util.Request(oRequest.serialize());
-				aSelectedRequests.push(oRequestCopy);
-			}
+			// if (oRequest) {
+			// 	var oRequestCopy = new projectX.util.Request(oRequest.serialize());
+			// 	aSelectedRequests.push(oRequestCopy);
+			// }
+			aSelectedRequests.push(oRequest);
 		}
 		
 		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
@@ -111,8 +111,9 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var aSelectedRequests = this._localUIModel.getProperty("/selectedRequests");
 		for (var i = 0; i < aRequests.length; i++) {
 			var oRequest = aRequests[i];
-			oRequest = new projectX.util.Request(oRequest.serialize());
 			aSelectedRequests.push(oRequest);
+			// oRequest = new projectX.util.Request(oRequest.serialize());
+			// aSelectedRequests.push(oRequest);
 		}
 		
 		//set the selected requests to localuimodel and to the sequence object
@@ -159,9 +160,13 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 
 		//clear existing results
 		this.onClearResults();
+		
+		var oSequenceStorage = {
+			
+		};
 
 		this._setRunning(true);
-		this._executeRequests(this._oProject, 0, aRequests);
+		this._executeRequests(this._oProject, 0, aRequests, oSequenceStorage);
 	},
 
 	/**
@@ -239,8 +244,10 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	* use recursion to go through the request and execute them one by one.
 	* @param  {int} iIndex    the index of the request to execute next
 	* @param  {array} aRequests array of all requests to execute one after another
+	* @param  {object} oSequenceStorage object that holds data for the run of the storage. 
+	*                                  every request has access to this storage object.
 	*/
-	_executeRequests : function(oProject, iIndex, aRequests) {
+	_executeRequests : function(oProject, iIndex, aRequests, oSequenceStorage) {
 		var that = this;
 		if (aRequests.length <= iIndex){
 			//abort
@@ -250,7 +257,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 
 		//execute the request
 		var oRequest = aRequests[iIndex];
-		var oDeferred = oRequest.execute(oProject, aRequests[iIndex - 1]);
+		var oDeferred = oRequest.execute(oProject, aRequests[iIndex - 1], oSequenceStorage);
 		//add hanlder that gets called once the request finishes
 		oDeferred.always(function() {
 			oRequest.checkAssertions();
@@ -263,7 +270,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 				return;
 			}
 
-			that._executeRequests(oProject, iIndex + 1, aRequests);
+			that._executeRequests(oProject, iIndex + 1, aRequests, oSequenceStorage);
 			//TODO add positiliy to abort on failure
 		});
 	},
