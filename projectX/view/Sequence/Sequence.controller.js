@@ -3,6 +3,8 @@ jQuery.sap.require("projectX.util.Request");
 jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.util.Helper");
 
+jQuery.sap.require("sap.m.MessageBox");
+
 
 
 projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
@@ -160,18 +162,22 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		if (!aRequests || aRequests.length <= 0) {
 			return;
 		}
-		//TODO create deep copy of single requests
-		//maybe on entering the screen
 
 		//clear existing results
 		this.onClearResults();
 		
-		var oSequenceStorage = {
-			
-		};
-
-		this._setRunning(true);
-		this._executeRequests(this._oProject, 0, aRequests, oSequenceStorage);
+		var oSequenceStorage = {};
+		
+		var oSequence =  this._localUIModel.getProperty("/sequence");		
+		var bRes = oSequence.runPreSequenceScript(oSequenceStorage);
+		this._localUIModel.updateBindings();		
+				
+		if (bRes) {
+			this._setRunning(true);
+			this._executeRequests(this._oProject, 0, aRequests, oSequenceStorage);			
+		}	else {
+			sap.m.MessageBox.alert("Error in Pre-Sequence Script. Sequence aborted!");	
+		}
 	},
 
 	/**
@@ -188,6 +194,9 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	* loop over the requests and clear out the result data from the last test run.
 	*/
 	onClearResults : function() {
+		var oSequence =  this._localUIModel.getProperty("/sequence");
+		oSequence.resetTempData();
+		
 		//get the requests
 		var aRequests = this._localUIModel.getProperty("/selectedRequests");
 		if (!aRequests || aRequests.length <= 0) {

@@ -4,7 +4,8 @@
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
-	xmlns="sap.m">
+	xmlns="sap.m"
+	xmlns:custom="projectX.util">
 	<Page
 		showHeader="false"
 		enableScrolling="true"
@@ -53,7 +54,13 @@
 					</f:SimpleForm>
 				</l:content>
 			</l:Grid>
-
+			
+			<Label text="Pre-Sequence Script {localUIModel>/sequence/mProperties/preSequenceScriptResult}" />
+			<custom:AceEditor width="100%" 
+												height="200px"
+												value="{localUIModel>/sequence/mProperties/preSequenceScript}"
+                        id="superEditorPreRequestBody"
+                        />
 
 			<Table
 				items="{localUIModel>/selectedRequests}"

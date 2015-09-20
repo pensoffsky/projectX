@@ -10,7 +10,6 @@
 			>
 		<headerToolbar>
 	    	<Toolbar>
-	        	<Label text="Assertions" />
 				<Button icon="sap-icon://media-play"
 						tooltip="execute assertions again"
 						press="onBtnExecuteAssertion"/>
