@@ -338,7 +338,18 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	 * @type {Array}
 	 */
 	Constants.SCRIPTEXAMPLES = [
-		{//TODO add comments; read named assertions
+		{
+			text: "HELP",
+			script: "//This script is executed before the request is executed." + "\n" +
+					"//available objects:" + "\n" +
+					"//seqStorage = object which can be used to store and retrieve values during a session" + "\n" +
+					"//req = object which holds data that will be used when the request is sent" + "\n" +
+					"//req.httpMethod = used http method" + "\n" +
+					"//req.requestBody = the payload that will be sent with the request" + "\n" +
+					"//req.url = the url of the request" + "\n" +
+					"//prevReq = the previous request of the sequence" + "\n" +
+					"//TOOD document members of prevReq"
+		},{
 			text: "Breakpoint",
 			script: "//use the development tools of the browser to debug the pre-request script" + "\n" +
 					"debugger;"
@@ -359,9 +370,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 			script: "//get the value of assertion named VARNAME from previous request" + "\n" +
 					"var sVarname = prevReq.namedAssertions.VARNAME.evaluatedValue;"
 		}, {
-			text: "Get Named Assertion Result",
-			script: "//check if assertion named VARNAME was checked successfully" + "\n" +
-					"var bAssertResult = prevReq.namedAssertions.VARNAME.result;"
+			text: "Get value from sequence storage",
+			script: "//" + "\n" +
+					"var variable1 = seqStorage.VARNAME;"
 		}
 	];
 
@@ -370,19 +381,60 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	 * @type {Array}
 	 */
 	Constants.TESTSCRIPTEXAMPLES = [
-		{//TODO add comments; read named assertions
+		{
+			text: "HELP",
+			script: "//This script is executed after the request finished." + "\n" +
+					"//available objects:" + "\n" +
+					"//seqStorage = object which can be used to store and retrieve values during a session" + "\n" +
+					"//req = object which holds the results of the executed request" + "\n" +
+					"//req.httpMethod = used http method" + "\n" +
+					"//req.requestBody = the payload that was sent with the request" + "\n" +
+					"//req.responseBody = the response returned by the request" + "\n" +
+					"//req.responseHeaders = the headers returned by the request" + "\n" +
+					"//req.responseTime = the time in ms the request took" + "\n" +
+					"//req.status = the HTTP status the request returned" + "\n" +
+					"//req.url = the url of the request"
+		},
+		{
 			text: "Breakpoint",
-			script: "//use the development tools of the browser to debug the pre-request script" + "\n" +
+			script: "//use the development tools of the browser to debug the script" + "\n" +
 					"debugger;"
 		},{
 			text: "Basic tests",
-			script: "//TODO" + "\n" +
+			script: "//the first test is always false, the second test is always true" + "\n" +
 					"test('name of test 1', false);" + "\n" +
 					"test('name of test 2', true);"
 		},{
 			text: "Test requestBody",
 			script: "//TODO " + "\n" +
 					"test('name of test 1', req.responseBody.length > 0);"
+		}, {
+			text: "Get value from sequence storage",
+			script: "//" + "\n" +
+					"var variable1 = seqStorage.VARNAME;"
+		}
+	];
+	
+	/**
+	 * array of script examples used for adding the examples to the javascript pre sequence script text area.
+	 * @type {Array}
+	 */
+	Constants.PRE_SEQUENCE_SCRIPT_EXAMPLES = [
+		{
+			text: "Breakpoint",
+			script: "//use the development tools of the browser to debug the pre-request script" + "\n" +
+					"debugger;"
+		}, {
+			text: "Add string to sequence storage object",
+			script: "//Adds a string to the sequence storage object which is accessible by all requests in this sequence" + "\n" +
+					"seqStorage.VARNAMESTRING = 'some string';"
+		}, {
+			text: "Add object to sequence storage object",
+			script: "//Adds an object to the sequence storage object which is accessible by all requests in this sequence" + "\n" +
+					"seqStorage.VARNAMEOBJECT = {"  + "\n" +
+					"  STRING1 : 'string1',"  + "\n" +
+					"  VALUE2 : 4"  + "\n" +
+					"};"
 		}
 	];
 

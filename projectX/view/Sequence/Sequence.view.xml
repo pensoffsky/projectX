@@ -5,6 +5,7 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m"
+	xmlns:u="sap.ui.unified"
 	xmlns:custom="projectX.util">
 	<Page
 		showHeader="false"
@@ -55,7 +56,15 @@
 				</l:content>
 			</l:Grid>
 			
-			<Label text="Pre-Sequence Script {localUIModel>/sequence/mProperties/preSequenceScriptResult}" />
+			<VBox>
+				<Label text="Pre-Sequence Script {localUIModel>/sequence/mProperties/preSequenceScriptResult}" />
+				<Button text="Snippets" press="onButtonPreRequestScriptExamples"/>
+			</VBox>
+			<u:Menu items="{localUIModel>/PRE_REQUEST_SCRIPT_EXAMPLES}"
+							id="idMenuPreRequestScriptExamples">
+					<u:MenuItem text="{localUIModel>text}"
+											select="onMenuItemPreRequestScriptExampleSelected"/>
+			</u:Menu>
 			<custom:AceEditor width="100%" 
 												height="200px"
 												value="{localUIModel>/sequence/mProperties/preSequenceScript}"
@@ -120,7 +129,7 @@
 				<ColumnListItem vAlign="Top">
 					<cells>
 						<VBox>
-							<HBox>
+			
 								<Button icon="sap-icon://edit"
 										tooltip="Edit Request"
 										press="onEditRequest"/>
@@ -130,7 +139,7 @@
 									text="{localUIModel>mProperties/url}"
 									titleActive="true"
 									titlePress="onRequestNamePress"/>
-							</HBox>
+	
 							<Label text=" {localUIModel>mProperties/sapStatistics}"
 										visible="{= ${localUIModel>mProperties/sapStatistics/length} > 0}"
 										/>

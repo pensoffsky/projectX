@@ -2,6 +2,7 @@ jQuery.sap.require("projectX.util.Project");
 jQuery.sap.require("projectX.util.Request");
 jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.util.Helper");
+jQuery.sap.require("projectX.util.Constants");
 
 jQuery.sap.require("sap.m.MessageBox");
 
@@ -24,7 +25,8 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			configVisible: true,
 			testVisible: false,
 			testRunning : false,
-			testNotRunning : true
+			testNotRunning : true,
+			PRE_REQUEST_SCRIPT_EXAMPLES: projectX.util.Constants.PRE_SEQUENCE_SCRIPT_EXAMPLES
 		});
 		this.getView().setModel(this._localUIModel, "localUIModel");
 
@@ -82,12 +84,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			// 	var oRequestCopy = new projectX.util.Request(oRequest.serialize());
 			// 	aSelectedRequests.push(oRequestCopy);
 			// }
-			// 
-		 	if(oRequest) {
-				//the request could have been deleted so check before adding
-				aSelectedRequests.push(oRequest);	
-			}
-			
+			aSelectedRequests.push(oRequest);
 		}
 		
 		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
@@ -171,7 +168,7 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var oSequence =  this._localUIModel.getProperty("/sequence");		
 		var bRes = oSequence.runPreSequenceScript(oSequenceStorage);
 		this._localUIModel.updateBindings();		
-				
+		
 		if (bRes) {
 			this._setRunning(true);
 			this._executeRequests(this._oProject, 0, aRequests, oSequenceStorage);			
@@ -244,6 +241,22 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	onEditRequest : function(oEvent){
 		var oRequest = projectX.util.Helper.getBoundObjectForItem(oEvent.getSource(), "localUIModel");
 		this.navToRequest(oRequest.getIdentifier(), this._oProject.getIdentifier());
+	},
+	
+	onButtonPreRequestScriptExamples : function(oEvent) {
+		var oButton = oEvent.getSource();
+		var oMenu = this.getView().byId("idMenuPreRequestScriptExamples");
+		var eDock = sap.ui.core.Popup.Dock;
+		oMenu.open(false, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
+	},
+
+	onMenuItemPreRequestScriptExampleSelected : function(oEvent) {
+		var oItem = oEvent.getParameter("item");
+		var oScriptExample = oItem.getBindingContext("localUIModel").getObject();
+		var sScript = this._oSequence.getPreSequenceScript();
+		sScript += "\n" + oScriptExample.script;
+		this._oSequence.setPreSequenceScript(sScript);
+		this._localUIModel.updateBindings();
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////
