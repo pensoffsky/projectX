@@ -4,7 +4,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	function(jQuery, MyManagedObject, Assertion, Sequence) {
 	"use strict";
 
-	var Project = MyManagedObject.extend("projectX.util.Project", { 
+	var Project = MyManagedObject.extend("projectX.util.Project", {
 		constructor : function (oData) {
 			MyManagedObject.apply(this, arguments);
 		},
@@ -29,7 +29,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// public functions
 	// /////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * create a new request.
 	 * calculate a new id for the request. (highest id + 1)
@@ -39,7 +39,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		sUrl = sUrl || "http://localhost:3000";
 		sName = sName || "New request";
 		sHttpMethod = sHttpMethod || "GET";
-		
+
 		var iNewID = this._getNextId();
 
 		var oRequest = new projectX.util.Request({
@@ -64,7 +64,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 
 		var oSequence = new Sequence({
 			identifier: iNewID,
-			name: "new sequence"
+			name: "New Sequence"
 			}
 		);
 		this.addSequence(oSequence);
@@ -73,12 +73,26 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 
 	/**
 	 * create a copy of the given request and add it to the requests.
+	 * @param {object} oRequest request object
 	*/
 	Project.prototype.addCopyOfRequest = function(oRequest) {
 		var iNewID = this._getNextId();
 		var oNewRequest = new projectX.util.Request(oRequest.serialize());
 		oNewRequest.setIdentifier(iNewID);
+		oNewRequest.setName(oNewRequest.getName() + " (copy)");
 		this.addRequest(oNewRequest);
+	};
+
+	/**
+	 * create a copy of the given sequence and add it to the sequences.
+	 * @param {object} oSequence sequence object
+	*/
+	Project.prototype.addCopyOfSequence = function(oSequence) {
+		var iNewSequenceID = this.getNextSequenceId();
+		var oNewSequence = new projectX.util.Sequence(oSequence.serialize());
+		oNewSequence.setIdentifier(iNewSequenceID);
+		oNewSequence.setName(oNewSequence.getName() + " (copy)");
+		this.addSequence(oNewSequence);
 	};
 
 

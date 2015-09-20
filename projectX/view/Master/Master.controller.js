@@ -84,9 +84,9 @@ sap.ui.define(['jquery.sap.global',
 					this.onAddRequestMetadata();
 				}, this), 1000);
 			}
-			
+
 			this.getRouter().getRoute("product").attachMatched(function(oEvent){
-				
+
 				//TODO how to prevent double selection if navigation happend from inside master controller
 				var oParameters = oEvent.getParameters();
 				var iRequestId = parseInt(oParameters.arguments.requestID, 10);
@@ -188,8 +188,8 @@ sap.ui.define(['jquery.sap.global',
 					initialFocus : MessageBox.Action.NO,
 					onClose : function(oAction) {
 						if (oAction === MessageBox.Action.YES) {
-							oComponent.deleteRequest(oRequest);
-							that._selectFirstRequest();
+								oComponent.deleteRequest(oRequest);
+								this._selectFirstRequest();
 
 						} else if (oAction === MessageBox.Action.NO) {
 							// MessageBox will be closed
@@ -199,20 +199,50 @@ sap.ui.define(['jquery.sap.global',
 					}
 
 			});
+			// var bDeletionOk = this._confirmDeletion();
+			//
+			// if (bDeletionOk) {
+			// 	oComponent.deleteRequest(oRequest);
+			// 	this._selectFirstRequest();
+			// }
 
 		};
 
-
 		Master.prototype.onBtnDuplicateSequencePress = function(oEvent) {
-			//TODO implement me
-			sap.m.MessageToast.show("TODO implement me");
+			var oSequence = Helper.getBoundObjectForItem(oEvent.getSource());
+			var oComponent = this.getComponent();
+			oComponent.duplicateSequence(oSequence);
 		};
 
 		Master.prototype.onBtnDeleteSequencePress = function(oEvent) {
 			var oSequence = Helper.getBoundObjectForItem(oEvent.getSource());
 			var oComponent = this.getComponent();
-			oComponent.deleteSequence(oSequence);
-			this._selectFirstSequence();
+			var that = this;
+			MessageBox.show("Do you really want to delete this entry?", {
+					icon : MessageBox.Icon.WARNING,
+					title : "Confirmation",
+					actions : [MessageBox.Action.YES, MessageBox.Action.NO],
+					initialFocus : MessageBox.Action.NO,
+					onClose : function(oAction) {
+						if (oAction === MessageBox.Action.YES) {
+							oComponent.deleteSequence(oSequence);
+							that._selectFirstSequence();
+
+						} else if (oAction === MessageBox.Action.NO) {
+							// MessageBox will be closed
+						} else {
+							// do nothing. user canceled his action
+						}
+					}
+
+			});
+			// var bDeletionOk = this._confirmDeletion();
+			//
+			// if (bDeletionOk) {
+			// 	oComponent.deleteSequence(oSequence);
+			// 	this._selectFirstSequence();
+			// }
+
 		};
 
 
@@ -298,6 +328,32 @@ sap.ui.define(['jquery.sap.global',
 			var oList = this.getView().byId("idListSequences");
 			oList.removeSelections(true);
 		};
+		/**
+		 * show a message box where the user can confirm deletion
+		 * @return {bool} bDeletion
+		 */
+		 Master.prototype._confirmDeletion = function() {
+			 var bDeletionOk = false;
+			 // show message box
+			 MessageBox.show("Do you really want to delete this entry?", {
+					 icon : MessageBox.Icon.WARNING,
+					 title : "Confirmation",
+					 actions : [MessageBox.Action.YES, MessageBox.Action.NO],
+					 initialFocus : MessageBox.Action.NO,
+					 onClose : function(oAction) {
+						 if (oAction === MessageBox.Action.YES) {
+							 bDeletionOk = true;
+						 } else if (oAction === MessageBox.Action.NO) {
+							 // MessageBox will be closed with button NO
+						 } else {
+							 // do nothing. user canceled his action via escape key or something similar
+						 }
+					 }
+
+			 });
+
+			 return bDeletionOk;
+		 };
 
 		Master.prototype._selectFirstRequest = function () {
 			var bItemSelected = this._selectFirstItem("idListRequests", "");
@@ -328,7 +384,7 @@ sap.ui.define(['jquery.sap.global',
 
 			return false;
 		};
-		
+
 		/**
 		 * set the listitem that represents the given requestID
 		 */

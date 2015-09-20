@@ -134,14 +134,14 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		this.setModel(oAppConstants, "constants");
 
 		this.initAutoSave();
-		
+
 		var that = this;
 		//add global keyboard hooks
 		jQuery(document).keyup(function(evt){
 			//check for F7 key -> execute request or run sequence depending on current screen
 		   if (evt.keyCode == 118) {// && (evt.ctrlKey)){
 			   evt.preventDefault();
-				if (that._fKeyboardShortcutExecuteRequest 
+				if (that._fKeyboardShortcutExecuteRequest
 					&& typeof that._fKeyboardShortcutExecuteRequest === "function"){
 					that._fKeyboardShortcutExecuteRequest();
 				}
@@ -180,9 +180,9 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	// /////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * get called from the request screens and sets a function that 
+	 * get called from the request screens and sets a function that
 	 * will execute the currently selected request.
-	 * @param  {function} fFunction function that will be triggered when the user hits 
+	 * @param  {function} fFunction function that will be triggered when the user hits
 	 * the global "execute request" keyboard shortcut
 	 */
 	setKeyboardShortcutExecuteRequest : function(fFunction) {
@@ -307,6 +307,16 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	deleteRequest : function(oRequest) {
 		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
 		oSelectedProject.removeRequest(oRequest);
+		this._oModel.updateBindings();
+	},
+
+	/**
+	 * duplicate this sequence and add it to the currently selected project.
+	 * @param {object} oSequence sequence to duplicate
+	 */
+	duplicateSequence : function(oSequence) {
+		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
+		oSelectedProject.addCopyOfSequence(oSequence);
 		this._oModel.updateBindings();
 	},
 
