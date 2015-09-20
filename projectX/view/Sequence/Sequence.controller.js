@@ -80,7 +80,12 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			// 	var oRequestCopy = new projectX.util.Request(oRequest.serialize());
 			// 	aSelectedRequests.push(oRequestCopy);
 			// }
-			aSelectedRequests.push(oRequest);
+			// 
+		 	if(oRequest) {
+				//the request could have been deleted so check before adding
+				aSelectedRequests.push(oRequest);	
+			}
+			
 		}
 		
 		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
@@ -225,6 +230,11 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this.triggerWithInputDelay(function() {
 			this.updateMasterList();
 		});
+	},
+	
+	onEditRequest : function(oEvent){
+		var oRequest = projectX.util.Helper.getBoundObjectForItem(oEvent.getSource(), "localUIModel");
+		this.navToRequest(oRequest.getIdentifier(), this._oProject.getIdentifier());
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////

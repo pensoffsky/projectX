@@ -83,6 +83,17 @@ sap.ui.define(['jquery.sap.global',
 					this.onAddRequestMetadata();
 				}, this), 1000);
 			}
+			
+			this.getRouter().getRoute("product").attachMatched(function(oEvent){
+				
+				//TODO how to prevent double selection if navigation happend from inside master controller
+				var oParameters = oEvent.getParameters();
+				var iRequestId = parseInt(oParameters.arguments.requestID, 10);
+				var oSegmentedButton = this.getView().byId("idSegmentedButton");
+				oSegmentedButton.setSelectedButton(this.getView().byId("idButtonRequests"));
+				this._localUIModel.setProperty("/visibleTab", Master.TABS.REQUESTS);
+				var bItemSelected = this._selectRequestByReqId("idListRequests", iRequestId);
+			}, this);
 		};
 
 		Master.prototype.onBeforeShow = function() {
@@ -95,24 +106,6 @@ sap.ui.define(['jquery.sap.global',
 
 		Master.prototype.onRouteMatched = function(oEvent) {
 		
-		};
-
-		// /////////////////////////////////////////////////////////////////////////////
-		// /// SubHeader Event Handler
-		// /////////////////////////////////////////////////////////////////////////////
-
-		Master.prototype.onExport = function() {
-			var oComponent = this.getComponent();
-			oComponent.export();
-		};
-
-		Master.prototype.onFileUploaderChange = function(oEvent) {
-			//TODO add error hanlding. at the moment best case programming
-			var aFiles = oEvent.getParameter("files");
-			var oFile = aFiles[0];
-
-			var oComponent = this.getComponent();
-			oComponent.import(oFile);
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -147,10 +140,7 @@ sap.ui.define(['jquery.sap.global',
 			var oModel = this.getView().getModel();
 			var oSelectedProject = oModel.getProperty("/SelectedProject");
 
-			this.getRouter().navTo("product", {
-				requestID : oSelectedRequest.getIdentifier(),
-				projectID : oSelectedProject.getIdentifier()
-			}, true);
+			this.navToRequest(oSelectedRequest.getIdentifier(), oSelectedProject.getIdentifier());
 		};
 
 		Master.prototype._filterList = function(sQuery, oList){
@@ -276,75 +266,9 @@ sap.ui.define(['jquery.sap.global',
 			}, true);
 		};
 
-		/**
-		* move the selected request one place up in the list.
-		* the user can reorder the list
-		*/
-		Master.prototype.onMoveRequestUp = function() {
-			if (this._localUIModel.getProperty("/visibleTab") === Master.TABS.REQUESTS) {
-				this._moveSelectedListItem(Helper.moveArrayElementUp,
-				function(oProject){ return oProject.removeAllRequests(); },
-				function(oProject, oRequest){ oProject.addRequest(oRequest); },
-				"idListRequests");
-			} else {
-				this._moveSelectedListItem(Helper.moveArrayElementUp,
-					function(oProject){ return oProject.removeAllSequences(); },
-					function(oProject, oSequence){ oProject.addSequence(oSequence); },
-					"idListSequences");
-			}
-		};
-
-		/**
-		* move the selected request one place down in the list.
-		* the user can reorder the list
-		*/
-		Master.prototype.onMoveRequestDown = function() {
-			if (this._localUIModel.getProperty("/visibleTab") === Master.TABS.REQUESTS) {
-				this._moveSelectedListItem(Helper.moveArrayElementDown,
-					function(oProject){ return oProject.removeAllRequests(); },
-					function(oProject, oRequest){ oProject.addRequest(oRequest); },
-					"idListRequests");
-			} else {
-				this._moveSelectedListItem(Helper.moveArrayElementDown,
-					function(oProject){ return oProject.removeAllSequences(); },
-					function(oProject, oSequence){ oProject.addSequence(oSequence); },
-					"idListSequences");
-			}
-
-		};
-
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Methods
 		// /////////////////////////////////////////////////////////////////////////////
-
-		Master.prototype._moveSelectedListItem = function(fMove, fRemoveAllAggregation, fAddObject, sListId){
-			//get the selected project
-			var oModel = this.getView().getModel();
-			var oSelectedProject = oModel.getProperty("/SelectedProject");
-
-			//get selected request
-			var oList = this.getView().byId(sListId);
-			var oSelectedItem = oList.getSelectedItem();
-
-			//exit if no item is selected
-			if (!oSelectedItem){
-				return;
-			}
-
-			var oSelectedObject = Helper.getBoundObjectForItem(oSelectedItem);
-			// var aRequests = oSelectedProject.removeAllRequests();
-			var aArray = fRemoveAllAggregation(oSelectedProject);
-			var iNewPos = fMove(aArray, oSelectedObject);
-			for (var i = 0; i < aArray.length; i++) {
-				fAddObject(oSelectedProject, aArray[i]);
-			}
-
-			oModel.updateBindings();
-
-			//restore the selection
-			var aItems = oList.getItems();
-			oList.setSelectedItem(aItems[iNewPos]);
-		};
 
 		Master.prototype._removeSelectionFromRequestList = function () {
 			var oList = this.getView().byId("idListRequests");
@@ -381,6 +305,32 @@ sap.ui.define(['jquery.sap.global',
 			if (aItems.length) {
 				oList.setSelectedItem(aItems[0], true);
 				return true;
+			}
+
+			return false;
+		};
+		
+		/**
+		 * set the listitem that represents the given requestID
+		 */
+		Master.prototype._selectRequestByReqId = function (sListId, iRequestId) {
+			var oList = this.getView().byId(sListId);
+			var aItems = oList.getItems();
+			var oSelectedRequest = oList.getSelectedItem();
+
+			for (var i = 0; i < aItems.length; i++) {
+				var oRequest = Helper.getBoundObjectForItem(aItems[i]);
+				if(oRequest.getIdentifier() === iRequestId){
+					if(oSelectedRequest === aItems[i]){
+						//the request is already selected, no need
+						//to remove all selections and select again
+						return true;
+					}
+					this._removeSelectionFromRequestList();
+					this._removeSelectionFromSequenceList();
+					oList.setSelectedItem(aItems[i], true);
+					return true;
+				}
 			}
 
 			return false;

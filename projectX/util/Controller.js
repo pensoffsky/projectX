@@ -139,7 +139,17 @@ sap.ui.core.mvc.Controller.extend("projectX.util.Controller", {
 
 	showSuccessMessage : function (sMessage) {
 		sap.m.MessageToast.show(sMessage);
-	}
+	},
 
+	showErrorMessage : function (sMessage) {
+		
+	},
+	
+	navToRequest : function(iRequestID, iProjectID) {
+		this.getRouter().navTo("product", {
+				requestID : iRequestID,
+				projectID : iProjectID
+			}, true);
+	},
 	
 });

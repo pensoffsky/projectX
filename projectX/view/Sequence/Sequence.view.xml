@@ -113,12 +113,17 @@
 				<ColumnListItem vAlign="Top">
 					<cells>
 						<VBox>
-							<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
-							<ObjectIdentifier
-								title="{localUIModel>mProperties/name}"
-								text="{localUIModel>mProperties/url}"
-								titleActive="true"
-								titlePress="onRequestNamePress"/>
+							<HBox>
+								<Button icon="sap-icon://edit"
+										tooltip="Edit Request"
+										press="onEditRequest"/>
+								<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
+								<ObjectIdentifier
+									title="{localUIModel>mProperties/name}"
+									text="{localUIModel>mProperties/url}"
+									titleActive="true"
+									titlePress="onRequestNamePress"/>
+							</HBox>
 							<Label text=" {localUIModel>mProperties/sapStatistics}"
 										visible="{= ${localUIModel>mProperties/sapStatistics/length} > 0}"
 										/>
