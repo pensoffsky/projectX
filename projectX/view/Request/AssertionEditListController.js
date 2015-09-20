@@ -4,28 +4,28 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	"use strict";
 
 	var AssertionEditListController = ManagedObject.extend("projectX.view.Request.AssertionEditListController", { metadata : {
-	
+
 		properties : {
 			view : {type : "object", defaultValue : null}
 			},
 		events : {
-	
+
 		}
 	}});
-	
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Constructor & Initialization
 	// /////////////////////////////////////////////////////////////////////////////
-	
+
 	AssertionEditListController.prototype.constructor = function(s) {
 		ManagedObject.apply(this, arguments);
-		
+
 	};
-	
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Event Handler
 	// /////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * create a new assertion and add it to the local ui model and the request.
 	 */
@@ -35,7 +35,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		oRequest.addAssertion(oAssertion);
 		this.updateBindings();
 	};
-	
+
 	AssertionEditListController.prototype.onBtnDeleteAssertions = function() {
 		// debugger;
 		var aSelectedItems = this._oTable.getSelectedItems();
@@ -52,11 +52,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this._oTable.removeSelections(true);
 		this.updateBindings();
 	};
-	
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Methods
 	// /////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * create the local ui model that is used as binding target.
 	 * this way we do not have any dependency to the page that includes the fragment
@@ -71,7 +71,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.getView().setModel(this._localUIModel);
 		this._oTable = sap.ui.core.Fragment.byId(sIdPrefix, "idTableAssertions");
 	};
-	
+
 	/**
 	 * set the request to the local ui model for binding
 	 * @param {object} oRequest the currently selected request
@@ -83,11 +83,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	AssertionEditListController.prototype.updateBindings = function() {
 		this._localUIModel.updateBindings();
 	};
-	
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
-		
+
 	//TODO move to helper
 	AssertionEditListController.prototype._getBoundObjectForItem = function(oListItem) {
 		var oBindingContext = oListItem.getBindingContext();

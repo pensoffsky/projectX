@@ -139,7 +139,7 @@ sap.ui.define([
 			this._oMetadataTypesController.setSelectedRequest(this._oProject, this._oRequest);
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
 			this._oRequestHeaderEditController.setSelectedRequest(this._oRequest);
-			
+
 			//load response body format from the request and set to segmented button and ace editor
 			var sMode = this._oRequest.getResponseBodyFormat();
 			this._setResponseBodyButtonMode(sMode);
@@ -192,7 +192,7 @@ sap.ui.define([
 				that._localUIModel.updateBindings();
 				that._oAssertionEditController.updateBindings();
 			});
-			oDeferred.fail(function(vError){				
+			oDeferred.fail(function(vError){
 				var sErrorMessage = "error sending request";
 				if (vError && vError.statusText) {
 					sErrorMessage = vError.statusText;
@@ -241,7 +241,7 @@ sap.ui.define([
 			this._oRequest.setScriptCode(sScript);
 			this._localUIModel.updateBindings();
 		};
-		
+
 		Request.prototype.onButtonTestScriptExamples = function(oEvent) {
 			var oButton = oEvent.getSource();
 			var oMenu = this.getView().byId("idMenuTestScriptExamples");
@@ -268,16 +268,26 @@ sap.ui.define([
 			});
 		};
 
+		/**
+		 * called from the name input control when the name changes.
+		 * after a delay triggers the updating of the master list to show the new name.
+		 */
+		Request.prototype.onHttpMethodChange = function() {
+			this.triggerWithInputDelay(function() {
+				this.updateMasterList();
+			});
+		};
+
 		Request.prototype.onPanelPrescriptExpand = function() {
 			var oScriptEditor = this.getView().byId("superEditor");
 			oScriptEditor.rerender();
 		};
-		
+
 		Request.prototype.onPanelTestExpand = function() {
 			var oScriptEditor = this.getView().byId("superEditorTestScript");
 			oScriptEditor.rerender();
 		};
-		
+
 		Request.prototype.onPanelRequestBodyExpand = function() {
 			var oEditor = this.getView().byId("superEditorRequestBody");
 			oEditor.rerender();
@@ -326,7 +336,7 @@ sap.ui.define([
 				case "text":
 					sButtonId = "idButtonResponseRAW";
 					break;
-			default:	
+			default:
 			}
 			//activate the corresponding button
 			var oSegmentedButton = this.byId("idButtonResponseFormat");

@@ -2,12 +2,13 @@
  * collection of formatter functions for bindings
  */
 sap.ui.define(['jquery.sap.global',
-				'projectX/util/Controller', 
-				'projectX/util/Constants', 
-				'projectX/util/Formatter', 
-				'projectX/util/Helper', 
+				'sap/m/MessageBox',
+				'projectX/util/Controller',
+				'projectX/util/Constants',
+				'projectX/util/Formatter',
+				'projectX/util/Helper',
 				'projectX/util/Assertion'],
-	function(jQuery, Controller, Constants, Formatter, Helper, Assertion) {
+	function(jQuery, MessageBox, Controller, Constants, Formatter, Helper, Assertion) {
 		"use strict";
 
 		var Master = Controller.extend("projectX.view.Master.Master", {
@@ -94,7 +95,7 @@ sap.ui.define(['jquery.sap.global',
 		};
 
 		Master.prototype.onRouteMatched = function(oEvent) {
-		
+
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -189,11 +190,29 @@ sap.ui.define(['jquery.sap.global',
 		Master.prototype.onBtnDeleteRequestPress = function(oEvent) {
 			var oRequest = Helper.getBoundObjectForItem(oEvent.getSource());
 			var oComponent = this.getComponent();
-			oComponent.deleteRequest(oRequest);
-			this._selectFirstRequest();
+			var that = this;
+			MessageBox.show("Do you really want to delete this entry?", {
+					icon : MessageBox.Icon.WARNING,
+					title : "Confirmation",
+					actions : [MessageBox.Action.YES, MessageBox.Action.NO],
+					initialFocus : MessageBox.Action.NO,
+					onClose : function(oAction) {
+						if (oAction === MessageBox.Action.YES) {
+							oComponent.deleteRequest(oRequest);
+							that._selectFirstRequest();
+
+						} else if (oAction === MessageBox.Action.NO) {
+							// MessageBox will be closed
+						} else {
+							// do nothing. user canceled his action
+						}
+					}
+
+			});
+
 		};
-		
-		
+
+
 		Master.prototype.onBtnDuplicateSequencePress = function(oEvent) {
 			//TODO implement me
 			sap.m.MessageToast.show("TODO implement me");
@@ -254,7 +273,7 @@ sap.ui.define(['jquery.sap.global',
 		* show the odata service metadata page
 		* to let the user add a request based on odata metadata information.
 		*/
-		Master.prototype.onAddRequestMetadata = function() {									
+		Master.prototype.onAddRequestMetadata = function() {
 			this._showODataRequestDialog();
 		};
 
@@ -404,7 +423,7 @@ sap.ui.define(['jquery.sap.global',
 						dialog.destroy();
 					}
 				});
-	
+
 				//to get access to the global model
 				this.getView().addDependent(dialog);
 				dialog.open();
