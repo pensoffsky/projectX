@@ -1,23 +1,36 @@
-<c:FragmentDefinition
+<!-- <c:FragmentDefinition
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
-	xmlns="sap.m">
-	<Table items="{/request/mAggregations/requestHeaders}"
-		  mode="MultiSelect"
-		  id="idTableRequestHeaders"
-		  rememberSelections="false"
-			>
+	xmlns:u="sap.ui.unified"
+	xmlns="sap.m"> -->
+	<Table
+		xmlns:l="sap.ui.layout"
+		xmlns:f="sap.ui.layout.form"
+		xmlns:c="sap.ui.core"
+		xmlns:u="sap.ui.unified"
+		xmlns="sap.m"
+		id="idTableRequestHeaders"
+		items="{/request/mAggregations/requestHeaders}"
+		mode="MultiSelect"
+		rememberSelections="false">
 		<headerToolbar>
-				<Toolbar>
-						<Label text="Request Headers" />
-					<ToolbarSpacer />
-					<Button icon="sap-icon://add"
-					  tooltip="Add header field"
-					  press="onBtnAddRequestHeader"/>
-			<Button icon="sap-icon://delete"
-					  tooltip="Delete selected request header"
-					  press="onBtnDeleteRequestHeaders"/>
+			<Toolbar>
+				<Label text="Request Headers" />
+				<ToolbarSpacer />
+				<Button text="Pre-defined headers" press="onButtonRequestHeaderExamples"/>
+					<u:Menu
+						id="idMenuRequestHeaderExamples"
+						items="{localUIModel>/REQUEST_HEADER_EXAMPLES}">
+						<u:MenuItem text="{localUIModel>text}"
+												select="onMenuItemHeaderExampleSelected"/>
+					</u:Menu>
+				<Button icon="sap-icon://add"
+				  tooltip="Add header field"
+				  press="onBtnAddRequestHeader"/>
+				<Button icon="sap-icon://delete"
+				  tooltip="Delete selected request header"
+				  press="onBtnDeleteRequestHeaders"/>
 				</Toolbar>
 			</headerToolbar>
 		<columns>
@@ -31,29 +44,25 @@
 		<items>
 			<ColumnListItem>
 				<cells>
-				<Input
-					value="{mProperties/fieldName}"
-				  	type="Text"
-					placeholder="Field name ..."
-					showSuggestion="true"
-					suggestionItems="{/V_REQUEST_HEADER_FIELDS}"
-					suggestionItemSelected="handleRequestHeaderFieldNameChanged">
-					<suggestionItems>
+					<ComboBox
+						id="idRequestHeaderFieldName"
+						value="{mProperties/fieldName}"
+						placeholder="Field name ..."
+						showSuggestion="true"
+						items="{/REQUEST_HEADER_FIELDS}"
+						selectionChange="handleRequestHeaderFieldNameChanged">
 						<c:Item text="{key}" key="{key}" />
-    				</suggestionItems>
-				</Input>
-				<Input
+					</ComboBox>
+					<ComboBox
+						id="idRequestHeaderFieldValue"
 					  value="{mProperties/fieldValue}"
-					  type="Text"
 			      placeholder="Value name ..."
-      		  showSuggestion="true"
-      	    suggestionItems="{/V_REQUEST_HEADER_VALUES}">
-					<suggestionItems>
-      			<c:Item text="{key}" key="{key}" />
-    			</suggestionItems>
-				</Input>
+						showSuggestion="true"
+		  	    items="{/REQUEST_HEADER_VALUES}">
+		    		<c:Item text="{key}" key="{key}" />
+					</ComboBox>
 				</cells>
 			</ColumnListItem>
 		</items>
 	</Table>
-</c:FragmentDefinition>
+<!-- </c:FragmentDefinition> -->

@@ -122,22 +122,19 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 		//no csrf token required
 		return this._execute(oProject, oPreviousRequest, undefined, oSequenceStorage);
 	}
-	
 	var sBaseUrl = oProject.getBaseUrl();
 	//create a CSRF request for sap gateway
 	var oCSRFDeferred = jQuery.ajax({
 		method: "GET",
-		headers:{     
+		headers:{
               "X-Requested-With": "XMLHttpRequest",
               "Content-Type": "application/atom+xml",
-              "DataServiceVersion": "2.0",       
-              "X-CSRF-Token":"Fetch"   
+              "DataServiceVersion": "2.0",
+              "X-CSRF-Token":"Fetch"
 						},
 		url: sBaseUrl
 	});
-	
 	var oRetDeferred = jQuery.Deferred();
-	
 	var that = this;
 	oCSRFDeferred.done(function(data, textStatus, jqXHR) {
 		var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
@@ -148,9 +145,9 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 	});
 
 	oCSRFDeferred.fail(function() {
-		oRetDeferred.reject("failed to fetch CSRF token from: " + sBaseUrl);		
+		oRetDeferred.reject("failed to fetch CSRF token from: " + sBaseUrl);
 	});
-	
+
 	return oRetDeferred;
 };
 
@@ -178,7 +175,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 			var fieldValue = aRequestHeaders[i].getFieldValue();
 			oRequestHeaders[fieldName] = fieldValue;
 		}
-		
+
 		//add the csrf token if we have one
 		if (sCSRFToken) {
 			oRequestHeaders["x-csrf-token"] = sCSRFToken;
@@ -189,11 +186,11 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 		if (this.getUseProjectPrefixUrl() === true) {
 			sUrl = oProject.getPrefixUrl() + sUrl;
 		}
-		
+
 		//pre-request script preparations.
 		//create the objects that can be modified inside the script
 		//TODO move to sepeate method
-		
+
 		var oReqParam = this._createRequestObjectForScript(sUrl);
 
 		//create the object that hold the info from the previous requestHeader
@@ -231,7 +228,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 		if (!isEncoded) {
 			sUrl = encodeURI(sUrl);
 		}
-		
+
 		//do the request
 		var oDeferred = jQuery.ajax({
 			method: oReqParam.httpMethod,
@@ -257,7 +254,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 
 		return oDeferred;
 	};
-	
+
 	Request.prototype._createRequestObjectForScript = function(sUrl) {
 		var oReqParam = {
 			httpMethod: this.getHttpMethod(),
@@ -271,13 +268,13 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 		};
 		return oReqParam;
 	};
-	
+
 	//TODO refactor to execute both scripts with one function
 	Request.prototype._runTestScript = function(oSequenceStorage) {
 		//TODO why is check Assertions called from outside?
-		
+
 		var oReqParam = this._createRequestObjectForScript(this.getUrl());
-		
+
 		//get the test script javascript code, put into function and run
 		var that = this;
 		that._testResults = [];
@@ -287,7 +284,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 				 result: bResult
 			 });
 		};
-		
+
 		var sTestScriptCode = this.getTestScriptCode();
 		try {
 			var fRunTestScript = new Function("req", "test", "seqStorage", sTestScriptCode);
@@ -317,7 +314,7 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 		var sResponseBody = this.getResponseBody();
 		var sResponseHeaders = this.getResponseHeaders();
 		var iResponseT = this.getResponseTime();
-		var sSapStatistics = this.getSapStatistics();		
+		var sSapStatistics = this.getSapStatistics();
 
 		var bAssertionsResult = true;
 		for (var i = 0; i < aAssertions.length; i++) {
@@ -378,9 +375,9 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 		this.setResponseTime(iResponseTime);
 		//try to get the sap-statistics data from the response headers
 		this.setSapStatistics(jqXHR.getResponseHeader("sap-statistics"));
-		
+
 		//this is testdata for the statistics feature
-		//this.setSapStatistics("gwtotal=2274,gwhub=138,gwrfcoh=110,gwbe=82,gwapp=1944");		
+		//this.setSapStatistics("gwtotal=2274,gwhub=138,gwrfcoh=110,gwbe=82,gwapp=1944");
 	};
 
 	return Request;

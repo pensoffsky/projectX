@@ -1,21 +1,34 @@
 
-sap.ui.define(['jquery.sap.global',
+sap.ui.define(["jquery.sap.global",
 							 'sap/ui/base/ManagedObject',
-							 'projectX/util/RequestHeader',
-							 'projectX/util/Constants',
-							 'projectX/util/Helper'],
+							 'sap/ui/core/Fragment',
+							 "projectX/util/RequestHeader",
+							 "projectX/util/Constants",
+							 "projectX/util/Helper"],
 
-	function(jQuery, ManagedObject, RequestHeader, Constants, Helper) {
+	function(jQuery, ManagedObject, Fragment, RequestHeader, Constants, Helper) {
 	"use strict";
 
-	var RequestHeaderEditListController = ManagedObject.extend("projectX.util.RequestHeaderEditListController", { metadata : {
+	var RequestHeaderEditListController = ManagedObject.extend("projectX.util.RequestHeaderEditListController", {
+		metadata : {
+			properties : {
+				view : {type : "object", defaultValue : null}
+				},
+			events : {
+			}
+		},
 
-		properties : {
-			view : {type : "object", defaultValue : null}
-			},
-		events : {
-		}
-	}});
+		/////////////////////////////////////////////////////////////////////////////
+		/// Members
+		/////////////////////////////////////////////////////////////////////////////
+
+		// definition of view controls
+		_oTable : undefined,
+		_oExamples : undefined,
+		_oField : undefined,
+		_oValue : undefined
+
+	});
 
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -59,14 +72,55 @@ sap.ui.define(['jquery.sap.global',
 			// set new suggestion list
 			switch (oRequestHeader.key) {
 				case Constants.REQUEST_HEADER_FIELD_ACCEPT:
-					this._localUIModel.setProperty("/V_REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_ACCEPT);
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_ACCEPT);
 					break;
 			  case Constants.REQUEST_HEADER_FIELD_ACCEPT_CHARSET:
-					this._localUIModel.setProperty("/V_REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_ACCEPT_CHARSET);
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_ACCEPT_CHARSET);
+					break;
+			  case Constants.REQUEST_HEADER_FIELD_ACCEPT_ENCODING:
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_ACCEPT_ENCODING);
+					break;
+			  case Constants.REQUEST_HEADER_FIELD_ACCEPT_LANGUAGE:
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_ACCEPT_LANGUAGE);
+					break;
+			  case Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE:
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_CONTENT_TYPE);
+					break;
+			  case Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS:
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_SAP_STATISTICS);
+					break;
+			  case Constants.REQUEST_HEADER_FIELD_SAPGW_STATISTICS:
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_SAPGW_STATISTICS);
+					break;
+			  case Constants.REQUEST_HEADER_FIELD_USER_AGENT:
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_USER_AGENT);
 					break;
 			default:
 				return "";
 			}
+	};
+
+	/**
+	 * handler for button of header examples (pre defined examples)
+	 * @param  {object} oEvent event object of control
+	 */
+	RequestHeaderEditListController.prototype.onButtonRequestHeaderExamples = function(oEvent) {
+		var oButton = oEvent.getSource();
+		var oMenu = this._oExamples;
+		var eDock = sap.ui.core.Popup.Dock;
+		oMenu.open(false, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
+	};
+
+	/**
+	 * handler for items of header example menu
+	 * @param  {object} oEvent event object of control
+	 */
+	RequestHeaderEditListController.prototype.onMenuItemHeaderExampleSelected = function(oEvent) {
+		var oItem = oEvent.getParameter("item");
+		var oRequestHeaderExample = oItem.getBindingContext("localUIModel").getObject();
+
+		// this._oRequest.setTestScriptCode(sRequestHeader);
+		this._localUIModel.updateBindings();
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -82,11 +136,21 @@ sap.ui.define(['jquery.sap.global',
 		this._localUIModel = new sap.ui.model.json.JSONModel();
 		this._localUIModel.setData({
 			requestHeaders: [],
-			V_REQUEST_HEADER_FIELDS: Constants.REQUEST_HEADER_FIELDS,	// for request header field select control
-			V_REQUEST_HEADER_VALUES: null // for request header value select control
+			REQUEST_HEADER_EXAMPLES: Constants.REQUESTHEADEREXAMPLES,
+			REQUEST_HEADER_FIELDS: Constants.REQUEST_HEADER_FIELDS,	// for request header field select control
+			REQUEST_HEADER_VALUES: null // for request header value select control
 		});
 		this.getView().setModel(this._localUIModel);
-		this._oTable = sap.ui.core.Fragment.byId(sIdPrefix, "idTableRequestHeaders");
+
+		// get controls once
+		this._oTable = Fragment.byId(sIdPrefix, "idTableRequestHeaders");
+		this._oExamples = Fragment.byId(sIdPrefix, "idMenuRequestHeaderExamples");
+		this._oField = Fragment.byId(sIdPrefix, "idRequestHeaderFieldName");
+		this._oValue = Fragment.byId(sIdPrefix, "idRequestHeaderFieldValue");
+
+		// set filter function for input controls
+		// this._setFilterForInputFieldControls();
+
 	};
 
 	/**
@@ -107,6 +171,21 @@ sap.ui.define(['jquery.sap.global',
 	/////////////////////////////////////////////////////////////////////////////
 	/// Private Methods
 	/////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 *
+	 */
+	RequestHeaderEditListController.prototype._setFilterForInputFieldControls = function() {
+		this._oField.setFilterFunction(function(sTerm, oItem) {
+			// A case-insensitive 'string contains' style filter
+			return oItem.getText().match(new RegExp(sTerm, "i"));
+		});
+
+		this._oValue.setFilterFunction(function(sTerm, oItem) {
+			// A case-insensitive 'string contains' style filter
+			return oItem.getText().match(new RegExp(sTerm, "i"));
+		});
+	}
 
 	//TODO move to helper
 	/**

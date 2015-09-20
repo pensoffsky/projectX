@@ -141,10 +141,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.REQUEST_HEADER_FIELD_ACCEPT_CHARSET = "Accept-Charset";
 	Constants.REQUEST_HEADER_FIELD_ACCEPT_ENCODING = "Accept-Encoding";
 	Constants.REQUEST_HEADER_FIELD_ACCEPT_LANGUAGE = "Accept-Lanugage";
-	Constants.REQUEST_HEADER_FIELD_ACCEPT_DATETIME = "Accept-Datetime";
-	Constants.REQUEST_HEADER_FIELD_ACCEPT_AUTHORIZATION = "Authorization";
-	Constants.REQUEST_HEADER_FIELD_CACHE_CONTROL = "Cache-Control";
+	Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE = "Content-Type";
 	Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS = "sap-statistics";
+	Constants.REQUEST_HEADER_FIELD_SAPGW_STATISTICS = "sapgw-statistics";
+	Constants.REQUEST_HEADER_FIELD_USER_AGENT = "User-Agent";
 
 	/**
 	* array of keys for request header field name select control.
@@ -155,10 +155,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_CHARSET},
 		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_ENCODING},
 		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_LANGUAGE},
-		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_DATETIME},
-		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_AUTHORIZATION},
-		{key : Constants.REQUEST_HEADER_FIELD_CACHE_CONTROL},
-		{key : Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS}
+		{key : Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE},
+		{key : Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS},
+		{key : Constants.REQUEST_HEADER_FIELD_SAPGW_STATISTICS},
+		{key : Constants.REQUEST_HEADER_FIELD_USER_AGENT}
 	];
 
 	/*
@@ -168,13 +168,41 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.REQUEST_HEADER_VALUE_APPL_JSON = "application/json";
 
 	/**
-	* array of value-keys for ACCEPT field in select control.
+	* array of value-keys for ACCEPT field in control.
 	* @type {Array}
 	*/
 	Constants.REQUEST_HEADER_VALUES_ACCEPT = [
 		{key : Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML},
 		{key : Constants.REQUEST_HEADER_VALUE_APPL_JSON}
 	];
+
+	/**
+	* array of value-keys for CONTENT-TYPE field in control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_VALUES_CONTENT_TYPE = [
+		{key : Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML},
+		{key : Constants.REQUEST_HEADER_VALUE_APPL_JSON}
+	];
+
+	/**
+	* array of value-keys for SAPGW-STATISTICS field in control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_VALUES_SAP_STATISTICS = [
+		{key : "true"},
+		{key : "false"}
+	];
+
+	/**
+	* array of value-keys for SAP-STATISTICS field in control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_VALUES_SAPGW_STATISTICS = [
+		{key : "true"},
+		{key : "false"}
+	];
+
 
 	/*
 	 * Constants for the request header value for ACCEPT-CHARSET field
@@ -189,6 +217,65 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.REQUEST_HEADER_VALUES_ACCEPT_CHARSET = [
 		{key : Constants.REQUEST_HEADER_VALUE_UTF_8},
 		{key : Constants.REQUEST_HEADER_VALUE_ISO_8859_1}
+	];
+
+	/*
+	 * Constants for the request header value for ACCEPT-ENCODING field
+	 */
+	Constants.REQUEST_HEADER_VALUE_COMPRESS = "compress";
+	Constants.REQUEST_HEADER_VALUE_DEFLATE = "deflate";
+	Constants.REQUEST_HEADER_VALUE_EXI = "exi";
+	Constants.REQUEST_HEADER_VALUE_GZIP = "gzip";
+	Constants.REQUEST_HEADER_VALUE_IDENTITY = "identity";
+	Constants.REQUEST_HEADER_VALUE_PACK200_GZIP = "pack200-gzip";
+
+	/**
+	* array of value-keys for ACCEPT-ENCODING field in select control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_VALUES_ACCEPT_ENCODING = [
+		{key : Constants.REQUEST_HEADER_VALUE_COMPRESS},
+		{key : Constants.REQUEST_HEADER_VALUE_DEFLATE},
+		{key : Constants.REQUEST_HEADER_VALUE_EXI},
+		{key : Constants.REQUEST_HEADER_VALUE_GZIP},
+		{key : Constants.REQUEST_HEADER_VALUE_IDENTITY},
+		{key : Constants.REQUEST_HEADER_VALUE_PACK200_GZIP}
+	];
+
+	/*
+	 * Constants for the request header value for ACCEPT-LANGUAGE field
+	 */
+	Constants.REQUEST_HEADER_VALUE_CH = "ch";
+	Constants.REQUEST_HEADER_VALUE_DE = "de";
+	Constants.REQUEST_HEADER_VALUE_EN = "en";
+	Constants.REQUEST_HEADER_VALUE_FR = "fr";
+
+	/**
+	* array of value-keys for ACCEPT-LANGUAGE field in select control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_VALUES_ACCEPT_LANGUAGE = [
+		{key : Constants.REQUEST_HEADER_VALUE_CH},
+		{key : Constants.REQUEST_HEADER_VALUE_DE},
+		{key : Constants.REQUEST_HEADER_VALUE_EN},
+		{key : Constants.REQUEST_HEADER_VALUE_FR}
+	];
+
+	/*
+	 * Constants for the request header value for ACCEPT-LANGUAGE field
+	 */
+	Constants.REQUEST_HEADER_VALUE_USER_AGENT_IPAD = "Mozilla/5.0 (iPad; U; CPU OS 3_2_1 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Mobile/7B405";
+	Constants.REQUEST_HEADER_VALUE_USER_AGENT_SAFARI = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A";
+	Constants.REQUEST_HEADER_VALUE_USER_AGENT_IE11 = "Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0;  rv:11.0) like Gecko";
+
+	/**
+	* array of value-keys for ACCEPT-LANGUAGE field in select control.
+	* @type {Array}
+	*/
+	Constants.REQUEST_HEADER_VALUES_USER_AGENT = [
+		{key : Constants.REQUEST_HEADER_VALUE_USER_AGENT_IPAD},
+		{key : Constants.REQUEST_HEADER_VALUE_USER_AGENT_SAFARI},
+		{key : Constants.REQUEST_HEADER_VALUE_USER_AGENT_IE11}
 	];
 
 
@@ -218,6 +305,34 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	///////////////////////////////////////////////////////////////////////////
 	/// Public Functions
   ///////////////////////////////////////////////////////////////////////////
+	/**
+	 * array of script examples used for adding the examples to the textarea.
+	 * @type {Array}
+	 */
+	Constants.REQUESTHEADEREXAMPLES = [
+		{
+			text: "SAP Gateway statistics",
+			field: "sap-statistics",
+			value: true,
+			available: "SAP Gateway 2.0 Service Pack 08"
+		},{
+			text: "Accept JSON",
+			field: Constants.REQUEST_HEADER_FIELD_ACCEPT,
+			value: Constants.REQUEST_HEADER_VALUE_APPL_JSON
+		}, {
+			text: "Accept XML",
+			field: Constants.REQUEST_HEADER_FIELD_ACCEPT,
+			value: Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML
+		},{
+			text: "Post Content-Type: JSON",
+			field: Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE,
+			value: Constants.REQUEST_HEADER_VALUE_APPL_JSON
+		}, {
+			text: "Post Content-Type; XML",
+			field: Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE,
+			value: Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML
+		}
+	];
 	/**
 	 * array of script examples used for adding the examples to the textarea.
 	 * @type {Array}
