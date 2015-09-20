@@ -14,9 +14,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				name : {type : "string", defaultValue : null},
 				description : {type : "string", defaultValue : null},
 				preSequenceScript : {type : "string", defaultValue : null},
+				abortOnFailedAssertion : {type : "boolean", defaultValue : false},
 				
 				//these fields are only temporary variables. they will not be persisted
-				preSequenceScriptResult : {type : "string", defaultValue : null},
+				preSequenceScriptResult : {type : "string", defaultValue : null}
 			},
 			aggregations : {
 				sequenceItems : {type : "projectX.util.SequenceItem", multiple : true}
@@ -39,6 +40,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oSequence.name = this.getName();
 		oSequence.description = this.getDescription();
 		oSequence.preSequenceScript = this.getPreSequenceScript();
+		oSequence.abortOnFailedAssertion = this.getAbortOnFailedAssertion();
 		
 		var aSerializedSequenceItems = [];
 		var aSequenceItems = this.getSequenceItems();

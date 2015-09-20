@@ -292,9 +292,16 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		var oDeferred = oRequest.execute(oProject, aRequests[iIndex - 1], oSequenceStorage);
 		//add hanlder that gets called once the request finishes
 		oDeferred.always(function() {
-			oRequest.checkAssertions();
+			oRequest.checkAssertions();			
 			//update bindings so that the status will be displayed
 			that._localUIModel.updateBindings(false);
+
+			//check if we have to abort the sequence if the assertions failed
+			if (that._oSequence.getAbortOnFailedAssertion() 
+					&& oRequest.getAssertionsResult() === false) {
+				that._bAbortSequence = true;
+				sap.m.MessageBox.alert("Error in request assertion. Sequence aborted!");
+			}
 
 			if (that._bAbortSequence === true){
 				that._bAbortSequence = false;

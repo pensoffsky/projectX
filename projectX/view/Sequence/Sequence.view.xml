@@ -51,6 +51,9 @@
 									/>
 							<Label text="Description" />
 							<Input value="{localUIModel>/sequence/mProperties/description}" />
+							<Label text="" />
+							<CheckBox text="abort sequence on failed assertion"
+											selected="{localUIModel>/sequence/mProperties/abortOnFailedAssertion}"/>
 						</f:content>
 					</f:SimpleForm>
 				</l:content>
