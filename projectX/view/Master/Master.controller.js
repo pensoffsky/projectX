@@ -189,7 +189,7 @@ sap.ui.define(['jquery.sap.global',
 					onClose : function(oAction) {
 						if (oAction === MessageBox.Action.YES) {
 								oComponent.deleteRequest(oRequest);
-								this._selectFirstRequest();
+								that._selectFirstRequest();
 
 						} else if (oAction === MessageBox.Action.NO) {
 							// MessageBox will be closed
