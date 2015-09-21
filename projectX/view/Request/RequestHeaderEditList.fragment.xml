@@ -1,15 +1,11 @@
-<!-- <c:FragmentDefinition
+<c:FragmentDefinition
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
 	xmlns:u="sap.ui.unified"
-	xmlns="sap.m"> -->
+	xmlns="sap.m"
+	controllerName="projectX.view.Request.RequestHeaderEditList">
 	<Table
-		xmlns:l="sap.ui.layout"
-		xmlns:f="sap.ui.layout.form"
-		xmlns:c="sap.ui.core"
-		xmlns:u="sap.ui.unified"
-		xmlns="sap.m"
 		id="idTableRequestHeaders"
 		items="{/request/mAggregations/requestHeaders}"
 		mode="MultiSelect"
@@ -21,8 +17,8 @@
 				<Button text="Pre-defined headers" press="onButtonRequestHeaderExamples"/>
 					<u:Menu
 						id="idMenuRequestHeaderExamples"
-						items="{localUIModel>/REQUEST_HEADER_EXAMPLES}">
-						<u:MenuItem text="{localUIModel>text}"
+						items="{/REQUEST_HEADER_EXAMPLES}">
+						<u:MenuItem text="{text}"
 												select="onMenuItemHeaderExampleSelected"/>
 					</u:Menu>
 				<Button icon="sap-icon://add"
@@ -65,4 +61,4 @@
 			</ColumnListItem>
 		</items>
 	</Table>
-<!-- </c:FragmentDefinition> -->
+</c:FragmentDefinition>

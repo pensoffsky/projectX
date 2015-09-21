@@ -180,31 +180,15 @@ sap.ui.define(['jquery.sap.global',
 		Master.prototype.onBtnDeleteRequestPress = function(oEvent) {
 			var oRequest = Helper.getBoundObjectForItem(oEvent.getSource());
 			var oComponent = this.getComponent();
+			// callback function for delete current entry
 			var that = this;
-			MessageBox.show("Do you really want to delete this entry?", {
-					icon : MessageBox.Icon.WARNING,
-					title : "Confirmation",
-					actions : [MessageBox.Action.YES, MessageBox.Action.NO],
-					initialFocus : MessageBox.Action.NO,
-					onClose : function(oAction) {
-						if (oAction === MessageBox.Action.YES) {
-								oComponent.deleteRequest(oRequest);
-								that._selectFirstRequest();
+			var fDeleteEntry = function() {
+				oComponent.deleteRequest(oRequest);
+				that._selectFirstRequest();
+			}
 
-						} else if (oAction === MessageBox.Action.NO) {
-							// MessageBox will be closed
-						} else {
-							// do nothing. user canceled his action
-						}
-					}
-
-			});
-			// var bDeletionOk = this._confirmDeletion();
-			//
-			// if (bDeletionOk) {
-			// 	oComponent.deleteRequest(oRequest);
-			// 	this._selectFirstRequest();
-			// }
+			// call message box to confirm deletion
+			this._confirmDeletion(fDeleteEntry);
 
 		};
 
@@ -217,31 +201,16 @@ sap.ui.define(['jquery.sap.global',
 		Master.prototype.onBtnDeleteSequencePress = function(oEvent) {
 			var oSequence = Helper.getBoundObjectForItem(oEvent.getSource());
 			var oComponent = this.getComponent();
+
+			// callback function for delete current entry
 			var that = this;
-			MessageBox.show("Do you really want to delete this entry?", {
-					icon : MessageBox.Icon.WARNING,
-					title : "Confirmation",
-					actions : [MessageBox.Action.YES, MessageBox.Action.NO],
-					initialFocus : MessageBox.Action.NO,
-					onClose : function(oAction) {
-						if (oAction === MessageBox.Action.YES) {
-							oComponent.deleteSequence(oSequence);
-							that._selectFirstSequence();
+			var fDeleteEntry = function() {
+				oComponent.deleteSequence(oSequence);
+				that._selectFirstSequence();
+			}
 
-						} else if (oAction === MessageBox.Action.NO) {
-							// MessageBox will be closed
-						} else {
-							// do nothing. user canceled his action
-						}
-					}
-
-			});
-			// var bDeletionOk = this._confirmDeletion();
-			//
-			// if (bDeletionOk) {
-			// 	oComponent.deleteSequence(oSequence);
-			// 	this._selectFirstSequence();
-			// }
+			// call message box to confirm deletion
+			this._confirmDeletion(fDeleteEntry);
 
 		};
 
@@ -330,11 +299,9 @@ sap.ui.define(['jquery.sap.global',
 		};
 		/**
 		 * show a message box where the user can confirm deletion
-		 * @return {bool} bDeletion
+		 * @param {function} fDeleteEntry	delete list entry
 		 */
-		 Master.prototype._confirmDeletion = function() {
-			 var bDeletionOk = false;
-			 // show message box
+		 Master.prototype._confirmDeletion = function(fDeleteEntry) {
 			 MessageBox.show("Do you really want to delete this entry?", {
 					 icon : MessageBox.Icon.WARNING,
 					 title : "Confirmation",
@@ -342,7 +309,7 @@ sap.ui.define(['jquery.sap.global',
 					 initialFocus : MessageBox.Action.NO,
 					 onClose : function(oAction) {
 						 if (oAction === MessageBox.Action.YES) {
-							 bDeletionOk = true;
+							 fDeleteEntry();
 						 } else if (oAction === MessageBox.Action.NO) {
 							 // MessageBox will be closed with button NO
 						 } else {
@@ -351,8 +318,6 @@ sap.ui.define(['jquery.sap.global',
 					 }
 
 			 });
-
-			 return bDeletionOk;
 		 };
 
 		Master.prototype._selectFirstRequest = function () {

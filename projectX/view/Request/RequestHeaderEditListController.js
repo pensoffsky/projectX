@@ -117,9 +117,20 @@ sap.ui.define(["jquery.sap.global",
 	 */
 	RequestHeaderEditListController.prototype.onMenuItemHeaderExampleSelected = function(oEvent) {
 		var oItem = oEvent.getParameter("item");
-		var oRequestHeaderExample = oItem.getBindingContext("localUIModel").getObject();
 
-		// this._oRequest.setTestScriptCode(sRequestHeader);
+		// get example from localUIModel
+		var oRequestHeaderExample = oItem.getBindingContext().getObject();
+
+		// create new request header object
+		var oRequestHeader = new RequestHeader();
+		oRequestHeader.setFieldName(oRequestHeaderExample.field);
+		oRequestHeader.setFieldValue(oRequestHeaderExample.value);
+
+		// push object to request header aggregation of request
+		var oRequest =  this._localUIModel.getProperty("/request");
+		oRequest.addRequestHeader(oRequestHeader);
+
+		// update bindings of localUIModel
 		this._localUIModel.updateBindings();
 	};
 

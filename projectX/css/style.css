@@ -40,12 +40,12 @@
   box-shadow: 0px 0px 0.2rem #0077cd;
 }
 .put {
-  color: #00c1cd;
-  box-shadow: 0px 0px 0.2rem #00c1cd;
-}
-.patch {
   color: #cba600;
   box-shadow: 0px 0px 0.2rem #cba600;
+}
+.patch {
+  color: #00c1cd;
+  box-shadow: 0px 0px 0.2rem #00c1cd;
 }
 .delete {
   color: #cd0000;
