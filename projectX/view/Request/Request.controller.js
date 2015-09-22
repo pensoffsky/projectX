@@ -321,6 +321,14 @@ sap.ui.define([
 			this._oRequest._runTestScript();
 			this._localUIModel.updateBindings();
 		};
+		
+		Request.prototype.onBtnClearPress = function(){
+			this._oRequest.resetTempData();
+			this._localUIModel.setProperty("/responseBodyFormatted", "");
+			this._localUIModel.updateBindings();
+		};
+		
+		
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Functions

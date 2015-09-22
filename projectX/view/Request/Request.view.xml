@@ -19,9 +19,14 @@
               <ToolbarSpacer/>
               <Label text="Status: {localUIModel>/request/mProperties/status}
               Time: {localUIModel>/request/mProperties/responseTime}ms"/>
+              <Button text="Clear"
+                      press="onBtnClearPress"
+                      tooltip="Clear received data"
+                      />
               <Button text="Send Request"
                       press="onBtnSendPress"
-                      type="Emphasized"/>
+                      type="Emphasized"
+                      tooltip="Send the request"/>
             </Toolbar>
         </subHeader>
 
