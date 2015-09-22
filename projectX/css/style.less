@@ -38,37 +38,47 @@
 ///////////////////////////////////////////////////
 /// HTTP method style
 ///////////////////////////////////////////////////
-.httpMethodTag {
-  font-size: 0.6rem;
-  padding: 0.1rem 0.4rem;
-  display: inline-block;
-  border-radius: 100px;
+// set http method style for request and sequence list items
+.sapMFlexItem, .sapMTBNewFlex {
+  .httpMethodTag {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+    display: inline-block;
+    border-radius: 100px;
+  }
+  .get {
+    color : #009525;
+    box-shadow : 0px 0px 0.2rem #009525;
+  }
+  .post {
+    color : #0077cd;
+    box-shadow : 0px 0px 0.2rem #0077cd;
+  }
+  .put {
+    color : #cba600;
+    box-shadow : 0px 0px 0.2rem #cba600;
+  }
+  .patch {
+    color : #00c1cd;
+    box-shadow : 0px 0px 0.2rem #00c1cd;
+  }
+  .delete {
+    color : #cd0000;
+    box-shadow : 0px 0px 0.2rem #cd0000;
+  }
+  .head {
+    color : #151515;
+    box-shadow : 0px 0px 0.2rem #151515;
+  }
+  .options {
+    color : #919191;
+    box-shadow : 0px 0px 0.2rem #919191;
+  }
 }
-.get {
-  color : #009525;
-  box-shadow : 0px 0px 0.2rem #009525;
-}
-.post {
-  color : #0077cd;
-  box-shadow : 0px 0px 0.2rem #0077cd;
-}
-.put {
-  color : #cba600;
-  box-shadow : 0px 0px 0.2rem #cba600;
-}
-.patch {
-  color : #00c1cd;
-  box-shadow : 0px 0px 0.2rem #00c1cd;
-}
-.delete {
-  color : #cd0000;
-  box-shadow : 0px 0px 0.2rem #cd0000;
-}
-.head {
-  color : #151515;
-  box-shadow : 0px 0px 0.2rem #151515;
-}
-.options {
-  color : #919191;
-  box-shadow : 0px 0px 0.2rem #919191;
+
+// set margin for ObjectIdentifier in sequence list item
+.sapMFlexItem {
+  .sapMObjectIdentifier {
+    margin-left : 0.5rem;
+  }
 }

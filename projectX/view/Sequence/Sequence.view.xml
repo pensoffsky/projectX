@@ -58,7 +58,7 @@
 					</f:SimpleForm>
 				</l:content>
 			</l:Grid>
-			
+
 			<VBox>
 				<Label text="Pre-Sequence Script {localUIModel>/sequence/mProperties/preSequenceScriptResult}" />
 				<Button text="Snippets" press="onButtonPreRequestScriptExamples"/>
@@ -68,7 +68,7 @@
 					<u:MenuItem text="{localUIModel>text}"
 											select="onMenuItemPreRequestScriptExampleSelected"/>
 			</u:Menu>
-			<custom:AceEditor width="100%" 
+			<custom:AceEditor width="100%"
 												height="200px"
 												value="{localUIModel>/sequence/mProperties/preSequenceScript}"
                         id="superEditorPreRequestBody"
@@ -106,43 +106,42 @@
 					</Toolbar>
 				</headerToolbar>
 				<columns>
-				<Column
-					>
-					<Text text="Request" />
-				</Column>
-					<Column
-					width="5em">
-					<Text text="Assertions" />
+					<Column>
+						<Text text="Request" />
 					</Column>
-				<Column
-					hAlign="Right"
-					width="3em">
-					<Text text="Status" />
-				</Column>
-				<Column
-				width="3em">
-					<Text text="Time" />
-				</Column>
-				<Column
-				width="8em">
-					<Text text="Actions" />
-				</Column>
+					<Column
+						width="5em">
+						<Text text="Assertions" />
+					</Column>
+					<Column
+						hAlign="Right"
+						width="3em">
+						<Text text="Status" />
+					</Column>
+					<Column
+						width="3em">
+						<Text text="Time" />
+					</Column>
+					<Column
+						width="8em">
+						<Text text="Actions" />
+					</Column>
 				</columns>
 				<items>
 				<ColumnListItem vAlign="Top">
 					<cells>
 						<VBox>
-			
-								<Button icon="sap-icon://edit"
-										tooltip="Edit Request"
-										press="onEditRequest"/>
+							<Button icon="sap-icon://edit"
+									tooltip="Edit Request"
+									press="onEditRequest"/>
+							<HBox>
 								<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
 								<ObjectIdentifier
 									title="{localUIModel>mProperties/name}"
 									text="{localUIModel>mProperties/url}"
 									titleActive="true"
 									titlePress="onRequestNamePress"/>
-	
+							</HBox>
 							<Label text=" {localUIModel>mProperties/sapStatistics}"
 										visible="{= ${localUIModel>mProperties/sapStatistics/length} > 0}"
 										/>

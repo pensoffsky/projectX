@@ -25,37 +25,48 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
-.httpMethodTag {
+.sapMFlexItem .httpMethodTag,
+.sapMTBNewFlex .httpMethodTag {
   font-size: 0.6rem;
   padding: 0.1rem 0.4rem;
   display: inline-block;
   border-radius: 100px;
 }
-.get {
+.sapMFlexItem .get,
+.sapMTBNewFlex .get {
   color: #009525;
   box-shadow: 0px 0px 0.2rem #009525;
 }
-.post {
+.sapMFlexItem .post,
+.sapMTBNewFlex .post {
   color: #0077cd;
   box-shadow: 0px 0px 0.2rem #0077cd;
 }
-.put {
+.sapMFlexItem .put,
+.sapMTBNewFlex .put {
   color: #cba600;
   box-shadow: 0px 0px 0.2rem #cba600;
 }
-.patch {
+.sapMFlexItem .patch,
+.sapMTBNewFlex .patch {
   color: #00c1cd;
   box-shadow: 0px 0px 0.2rem #00c1cd;
 }
-.delete {
+.sapMFlexItem .delete,
+.sapMTBNewFlex .delete {
   color: #cd0000;
   box-shadow: 0px 0px 0.2rem #cd0000;
 }
-.head {
+.sapMFlexItem .head,
+.sapMTBNewFlex .head {
   color: #151515;
   box-shadow: 0px 0px 0.2rem #151515;
 }
-.options {
+.sapMFlexItem .options,
+.sapMTBNewFlex .options {
   color: #919191;
   box-shadow: 0px 0px 0.2rem #919191;
+}
+.sapMFlexItem .sapMObjectIdentifier {
+  margin-left: 0.5rem;
 }
