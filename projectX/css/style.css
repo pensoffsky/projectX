@@ -67,6 +67,7 @@
   color: #919191;
   box-shadow: 0px 0px 0.2rem #919191;
 }
-.sapMFlexItem .sapMObjectIdentifier {
-  margin-left: 0.5rem;
+.sapMFlexItem .httpMethodTag {
+  margin-bottom: 0.3rem;
+  margin-top: 0.3rem;
 }

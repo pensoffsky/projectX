@@ -131,17 +131,17 @@
 				<ColumnListItem vAlign="Top">
 					<cells>
 						<VBox>
-							<Button icon="sap-icon://edit"
-									tooltip="Edit Request"
-									press="onEditRequest"/>
-							<HBox>
-								<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
-								<ObjectIdentifier
-									title="{localUIModel>mProperties/name}"
-									text="{localUIModel>mProperties/url}"
-									titleActive="true"
-									titlePress="onRequestNamePress"/>
-							</HBox>
+							<!-- <HBox>
+
+								<VBox> -->
+									<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
+									<ObjectIdentifier
+										title="{localUIModel>mProperties/name}"
+										text="{localUIModel>mProperties/url}"
+										titleActive="true"
+										titlePress="onRequestNamePress"/>
+								<!-- </VBox>
+							</HBox> -->
 							<Label text=" {localUIModel>mProperties/sapStatistics}"
 										visible="{= ${localUIModel>mProperties/sapStatistics/length} > 0}"
 										/>
@@ -187,12 +187,10 @@
 						<Text text="{localUIModel>mProperties/status}"/>
 						<Text text="{localUIModel>mProperties/responseTime}"/>
 						<HBox>
-							<Button icon="sap-icon://up"
-							press="onMoveRequestUp"/>
-							<Button icon="sap-icon://down"
-							press="onMoveRequestDown"/>
-							<Button icon="sap-icon://delete"
-							press="onDeleteRequest"/>
+							<Button icon="sap-icon://edit" press="onEditRequest" tooltip="Edit Request"/>
+							<Button icon="sap-icon://up" press="onMoveRequestUp"/>
+							<Button icon="sap-icon://down" press="onMoveRequestDown"/>
+							<Button icon="sap-icon://delete" press="onDeleteRequest"/>
 						</HBox>
 					</cells>
 				</ColumnListItem>
