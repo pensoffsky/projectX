@@ -25,6 +25,16 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.sapUiSizeCompact .sapMSegB,
+.sapMSegB .sapMSegB {
+  padding: 0rem;
+}
+.sapMTB {
+  border-bottom: none;
+}
+.sapUiFup {
+  margin-top: 0.2rem;
+}
 .sapMFlexItem .httpMethodTag,
 .sapMTBNewFlex .httpMethodTag {
   font-size: 0.6rem;
