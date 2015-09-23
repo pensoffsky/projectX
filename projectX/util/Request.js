@@ -31,7 +31,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				assertionsResult : {type : "boolean", defaultValue : false},
 				testScriptResult : {type : "string", defaultValue : null},
 				preRequestScriptResult : {type : "string", defaultValue : null},
-				sapStatistics : {type : "string", defaultValue : null}
+				sapStatistics : {type : "string", defaultValue : null},
+				//the final url used for the request (including the changes from prerequest script)
+				finalUrl : {type : "string", defaultValue : null},
+				finalRequestBody : {type : "string", defaultValue : null},
+				finalHttpMethod : {type : "string", defaultValue : null},
+				finalRequestHeaders : {type : "string", defaultValue : null}
 			},
 			events : {
 
@@ -97,6 +102,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		this.setPreRequestScriptResult(null);
 		this.setSapStatistics(null);
 		this.resetAssertionsData();
+		this.setFinalUrl(null);
+		this.setFinalRequestBody(null);
+		this.setFinalHttpMethod(null);
+		this.setFinalRequestHeaders(null);
 		
 		//reset the results from the test script
 		this._testResults = [];
@@ -228,14 +237,26 @@ Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorag
 		if (!isEncoded) {
 			sUrl = encodeURI(sUrl);
 		}
-
+		
+		this.setFinalUrl(sUrl);
+		this.setFinalRequestBody(oReqParam.requestBody);
+		this.setFinalHttpMethod(oReqParam.httpMethod);
+		try {
+			var sFinalReqHeaders = JSON.stringify(oRequestHeaders, null, 2);
+			this.setFinalRequestHeaders(sFinalReqHeaders);
+		} catch (e) {
+			this.setFinalRequestHeaders(null);
+		} finally {
+			
+		}
+		
 		//do the request
 		var oDeferred = jQuery.ajax({
 			method: oReqParam.httpMethod,
 			url: sUrl,
 			data: oReqParam.requestBody,
 			processData: false,
-			contentType: oReqParam.contentType,
+			contentType: oReqParam.contentType,//TODO what is this??
 			headers: oRequestHeaders
 		});
 

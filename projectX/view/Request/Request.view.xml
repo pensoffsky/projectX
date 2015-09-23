@@ -234,6 +234,42 @@
                                       enableWrapMode="true"
                             />
                 </Panel>
+                
+                <Panel expandable="true"
+                       expanded="false"
+                       class="sapUiNoContentPadding"
+                       >
+                   <headerToolbar>
+                     <Toolbar design="Transparent" height="3rem">
+                      <Text text="Sent Data"/>
+                    </Toolbar>
+                   </headerToolbar>
+                   <l:Grid
+       				defaultSpan="L12 M12 S12"
+       				width="auto">
+       				<l:content>
+       					<f:SimpleForm
+       						editable="true"
+       						layout="ResponsiveGridLayout">
+       						<f:content>
+       							<Label text="URL" />
+                                <Text text="{localUIModel>/request/mProperties/finalUrl}"/>
+                                <Label text="HTTP Method" />
+                                <Text text="{localUIModel>/request/mProperties/finalHttpMethod}"/>
+                                <Label text="Headers" />
+                                <Text text="{localUIModel>/request/mProperties/finalRequestHeaders}"/>
+                                <Label text="Payload" />
+                                <Text text="{localUIModel>/request/mProperties/finalRequestBody}"/>
+       						</f:content>
+       					</f:SimpleForm>
+       				</l:content>
+       			</l:Grid>
+                   
+                   
+                   
+                   
+                </Panel>
+                
             </ScrollContainer>
         </content>
     </Page>
