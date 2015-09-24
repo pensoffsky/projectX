@@ -89,8 +89,12 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	};
 	
 	Helper.getBoundObjectForItem = function(oItem, sModelName) {
-		var oBindingContext = oItem.getBindingContext(sModelName);
-		return oBindingContext.getObject();
+		try {
+			var oBindingContext = oItem.getBindingContext(sModelName);
+			return oBindingContext.getObject();	
+		} catch (e) {
+			return null;
+		}
 	};
 	
 	Helper.moveArrayElementUp = function(aArray, value, by) {

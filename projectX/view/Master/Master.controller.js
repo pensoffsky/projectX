@@ -93,16 +93,18 @@ sap.ui.define(['jquery.sap.global',
 				var oSegmentedButton = this.getView().byId("idSegmentedButton");
 				oSegmentedButton.setSelectedButton(this.getView().byId("idButtonRequests"));
 				this._localUIModel.setProperty("/visibleTab", Master.TABS.REQUESTS);
-				var bItemSelected = this._selectRequestByReqId("idListRequests", iRequestId);
+				this._selectRequestByReqId("idListRequests", iRequestId);
 			}, this);
 		};
 
 		Master.prototype.onBeforeShow = function() {
 			var oListSequences = this.getView().byId("idListSequences");
 			var oListRequests = this.getView().byId("idListRequests");
-			var oSorter = new sap.ui.model.Sorter("mProperties/name", false);
-			oListSequences.getBinding("items").sort(oSorter);
-			oListRequests.getBinding("items").sort(oSorter);
+			var oSorterName = new sap.ui.model.Sorter("mProperties/name", false);
+			oListSequences.getBinding("items").sort(oSorterName);
+			
+			var oSorterGroupName = new sap.ui.model.Sorter("mProperties/groupName", false, true);
+			oListRequests.getBinding("items").sort([oSorterGroupName, oSorterName]);
 		};
 
 		Master.prototype.onRouteMatched = function(oEvent) {
@@ -185,7 +187,7 @@ sap.ui.define(['jquery.sap.global',
 			var fDeleteEntry = function() {
 				oComponent.deleteRequest(oRequest);
 				that._selectFirstRequest();
-			}
+			};
 
 			// call message box to confirm deletion
 			this._confirmDeletion(fDeleteEntry);
@@ -207,7 +209,7 @@ sap.ui.define(['jquery.sap.global',
 			var fDeleteEntry = function() {
 				oComponent.deleteSequence(oSequence);
 				that._selectFirstSequence();
-			}
+			};
 
 			// call message box to confirm deletion
 			this._confirmDeletion(fDeleteEntry);
@@ -354,14 +356,15 @@ sap.ui.define(['jquery.sap.global',
 		 * set the listitem that represents the given requestID
 		 */
 		Master.prototype._selectRequestByReqId = function (sListId, iRequestId) {
+			//TODO this is ugly to iterate over all items, FIX ME, why did i do this?
 			var oList = this.getView().byId(sListId);
 			var aItems = oList.getItems();
 			var oSelectedRequest = oList.getSelectedItem();
 
 			for (var i = 0; i < aItems.length; i++) {
 				var oRequest = Helper.getBoundObjectForItem(aItems[i]);
-				if(oRequest.getIdentifier() === iRequestId){
-					if(oSelectedRequest === aItems[i]){
+				if (oRequest && oRequest.getIdentifier() === iRequestId){
+					if (oSelectedRequest === aItems[i]){
 						//the request is already selected, no need
 						//to remove all selections and select again
 						return true;

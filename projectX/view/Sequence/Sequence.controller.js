@@ -258,6 +258,11 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._oSequence.setPreSequenceScript(sScript);
 		this._localUIModel.updateBindings();
 	},
+	
+	onPanelPreSequenceScriptExpand : function(){
+		var oScriptEditor = this.getView().byId("superEditorPreSequenceScript");
+		oScriptEditor.rerender();
+	},
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods

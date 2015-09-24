@@ -60,10 +60,11 @@
 			</l:Grid>
 
 			<!-- Pre-Sequence Script -->
-			<Panel expandable="false"
+			<Panel expandable="true"
 						 expanded="true"
-						 headerText="Pre-Sequence Script {localUIModel>/sequence/mProperties/preSequenceScriptResult}"
-						 class="sapUiNoContentPadding">
+						 headerText="Pre-Sequence Script ({localUIModel>/sequence/mProperties/preSequenceScript/length})"
+						 class="sapUiNoContentPadding"
+						 expand="onPanelPreSequenceScriptExpand">
 				<Button text="Snippets" press="onButtonPreRequestScriptExamples"/>
 				<u:Menu items="{localUIModel>/PRE_REQUEST_SCRIPT_EXAMPLES}"
 								id="idMenuPreRequestScriptExamples">
@@ -73,7 +74,7 @@
 				<custom:AceEditor width="100%"
 							height="200px"
 							value="{localUIModel>/sequence/mProperties/preSequenceScript}"
-							id="superEditorPreRequestBody"/>
+							id="superEditorPreSequenceScript"/>
 			</Panel>
 
 

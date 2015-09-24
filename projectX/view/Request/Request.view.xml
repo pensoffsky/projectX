@@ -53,6 +53,12 @@
                          liveChange="onNameChanged"
                          valueLiveUpdate="true"
                           />
+                <Label text="Group" />
+                  <Input value="{localUIModel>/request/mProperties/groupName}"
+                         placeholder="provide a name to group the request"
+                         liveChange="onNameChanged"
+                         valueLiveUpdate="true"
+                          />
                   <Label text="HTTP Method" />
                   <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
                           items="{localUIModel>/HTTP_METHODS}"

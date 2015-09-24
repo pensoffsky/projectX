@@ -21,6 +21,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				scriptCode : {type : "string", defaultValue : null},
 				testScriptCode : {type : "string", defaultValue : null},
 				responseBodyFormat : {type : "string", defaultValue : "text"},
+				//used for grouping the requests in the request list
+				groupName : {type : "string", defaultValue : ""},
+
 
 				//these fields are only temporary variables. they will not be persisted
 				status : {type : "string", defaultValue : null},
@@ -70,6 +73,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oRequest.scriptCode = this.getScriptCode();
 		oRequest.testScriptCode = this.getTestScriptCode();
 		oRequest.responseBodyFormat = this.getResponseBodyFormat();
+		oRequest.groupName = this.getGroupName();
+		
 
 		var aSerializedAssertions = [];
 		var aAssertions = this.getAssertions();
