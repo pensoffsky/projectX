@@ -10,6 +10,9 @@
   background-color: #f0fbff !important;
   background-image: none !important;
 }
+.sapMSubHeader-CTX {
+  background-color: #f0fbff !important;
+}
 .sapMSplitContainerMaster {
   width: 25%;
   min-width: 300px;
