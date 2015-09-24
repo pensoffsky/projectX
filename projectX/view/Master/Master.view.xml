@@ -26,16 +26,7 @@
 
 			<!-- REQUESTS -->
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}">
-				<!-- <Button
-					icon="sap-icon://up"
-					tooltip="Move request up"
-					press="onMoveRequestUp" />
-				<Button
-					icon="sap-icon://down"
-					tooltip="Move request down"
-					press="onMoveRequestDown" /> -->
 				<ToolbarSpacer/>
-
 				<Button
 					text="OData"
 					tooltip="Add Request from metadata"
@@ -57,7 +48,10 @@
 				class="masterScrollContainer">
 				<List
 					id="idListRequests"
-					items="{/SelectedProject/mAggregations/requests}"
+					items="{ 
+						path: '/SelectedProject/mAggregations/requests',
+						groupHeaderFactory: '.getRequestGroupHeader'
+					}"
 					mode="{device>/listMode}"
 					select="onRequestsListSelect"
 					updateFinished="onListUpdateFinished"
@@ -87,16 +81,7 @@
 
 			<!-- SEQUENCES -->
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}">
-				<!-- <Button
-					icon="sap-icon://up"
-					tooltip="Move request up"
-					press="onMoveRequestUp" />
-				<Button
-					icon="sap-icon://down"
-					tooltip="Move request down"
-					press="onMoveRequestDown" /> -->
 				<ToolbarSpacer/>
-
 				<Button
 					icon="sap-icon://add"
 					tooltip="Add Sequence"

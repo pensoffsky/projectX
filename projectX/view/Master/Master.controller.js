@@ -7,8 +7,9 @@ sap.ui.define(['jquery.sap.global',
 				'projectX/util/Constants',
 				'projectX/util/Formatter',
 				'projectX/util/Helper',
-				'projectX/util/Assertion'],
-	function(jQuery, MessageBox, Controller, Constants, Formatter, Helper, Assertion) {
+				'projectX/util/Assertion',
+				'sap/m/GroupHeaderListItem'],
+	function(jQuery, MessageBox, Controller, Constants, Formatter, Helper, Assertion, GroupHeaderListItem) {
 		"use strict";
 
 		var Master = Controller.extend("projectX.view.Master.Master", {
@@ -114,6 +115,22 @@ sap.ui.define(['jquery.sap.global',
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// List Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
+
+		/**
+		 * @param  {object} oGroup group info
+		 * @return {sap.m.GroupHeaderListItem} returns the GroupHeaderListItem that is used to group the requests.
+		 */
+		Master.prototype.getRequestGroupHeader = function(oGroup) {
+			var sTitle = oGroup.key;
+			if (!sTitle) {
+				sTitle = "--DEFAULT GROUP--";
+			}
+			
+			return new GroupHeaderListItem( {
+				title: sTitle,
+				upperCase: false
+			} );
+		};
 
 		Master.prototype.onSequencesListSelect = function() {
 			var oList = this.getView().byId("idListSequences");
