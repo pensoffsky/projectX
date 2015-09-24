@@ -46,19 +46,14 @@ sap.ui.define(["jquery.sap.global",
 
 	};
 
-	RequestHeaderEditListController.prototype.onBtnDeleteRequestHeaders = function() {
-		var aSelectedItems = this._oTable.getSelectedItems();
-		if (!aSelectedItems){
+	RequestHeaderEditListController.prototype.onBtnDeleteRequestHeader = function(oEvent) {
+		var oRequestHeader = Helper.getBoundObjectForItem(oEvent.getSource());
+		if (!oRequestHeader){
 			return;
 		}
 
-		var aRequest =  this._localUIModel.getProperty("/request");
-		for (var i = 0; i < aSelectedItems.length; i++) {
-			var oRequestHeader = this._getBoundObjectForItem(aSelectedItems[i]);
-			//remove this requestHeader from array
-			aRequest.removeRequestHeader(oRequestHeader);
-		}
-		this._oTable.removeSelections(true);
+		var oRequest =  this._localUIModel.getProperty("/request");
+		oRequest.removeRequestHeader(oRequestHeader);
 		this.updateBindings();
 	};
 
@@ -177,8 +172,6 @@ sap.ui.define(["jquery.sap.global",
 		this._localUIModel.updateBindings();
 	};
 
-
-
 	/////////////////////////////////////////////////////////////////////////////
 	/// Private Methods
 	/////////////////////////////////////////////////////////////////////////////
@@ -196,19 +189,6 @@ sap.ui.define(["jquery.sap.global",
 			// A case-insensitive 'string contains' style filter
 			return oItem.getText().match(new RegExp(sTerm, "i"));
 		});
-	}
-
-	//TODO move to helper
-	/**
-	 * @param {object} oListItem current list item
-	 * @return {object} returns bound object of list item
-	 */
-	RequestHeaderEditListController.prototype._getBoundObjectForItem = function(oListItem) {
-		var oBindingContext = oListItem.getBindingContext();
-		var oModel = oBindingContext.getModel();
-		var sPath = oBindingContext.getPath();
-		var oboundObject = oModel.getProperty(sPath);
-		return oboundObject;
 	};
 
 	return RequestHeaderEditListController;

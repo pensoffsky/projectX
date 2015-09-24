@@ -8,8 +8,7 @@
 	<Table
 		id="idTableRequestHeaders"
 		items="{/request/mAggregations/requestHeaders}"
-		mode="MultiSelect"
-		rememberSelections="false">
+		>
 		<headerToolbar>
 			<Toolbar>
 				<Button icon="sap-icon://add-favorite" text="Add common headers" press="onButtonRequestHeaderExamples"/>
@@ -24,10 +23,6 @@
 					text="Add header"
 				  tooltip="Add header field"
 				  press="onBtnAddRequestHeader"/>
-				<Button icon="sap-icon://delete"
-					text="Delete selected line"
-				  tooltip="Delete selected request header"
-				  press="onBtnDeleteRequestHeaders"/>
 				</Toolbar>
 			</headerToolbar>
 		<columns>
@@ -36,6 +31,9 @@
 			</Column>
 			<Column>
 				<Text text="Value" />
+			</Column>
+			<Column width="0.5rem">
+				<!--Column for action button e.g. delete-->
 			</Column>
 		</columns>
 		<items>
@@ -58,6 +56,9 @@
 		  	    items="{/REQUEST_HEADER_VALUES}">
 		    		<c:Item text="{key}" key="{key}" />
 					</ComboBox>
+					<Button icon="sap-icon://delete"
+					  tooltip="Delete request header"
+					  press="onBtnDeleteRequestHeader"/>
 				</cells>
 			</ColumnListItem>
 		</items>

@@ -1,6 +1,11 @@
 
-sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/Assertion', 'projectX/util/Constants'],
-	function(jQuery, ManagedObject, Assertion, Constants) {
+sap.ui.define(['jquery.sap.global', 
+				'sap/ui/base/ManagedObject', 
+				'projectX/util/Assertion', 
+				'projectX/util/Constants',
+				'projectX/util/Helper'
+				],
+	function(jQuery, ManagedObject, Assertion, Constants, Helper) {
 	"use strict";
 
 	var AssertionEditListController = ManagedObject.extend("projectX.view.Request.AssertionEditListController", { metadata : {
@@ -36,20 +41,13 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 		this.updateBindings();
 	};
 
-	AssertionEditListController.prototype.onBtnDeleteAssertions = function() {
-		// debugger;
-		var aSelectedItems = this._oTable.getSelectedItems();
-		if (!aSelectedItems){
+	AssertionEditListController.prototype.onBtnDeleteAssertion = function(oEvent) {
+		var oAssertion = Helper.getBoundObjectForItem(oEvent.getSource());
+		if (!oAssertion){
 			return;
 		}
-
 		var oRequest =  this._localUIModel.getProperty("/request");
-		for (var i = 0; i < aSelectedItems.length; i++) {
-			var oAssertion = this._getBoundObjectForItem(aSelectedItems[i]);
-			//remove this assertion from array
-			oRequest.removeAssertion(oAssertion);
-		}
-		this._oTable.removeSelections(true);
+		oRequest.removeAssertion(oAssertion);
 		this.updateBindings();
 	};
 	
@@ -94,15 +92,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject', 'projectX/util/
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
-
-	//TODO move to helper
-	AssertionEditListController.prototype._getBoundObjectForItem = function(oListItem) {
-		var oBindingContext = oListItem.getBindingContext();
-		var oModel = oBindingContext.getModel();
-		var sPath = oBindingContext.getPath();
-		var oboundObject = oModel.getProperty(sPath);
-		return oboundObject;
-	};
 
 	return AssertionEditListController;
 

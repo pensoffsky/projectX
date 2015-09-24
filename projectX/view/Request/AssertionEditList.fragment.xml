@@ -4,9 +4,7 @@
 	xmlns:c="sap.ui.core"
 	xmlns="sap.m">
 	<Table items="{/request/mAggregations/assertions}"
-			mode="MultiSelect"
 			id="idTableAssertions"
-			rememberSelections="false"
 			>
 		<headerToolbar>
 	    	<Toolbar>
@@ -14,13 +12,10 @@
 						text="Replay assertions"
 						tooltip="replay assertions on current response"
 						press="onBtnExecuteAssertion"/>
-	        <ToolbarSpacer />
 	        <Button icon="sap-icon://add"
+					text="Add Assertion"
 					tooltip="Add assertion"
 					press="onBtnAddAssertion"/>
-			<Button icon="sap-icon://delete"
-					tooltip="Delete selected assertions"
-					press="onBtnDeleteAssertions"/>
 	      </Toolbar>
 	    </headerToolbar>
 		<columns>
@@ -45,6 +40,9 @@
 			<Column width="2rem">
 				<Text text="Var"/>
 			</Column>
+			<Column width="0.5rem">
+				
+			</Column>
 		</columns>
 		<items>
 			<ColumnListItem vAlign="Top">
@@ -67,6 +65,9 @@
 						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
 					<Text text="{mProperties/evaluatedValue}" maxLines="2" tooltip="{mProperties/evaluatedValue}"/>
 					<Input value="{mProperties/name}"/>
+					<Button icon="sap-icon://delete"
+							tooltip="Delete this assertion"
+							press="onBtnDeleteAssertion"/>
 				</cells>
 			</ColumnListItem>
 		</items>
