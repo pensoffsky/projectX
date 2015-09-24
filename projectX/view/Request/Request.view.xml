@@ -84,8 +84,7 @@
                 <Panel expandable="true"
                        expanded="false"
                        headerText="Request Headers ({localUIModel>/request/mAggregations/requestHeaders/length})"
-                       class="sapUiNoContentPadding"
-                        >
+                       class="sapUiNoContentPadding">
                     <VBox id="idVBoxRequestHeaderPlaceholder"/>
                 </Panel>
 
@@ -93,31 +92,19 @@
                 <Panel expandable="true"
                        expanded="false"
                        expand="onPanelRequestBodyExpand"
-                       class="sapUiNoContentPadding"
-                       >
-                       <headerToolbar>
-                         <Toolbar design="Transparent" height="3rem">
-                          <Text text="Request Payload ({localUIModel>/request/mProperties/requestBody/length})"/>
-                        </Toolbar>
-                       </headerToolbar>
+                       headerText="Request Payload ({localUIModel>/request/mProperties/requestBody/length})"
+                       class="sapUiNoContentPadding">
                     <custom:AceEditor width="100%" height="200px"
                                       value="{localUIModel>/request/mProperties/requestBody}"
-                                      id="superEditorRequestBody"
-                                      />
+                                      id="superEditorRequestBody"/>
                 </Panel>
 
                 <!-- PRE-REQUEST SCRIPT -->
                 <Panel expandable="true"
                        expanded="false"
                        expand="onPanelPrescriptExpand"
-                       class="sapUiNoContentPadding"
-                       >
-                       <headerToolbar>
-                         <Toolbar design="Transparent" height="3rem">
-                          <Text text="Pre-Request Script ({localUIModel>/request/mProperties/scriptCode/length}) {localUIModel>/request/mProperties/preRequestScriptResult}"/>
-                        </Toolbar>
-                       </headerToolbar>
-
+                       headerText="Pre-Request Script ({localUIModel>/request/mProperties/scriptCode/length}) {localUIModel>/request/mProperties/preRequestScriptResult}"
+                       class="sapUiNoContentPadding">
                         <Button text="Snippets" press="onButtonScriptExamples"/>
                         <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
                                 id="idMenuScriptExamples">
@@ -153,16 +140,11 @@
                 <Panel expandable="true"
                        expanded="false"
                        expand="onPanelTestExpand"
-                       class="sapUiNoContentPadding"
-                       >
-                       <headerToolbar>
-                         <Toolbar design="Transparent" height="3rem">
-                          <Text text="Test Script ({localUIModel>/request/mProperties/testScriptCode/length}) {localUIModel>/request/mProperties/testScriptResult}"/>
-                         
-                        </Toolbar>
-                       </headerToolbar>
+                       headerText="Test Script ({localUIModel>/request/mProperties/testScriptCode/length}) {localUIModel>/request/mProperties/testScriptResult}"
+                       class="sapUiNoContentPadding">
                            <Button icon="sap-icon://media-play"
-                                 tooltip="execute test script again"
+                             text="Replay test script"
+                             tooltip="replay test script on response again"
                                  press="onBtnExecuteTestScript"/>
                            <Button text="Snippets" press="onButtonTestScriptExamples"/>
                            <u:Menu items="{localUIModel>/TESTSCRIPT_EXAMPLES}"
@@ -234,7 +216,7 @@
                                       enableWrapMode="true"
                             />
                 </Panel>
-                
+
                 <Panel expandable="true"
                        expanded="false"
                        class="sapUiNoContentPadding"
@@ -264,12 +246,12 @@
        					</f:SimpleForm>
        				</l:content>
        			</l:Grid>
-                   
-                   
-                   
-                   
+
+
+
+
                 </Panel>
-                
+
             </ScrollContainer>
         </content>
     </Page>

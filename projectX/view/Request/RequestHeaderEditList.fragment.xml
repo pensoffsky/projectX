@@ -12,19 +12,20 @@
 		rememberSelections="false">
 		<headerToolbar>
 			<Toolbar>
-				<Label text="Request Headers" />
-				<ToolbarSpacer />
-				<Button text="Pre-defined headers" press="onButtonRequestHeaderExamples"/>
+				<Button icon="sap-icon://add-favorite" text="Add common headers" press="onButtonRequestHeaderExamples"/>
 					<u:Menu
 						id="idMenuRequestHeaderExamples"
 						items="{/REQUEST_HEADER_EXAMPLES}">
 						<u:MenuItem text="{text}"
 												select="onMenuItemHeaderExampleSelected"/>
 					</u:Menu>
+				<!-- <ToolbarSpacer /> -->
 				<Button icon="sap-icon://add"
+					text="Add header"
 				  tooltip="Add header field"
 				  press="onBtnAddRequestHeader"/>
 				<Button icon="sap-icon://delete"
+					text="Delete selected line"
 				  tooltip="Delete selected request header"
 				  press="onBtnDeleteRequestHeaders"/>
 				</Toolbar>

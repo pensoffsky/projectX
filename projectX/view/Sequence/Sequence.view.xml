@@ -59,143 +59,151 @@
 				</l:content>
 			</l:Grid>
 
-			<VBox>
-				<Label text="Pre-Sequence Script {localUIModel>/sequence/mProperties/preSequenceScriptResult}" />
+			<!-- Pre-Sequence Script -->
+			<Panel expandable="false"
+						 expanded="true"
+						 headerText="Pre-Sequence Script {localUIModel>/sequence/mProperties/preSequenceScriptResult}"
+						 class="sapUiNoContentPadding">
 				<Button text="Snippets" press="onButtonPreRequestScriptExamples"/>
-			</VBox>
-			<u:Menu items="{localUIModel>/PRE_REQUEST_SCRIPT_EXAMPLES}"
-							id="idMenuPreRequestScriptExamples">
-					<u:MenuItem text="{localUIModel>text}"
-							select="onMenuItemPreRequestScriptExampleSelected"/>
-			</u:Menu>
-			<custom:AceEditor width="100%"
+				<u:Menu items="{localUIModel>/PRE_REQUEST_SCRIPT_EXAMPLES}"
+								id="idMenuPreRequestScriptExamples">
+						<u:MenuItem text="{localUIModel>text}"
+								select="onMenuItemPreRequestScriptExampleSelected"/>
+				</u:Menu>
+				<custom:AceEditor width="100%"
 							height="200px"
 							value="{localUIModel>/sequence/mProperties/preSequenceScript}"
-                        id="superEditorPreRequestBody"
-                        />
+							id="superEditorPreRequestBody"/>
+			</Panel>
 
-			<Table
-				items="{localUIModel>/selectedRequests}"
-				rememberSelections="false"
-				mode="None"
-				id="idSelectedRequestsTable"
-				title="asdf"
-				>
-				<headerToolbar>
-					<Toolbar>
-						<Label text="Requests in Sequence" />
-						<ToolbarSpacer/>
-						<Button text="Add requests"
-						tooltip="Add a request from all available requests in the project"
-						press="onBtnAddRequest"/>
-						<SelectDialog
-							id="idRequestSelectDialog"
-					    noDataText="No requests found"
-					    title="Select Requests"
-					    search="onRequestSelectDialogSearch"
-					    confirm="onRequestSelectDialogConfirm"
-					    close="onRequestSelectDialogClose"
-					    items="{localUIModel>/requests}"
-							multiSelect="true"
-							>
-					    <StandardListItem
-					      title="{localUIModel>mProperties/name}"
-					      description="{{localUIModel>mProperties/url}}"
-					      type="Active"/>
-					  </SelectDialog>
-					</Toolbar>
-				</headerToolbar>
-				<columns>
-					<Column>
-						<Text text="Request" />
-					</Column>
-					<Column
-						width="5em">
-						<Text text="Assertions" />
-					</Column>
-					<Column
-						hAlign="Right"
-						width="3em">
-						<Text text="Status" />
-					</Column>
-					<Column
-						width="3em">
-						<Text text="Time" />
-					</Column>
-					<Column
-						width="8em">
-						<Text text="Actions" />
-					</Column>
-				</columns>
-				<items>
-				<ColumnListItem vAlign="Top">
-					<cells>
-						<VBox>
-							<!-- <HBox>
 
-								<VBox> -->
-									<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
-									<ObjectIdentifier
-										title="{localUIModel>mProperties/name}"
-										text="{localUIModel>mProperties/finalUrl}"
-										titleActive="true"
-										titlePress="onRequestNamePress"/>
-								<!-- </VBox>
-							</HBox> -->
-							<Label text=" {localUIModel>mProperties/sapStatistics}"
-										visible="{= ${localUIModel>mProperties/sapStatistics/length} > 0}"
-										/>
-							<TextArea value="{localUIModel>mProperties/scriptCode}"
-										placeholder="no script code supplied"
-										editable="false"
-										rows="6"
-										class="invisible visibleWhenExpanded"/>
-							<TextArea value="{localUIModel>mProperties/responseHeaders}"
-										placeholder="response headers will be filled after running the sequence..."
-										editable="false"
-										rows="6"
-										class="invisible visibleWhenExpanded"/>
-							<TextArea value="{localUIModel>mProperties/responseBody}"
-										placeholder="response body will be filled after running the sequence..."
-										editable="false"
-										rows="6"
-										class="invisible visibleWhenExpanded"/>
-							<VBox items="{localUIModel>mAggregations/assertions}">
-								<Text text="{localUIModel>mProperties/assertProperty} {localUIModel>mProperties/path} {localUIModel>mProperties/operation} {localUIModel>mProperties/expected} {localUIModel>mProperties/result}"
-									class="invisible visibleWhenExpanded"
-									visible="{= ${localUIModel>mProperties/resultReady} === true}"/>
+			<!-- Requests in sequence -->
+			<Panel expandable="false"
+						 expanded="true"
+						 headerText="Requests in sequence"
+						 class="sapUiNoContentPadding">
+				<Table
+					items="{localUIModel>/selectedRequests}"
+					rememberSelections="false"
+					mode="None"
+					id="idSelectedRequestsTable">
+					<headerToolbar>
+						<Toolbar>
+							<!-- <Label text="Requests in Sequence" />
+							<ToolbarSpacer/> -->
+							<Button icon="sap-icon://add"
+								text="Add requests"
+								tooltip="Add a request from all available requests in the project"
+								press="onBtnAddRequest"/>
+							<SelectDialog
+								id="idRequestSelectDialog"
+						    noDataText="No requests found"
+						    title="Select Requests"
+						    search="onRequestSelectDialogSearch"
+						    confirm="onRequestSelectDialogConfirm"
+						    close="onRequestSelectDialogClose"
+						    items="{localUIModel>/requests}"
+								multiSelect="true"
+								>
+						    <StandardListItem
+						      title="{localUIModel>mProperties/name}"
+						      description="{{localUIModel>mProperties/url}}"
+						      type="Active"/>
+						  </SelectDialog>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column>
+							<Text text="Request" />
+						</Column>
+						<Column
+							width="5em">
+							<Text text="Assertions" />
+						</Column>
+						<Column
+							hAlign="Right"
+							width="3em">
+							<Text text="Status" />
+						</Column>
+						<Column
+							width="3em">
+							<Text text="Time" />
+						</Column>
+						<Column
+							width="8em">
+							<Text text="Actions" />
+						</Column>
+					</columns>
+					<items>
+					<ColumnListItem vAlign="Top">
+						<cells>
+							<VBox>
+								<!-- <HBox>
+
+									<VBox> -->
+										<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
+										<ObjectIdentifier
+											title="{localUIModel>mProperties/name}"
+											text="{localUIModel>mProperties/finalUrl}"
+											titleActive="true"
+											titlePress="onRequestNamePress"/>
+									<!-- </VBox>
+								</HBox> -->
+								<Label text=" {localUIModel>mProperties/sapStatistics}"
+											visible="{= ${localUIModel>mProperties/sapStatistics/length} > 0}"
+											/>
+								<TextArea value="{localUIModel>mProperties/scriptCode}"
+											placeholder="no script code supplied"
+											editable="false"
+											rows="6"
+											class="invisible visibleWhenExpanded"/>
+								<TextArea value="{localUIModel>mProperties/responseHeaders}"
+											placeholder="response headers will be filled after running the sequence..."
+											editable="false"
+											rows="6"
+											class="invisible visibleWhenExpanded"/>
+								<TextArea value="{localUIModel>mProperties/responseBody}"
+											placeholder="response body will be filled after running the sequence..."
+											editable="false"
+											rows="6"
+											class="invisible visibleWhenExpanded"/>
+								<VBox items="{localUIModel>mAggregations/assertions}">
+									<Text text="{localUIModel>mProperties/assertProperty} {localUIModel>mProperties/path} {localUIModel>mProperties/operation} {localUIModel>mProperties/expected} {localUIModel>mProperties/result}"
+										class="invisible visibleWhenExpanded"
+										visible="{= ${localUIModel>mProperties/resultReady} === true}"/>
+								</VBox>
+								<TextArea value="{localUIModel>mProperties/testScriptCode}"
+														placeholder="no test script code supplied"
+														editable="false"
+														rows="6"
+														class="invisible visibleWhenExpanded"/>
+								<VBox items="{localUIModel>_testResults}">
+										<HBox>
+												<Text text="{localUIModel>name} -" class="invisible visibleWhenExpanded"/>
+												<Text text="- {localUIModel>result}" class="invisible visibleWhenExpanded"/>
+										</HBox>
+								</VBox>
 							</VBox>
-							<TextArea value="{localUIModel>mProperties/testScriptCode}"
-													placeholder="no test script code supplied"
-													editable="false"
-													rows="6"
-													class="invisible visibleWhenExpanded"/>
-							<VBox items="{localUIModel>_testResults}">
-									<HBox>
-											<Text text="{localUIModel>name} -" class="invisible visibleWhenExpanded"/>
-											<Text text="- {localUIModel>result}" class="invisible visibleWhenExpanded"/>
-									</HBox>
-							</VBox>
-						</VBox>
-						<c:Icon
-							src="{ parts : [
-								{ path : 'localUIModel>mProperties/assertionsResult' },
-								{ path : 'localUIModel>mProperties/assertionsResultReady' },
-								{ path : 'localUIModel>mAggregations/assertions/length' }
-							],
-							formatter : 'projectX.util.Formatter.assertionsListResultToImage' }"/>
-						<Text text="{localUIModel>mProperties/status}"/>
-						<Text text="{localUIModel>mProperties/responseTime}"/>
-						<HBox>
-							<Button icon="sap-icon://edit" press="onEditRequest" tooltip="Edit Request"/>
-							<Button icon="sap-icon://up" press="onMoveRequestUp"/>
-							<Button icon="sap-icon://down" press="onMoveRequestDown"/>
-							<Button icon="sap-icon://delete" press="onDeleteRequest"/>
-						</HBox>
-					</cells>
-				</ColumnListItem>
-				</items>
-			</Table>
+							<c:Icon
+								src="{ parts : [
+									{ path : 'localUIModel>mProperties/assertionsResult' },
+									{ path : 'localUIModel>mProperties/assertionsResultReady' },
+									{ path : 'localUIModel>mAggregations/assertions/length' }
+								],
+								formatter : 'projectX.util.Formatter.assertionsListResultToImage' }"/>
+							<Text text="{localUIModel>mProperties/status}"/>
+							<Text text="{localUIModel>mProperties/responseTime}"/>
+							<HBox>
+								<Button icon="sap-icon://edit" press="onEditRequest" tooltip="Edit Request"/>
+								<Button icon="sap-icon://up" press="onMoveRequestUp"/>
+								<Button icon="sap-icon://down" press="onMoveRequestDown"/>
+								<Button icon="sap-icon://delete" press="onDeleteRequest"/>
+							</HBox>
+						</cells>
+					</ColumnListItem>
+					</items>
+				</Table>
+			</Panel>
 		</ScrollContainer>
 	</Page>
 </mvc:View>

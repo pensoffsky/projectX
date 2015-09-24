@@ -11,7 +11,8 @@
 		<headerToolbar>
 	    	<Toolbar>
 				<Button icon="sap-icon://media-play"
-						tooltip="execute assertions again"
+						text="Replay assertions"
+						tooltip="replay assertions on current response"
 						press="onBtnExecuteAssertion"/>
 	        <ToolbarSpacer />
 	        <Button icon="sap-icon://add"
