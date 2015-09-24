@@ -13,6 +13,9 @@
 .sapMSubHeader-CTX {
   background-color: #f0fbff !important;
 }
+.sentDataBackground .sapUiFormResGrid > div {
+  background-color: #FCFEFF !important;
+}
 .sapMSplitContainerMaster {
   width: 25%;
   min-width: 300px;

@@ -230,18 +230,18 @@
        				defaultSpan="L12 M12 S12"
        				width="auto">
        				<l:content>
-       					<f:SimpleForm
+       					<f:SimpleForm class="sentDataBackground"
        						editable="true"
        						layout="ResponsiveGridLayout">
        						<f:content>
        							<Label text="URL" />
-                                <Text text="{localUIModel>/request/mProperties/finalUrl}"/>
-                                <Label text="HTTP Method" />
-                                <Text text="{localUIModel>/request/mProperties/finalHttpMethod}"/>
-                                <Label text="Headers" />
-                                <Text text="{localUIModel>/request/mProperties/finalRequestHeaders}"/>
-                                <Label text="Payload" />
-                                <Text text="{localUIModel>/request/mProperties/finalRequestBody}"/>
+                    <Text text="{localUIModel>/request/mProperties/finalUrl}"/>
+                    <Label text="HTTP Method" />
+                    <Text text="{localUIModel>/request/mProperties/finalHttpMethod}"/>
+                    <Label text="Headers" />
+                    <Text text="{localUIModel>/request/mProperties/finalRequestHeaders}"/>
+                    <Label text="Payload" />
+                    <Text text="{localUIModel>/request/mProperties/finalRequestBody}"/>
        						</f:content>
        					</f:SimpleForm>
        				</l:content>
