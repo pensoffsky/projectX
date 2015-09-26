@@ -152,4 +152,9 @@ sap.ui.core.mvc.Controller.extend("projectX.util.Controller", {
 			}, true);
 	},
 	
+	navToRequestNotFound : function() {
+		this.getRouter().navTo("notfound", {
+			}, true);
+	},
+	
 });

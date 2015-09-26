@@ -54,6 +54,7 @@ sap.ui.define(['jquery.sap.global',
 					var oSegmentedButton = this.getView().byId("idSegmentedButton");
 					oSegmentedButton.setSelectedButton(this.getView().byId("idButtonRequests"));
 					this._localUIModel.setProperty("/visibleTab", Master.TABS.REQUESTS);
+					this._selectFirstRequest();
 			}, this);
 
 			//if ?sequence=true exists in url then switch to sequence page after 2 seconds
@@ -159,7 +160,6 @@ sap.ui.define(['jquery.sap.global',
 
 			var oModel = this.getView().getModel();
 			var oSelectedProject = oModel.getProperty("/SelectedProject");
-
 			this.navToRequest(oSelectedRequest.getIdentifier(), oSelectedProject.getIdentifier());
 		};
 
@@ -345,6 +345,7 @@ sap.ui.define(['jquery.sap.global',
 				this.onRequestsListSelect();
 			} else {
 				//TODO detail page to "NOT FOUND"
+				this.navToRequestNotFound();
 			}
 		};
 
@@ -354,6 +355,7 @@ sap.ui.define(['jquery.sap.global',
 				this.onSequencesListSelect();
 			} else {
 				//TODO detail page to "NOT FOUND"
+				this.navToRequestNotFound();
 			}
 		};
 
@@ -361,10 +363,18 @@ sap.ui.define(['jquery.sap.global',
 			var oList = this.getView().byId(sListId);
 			var aItems = oList.getItems();
 
-			if (aItems.length) {
-				oList.setSelectedItem(aItems[0], true);
-				return true;
+			for (var i = 0; i < aItems.length; i++) {
+				//check that we not try to select the request group list item
+				var oBoundItem = Helper.getBoundObjectForItem(aItems[i]);
+				if(oBoundItem){
+					oList.setSelectedItem(aItems[i], true);
+					return true;
+				}
 			}
+			// if (aItems.length) {
+			// 	oList.setSelectedItem(aItems[0], true);
+			// 	return true;
+			// }
 
 			return false;
 		};
