@@ -30,19 +30,23 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Project
 	
 	
 	Storage.parseAndLoadProjects = function(sData) {
-		var aLoadedProjects = JSON.parse(sData);
-		var aProjects = [];
+		try {
+			var aLoadedProjects = JSON.parse(sData);
+			var aProjects = [];
 
-		if (!aLoadedProjects) {
-			return;
-		}
+			if (!aLoadedProjects) {
+				return null;
+			}
 
-		for (var i = 0; i < aLoadedProjects.length; i++) {
-			var oProject = new Project(aLoadedProjects[i]);
-			aProjects.push(oProject);
+			for (var i = 0; i < aLoadedProjects.length; i++) {
+				var oProject = new Project(aLoadedProjects[i]);
+				aProjects.push(oProject);
+			}
+			
+			return aProjects;	
+		} catch (e) {
+			return null;
 		}
-		
-		return aProjects;
 	};
 
 	return Storage;

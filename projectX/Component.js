@@ -230,6 +230,14 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oFileReader.readAsText(oFile);
 	},
 
+	getProjects : function() {
+		return this._oModel.getProperty("/Projects");
+	},
+	
+	getSelectedProject : function() {
+		return this._oModel.getProperty("/SelectedProject");
+	},
+
 	/**
 	 * create a new project and add to global model.
 	 * select the new project.

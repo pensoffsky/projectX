@@ -18,4 +18,7 @@ test("util/Storage tests", function() {
   ok(aProjects.length === 1, "project deserialized");
   equal(oProject.getName(), sName, "name with open paranthesis");
   
+  var aProjects = projectX.util.Storage.parseAndLoadProjects(undefined);
+  ok(!aProjects, "parseload with undefined does not throw exception");
+  
 });

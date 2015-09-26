@@ -73,6 +73,15 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		App.prototype.onDeleteSelectedProject = function(oEvent) {
 			var that = this;
 			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+			var oComponent = this.getComponent();
+			var aProjects = oComponent.getProjects();
+			
+			//prevent the user from deleting the last project
+			if (!aProjects || aProjects.length <= 1) {
+				MessageBox.alert("You cannot delete the last project. There always has to be at least one project.");
+				return;	
+			}
+			
 			MessageBox.confirm(
 		      "Do you want to delete this project?", {
 		        styleClass: bCompact ? "sapUiSizeCompact" : "",
