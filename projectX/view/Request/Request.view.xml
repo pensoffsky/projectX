@@ -95,11 +95,18 @@
                 </Panel>
 
                 <!-- REQUEST PAYLOAD -->
+                
                 <Panel expandable="true"
                        expanded="false"
                        expand="onPanelRequestBodyExpand"
-                       headerText="Request Payload ({localUIModel>/request/mProperties/requestBody/length})"
                        class="sapUiNoContentPadding">
+                       <headerToolbar>
+                         <Toolbar design="Transparent" height="3rem">
+                            <!-- do not use header text here with binding to the text of the editor control 
+                            because that causes a rerender of the page-->
+                          <Text text="Request Payload ({localUIModel>/request/mProperties/requestBody/length})"/>
+                        </Toolbar>
+                       </headerToolbar>
                     <custom:AceEditor width="100%" height="200px"
                                       value="{localUIModel>/request/mProperties/requestBody}"
                                       id="superEditorRequestBody"/>
@@ -109,8 +116,14 @@
                 <Panel expandable="true"
                        expanded="false"
                        expand="onPanelPrescriptExpand"
-                       headerText="Pre-Request Script ({localUIModel>/request/mProperties/scriptCode/length}) {localUIModel>/request/mProperties/preRequestScriptResult}"
                        class="sapUiNoContentPadding">
+                       <headerToolbar>
+                         <Toolbar design="Transparent" height="3rem">
+                             <!-- do not use header text here with binding to the text of the editor control 
+                             because that causes a rerender of the page-->
+                          <Text text="Pre-Request Script ({localUIModel>/request/mProperties/scriptCode/length}) {localUIModel>/request/mProperties/preRequestScriptResult}"/>
+                        </Toolbar>
+                       </headerToolbar>
                         <Button text="Snippets" press="onButtonScriptExamples"/>
                         <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
                                 id="idMenuScriptExamples">
@@ -146,8 +159,14 @@
                 <Panel expandable="true"
                        expanded="false"
                        expand="onPanelTestExpand"
-                       headerText="Test Script ({localUIModel>/request/mProperties/testScriptCode/length}) {localUIModel>/request/mProperties/testScriptResult}"
                        class="sapUiNoContentPadding">
+                       <headerToolbar>
+                         <Toolbar design="Transparent" height="3rem">
+                            <!-- do not use header text here with binding to the text of the editor control 
+                            because that causes a rerender of the page-->
+                          <Text text="Test Script ({localUIModel>/request/mProperties/testScriptCode/length}) {localUIModel>/request/mProperties/testScriptResult}"/>
+                        </Toolbar>
+                       </headerToolbar>
                            <Button icon="sap-icon://media-play"
                              text="Replay test script"
                              tooltip="replay test script on response again"

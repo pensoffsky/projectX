@@ -62,9 +62,13 @@
 			<!-- Pre-Sequence Script -->
 			<Panel expandable="true"
 						 expanded="true"
-						 headerText="Pre-Sequence Script ({localUIModel>/sequence/mProperties/preSequenceScript/length})"
 						 class="sapUiNoContentPadding"
 						 expand="onPanelPreSequenceScriptExpand">
+				<headerToolbar>
+					<Toolbar design="Transparent" height="3rem">
+						<Text text="Pre-Sequence Script ({localUIModel>/sequence/mProperties/preSequenceScript/length})"/>
+					</Toolbar>
+				</headerToolbar>
 				<Button text="Snippets" press="onButtonPreRequestScriptExamples"/>
 				<u:Menu items="{localUIModel>/PRE_REQUEST_SCRIPT_EXAMPLES}"
 								id="idMenuPreRequestScriptExamples">
