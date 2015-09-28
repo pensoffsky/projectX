@@ -124,7 +124,7 @@ sap.ui.define(['jquery.sap.global',
 		Master.prototype.getRequestGroupHeader = function(oGroup) {
 			var sTitle = oGroup.key;
 			if (!sTitle) {
-				sTitle = "--DEFAULT GROUP--";
+				sTitle = "--NO GROUP--";
 			}
 			
 			return new GroupHeaderListItem( {
@@ -250,7 +250,7 @@ sap.ui.define(['jquery.sap.global',
 					this.onSequencesListSelect();
 					break;
 			default:
-				console.log("problem with segmented button on master page");
+				jQuery.sap.log.error("problem with segmented button on master page");
 			}
 		};
 
@@ -263,9 +263,10 @@ sap.ui.define(['jquery.sap.global',
 		*/
 		Master.prototype.onAddRequest = function() {
 			//get the model
+			var oComponent = this.getComponent();
 			var oModel = this.getView().getModel();
 			//get the selected project
-			var oSelectedProject = oModel.getProperty("/SelectedProject");
+			var oSelectedProject = oComponent.getSelectedProject();
 			if (!oSelectedProject) {
 				return;
 			}
@@ -273,7 +274,11 @@ sap.ui.define(['jquery.sap.global',
 			var oNewRequest = oSelectedProject.addNewRequest();
 			oNewRequest.addAssertion(Assertion.createDefaultAssertion());
 			oModel.updateBindings();
-			//TODO select the newly created request
+			var aRequests = oSelectedProject.getRequests();
+			if (aRequests.length === 1){
+				//the user added the first request. Select this request.
+				this._selectFirstRequest();
+			}
 		};
 
 
@@ -354,7 +359,6 @@ sap.ui.define(['jquery.sap.global',
 			if (bItemSelected === true) {
 				this.onSequencesListSelect();
 			} else {
-				//TODO detail page to "NOT FOUND"
 				this.navToRequestNotFound();
 			}
 		};
@@ -366,21 +370,21 @@ sap.ui.define(['jquery.sap.global',
 			for (var i = 0; i < aItems.length; i++) {
 				//check that we not try to select the request group list item
 				var oBoundItem = Helper.getBoundObjectForItem(aItems[i]);
-				if(oBoundItem){
+				if (oBoundItem){
 					oList.setSelectedItem(aItems[i], true);
 					return true;
 				}
 			}
-			// if (aItems.length) {
-			// 	oList.setSelectedItem(aItems[0], true);
-			// 	return true;
-			// }
 
 			return false;
 		};
 
+		
 		/**
 		 * set the listitem that represents the given requestID
+		 * @param  {string} sListId		id of the list
+		 * @param  {int} iRequestId		id of the request to select
+		 * @return {boolean}            true if item was selected, false if no item was selected
 		 */
 		Master.prototype._selectRequestByReqId = function (sListId, iRequestId) {
 			//TODO this is ugly to iterate over all items, FIX ME, why did i do this?

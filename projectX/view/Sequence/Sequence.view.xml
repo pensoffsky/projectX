@@ -98,6 +98,7 @@
 								press="onBtnAddRequest"/>
 							<SelectDialog
 								id="idRequestSelectDialog"
+								growingThreshold="100"
 						    noDataText="No requests found"
 						    title="Select Requests"
 						    search="onRequestSelectDialogSearch"
@@ -118,7 +119,7 @@
 							<Text text="Request" />
 						</Column>
 						<Column
-							width="5em">
+							width="2.6em">
 							<Text text="Assertions" />
 						</Column>
 						<Column
