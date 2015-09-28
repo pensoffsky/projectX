@@ -55,6 +55,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			var aFiles = oEvent.getParameter("files");
 			var oFile = aFiles[0];
 
+			//clear the cache of the fileuplaoder
+			//fixes bug where the same file could not be imported twice
+			oEvent.getSource().clear();
+
 			var oComponent = this.getComponent();
 			oComponent.import(oFile);
 		};

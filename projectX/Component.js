@@ -194,7 +194,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	 */
 	load : function() {
 		var sData = window.localStorage.getItem("projects");
-		this._parseAndLoadProjects(sData);
+		this._parseAndLoadProjects(sData, true);
 	},
 
 	/**
@@ -225,7 +225,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oFileReader.onload = function(e) {
 		    // e.target.result should contain the text
 			var sData = e.target.result;
-			that._parseAndLoadProjects(sData);
+			that._parseAndLoadProjects(sData, false);
 		};
 		oFileReader.readAsText(oFile);
 	},
@@ -239,17 +239,27 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	},
 
 	/**
+	 * iterates over all loaded projects. finds the highest id.
+	 * adds 1 to the id and returns it.
+	 * @return {int} returns an id which is not yet used by a project
+	 */
+	_getNextProjectId : function (aProjects) {
+		var iHighestID = 0;
+		for (var i = 0; i < aProjects.length; i++) {
+			iHighestID = Math.max(aProjects[i].getIdentifier(), iHighestID);
+		}
+		var iNewID = iHighestID + 1;
+		return iNewID;
+	},
+
+	/**
 	 * create a new project and add to global model.
 	 * select the new project.
 	 * @return {object} the newly created project
 	 */
 	createNewProject : function() {
 		var aProjects = this._oModel.getProperty("/Projects");
-		var iHighestID = 0;
-		for (var i = 0; i < aProjects.length; i++) {
-			iHighestID = Math.max(aProjects[i].getIdentifier(), iHighestID);
-		}
-		var iNewID = iHighestID + 1;
+		var iNewID = this._getNextProjectId(aProjects);
 
 		//create new Project object and fill in data from local project model
 		var oProject = new projectX.util.Project({
@@ -368,11 +378,26 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		//console.log("saved");
 	},
 
-	_parseAndLoadProjects : function(sData) {
-		var aProjects = projectX.util.Storage.parseAndLoadProjects(sData);
-		if (!aProjects || aProjects.length <= 0) {
+	_parseAndLoadProjects : function(sData, bClearProjects) {		
+		var aProjects = this._oModel.getProperty("/Projects");
+		var aLoadedProjects = projectX.util.Storage.parseAndLoadProjects(sData);
+		if (!aLoadedProjects || aLoadedProjects.length <= 0) {
 			return;
+		}		
+		//check if we want to remove the previous projects
+		if (bClearProjects){
+			aProjects = aLoadedProjects;
+		} else {
+			//create new ids for loaded projects
+			for (var i = 0; i < aLoadedProjects.length; i++) {
+				var iNextId = this._getNextProjectId(aProjects);
+				aLoadedProjects[i].setIdentifier(iNextId);
+				aProjects.push(aLoadedProjects[i]);
+			}
 		}
+		
+		
+		
 
 		this._oModel.setProperty("/Projects", aProjects);
 		this._oModel.setProperty("/SelectedProject", aProjects[0]);

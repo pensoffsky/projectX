@@ -26,7 +26,7 @@
               <Button text="Send Request"
                       press="onBtnSendPress"
                       type="Emphasized"
-                      tooltip="Send the request"/>
+                      tooltip="Send the request (F7)"/>
             </Toolbar>
         </subHeader>
 
