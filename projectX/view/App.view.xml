@@ -17,21 +17,27 @@
 					items="{/Projects}"
 					change="onSelectProjectChange"
 					selectedKey="{localUIModel>/selectedProjectIdentifier}"
+					enabled="{= ${/Projects/length} > 0}"
 					>
 					<core:Item text="{mProperties/name}" key="{mProperties/identifier}" />
 				</Select>
 				<Button icon="sap-icon://edit"
 						tooltip="Edit project"
-						press="onEditProject"/>
+						press="onEditProject"
+						enabled="{= ${/Projects/length} > 0}"/>
 				<Button icon="sap-icon://add"
 						tooltip="Add new project"
 						press="onAddNewProject"/>
 				<Button icon="sap-icon://delete"
 						tooltip="Delete selected project"
-						press="onDeleteSelectedProject"/>
+						press="onDeleteSelectedProject"
+						enabled="{= ${/Projects/length} > 0}"/>
 
 				<ToolbarSpacer/>
-				
+				<Text text="Please import or create a new project" 
+						visible="{= !${/Projects/length} > 0}"
+						/>
+						<ToolbarSpacer/>
 				<u:FileUploader
 					change="onFileUploaderChange"
 					buttonText="Import"
@@ -41,13 +47,16 @@
 				<Button
 					text="Export"
 					tooltip="Export"
-					press="onExport" />
+					press="onExport"
+					enabled="{= ${/Projects/length} > 0}" />
 			</Toolbar>
     </l:fixContent>
     <l:flexContent>
 		<SplitApp 	id="idAppControl" 
 					mode="StretchCompressMode"
+					visible="{= ${/Projects/length} > 0}"
 					/>
+		
     </l:flexContent>
 		
 	</l:FixFlex>
