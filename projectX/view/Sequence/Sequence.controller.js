@@ -214,8 +214,22 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	*/
 	onRequestNamePress : function (oEvent) {
 		var oObjectHeader = oEvent.getSource();
-		var oColumnListItem = oObjectHeader.getParent(); //the columListItem control
-		oColumnListItem.toggleStyleClass("columnListItemExpanded");
+		var sPath = oEvent.getSource().getBindingContext("localUIModel").getPath();
+		
+		// create popover
+		if (!this._oPopover) {
+			this._oPopover = sap.ui.xmlfragment("projectX.view.Sequence.SequenceRequest", this);
+			this.getView().addDependent(this._oPopover);
+		}
+
+		this._oPopover.setModel(this._localUIModel);
+		this._oPopover.bindElement(sPath);
+		// delay because addDependent will do a async rerendering and the actionSheet will immediately close without it.
+		jQuery.sap.delayedCall(0, this, function () {
+			this._oPopover.openBy(oObjectHeader);
+		});
+
+		
 	},
 
 	onMoveRequestUp : function(oEvent){

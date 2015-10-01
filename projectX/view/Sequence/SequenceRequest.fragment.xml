@@ -1,0 +1,51 @@
+<!-- Popover that shows the detailed data of a request on the sequence view -->
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Popover
+		title="{mProperties/name}"
+		class="sapUiContentPadding"
+		placement="VerticalPreferedBottom"
+		contentWidth="80%"
+		>
+		<VBox>
+			<Label text=" {mProperties/sapStatistics}"
+						visible="{= ${mProperties/sapStatistics/length} > 0}"
+						/>
+			<TextArea value="{mProperties/scriptCode}"
+						placeholder="no script code supplied"
+						editable="false"
+						rows="6"
+						width="90%"
+						/>
+			<VBox items="{mAggregations/assertions}">
+				<Text text="{mProperties/assertProperty} {mProperties/path} {mProperties/operation} {mProperties/expected} {mProperties/result}"
+					visible="{= ${mProperties/resultReady} === true}"/>
+			</VBox>
+			<TextArea value="{mProperties/testScriptCode}"
+						placeholder="no test script code supplied"
+						editable="false"
+						rows="6"
+						width="90%"
+						/>
+			<TextArea value="{mProperties/responseHeaders}"
+						placeholder="response headers will be filled after running the sequence..."
+						editable="false"
+						rows="6"
+						width="90%"
+						/>
+			<TextArea value="{mProperties/responseBody}"
+						placeholder="response body will be filled after running the sequence..."
+						editable="false"
+						rows="6"
+						width="90%"
+						/>
+			<VBox items="{_testResults}">
+					<HBox>
+						<Text text="{name} -"/>
+						<Text text="- {result}"/>
+					</HBox>
+			</VBox>
+		</VBox>
+	</Popover>
+</core:FragmentDefinition>
