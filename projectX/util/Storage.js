@@ -34,10 +34,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Project
 			var aLoadedProjects = JSON.parse(sData);
 			var aProjects = [];
 
-			if (!aLoadedProjects) {
-				return null;
-			}
-
 			for (var i = 0; i < aLoadedProjects.length; i++) {
 				var oProject = new Project(aLoadedProjects[i]);
 				aProjects.push(oProject);

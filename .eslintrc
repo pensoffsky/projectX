@@ -6,6 +6,8 @@
 		"sap": true,
 		"jQuery": true,
 		"projectX": true,		
+		"QUnit": true,
+		"vkbeautify": true
 	},
 	"rules": {
 		"block-scoped-var": 1,

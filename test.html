@@ -15,6 +15,11 @@
     <script type="text/javascript" src="resources/sap/ui/thirdparty/qunit.js"></script>
     <script type="text/javascript" src="resources/sap/ui/qunit/qunit-junit.js"></script>
     <script type="text/javascript" src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+    <script src="3rdparty/blanket.min.js"></script>
+
+    <!-- load tested files manually to add the data-cover field to enable blanket test coverage feature -->
+    <script type="text/javascript" src="projectX/util/Storage.js" data-cover></script>
+    <script type="text/javascript" src="projectX/util/Request.js" data-cover></script>
 
     <script language="javascript">
    

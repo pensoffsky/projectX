@@ -68,7 +68,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oRequest.useProjectPrefixUrl = this.getUseProjectPrefixUrl();
 		oRequest.fetchCSRFToken = this.getFetchCSRFToken();
 		oRequest.url = this.getUrl();
-		oRequest.tags = this.getTags();
+		oRequest.tags = this.getTags(); //TODO remove this, not used
 		oRequest.requestBody = this.getRequestBody();
 		oRequest.scriptCode = this.getScriptCode();
 		oRequest.testScriptCode = this.getTestScriptCode();

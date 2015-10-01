@@ -166,11 +166,6 @@ sap.ui.define([
 		// /// Request Sending
 		// /////////////////////////////////////////////////////////////////////////////
 
-		Request.prototype.onBtnMetadataPress = function(oEvent) {
-			var oPopover = this.getView().byId("idMetadataPopover");
-			oPopover.openBy(this.getView().byId("idTextAreaUrl"));
-		};
-
 		/**
 		* called when the user clicks the "send request" button.
 		* clear the result form all assertions.
