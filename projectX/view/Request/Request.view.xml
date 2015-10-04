@@ -18,15 +18,23 @@
               <Label text=" {localUIModel>/request/mProperties/sapStatistics}"/>
               <ToolbarSpacer/>
               <Label text="Status: {localUIModel>/request/mProperties/status}
-              Time: {localUIModel>/request/mProperties/responseTime}ms"/>
+              Time: {localUIModel>/request/mProperties/responseTime}ms"
+              visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
               <Button text="Clear"
                       press="onBtnClearPress"
                       tooltip="Clear received data"
+                      visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"
                       />
               <Button text="Send Request"
                       press="onBtnSendPress"
                       type="Emphasized"
-                      tooltip="Send the request (F7)"/>
+                      tooltip="Send the request (F7)"
+                      visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
+              <Button text="Stop"
+                      press="onAbortRequest"
+                      type="Reject"
+                      visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === true}"
+                      />
             </Toolbar>
         </subHeader>
 

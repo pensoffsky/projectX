@@ -180,6 +180,7 @@ sap.ui.define([
 			this._oAssertionEditController.updateBindings();
 
 			var oDeferred = oRequest.execute(this._oProject);
+			this._localUIModel.updateBindings();
 			var that = this;
 			oDeferred.always(function(){
 				oRequest.checkAssertions();
@@ -199,6 +200,12 @@ sap.ui.define([
 				});
 			});
 
+		};
+		
+		Request.prototype.onAbortRequest = function() {
+			var oRequest = this._oRequest;
+			oRequest.abortRequest();
+			this._localUIModel.updateBindings();
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////

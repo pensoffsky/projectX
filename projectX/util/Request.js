@@ -39,7 +39,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				finalUrl : {type : "string", defaultValue : null},
 				finalRequestBody : {type : "string", defaultValue : null},
 				finalHttpMethod : {type : "string", defaultValue : null},
-				finalRequestHeaders : {type : "string", defaultValue : null}
+				finalRequestHeaders : {type : "string", defaultValue : null},
+				
+				//state
+				requestIsRunning : {type : "boolean", defaultValue : false}
 			},
 			events : {
 
@@ -50,6 +53,17 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			}
 		}
 	});
+
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// Members
+	// /////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * deferred object of the currently running request.
+	 * used to abort the request if needed.
+	 * @type {object}
+	 */
+	Request.prototype._oRequestDeferred = undefined;
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Public Methods
@@ -128,42 +142,61 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			aAssertions[i].resetTempData();
 		}
 	};
+	
+	/**
+	 * abort the current request
+	 */
+	Request.prototype.abortRequest = function() {
+		debugger
+		if(this._oRequestDeferred) {
+			this._oRequestDeferred.abort();
+		}
+	};
 
 
-Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorage) {	
-	var bFetchCSRFToken = this.getFetchCSRFToken();
-	if (!bFetchCSRFToken) {
-		//no csrf token required
-		return this._execute(oProject, oPreviousRequest, undefined, oSequenceStorage);
-	}
-	var sBaseUrl = oProject.getBaseUrl();
-	//create a CSRF request for sap gateway
-	var oCSRFDeferred = jQuery.ajax({
-		method: "GET",
-		headers:{
-              "X-Requested-With": "XMLHttpRequest",
-              "Content-Type": "application/atom+xml",
-              "DataServiceVersion": "2.0",
-              "X-CSRF-Token":"Fetch"
-						},
-		url: sBaseUrl
-	});
-	var oRetDeferred = jQuery.Deferred();
-	var that = this;
-	oCSRFDeferred.done(function(data, textStatus, jqXHR) {
-		var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
-		var oDeferred = that._execute(oProject, oPreviousRequest, sCSRFToken, oSequenceStorage);
-		oDeferred.always(function(){
-			oRetDeferred.resolve();
+	Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorage) {	
+		var that = this;
+		var bFetchCSRFToken = this.getFetchCSRFToken();
+		if (!bFetchCSRFToken) {
+			//no csrf token required
+			this.setRequestIsRunning(true);
+			this._oRequestDeferred = this._execute(oProject, oPreviousRequest, undefined, oSequenceStorage);
+			this._oRequestDeferred.always(function(){
+				that.setRequestIsRunning(false);
+			});
+			return this._oRequestDeferred;
+			
+		}
+		var sBaseUrl = oProject.getBaseUrl();
+		//create a CSRF request for sap gateway
+		var oCSRFDeferred = jQuery.ajax({
+			method: "GET",
+			headers:{
+	              "X-Requested-With": "XMLHttpRequest",
+	              "Content-Type": "application/atom+xml",
+	              "DataServiceVersion": "2.0",
+	              "X-CSRF-Token":"Fetch"
+							},
+			url: sBaseUrl
 		});
-	});
+		
+		var oRetDeferred = jQuery.Deferred();
+		oCSRFDeferred.done(function(data, textStatus, jqXHR) {
+			var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
+			that.setRequestIsRunning(true);
+			this._oRequestDeferred = that._execute(oProject, oPreviousRequest, sCSRFToken, oSequenceStorage);
+			this._oRequestDeferred.always(function(){
+				that.setRequestIsRunning(false);
+				oRetDeferred.resolve();
+			});
+		});
 
-	oCSRFDeferred.fail(function() {
-		oRetDeferred.reject("failed to fetch CSRF token from: " + sBaseUrl);
-	});
+		oCSRFDeferred.fail(function() {
+			oRetDeferred.reject("failed to fetch CSRF token from: " + sBaseUrl);
+		});
 
-	return oRetDeferred;
-};
+		return oRetDeferred;
+	};
 
 //TODO this method is to long! fix this
 	/**
