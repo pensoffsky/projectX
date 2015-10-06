@@ -3,7 +3,7 @@
 jQuery.sap.require("projectX.util.Request");
 
 QUnit.module("util/request", {
-    beforeEach: function() {
+    setup: function() {
         this.oRequest = new projectX.util.Request(
             {
                 name : "name1",
@@ -12,7 +12,7 @@ QUnit.module("util/request", {
             }
         );
     },
-    afterEach: function() {
+    teardown: function() {
     }
 });
 

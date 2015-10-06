@@ -84,7 +84,9 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			// 	var oRequestCopy = new projectX.util.Request(oRequest.serialize());
 			// 	aSelectedRequests.push(oRequestCopy);
 			// }
-			aSelectedRequests.push(oRequest);
+			if(oRequest) {
+				aSelectedRequests.push(oRequest);	
+			}
 		}
 		
 		this._localUIModel.setProperty("/selectedRequests", aSelectedRequests);
