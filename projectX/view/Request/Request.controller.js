@@ -150,6 +150,10 @@ sap.ui.define([
 		Request.prototype.onBeforeShow = function() {
 			var that = this;
 			this.getComponent().setKeyboardShortcutExecuteRequest(function(){
+				if (that._oRequest && that._oRequest.getRequestIsRunning()) {
+					//the request is already running, do not send
+					return;
+				}
 				sap.m.MessageToast.show("Sending request ...", {
 					animationDuration: 100,
 				    duration: 300

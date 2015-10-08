@@ -156,6 +156,29 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		return true;
 	};
 	
+	/**
+	 * Add a filter to a binding
+	 * @param  {function} FilterConstructor constructor function of sap.ui.model.Filter
+	 * @param  {object} oBinding          the binding from the control
+	 * @param  {[type]} vFilterOperator   filter operator from sap.ui.model.FilterOperator
+	 * @param  {string} sPropPath         the path to put the filter on
+	 * @param  {string} sQuery            the query to filter for
+	 */
+	Helper.addFilterToListBinding = function(FilterConstructor, oBinding, vFilterOperator, sPropPath ,sQuery) {
+		// add filter for search
+		var aFilters = [];
+
+		if (sQuery && sQuery.length > 0) {
+			var filter = new FilterConstructor(sPropPath,
+				vFilterOperator,
+				sQuery);
+			aFilters.push(filter);
+		}
+
+		// update list binding
+		oBinding.filter(aFilters, "Application");
+	};
+	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////

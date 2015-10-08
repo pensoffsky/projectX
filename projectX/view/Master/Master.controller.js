@@ -174,19 +174,12 @@ sap.ui.define(['jquery.sap.global',
 		};
 
 		Master.prototype._filterList = function(sQuery, oList){
-			// add filter for search
-			var aFilters = [];
-
-			if (sQuery && sQuery.length > 0) {
-				var filter = new sap.ui.model.Filter("mProperties/name",
-					sap.ui.model.FilterOperator.Contains,
-					sQuery);
-				aFilters.push(filter);
-			}
-
-			// update list binding
-			var binding = oList.getBinding("items");
-			binding.filter(aFilters, "Application");
+			Helper.addFilterToListBinding(sap.ui.model.Filter,
+				oList.getBinding("items"),
+				sap.ui.model.FilterOperator.Contains,
+				"mProperties/name",
+				sQuery
+			);
 		};
 
 		Master.prototype.onRequestSearch = function(oEvent) {
@@ -242,7 +235,6 @@ sap.ui.define(['jquery.sap.global',
 			this._confirmDeletion(fDeleteEntry);
 
 		};
-
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Segmented Button Event Handler

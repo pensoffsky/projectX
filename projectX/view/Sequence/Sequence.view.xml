@@ -62,7 +62,7 @@
 
 			<!-- Pre-Sequence Script -->
 			<Panel expandable="true"
-						 expanded="true"
+						 expanded="false"
 						 class="sapUiNoContentPadding"
 						 expand="onPanelPreSequenceScriptExpand">
 				<headerToolbar>
