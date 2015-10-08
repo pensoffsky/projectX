@@ -131,6 +131,31 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		return newPos;
 	};
 	
+	/**
+	 * scroll the sap.m.List control to the selected item.
+	 * @param  {object} oList list control
+	 * @return {boolen}       true if scroll function was called
+	 */
+	Helper.scrollSelectedItemOfListIntoView = function(oListCtrl) {
+		if (!oListCtrl) {
+			return false;
+		}
+	
+		var oSelectedItem = oListCtrl.getSelectedItem();
+		if (!oSelectedItem) {
+			return false;
+		}
+		var iIndex = oListCtrl.indexOfItem(oSelectedItem);
+		var oDomRef = oListCtrl.getItems()[iIndex].getDomRef();
+		
+		if (!oDomRef) {
+			return false;
+		}
+		
+		oDomRef.scrollIntoView();
+		return true;
+	};
+	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////

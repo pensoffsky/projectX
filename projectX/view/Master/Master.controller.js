@@ -102,6 +102,13 @@ sap.ui.define(['jquery.sap.global',
 		Master.prototype.onBeforeShow = function() {
 			var oListSequences = this.getView().byId("idListSequences");
 			var oListRequests = this.getView().byId("idListRequests");
+			
+			//attach event that scrolls the currently selected element into view after 
+			//the list update finished
+			oListRequests.attachEvent("updateFinished", function(){
+				Helper.scrollSelectedItemOfListIntoView(oListRequests);
+			});
+			
 			var oSorterName = new sap.ui.model.Sorter("mProperties/name", false);
 			oListSequences.getBinding("items").sort(oSorterName);
 			
