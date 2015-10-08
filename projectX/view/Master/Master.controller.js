@@ -108,6 +108,9 @@ sap.ui.define(['jquery.sap.global',
 			oListRequests.attachEvent("updateFinished", function(){
 				Helper.scrollSelectedItemOfListIntoView(oListRequests);
 			});
+			oListSequences.attachEvent("updateFinished", function(){
+				Helper.scrollSelectedItemOfListIntoView(oListSequences);
+			});
 			
 			var oSorterName = new sap.ui.model.Sorter("mProperties/name", false);
 			oListSequences.getBinding("items").sort(oSorterName);
