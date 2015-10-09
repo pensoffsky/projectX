@@ -68,6 +68,72 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'resources/', src: ['**'], dest: 'build/release/resources'}
 	    ],
 	  },
+      "sap.ui.core": {
+			files: [
+				{
+					cwd: "bower_components/openui5-sap.ui.core/resources",
+					src: [ "**/*" ],
+					dots: true,
+					expand: true,
+					dest: "resources/"
+				},
+			]
+		},
+		"sap.ui.layout": {
+			files: [
+				{
+					cwd: "bower_components/openui5-sap.ui.layout/resources",
+					src: [ "**/*" ],
+					dots: true,
+					expand: true,
+					dest: "resources/"
+				},
+			]
+		},
+		"sap.ui.table": {
+			files: [
+				{
+					cwd: "bower_components/openui5-sap.ui.table/resources",
+					src: [ "**/*" ],
+					dots: true,
+					expand: true,
+					dest: "resources/"
+				},
+			]
+		},
+		"sap.ui.unified": {
+			files: [
+				{
+					cwd: "bower_components/openui5-sap.ui.unified/resources",
+					src: [ "**/*" ],
+					dots: true,
+					expand: true,
+					dest: "resources/"
+				},
+			]
+		},
+		"sap.m": {
+			files: [
+				{
+					cwd: "bower_components/openui5-sap.m/resources",
+					src: [ "**/*" ],
+					dots: true,
+					expand: true,
+					dest: "resources/"
+				},
+			]
+		},
+		"bluecrystal": {
+			files: [
+				{
+					cwd: "bower_components/openui5-bluecrystal/resources",
+					src: [ "**/*" ],
+					dots: true,
+					expand: true,
+					dest: "resources/"
+				},
+			]
+		}
 	},
     'build-electron-app': {
         options: {
@@ -94,5 +160,9 @@ module.exports = function(grunt) {
   // Default task(s).
   grunt.registerTask('default', ['browserSync', 'connect', 'watch']);
   
-  grunt.registerTask('build', ['copy', 'build-electron-app']);
+  //build the electron shell app for win and os x
+  grunt.registerTask('build', ['copy:main', 'build-electron-app']);
+  
+  //after bower install copy the resources from the bower folder into the resources folder
+  grunt.registerTask('copyresources', ['copy:sap.ui.core', 'copy:sap.ui.layout', 'copy:sap.ui.table', 'copy:sap.ui.unified', 'copy:sap.m', 'copy:bluecrystal']);
 };

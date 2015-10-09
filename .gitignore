@@ -19,3 +19,4 @@
 # Ignore build folders
 cache
 build
+bower_components
