@@ -1,9 +1,9 @@
 <c:FragmentDefinition xmlns:c="sap.ui.core" xmlns="sap.m">
-	<Text text="{mProperties/httpMethod}" wrapping="false" width="2.2rem" class="httpMethodTag get" visible="{= ${mProperties/httpMethod} === 'GET'}"/>
-	<Text text="{mProperties/httpMethod}" wrapping="false" width="2.6rem" class="httpMethodTag post" visible="{= ${mProperties/httpMethod} === 'POST'}"/>
-	<Text text="{mProperties/httpMethod}" wrapping="false" width="2.2rem" class="httpMethodTag put" visible="{= ${mProperties/httpMethod} === 'PUT'}"/>
-	<Text text="{mProperties/httpMethod}" wrapping="false" width="3.0rem" class="httpMethodTag patch" visible="{= ${mProperties/httpMethod} === 'PATCH'}"/>
-	<Text text="{mProperties/httpMethod}" wrapping="false" width="3.4rem" class="httpMethodTag delete" visible="{= ${mProperties/httpMethod} === 'DELETE'}"/>
-	<Text text="{mProperties/httpMethod}" wrapping="false" width="2.6rem" class="httpMethodTag head" visible="{= ${mProperties/httpMethod} === 'HEAD'}"/>
-	<Text text="{mProperties/httpMethod}" wrapping="false" width="3.5rem" class="httpMethodTag options" visible="{= ${mProperties/httpMethod} === 'OPTIONS'}"/>
+	<ObjectStatus text="{mProperties/httpMethod}" class="httpMethodTag get" visible="{= ${mProperties/httpMethod} === 'GET'}"/>
+	<ObjectStatus text="{mProperties/httpMethod}" class="httpMethodTag post" visible="{= ${mProperties/httpMethod} === 'POST'}"/>
+	<ObjectStatus text="{mProperties/httpMethod}" class="httpMethodTag put" visible="{= ${mProperties/httpMethod} === 'PUT'}"/>
+	<ObjectStatus text="{mProperties/httpMethod}" class="httpMethodTag patch" visible="{= ${mProperties/httpMethod} === 'PATCH'}"/>
+	<ObjectStatus text="{mProperties/httpMethod}" class="httpMethodTag delete" visible="{= ${mProperties/httpMethod} === 'DELETE'}"/>
+	<ObjectStatus text="{mProperties/httpMethod}" class="httpMethodTag head" visible="{= ${mProperties/httpMethod} === 'HEAD'}"/>
+	<ObjectStatus text="{mProperties/httpMethod}" class="httpMethodTag options" visible="{= ${mProperties/httpMethod} === 'OPTIONS'}"/>
 </c:FragmentDefinition>

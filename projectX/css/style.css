@@ -49,44 +49,73 @@
 .sapMFlexItem .httpMethodTag,
 .sapMTBNewFlex .httpMethodTag {
   font-size: 0.6rem;
-  padding: 0.1rem 0.4rem;
   display: inline-block;
-  border-radius: 100px;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+.sapMFlexItem .get .sapMObjStatusText,
+.sapMTBNewFlex .get .sapMObjStatusText {
+  color: #009525;
 }
 .sapMFlexItem .get,
 .sapMTBNewFlex .get {
-  color: #009525;
-  box-shadow: 0px 0px 0.2rem #009525;
+  border-color: #009525;
+  box-shadow: 0 0 0.2rem #009525;
+}
+.sapMFlexItem .post .sapMObjStatusText,
+.sapMTBNewFlex .post .sapMObjStatusText {
+  color: #0077cd;
 }
 .sapMFlexItem .post,
 .sapMTBNewFlex .post {
-  color: #0077cd;
-  box-shadow: 0px 0px 0.2rem #0077cd;
+  border-color: #0077cd;
+  box-shadow: 0 0 0.2rem #0077cd;
+}
+.sapMFlexItem .put .sapMObjStatusText,
+.sapMTBNewFlex .put .sapMObjStatusText {
+  color: #cba600;
 }
 .sapMFlexItem .put,
 .sapMTBNewFlex .put {
-  color: #cba600;
-  box-shadow: 0px 0px 0.2rem #cba600;
+  border-color: #cba600;
+  box-shadow: 0 0 0.2rem #cba600;
+}
+.sapMFlexItem .patch .sapMObjStatusText,
+.sapMTBNewFlex .patch .sapMObjStatusText {
+  color: #00c1cd;
 }
 .sapMFlexItem .patch,
 .sapMTBNewFlex .patch {
-  color: #00c1cd;
-  box-shadow: 0px 0px 0.2rem #00c1cd;
+  border-color: #00c1cd;
+  box-shadow: 0 0 0.2rem #00c1cd;
+}
+.sapMFlexItem .delete .sapMObjStatusText,
+.sapMTBNewFlex .delete .sapMObjStatusText {
+  color: #cd0000;
 }
 .sapMFlexItem .delete,
 .sapMTBNewFlex .delete {
-  color: #cd0000;
-  box-shadow: 0px 0px 0.2rem #cd0000;
+  border-color: #cd0000;
+  box-shadow: 0 0 0.2rem #cd0000;
+}
+.sapMFlexItem .head .sapMObjStatusText,
+.sapMTBNewFlex .head .sapMObjStatusText {
+  color: #151515;
 }
 .sapMFlexItem .head,
 .sapMTBNewFlex .head {
   color: #151515;
-  box-shadow: 0px 0px 0.2rem #151515;
+  box-shadow: 0 0 0.2rem #151515;
+}
+.sapMFlexItem .options .sapMObjStatusText,
+.sapMTBNewFlex .options .sapMObjStatusText {
+  color: #919191;
 }
 .sapMFlexItem .options,
 .sapMTBNewFlex .options {
-  color: #919191;
-  box-shadow: 0px 0px 0.2rem #919191;
+  border-color: #919191;
+  box-shadow: 0 0 0.2rem #919191;
 }
 .sapMFlexItem .httpMethodTag {
   margin-bottom: 0.3rem;

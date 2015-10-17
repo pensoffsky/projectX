@@ -80,41 +80,68 @@
 /// HTTP method style
 ///////////////////////////////////////////////////
 // set http method style for request and sequence list items
-.sapMFlexItem, .sapMTBNewFlex {
-  .httpMethodTag {
-    font-size: 0.6rem;
-    padding: 0.1rem 0.4rem;
-    display: inline-block;
-    border-radius: 100px;
-  }
-  .get {
-    color : #009525;
-    box-shadow : 0px 0px 0.2rem #009525;
-  }
-  .post {
-    color : #0077cd;
-    box-shadow : 0px 0px 0.2rem #0077cd;
-  }
-  .put {
-    color : #cba600;
-    box-shadow : 0px 0px 0.2rem #cba600;
-  }
-  .patch {
-    color : #00c1cd;
-    box-shadow : 0px 0px 0.2rem #00c1cd;
-  }
-  .delete {
-    color : #cd0000;
-    box-shadow : 0px 0px 0.2rem #cd0000;
-  }
-  .head {
-    color : #151515;
-    box-shadow : 0px 0px 0.2rem #151515;
-  }
-  .options {
-    color : #919191;
-    box-shadow : 0px 0px 0.2rem #919191;
-  }
+.sapMFlexItem,
+.sapMTBNewFlex {
+
+	.httpMethodTag {
+		font-size: 0.6rem;
+		// padding: 0.1rem 0.4rem;
+		display: inline-block;
+		// border-radius: 100px;
+		// font-size: 0.7rem;
+		border: 1px solid;
+		border-radius: 4px;
+		padding: 2px 4px;
+	}
+	.get .sapMObjStatusText {
+		color: #009525;
+    }
+    .get {
+		border-color: #009525;
+		box-shadow: 0 0 0.2rem #009525;
+	}
+	.post .sapMObjStatusText {
+		color: #0077cd;
+	}
+    .post {
+        border-color: #0077cd;
+		box-shadow: 0 0 0.2rem #0077cd;
+    }
+	.put  .sapMObjStatusText {
+    	color: #cba600;
+	}
+	.put {
+    	border-color: #cba600;
+    	box-shadow: 0 0 0.2rem #cba600;
+	}
+	.patch .sapMObjStatusText {
+		color: #00c1cd;
+	}
+	.patch {
+		border-color: #00c1cd;
+		box-shadow: 0 0 0.2rem #00c1cd;
+	}
+	.delete .sapMObjStatusText {
+		color: #cd0000;
+	}
+	.delete {
+		border-color: #cd0000;
+		box-shadow: 0 0 0.2rem #cd0000;
+	}
+	.head .sapMObjStatusText {
+		color: #151515;
+	}
+	.head {
+		color: #151515;
+		box-shadow: 0 0 0.2rem #151515;
+	}
+	.options .sapMObjStatusText {
+		color: #919191;
+	}
+	.options {
+		border-color: #919191;
+		box-shadow: 0 0 0.2rem #919191;
+	}
 }
 
 // set margin for http method tag in sequence list item

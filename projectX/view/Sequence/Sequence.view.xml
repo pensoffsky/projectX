@@ -145,15 +145,12 @@
 					<ColumnListItem vAlign="Top">
 						<cells>
 							<VBox>
-								<HBox>
+								<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
 									<ObjectIdentifier
 										title="{localUIModel>mProperties/name}"
 										text="{localUIModel>mProperties/finalUrl}"
 										titleActive="true"
 										titlePress="onRequestNamePress"/>
-									<c:Fragment fragmentName="projectX.view.Sequence.SequenceHttpMethodTag" type="XML"/>
-								</HBox>
-								
 							</VBox>
 							<c:Icon
 								src="{ parts : [
