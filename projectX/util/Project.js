@@ -13,7 +13,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				identifier : {type : "int", defaultValue : null},
 				name : {type : "string", defaultValue : null},
 				baseUrl : {type : "string", defaultValue : null},
-				prefixUrl : {type : "string", defaultValue : null}
+				prefixUrl : {type : "string", defaultValue : null},
+				username : {type : "string", defaultValue : null},
+				password : {type : "string", defaultValue : null},
+				useBasicAuthentication : {type : "boolean", defaultValue : null}
 			},
 			events : {
 
@@ -124,6 +127,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oProject.name = this.getName();
 		oProject.baseUrl = this.getBaseUrl();
 		oProject.prefixUrl = this.getPrefixUrl();
+		oProject.username = this.getUsername();
+		oProject.password = this.getPassword();
+		oProject.useBasicAuthentication = this.getUseBasicAuthentication();
 
 		var aSerializedRequests = [];
 		var aRequests = this.getRequests();

@@ -227,6 +227,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		if (sCSRFToken) {
 			oRequestHeaders["x-csrf-token"] = sCSRFToken;
 		}
+		
+		//add basic authentication header if it was set in the project
+		if(oProject.getUseBasicAuthentication() === true) {
+			debugger
+			oRequestHeaders["Authorization"] = "Basic " + btoa(oProject.getUsername() + ":" + oProject.getPassword());
+		}
 
 		//create the url. use prefix from project if enabled by user
 		var sUrl = this.getUrl();
