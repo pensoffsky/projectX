@@ -19,4 +19,5 @@
 # Ignore build folders
 cache
 build
+buildGw
 bower_components

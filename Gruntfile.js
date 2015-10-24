@@ -51,7 +51,17 @@ module.exports = function(grunt) {
           base: './',
           keepalive: false
         }
-      }
+      },
+        // runt static build server which serves a browsable directory
+        buildGwServer: {
+            options: {
+                port: 8000,
+                useAvailablePort: true,
+                base: "buildGw",
+                directory: "buildGw",
+                keepalive: true
+            }
+        }
     },
     copy: { // copy all files needed for the deployment into the build/release folder
 	  main: {
@@ -66,7 +76,7 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'projectX/', src: ['**'], dest: 'build/release/projectX'},
           {expand: true, cwd: '3rdparty/', src: ['**'], dest: 'build/release/3rdparty'},
           {expand: true, cwd: 'resources/', src: ['**'], dest: 'build/release/resources'}
-	    ],
+	    ]
 	  },
       "sap.ui.core": {
 			files: [
@@ -76,7 +86,7 @@ module.exports = function(grunt) {
 					dots: true,
 					expand: true,
 					dest: "resources/"
-				},
+				}
 			]
 		},
 		"sap.ui.layout": {
@@ -87,7 +97,7 @@ module.exports = function(grunt) {
 					dots: true,
 					expand: true,
 					dest: "resources/"
-				},
+				}
 			]
 		},
 		"sap.ui.table": {
@@ -98,7 +108,7 @@ module.exports = function(grunt) {
 					dots: true,
 					expand: true,
 					dest: "resources/"
-				},
+				}
 			]
 		},
 		"sap.ui.unified": {
@@ -109,7 +119,7 @@ module.exports = function(grunt) {
 					dots: true,
 					expand: true,
 					dest: "resources/"
-				},
+				}
 			]
 		},
 		"sap.m": {
@@ -120,7 +130,7 @@ module.exports = function(grunt) {
 					dots: true,
 					expand: true,
 					dest: "resources/"
-				},
+				}
 			]
 		},
 		"bluecrystal": {
@@ -131,23 +141,67 @@ module.exports = function(grunt) {
 					dots: true,
 					expand: true,
 					dest: "resources/"
-				},
+				}
 			]
-		}
+		},
+        buildGw: {
+            files: [
+                // index.hml
+                {
+                    src: ['index.html'],
+                    dest: 'buildGw/release/index.html',
+                    filter: 'isFile'
+                },
+                //css, i18n, util, view folders
+                {
+                    cwd: 'projectX',
+                    src: ['**/*'],
+                    dots: true,
+                    expand: true,
+                    dest: 'buildGw/release/projectX/'
+                },
+                //Component: route matching
+                {
+                    src: ['projectX/Component.js', 'projectX/MyRouter.js'],
+                    dest: 'buildGw/release/projectX/',
+                    filter: 'isFile'
+                },
+                //3rd party components
+                {
+                    cwd: '3rdparty',
+                    src: ['**/*'],
+                    dots: false,
+                    expand: true,
+                    dest: 'buildGw/release/3rdparty/'
+                }
+            ] // copy:buildGw:files
+        } // copy:buildGw
 	},
     'build-electron-app': {
         options: {
-            platforms: ["darwin", "win32"],
+            platforms: ['darwin', 'win32'],
             app_dir: "./build/release",
             build_dir: "./build/electron"
         }
+    },
+    // clean tasks
+    clean: {
+        buildGw: ['buildGw']
+    },
+    // zip tasks
+    zip: {
+        'buildGw': {
+            cwd: "buildGw/release/",
+            src: ['buildGw/release/**'],
+            dest: 'buildGw/release_projectX.zip'
+        }
     }
-  });    
-  
+  });
+
   // Load the plugin that provides the "browserSync" task.
   grunt.loadNpmTasks('grunt-browser-sync');
   // Load the plugin that provides the "less" task.
-  grunt.loadNpmTasks('grunt-contrib-less');  
+  grunt.loadNpmTasks('grunt-contrib-less');
   // Load the plugin that provides the "watch" task.
   grunt.loadNpmTasks('grunt-contrib-watch');
   // Load the plugin that provides the "connect" task.
@@ -156,13 +210,25 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   // Load the plugin that provides the "build-electron-app" task
   grunt.loadNpmTasks('grunt-electron-app-builder');
+  // Load the plugin that provides the clean task
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  // Load the plugin that provides the zip task
+  grunt.loadNpmTasks('grunt-zip');
 
   // Default task(s).
   grunt.registerTask('default', ['browserSync', 'connect', 'watch']);
-  
-  //build the electron shell app for win and os x
+
+  // build tasks for Gateway package
+  grunt.registerTask('buildGw', [
+      'clean:buildGw',
+      'copy:buildGw',
+      'zip:buildGw',
+      'connect:buildGwServer'
+  ]);
+
+  // build the electron shell app for win and os x
   grunt.registerTask('build', ['copy:main', 'build-electron-app']);
-  
-  //after bower install copy the resources from the bower folder into the resources folder
+
+  // after bower install copy the resources from the bower folder into the resources folder
   grunt.registerTask('copyresources', ['copy:sap.ui.core', 'copy:sap.ui.layout', 'copy:sap.ui.table', 'copy:sap.ui.unified', 'copy:sap.m', 'copy:bluecrystal']);
 };
