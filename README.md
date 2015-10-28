@@ -24,3 +24,10 @@ grunt
 ```
 grunt build
 ```
+
+# Build BSP-application for SAP Gateway
+The following statement, executes the 'buildGw' task. It builds an BSP compatible application, ready for uploading to SAP Gateway.
+The task runs endless in your Terminal and provides the ZIP file (release_projectX.zip), which can be uploaded with report /UI5/UI5_REPOSITORY_LOAD_HTTP. You can end the task by pressing CTRL + C.
+```
+grunt buildGw
+```
