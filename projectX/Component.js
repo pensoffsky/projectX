@@ -314,8 +314,9 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	 */
 	duplicateRequest : function(oRequest) {
 		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
-		oSelectedProject.addCopyOfRequest(oRequest);
+		var oNewRequest = oSelectedProject.addCopyOfRequest(oRequest);
 		this._oModel.updateBindings();
+		return oNewRequest;
 	},
 
 	/**

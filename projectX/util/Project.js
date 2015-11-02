@@ -84,6 +84,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oNewRequest.setIdentifier(iNewID);
 		oNewRequest.setName(oNewRequest.getName() + " (copy)");
 		this.addRequest(oNewRequest);
+		return oNewRequest;
 	};
 
 	/**

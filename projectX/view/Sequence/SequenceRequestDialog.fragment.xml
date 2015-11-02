@@ -1,4 +1,4 @@
-<!-- Popover that shows the detailed data of a request on the sequence view -->
+<!-- Dialog that shows the detailed data of a request on the sequence view -->
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">

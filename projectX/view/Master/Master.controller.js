@@ -196,7 +196,8 @@ sap.ui.define(['jquery.sap.global',
 		Master.prototype.onBtnDuplicateRequestPress = function(oEvent) {
 			var oRequest = Helper.getBoundObjectForItem(oEvent.getSource());
 			var oComponent = this.getComponent();
-			oComponent.duplicateRequest(oRequest);
+			var oNewRequest = oComponent.duplicateRequest(oRequest);
+			this._selectRequestByReqId("idListRequests", oNewRequest.getIdentifier());
 		};
 
 		Master.prototype.onBtnDeleteRequestPress = function(oEvent) {
@@ -280,6 +281,8 @@ sap.ui.define(['jquery.sap.global',
 			if (aRequests.length === 1){
 				//the user added the first request. Select this request.
 				this._selectFirstRequest();
+			} else {
+				this._selectRequestByReqId("idListRequests", oNewRequest.getIdentifier());
 			}
 		};
 
@@ -347,11 +350,10 @@ sap.ui.define(['jquery.sap.global',
 		 };
 
 		Master.prototype._selectFirstRequest = function () {
-			var bItemSelected = this._selectFirstItem("idListRequests", "");
+			var bItemSelected = this._selectFirstItem("idListRequests");
 			if (bItemSelected === true) {
 				this.onRequestsListSelect();
 			} else {
-				//TODO detail page to "NOT FOUND"
 				this.navToRequestNotFound();
 			}
 		};
@@ -381,7 +383,7 @@ sap.ui.define(['jquery.sap.global',
 			return false;
 		};
 
-		
+		//TODO make this generic
 		/**
 		 * set the listitem that represents the given requestID
 		 * @param  {string} sListId		id of the list
@@ -405,6 +407,7 @@ sap.ui.define(['jquery.sap.global',
 					this._removeSelectionFromRequestList();
 					this._removeSelectionFromSequenceList();
 					oList.setSelectedItem(aItems[i], true);
+					this.onRequestsListSelect();
 					return true;
 				}
 			}
