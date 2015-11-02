@@ -210,6 +210,10 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 		this._localUIModel.updateBindings();
 	},
 
+	onCloseDialog : function () {
+		this._oDialog.close();
+	},
+
 	/**
 	* the user clicked on the title of a specific request.
 	* expand the item to show the results of the request.
@@ -217,6 +221,21 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 	onRequestNamePress : function (oEvent) {
 		var oObjectHeader = oEvent.getSource();
 		var sPath = oEvent.getSource().getBindingContext("localUIModel").getPath();
+		
+		// create popover
+		if (!this._oDialog) {
+			this._oDialog = sap.ui.xmlfragment("projectX.view.Sequence.SequenceRequestDialog", this);
+			this.getView().addDependent(this._oDialog);
+		}
+
+		this._oDialog.setModel(this._localUIModel);
+		this._oDialog.bindElement(sPath);
+		// delay because addDependent will do a async rerendering and the actionSheet will immediately close without it.
+		jQuery.sap.delayedCall(0, this, function () {
+			this._oDialog.open();
+		});
+		return;
+		
 		
 		// create popover
 		if (!this._oPopover) {

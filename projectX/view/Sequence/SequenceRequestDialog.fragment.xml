@@ -2,12 +2,14 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<Popover
+	<Dialog
 		title="{mProperties/name}"
 		class="sapUiContentPadding"
-		placement="Top"
 		contentWidth="80%"
 		>
+		<beginButton>
+			<Button text="Close" press="onCloseDialog"/>
+		</beginButton>
 		<VBox>
 			<Label text=" {mProperties/sapStatistics}"
 						visible="{= ${mProperties/sapStatistics/length} > 0}"
@@ -47,5 +49,5 @@
 					</HBox>
 			</VBox>
 		</VBox>
-	</Popover>
+	</Dialog>
 </core:FragmentDefinition>
