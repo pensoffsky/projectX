@@ -1,11 +1,11 @@
 {
   "name": "openui5 resources",
   "dependencies": {
-    "openui5-sap.ui.core": "openui5/packaged-sap.ui.core#~1.28.19",
-    "openui5-sap.m": "openui5/packaged-sap.m#~1.28.19",
-    "openui5-sap.ui.table": "openui5/packaged-sap.ui.table#~1.28.19",
-    "openui5-sap.ui.unified": "openui5/packaged-sap.ui.unified#~1.28.19",
-    "openui5-sap.ui.layout": "openui5/packaged-sap.ui.layout#~1.28.19",
-    "openui5-bluecrystal": "openui5/packaged-themelib_sap_bluecrystal#~1.28.19"
+    "openui5-sap.ui.core": "openui5/packaged-sap.ui.core#~1.28.22",
+    "openui5-sap.m": "openui5/packaged-sap.m#~1.28.22",
+    "openui5-sap.ui.table": "openui5/packaged-sap.ui.table#~1.28.22",
+    "openui5-sap.ui.unified": "openui5/packaged-sap.ui.unified#~1.28.22",
+    "openui5-sap.ui.layout": "openui5/packaged-sap.ui.layout#~1.28.22",
+    "openui5-bluecrystal": "openui5/packaged-themelib_sap_bluecrystal#~1.28.22"
   }
 }
