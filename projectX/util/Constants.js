@@ -245,10 +245,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	/*
 	 * Constants for the request header value for ACCEPT-LANGUAGE field
 	 */
-	Constants.REQUEST_HEADER_VALUE_CH = "ch";
-	Constants.REQUEST_HEADER_VALUE_DE = "de";
-	Constants.REQUEST_HEADER_VALUE_EN = "en";
-	Constants.REQUEST_HEADER_VALUE_FR = "fr";
+	Constants.REQUEST_HEADER_VALUE_CH = "CH";
+	Constants.REQUEST_HEADER_VALUE_DE = "DE";
+	Constants.REQUEST_HEADER_VALUE_EN = "EN";
+	Constants.REQUEST_HEADER_VALUE_FR = "FR";
 
 	/**
 	* array of value-keys for ACCEPT-LANGUAGE field in select control.
@@ -414,7 +414,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 					"var variable1 = seqStorage.VARNAME;"
 		}
 	];
-	
+
 	/**
 	 * array of script examples used for adding the examples to the javascript pre sequence script text area.
 	 * @type {Array}
