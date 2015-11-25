@@ -1,4 +1,3 @@
-
 sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/util/Assertion', 'projectX/util/RequestHeader', 'projectX/util/Constants'],
 	function(jQuery, MyManagedObject, Assertion, RequestHeader, Constants) {
 	"use strict";
@@ -147,7 +146,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	 * abort the current request
 	 */
 	Request.prototype.abortRequest = function() {
-		debugger
 		if(this._oRequestDeferred) {
 			this._oRequestDeferred.abort();
 		}
