@@ -186,6 +186,7 @@ module.exports = function(grunt) {
     },
     // clean tasks
     clean: {
+        build: ['build'],
         buildGw: ['buildGw']
     },
     // zip tasks
@@ -193,7 +194,17 @@ module.exports = function(grunt) {
         'buildGw': {
             cwd: "buildGw/release/",
             src: ['buildGw/release/**'],
-            dest: 'buildGw/release_projectX.zip'
+            dest: 'release/projectX-Gateway.zip'
+        },
+        'buildElectronDarwin': {
+            cwd: "build/Electron/",
+            src: ['build/Electron/darwin/**'],
+            dest: 'release/projectX-electron-mac.zip'
+        },
+        'buildElectronWin32': {
+            cwd: "build/Electron/",
+            src: ['build/Electron/win32/**'],
+            dest: 'release/projectX-electron-win32.zip'
         }
     }
   });
@@ -215,20 +226,33 @@ module.exports = function(grunt) {
   // Load the plugin that provides the zip task
   grunt.loadNpmTasks('grunt-zip');
 
-  // Default task(s).
+  // Default task for development, run http servers and less compiler
   grunt.registerTask('default', ['browserSync', 'connect:server', 'watch']);
 
   // build tasks for Gateway package
   grunt.registerTask('buildGw', [
       'clean:buildGw',
       'copy:buildGw',
-      'zip:buildGw',
-      'connect:buildGwServer'
+      'zip:buildGw'
+      //'connect:buildGwServer' //why do we start a server here? isnt this just a normal build task?
   ]);
 
-  // build the electron shell app for win and os x
-  grunt.registerTask('build', ['copy:main', 'build-electron-app']);
+  // build the electron shell app for win and os x, create zip and copy to release folder on root
+  grunt.registerTask('build', [
+      'clean:build',
+      'copy:main',
+      'build-electron-app',
+      'zip:buildElectronDarwin',
+      'zip:buildElectronWin32'
+  ]);
 
   // after bower install copy the resources from the bower folder into the resources folder
-  grunt.registerTask('copyresources', ['copy:sap.ui.core', 'copy:sap.ui.layout', 'copy:sap.ui.table', 'copy:sap.ui.unified', 'copy:sap.m', 'copy:bluecrystal']);
+  grunt.registerTask('copyresources', [
+      'copy:sap.ui.core', 
+      'copy:sap.ui.layout', 
+      'copy:sap.ui.table', 
+      'copy:sap.ui.unified', 
+      'copy:sap.m', 
+      'copy:bluecrystal'
+  ]);
 };
