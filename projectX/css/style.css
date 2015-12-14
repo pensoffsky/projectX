@@ -2,16 +2,24 @@
   background-color: #fff !important;
   background-image: none !important;
 }
-.sapMGlobalBackgroundColor,
 .sapUiFormResGrid > div {
-  background-color: #f0fbff !important;
+  background-color: transparent !important;
   background-image: none !important;
 }
-.sapMSubHeader-CTX {
-  background-color: #f0fbff !important;
+.sapUiFormResGrid > div {
+  background-color: transparent !important;
 }
-.sentDataBackground .sapUiFormResGrid > div {
-  background-color: #FCFEFF !important;
+.sapMSubHeader-CTX {
+  background-color: white !important;
+  border-style: solid;
+  border-width: 0px;
+  border-top-width: 1px;
+  border-color: #cdcdcd;
+}
+.sapUiUfdShellBackground,
+.sapMGlobalBackgroundColor {
+  background-color: transparent !important;
+  background-image: none !important;
 }
 .sapMSplitContainerMaster {
   width: 25%;

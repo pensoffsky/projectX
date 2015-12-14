@@ -216,7 +216,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-zip');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserSync', 'connect', 'watch']);
+  grunt.registerTask('default', ['browserSync', 'connect:server', 'watch']);
 
   // build tasks for Gateway package
   grunt.registerTask('buildGw', [

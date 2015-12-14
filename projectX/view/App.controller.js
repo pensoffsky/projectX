@@ -109,7 +109,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 			var dialog = new sap.m.Dialog({
 		      title: 'Project',
 		      contentWidth: "90%",
-		      contentHeight: "250px",
+		      contentHeight: "500px",
+			  resizable: true,
+			  draggable: true,
 		      content: oView,
 		      beginButton: new sap.m.Button({
 		        text: 'OK',
