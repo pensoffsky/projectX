@@ -49,6 +49,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 						defaultValue: true
 					},
 					
+					highlightActiveLine: {
+						type: "boolean",
+						defaultValue: true
+					},
+					
 					fontSize: {
 						type: "int",
 						defaultValue: 12
@@ -84,6 +89,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 			
 			this._editor.renderer.setShowGutter(this.getShowGutter());
 			this._editor.setFontSize(this.getFontSize()); 
+			this._editor.setHighlightActiveLine(this.getHighlightActiveLine());
 
 
 			if (this.getAutoHeightMode()) {

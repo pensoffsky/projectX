@@ -47,6 +47,9 @@
   margin-bottom: 3px;
   min-height: 1.5rem;
 }
+.projectXRequestScrollContainer {
+  background-color: #FAFAFA;
+}
 .projectXBorder {
   border-style: solid;
   border-width: 0px;
@@ -55,12 +58,20 @@
 }
 .projectXRequestStuffContainer {
   margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
 }
 .projectXRequestStuffContainer .sapMITBTextOnly {
   margin-top: 0px;
 }
+.projectXRequestStatusContainer {
+  margin-left: 1rem;
+}
+.projectXRequestStatusContainer .projectXRequestStatusText {
+  margin-left: 1rem;
+}
 .projectXRequestResponseContainer {
-  margin-top: 1rem;
+  background-color: white;
 }
 .projectXRequestResponseContainer .sapMITBTextOnly {
   margin-top: 0px;

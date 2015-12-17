@@ -13,75 +13,62 @@
           enableScrolling="false"
           showHeader="false"
           title="{localUIModel>/name}">
-        <subHeader>
-            <Toolbar>
-              <Label text=" {localUIModel>/request/mProperties/sapStatistics}"/>
-              <ToolbarSpacer/>
-              <Label text="Status: {localUIModel>/request/mProperties/status}
-              Time: {localUIModel>/request/mProperties/responseTime}ms"
-              visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
-              <Button text="Clear"
-                      press="onBtnClearPress"
-                      tooltip="Clear received data"
-                      visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"
-                      />
-              <Button text="Send Request"
-                      press="onBtnSendPress"
-                      type="Emphasized"
-                      tooltip="Send the request (F7)"
-                      visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
-              <Button text="Stop"
-                      press="onAbortRequest"
-                      type="Reject"
-                      visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === true}"
-                      />
-            </Toolbar>
-        </subHeader>
-
         <content>
 
+            <FlexBox width="100%">
+                <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
+                        items="{localUIModel>/HTTP_METHODS}"
+                        change="onHttpMethodChange"
+                       >
+                        <layoutData>
+                            <FlexItemData growFactor="0" />
+                        </layoutData>
+                    <c:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
+                </Select>
+                <custom:AceEditor width="100%" height="auto"
+                                  mode="text"
+                                  readOnly="false"
+                                  value="{localUIModel>/request/mProperties/url}"
+                                  class="projectXRequestUrlInput"
+                                  showGutter="false"
+                                  autoHeightMode="true"
+                                  enableWrapMode="true"
+                                  fontSize="16"
+                                  highlightActiveLine="false"
+                                  >
+                    <custom:layoutData>
+                        <FlexItemData growFactor="1" />
+                    </custom:layoutData>
+                </custom:AceEditor>
+                
+                <HBox>
+                    <layoutData>
+                        <FlexItemData growFactor="0"/>
+                    </layoutData>
+                    <Button text="Send Request"
+                            press="onBtnSendPress"
+                            type="Emphasized"
+                            tooltip="Send the request (F7)"
+                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
+                    <Button text="Stop Request"
+                            press="onAbortRequest"
+                            type="Reject"
+                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === true}"
+                            />
+                </HBox>
+                
+            </FlexBox> 
+
+
             <ScrollContainer
+                    class="projectXRequestScrollContainer"
                     visible="{localUIModel>/requestVisible}"
                     height="100%"
                     width="100%"
                     horizontal="false"
                     vertical="true">
                     
-                <FlexBox width="100%">
-                    <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
-                            items="{localUIModel>/HTTP_METHODS}"
-                            change="onHttpMethodChange"
-                            width="150px">
-                            <layoutData>
-                                <FlexItemData growFactor="0" />
-                            </layoutData>
-                        <c:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
-                    </Select>
-                    <!-- <TextArea value="{localUIModel>/request/mProperties/url}"
-                            id="idTextAreaUrl"
-                            placeholder="Enter URL here ..."
-                            rows="5"
-                            width="100%"
-                            >
-                            <layoutData>
-                                <FlexItemData growFactor="1" />
-                            </layoutData>
-                    </TextArea> -->
-                    <custom:AceEditor width="100%" height="auto"
-                                      mode="text"
-                                      readOnly="false"
-                                      value="{localUIModel>/request/mProperties/url}"
-                                      class="projectXRequestUrlInput"
-                                      showGutter="false"
-                                      autoHeightMode="true"
-                                      enableWrapMode="true"
-                                      fontSize="16"
-                                      >
-                        <custom:layoutData>
-                            <FlexItemData growFactor="1" />
-                        </custom:layoutData>
-                    </custom:AceEditor>
-                </FlexBox> 
+                
 
                 <IconTabBar
                     class="sapUiNoContentPadding projectXBorder projectXRequestStuffContainer"
@@ -164,7 +151,33 @@
                         </items>
                 </IconTabBar>
 
+                <HBox alignItems="Center" class="projectXRequestStatusContainer">
+                    
+                    <!-- <Button text="Send Request"
+                            press="onBtnSendPress"
+                            type="Emphasized"
+                            tooltip="Send the request (F7)"
+                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
+                    <Button text="Stop Request"
+                            press="onAbortRequest"
+                            type="Reject"
+                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === true}"
+                            /> -->
+                    <Button text="Clear"
+                            press="onBtnClearPress"
+                            tooltip="Clear received data"
+                            enabled="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"
+                            />
+                    <ObjectStatus
+                        class="projectXRequestStatusText"
+        				text="Status: {localUIModel>/request/mProperties/status}
+                                Time: {localUIModel>/request/mProperties/responseTime}ms"
+        				state="None"
+                        visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}" />
+                </HBox>
 
+                <Text text="{localUIModel>/request/mProperties/sapStatistics}"
+                    />
 
                 <IconTabBar
                     class="sapUiNoContentPadding projectXBorder projectXRequestResponseContainer"
