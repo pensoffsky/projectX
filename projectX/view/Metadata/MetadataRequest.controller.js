@@ -41,12 +41,18 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
 		var sBaseUrl = oSelectedProject.getBaseUrl();
+		this._localUIModel.setProperty("/serviceURL", sBaseUrl);
 		this._getODataServiceMetadata(sBaseUrl);
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// event handler
 	// /////////////////////////////////////////////////////////////////////////////
+
+	onRefreshService : function() {
+		var sServiceUrl = this._localUIModel.getProperty("/serviceURL");
+		this._getODataServiceMetadata(sServiceUrl);
+	},
 
 	onBtnAddEntitySetRequest: function(oEvent) {
 		//get selected items

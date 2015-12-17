@@ -43,6 +43,16 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 						type: "string",
 						defaultValue: "javascript"
 					},
+					
+					showGutter: {
+						type: "boolean",
+						defaultValue: true
+					},
+					
+					fontSize: {
+						type: "int",
+						defaultValue: 12
+					},
 				},
 				events: {
 					someEvent: {}
@@ -71,6 +81,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 			this._editor.getSession().setMode("ace/mode/" + this.getMode());
 			this._editor.commands.removeCommand('find');
 			this._editor.setReadOnly(this.getReadOnly());
+			
+			this._editor.renderer.setShowGutter(this.getShowGutter());
+			this._editor.setFontSize(this.getFontSize()); 
+
 
 			if (this.getAutoHeightMode()) {
 				this._editor.setOptions({

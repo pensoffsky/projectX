@@ -233,8 +233,8 @@ module.exports = function(grunt) {
   grunt.registerTask('buildGw', [
       'clean:buildGw',
       'copy:buildGw',
-      'zip:buildGw'
-      //'connect:buildGwServer' //why do we start a server here? isnt this just a normal build task?
+      'zip:buildGw',
+      'connect:buildGwServer' //start a server here so that the gw can pull the zip file from it
   ]);
 
   // build the electron shell app for win and os x, create zip and copy to release folder on root

@@ -35,6 +35,36 @@
 .projectXEditor {
   height: 300px;
 }
+/**
+ * STyles for the Request screen
+ */
+.projectXRequestUrlInput {
+  border-style: solid;
+  border-width: 0px;
+  border-width: 1px;
+  border-color: #cdcdcd;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  min-height: 1.5rem;
+}
+.projectXBorder {
+  border-style: solid;
+  border-width: 0px;
+  border-width: 1px;
+  border-color: #cdcdcd;
+}
+.projectXRequestStuffContainer {
+  margin-top: 1rem;
+}
+.projectXRequestStuffContainer .sapMITBTextOnly {
+  margin-top: 0px;
+}
+.projectXRequestResponseContainer {
+  margin-top: 1rem;
+}
+.projectXRequestResponseContainer .sapMITBTextOnly {
+  margin-top: 0px;
+}
 .masterScrollContainer {
   height: calc(100% - 97px) !important;
 }

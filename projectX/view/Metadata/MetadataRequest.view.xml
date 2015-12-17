@@ -13,6 +13,8 @@
 		<VBox id="idBindingContainer">
 			<Label text="{/odataServiceCheckRes}"/>
 		
+			<Input value="{/serviceURL}"/>
+			<Button text="Refresh" press="onRefreshService"/>
 		<!--  
 		ENTITY SETS
 		-->

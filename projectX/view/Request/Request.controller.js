@@ -64,11 +64,11 @@ sap.ui.define([
 			this.getView().setModel(this._localUIModel, "localUIModel");
 
 			var that = this;
-			this.getView().byId("idTextAreaUrl").onsapentermodifiers =  function(oEvent, a ,b){
-				if (oEvent.metaKey === true || oEvent.altKey === true) {
-					that.onBtnSendPress();
-				}
-			};
+			// this.getView().byId("idTextAreaUrl").onsapentermodifiers =  function(oEvent, a ,b){
+			// 	if (oEvent.metaKey === true || oEvent.altKey === true) {
+			// 		that.onBtnSendPress();
+			// 	}
+			// };
 
 			/////////////////////////////////////////////////////////////////////
 			//create Assertion fragment controller
