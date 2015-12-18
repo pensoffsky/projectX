@@ -10,6 +10,24 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 		});
 
 
+		Formatter.assertionsListResultToText = function(bAssertionsResult, bAssertionsResultReady, iLength) {
+			if(iLength <= 0) {
+				return "" + iLength;
+			}
+			
+			if (bAssertionsResultReady !== true) {
+				return "" + iLength;
+			}
+
+			if (bAssertionsResult === true) {
+				return "" + iLength + " OK";
+			} else if (bAssertionsResult === false) {
+				return "" + iLength + " ERROR";
+			}
+			
+			return "" + iLength;
+		};
+		
 		Formatter.assertionsListResultToImage = function(bAssertionsResult, bAssertionsResultReady, iLength) {
 			if(iLength > 0) {
 				return Formatter.assertionsResultToImage(bAssertionsResult, bAssertionsResultReady);

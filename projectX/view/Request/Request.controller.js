@@ -183,7 +183,7 @@ sap.ui.define([
 			this._localUIModel.updateBindings();
 			this._oAssertionEditController.updateBindings();
 
-			var oDeferred = oRequest.execute(this._oProject);
+			var oDeferred = oRequest.execute(this._oProject, undefined /*prevRequest*/, {}/*seqStorage*/);
 			this._localUIModel.updateBindings();
 			var that = this;
 			oDeferred.always(function(){
@@ -333,6 +333,18 @@ sap.ui.define([
 			this._localUIModel.setProperty("/responseBodyFormatted", "");
 			this._localUIModel.updateBindings();
 		};
+		
+		Request.prototype.onGrowResponseBody = function(){
+			var oEditor = this.getView().byId("idEditorResponseBody");
+			oEditor.increaseHeight();
+		};
+		
+		Request.prototype.onShrinkResponseBody = function(){
+			var oEditor = this.getView().byId("idEditorResponseBody");
+			oEditor.decreaseHeight();
+		};
+		
+		
 		
 		
 

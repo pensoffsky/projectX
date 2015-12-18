@@ -43,9 +43,6 @@
   border-width: 0px;
   border-width: 1px;
   border-color: #cdcdcd;
-  margin-top: 3px;
-  margin-bottom: 3px;
-  min-height: 1.5rem;
 }
 .projectXRequestScrollContainer {
   background-color: #FAFAFA;
@@ -60,6 +57,8 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
   background-color: white;
+  width: calc(100% - 2rem) !important;
+  margin-left: 1rem;
 }
 .projectXRequestStuffContainer .sapMITBTextOnly {
   margin-top: 0px;
@@ -72,6 +71,8 @@
 }
 .projectXRequestResponseContainer {
   background-color: white;
+  width: calc(100% - 2rem) !important;
+  margin-left: 1rem;
 }
 .projectXRequestResponseContainer .sapMITBTextOnly {
   margin-top: 0px;

@@ -84,7 +84,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 			this._editor = ace.edit(sEditID);
 			this._editor.setTheme("ace/theme/tomorrow");
 			this._editor.getSession().setMode("ace/mode/" + this.getMode());
-			this._editor.commands.removeCommand('find');
+			// this._editor.commands.removeCommand('find');
 			this._editor.setReadOnly(this.getReadOnly());
 			
 			this._editor.renderer.setShowGutter(this.getShowGutter());
@@ -96,11 +96,11 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 				this._editor.setOptions({
 					maxLines: Infinity
 				});
-			}
+			} 
 
 			this._editor.getSession().setUseWrapMode(this.getEnableWrapMode());
 
-			this._editor.setValue(this.getValue(), 1);
+			this._editor.setValue(this.getValue(), -1);
 
 			var that = this;
 			this._editor.getSession().on('change', function(e) {
@@ -120,9 +120,9 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 		 */
 		AceEditor.prototype.setValue = function(sValue) {
 			this.setProperty("value", sValue, true);
-      if (this._editor) {
-        this._editor.setValue(sValue, 1);
-      }
+			if (this._editor) {
+				this._editor.setValue(sValue, -1);
+			}
 		};
     
     /**
@@ -135,6 +135,23 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
       if (this._editor) {
         this._editor.getSession().setMode("ace/mode/" + sMode);
       }
+    };
+	
+    AceEditor.prototype.increaseHeight = function() {
+		var iHeight = this.$().height();
+		var iNewHeight = iHeight + 100;
+		var sNewHeight = "" + iNewHeight + "px";
+		this.setHeight(sNewHeight);
+    };
+	
+    AceEditor.prototype.decreaseHeight = function() {
+		var iHeight = this.$().height();
+		var iNewHeight = iHeight - 100;
+		if (iNewHeight < 300) {
+			iNewHeight = 300; 
+		}
+		var sNewHeight = "" + iNewHeight + "px";
+		this.setHeight(sNewHeight);
     };
 
 

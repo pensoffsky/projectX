@@ -15,7 +15,7 @@
           title="{localUIModel>/name}">
         <content>
 
-            <FlexBox width="100%">
+            <FlexBox width="100%" alignItems="Center">
                 <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
                         items="{localUIModel>/HTTP_METHODS}"
                         change="onHttpMethodChange"
@@ -33,7 +33,7 @@
                                   showGutter="false"
                                   autoHeightMode="true"
                                   enableWrapMode="true"
-                                  fontSize="16"
+                                  fontSize="12"
                                   highlightActiveLine="false"
                                   >
                     <custom:layoutData>
@@ -69,7 +69,6 @@
                     vertical="true">
                     
                 
-
                 <IconTabBar
                     class="sapUiNoContentPadding projectXBorder projectXRequestStuffContainer"
                         >
@@ -187,7 +186,7 @@
                 				text="Response Body"
                                 count="{localUIModel>/request/mProperties/responseBody/length}"
                 				>
-                                <VBox>
+                                <HBox>
                                     <SegmentedButton
                                                      select="onResponseBodyFormat"
                                                      id="idButtonResponseFormat">
@@ -196,14 +195,18 @@
                                         <Button text="HTML" id="idButtonResponseHTML"/>
                                         <Button text="RAW" id="idButtonResponseRAW"/>
                                     </SegmentedButton>
-                                </VBox>
-                                <custom:AceEditor width="100%" height="auto" class="projectXAceNoScroll"
+                                    
+                                    <Button icon="sap-icon://expand-group" press="onGrowResponseBody"/>
+                                    <Button icon="sap-icon://collapse-group" press="onShrinkResponseBody"/>
+                                </HBox>
+                                <custom:AceEditor width="100%" height="400px"
                                                   mode="{localUIModel>/responseBodyDisplayMode}"
                                                   readOnly="true"
                                                   value="{localUIModel>/responseBodyFormatted}"
-                                                  id="superEditor2"
-                                                  autoHeightMode="true"
+                                                  id="idEditorResponseBody"
+                                                  autoHeightMode="false"
                                                   enableWrapMode="true"
+                                                  class="projectXRequestResponseBody"
                                         />
                 			</IconTabFilter>
                             <IconTabSeparator/>
@@ -222,18 +225,16 @@
                                         />
                             </IconTabFilter>
                             <IconTabSeparator/>
+                            <!-- ASSERTIONS -->
                 			<IconTabFilter
                 				text="Assertions"
-                                count="{localUIModel>/request/mAggregations/assertions/length}"
+                                count="{ parts : [
+                                          { path : 'localUIModel>/request/mProperties/assertionsResult' },
+                                          { path : 'localUIModel>/request/mProperties/assertionsResultReady' },
+                                          { path : 'localUIModel>/request/mAggregations/assertions/length'}
+                                      ],
+                                      formatter : 'projectX.util.Formatter.assertionsListResultToText' }"
                 				>
-                                <!-- ASSERTIONS -->
-                                  <c:Icon src="{ parts : [
-            								{ path : 'localUIModel>/request/mProperties/assertionsResult' },
-            								{ path : 'localUIModel>/request/mProperties/assertionsResultReady' },
-                                            { path : 'localUIModel>/request/mAggregations/assertions/length'}
-            							],
-            							formatter : 'projectX.util.Formatter.assertionsListResultToImage' }"/>
-
                                   <VBox id="idVBoxAssertionPlaceholder"/>
                 			</IconTabFilter>
                             <IconTabSeparator/>
