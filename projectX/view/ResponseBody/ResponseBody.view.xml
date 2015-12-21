@@ -1,0 +1,32 @@
+<mvc:View
+	controllerName="projectX.view.ResponseBody.ResponseBody"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+	xmlns="sap.m"
+	height="100%"
+	xmlns:custom="projectX.util"
+	>
+	<Page
+		enableScrolling="false"
+		id="idBindingContainer"
+		title="ResponseBody"
+		>
+		<headerContent>
+			<Button icon="sap-icon://exit-full-screen" 
+					tooltip="collapse" 
+					press="onCloseDialog"/>
+		</headerContent>
+		
+		<custom:AceEditor width="100%" height="100%"
+						  id="idEditorResponseBody"
+						  mode="{/responseBodyDisplayMode}"
+						  readOnly="true"
+						  value="{/responseBodyFormatted}"
+						  autoHeightMode="false"
+						  enableWrapMode="true"
+				/>
+		
+	</Page>
+</mvc:View>

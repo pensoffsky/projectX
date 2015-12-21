@@ -344,6 +344,30 @@ sap.ui.define([
 			oEditor.decreaseHeight();
 		};
 		
+		Request.prototype.onFullscreenResponseBody = function(){
+			var oView = sap.ui.xmlview("projectX.view.ResponseBody.ResponseBody");
+			var dialog = new sap.m.Dialog({
+					stretch: true,
+					showHeader: false,
+					content: oView,
+					afterClose: function() {
+						dialog.destroy();
+					}
+				});
+
+			var fCloseDialog = function () {
+				dialog.close();
+			}
+			//to get access to the global model
+			this.getView().addDependent(dialog);
+			dialog.open();
+			oView.getController().setup(
+				this._localUIModel.getProperty("/responseBodyFormatted"),
+				this._localUIModel.getProperty("/responseBodyDisplayMode"),
+				fCloseDialog
+				);
+		};
+		
 		
 		
 		

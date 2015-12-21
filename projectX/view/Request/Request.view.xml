@@ -186,7 +186,7 @@
                 				text="Response Body"
                                 count="{localUIModel>/request/mProperties/responseBody/length}"
                 				>
-                                <HBox>
+                                <Toolbar>
                                     <SegmentedButton
                                                      select="onResponseBodyFormat"
                                                      id="idButtonResponseFormat">
@@ -195,9 +195,13 @@
                                         <Button text="HTML" id="idButtonResponseHTML"/>
                                         <Button text="RAW" id="idButtonResponseRAW"/>
                                     </SegmentedButton>
-                                    
+                                    <ToolbarSpacer/>
                                     <Button icon="sap-icon://expand-group" press="onGrowResponseBody"/>
                                     <Button icon="sap-icon://collapse-group" press="onShrinkResponseBody"/>
+                                    <Button icon="sap-icon://full-screen" press="onFullscreenResponseBody"/>
+                                </Toolbar>
+                                <HBox>
+                                    
                                 </HBox>
                                 <custom:AceEditor width="100%" height="400px"
                                                   mode="{localUIModel>/responseBodyDisplayMode}"
