@@ -59,6 +59,15 @@
     // min-height: 1.5rem;
 }
 
+//create a container for the scrollcontainer
+.projectXRequestContainer > .sapMFlexItem{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 //bakcground color for the scrollable part of the request page
 .projectXRequestScrollContainer {
     background-color: #FAFAFA;
@@ -97,7 +106,7 @@
     
     width: ~"calc(100% - 2rem) !important";
     margin-left: 1rem;
-    
+    margin-bottom: 1rem;
     .sapMITBTextOnly {
         margin-top : 0px;
     }
@@ -126,16 +135,7 @@
 }
 
 
-//background color for the request screen
-// .projectXRequestContainerURL {
-//     background-color: lightgray;
-// }
-// .projectXRequestContainerRequest {
-//     background-color: lightgray;
-// }
-
-
-// genneral beautification
+// general beautification
 // reduce padding for request/sequence tabs in navigation list
 .sapUiSizeCompact, .sapMSegB {
   .sapMSegB {

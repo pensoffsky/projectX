@@ -15,290 +15,294 @@
           title="{localUIModel>/name}">
         <content>
 
-            <FlexBox width="100%" alignItems="Center">
-                <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
-                        items="{localUIModel>/HTTP_METHODS}"
-                        change="onHttpMethodChange"
-                       >
-                        <layoutData>
-                            <FlexItemData growFactor="0" />
-                        </layoutData>
-                    <c:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
-                </Select>
-                <custom:AceEditor width="100%" height="auto"
-                                  mode="text"
-                                  readOnly="false"
-                                  value="{localUIModel>/request/mProperties/url}"
-                                  class="projectXRequestUrlInput"
-                                  showGutter="false"
-                                  autoHeightMode="true"
-                                  enableWrapMode="true"
-                                  fontSize="12"
-                                  highlightActiveLine="false"
-                                  >
-                    <custom:layoutData>
-                        <FlexItemData growFactor="1" />
-                    </custom:layoutData>
-                </custom:AceEditor>
-                
-                <HBox>
+            <FlexBox direction="Column" fitContainer="true">
+                <!-- The top part with http method, url and send request button -->
+                <FlexBox width="100%" alignItems="Center">
                     <layoutData>
-                        <FlexItemData growFactor="0"/>
+                        <FlexItemData growFactor="0" />
                     </layoutData>
-                    <Button text="Send Request"
-                            press="onBtnSendPress"
-                            type="Emphasized"
-                            tooltip="Send the request (F7)"
-                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
-                    <Button text="Stop Request"
-                            press="onAbortRequest"
-                            type="Reject"
-                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === true}"
-                            />
-                </HBox>
-                
-            </FlexBox> 
-
-
-            <ScrollContainer
-                    class="projectXRequestScrollContainer"
-                    visible="{localUIModel>/requestVisible}"
-                    height="100%"
-                    width="100%"
-                    horizontal="false"
-                    vertical="true">
+                    <Select selectedKey="{localUIModel>/request/mProperties/httpMethod}"
+                            items="{localUIModel>/HTTP_METHODS}"
+                            change="onHttpMethodChange"
+                           >
+                            <layoutData>
+                                <FlexItemData growFactor="0" />
+                            </layoutData>
+                        <c:Item text="{localUIModel>key}" key="{localUIModel>key}"/>
+                    </Select>
+                    <custom:AceEditor width="100%" height="auto"
+                                      mode="text"
+                                      readOnly="false"
+                                      value="{localUIModel>/request/mProperties/url}"
+                                      class="projectXRequestUrlInput"
+                                      showGutter="false"
+                                      autoHeightMode="true"
+                                      enableWrapMode="true"
+                                      fontSize="12"
+                                      highlightActiveLine="false"
+                                      >
+                        <custom:layoutData>
+                            <FlexItemData growFactor="1" />
+                        </custom:layoutData>
+                    </custom:AceEditor>
                     
+                    <HBox>
+                        <layoutData>
+                            <FlexItemData growFactor="0"/>
+                        </layoutData>
+                        <Button text="Send Request"
+                                press="onBtnSendPress"
+                                type="Emphasized"
+                                tooltip="Send the request (F7)"
+                                visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
+                        <Button text="Stop Request"
+                                press="onAbortRequest"
+                                type="Reject"
+                                visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === true}"
+                                />
+                    </HBox>
+                    
+                </FlexBox> 
                 
-                <IconTabBar
-                    class="sapUiNoContentPadding projectXBorder projectXRequestStuffContainer"
-                        >
-                        <items>
-                            <IconTabFilter
-                				text="Request Stuff"
-                				>
-                                <!-- REQUEST DEFINITIONS STUFF-->
-                                <l:Grid
-                    				defaultSpan="L12 M12 S12"
-                    				width="auto">
-                    				<l:content>
-                    					<f:SimpleForm
-                    						editable="true"
-                    						layout="ResponsiveGridLayout">
-                    						<f:content>
-                                <Label text="Name" />
-                              <Input value="{localUIModel>/request/mProperties/name}"
-                                     placeholder="name of request"
-                                         liveChange="onNameChanged"
-                                         valueLiveUpdate="true"
-                                          />
-                                <Label text="Group" />
-                                  <Input value="{localUIModel>/request/mProperties/groupName}"
-                                         placeholder="provide a name to group the request"
-                                         liveChange="onNameChanged"
-                                         valueLiveUpdate="true"
-                                          />
-    							<Label text="Use Project Prefix URL" />
-                                  <CheckBox text="{localUIModel>/project/mProperties/prefixUrl}"
-                                            selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
-                                            select="onCBPrefixSelected"
-                                            visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/>
-                                  <Label text="CSRF Token" />
-                                  <CheckBox text="get CRSF token from {localUIModel>/project/mProperties/baseUrl}"
-                                          selected="{localUIModel>/request/mProperties/fetchCSRFToken}"/>
+                <VBox class="projectXRequestContainer" fitContainer="true">
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                    
+                    <!-- <HBox  fitContainer="true"> -->
+                <!-- the scrollable bottom part -->
+                <ScrollContainer
+                        class="projectXRequestScrollContainer"
+                        visible="{localUIModel>/requestVisible}"
+                        height="100%"
+                        width="100%"
+                        horizontal="false"
+                        vertical="true">
+                
+                    <IconTabBar
+                        class="sapUiNoContentPadding projectXBorder projectXRequestStuffContainer"
+                            >
+                            <items>
+                                <IconTabFilter
+                    				text="Request Stuff"
+                    				>
+                                    <!-- REQUEST DEFINITIONS STUFF-->
+                                    <l:Grid
+                        				defaultSpan="L12 M12 S12"
+                        				width="auto">
+                        				<l:content>
+                        					<f:SimpleForm
+                        						editable="true"
+                        						layout="ResponsiveGridLayout">
+                        						<f:content>
+                                    <Label text="Name" />
+                                  <Input value="{localUIModel>/request/mProperties/name}"
+                                         placeholder="name of request"
+                                             liveChange="onNameChanged"
+                                             valueLiveUpdate="true"
+                                              />
+                                    <Label text="Group" />
+                                      <Input value="{localUIModel>/request/mProperties/groupName}"
+                                             placeholder="provide a name to group the request"
+                                             liveChange="onNameChanged"
+                                             valueLiveUpdate="true"
+                                              />
+        							<Label text="Use Project Prefix URL" />
+                                      <CheckBox text="{localUIModel>/project/mProperties/prefixUrl}"
+                                                selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
+                                                select="onCBPrefixSelected"
+                                                visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/>
+                                      <Label text="CSRF Token" />
+                                      <CheckBox text="get CRSF token from {localUIModel>/project/mProperties/baseUrl}"
+                                              selected="{localUIModel>/request/mProperties/fetchCSRFToken}"/>
 
-                    						</f:content>
-                    					</f:SimpleForm>
-                    				</l:content>
-                    			</l:Grid>
-                			</IconTabFilter>
-                            <IconTabSeparator/>
-                			<IconTabFilter
-                				text="Request Headers"
-                                count="{localUIModel>/request/mAggregations/requestHeaders/length}"
-                				>
-                                <!-- REQUEST HEADER -->
-                                <VBox id="idVBoxRequestHeaderPlaceholder"/>
-                			</IconTabFilter>
-                            <IconTabSeparator/>
-                			<IconTabFilter
-                				text="Payload"
-                                count="{localUIModel>/request/mProperties/requestBody/length}"
-                				>
-                                <!-- REQUEST PAYLOAD -->
-                                <custom:AceEditor width="100%" height="200px"
-                                                  value="{localUIModel>/request/mProperties/requestBody}"
-                                                  id="superEditorRequestBody"/>
-                            
-                			</IconTabFilter>
-                            <IconTabSeparator/>
-                			<IconTabFilter
-                				text="Pre-Request Script"
-                                count="{localUIModel>/request/mProperties/scriptCode/length} {localUIModel>/request/mProperties/preRequestScriptResult}"
-                				>
-                                    <Button text="Snippets" press="onButtonScriptExamples"/>
-                                    <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
-                                            id="idMenuScriptExamples">
-                                        <u:MenuItem text="{localUIModel>text}"
-                                                    select="onMenuItemScriptExampleSelected"/>
-                                    </u:Menu>
+                        						</f:content>
+                        					</f:SimpleForm>
+                        				</l:content>
+                        			</l:Grid>
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                    			<IconTabFilter
+                    				text="Request Headers"
+                                    count="{localUIModel>/request/mAggregations/requestHeaders/length}"
+                    				>
+                                    <!-- REQUEST HEADER -->
+                                    <VBox id="idVBoxRequestHeaderPlaceholder"/>
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                    			<IconTabFilter
+                    				text="Payload"
+                                    count="{localUIModel>/request/mProperties/requestBody/length}"
+                    				>
+                                    <!-- REQUEST PAYLOAD -->
                                     <custom:AceEditor width="100%" height="200px"
-                                                      value="{localUIModel>/request/mProperties/scriptCode}"
-                                                      id="superEditor"
-                                                      />
-                			</IconTabFilter>
-                            <IconTabSeparator/>
-                        </items>
-                </IconTabBar>
+                                                      value="{localUIModel>/request/mProperties/requestBody}"
+                                                      id="superEditorRequestBody"/>
+                                
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                    			<IconTabFilter
+                    				text="Pre-Request Script"
+                                    count="{localUIModel>/request/mProperties/scriptCode/length} {localUIModel>/request/mProperties/preRequestScriptResult}"
+                    				>
+                                        <Button text="Snippets" press="onButtonScriptExamples"/>
+                                        <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
+                                                id="idMenuScriptExamples">
+                                            <u:MenuItem text="{localUIModel>text}"
+                                                        select="onMenuItemScriptExampleSelected"/>
+                                        </u:Menu>
+                                        <custom:AceEditor width="100%" height="200px"
+                                                          value="{localUIModel>/request/mProperties/scriptCode}"
+                                                          id="superEditor"
+                                                          />
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                            </items>
+                    </IconTabBar>
 
-                <HBox alignItems="Center" class="projectXRequestStatusContainer">
-                    
-                    <!-- <Button text="Send Request"
-                            press="onBtnSendPress"
-                            type="Emphasized"
-                            tooltip="Send the request (F7)"
-                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"/>
-                    <Button text="Stop Request"
-                            press="onAbortRequest"
-                            type="Reject"
-                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === true}"
-                            /> -->
-                    <Button text="Clear"
-                            press="onBtnClearPress"
-                            tooltip="Clear received data"
-                            enabled="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"
-                            />
-                    <ObjectStatus
-                        class="projectXRequestStatusText"
-        				text="Status: {localUIModel>/request/mProperties/status}
-                                Time: {localUIModel>/request/mProperties/responseTime}ms"
-        				state="None"
-                        visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}" />
-                </HBox>
+                    <HBox alignItems="Center" class="projectXRequestStatusContainer">
+                        <Button text="Clear"
+                                press="onBtnClearPress"
+                                tooltip="Clear received data"
+                                enabled="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"
+                                />
+                        <ObjectStatus
+                            class="projectXRequestStatusText"
+            				text="Status: {localUIModel>/request/mProperties/status}
+                                    Time: {localUIModel>/request/mProperties/responseTime}ms"
+            				state="None"
+                            visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}" />
+                    </HBox>
 
-                <Text text="{localUIModel>/request/mProperties/sapStatistics}"
-                    />
+                    <Text text="{localUIModel>/request/mProperties/sapStatistics}"
+                        />
 
-                <IconTabBar
-                    class="sapUiNoContentPadding projectXBorder projectXRequestResponseContainer"
-                		>
-                		<items>
-                            <IconTabFilter
-                				text="Response Body"
-                                count="{localUIModel>/request/mProperties/responseBody/length}"
-                				>
-                                <Toolbar>
-                                    <SegmentedButton
-                                                     select="onResponseBodyFormat"
-                                                     id="idButtonResponseFormat">
-                                        <Button text="XML" id="idButtonResponseXML"/>
-                                        <Button text="JSON" id="idButtonResponseJSON"/>
-                                        <Button text="HTML" id="idButtonResponseHTML"/>
-                                        <Button text="RAW" id="idButtonResponseRAW"/>
-                                    </SegmentedButton>
-                                    <ToolbarSpacer/>
-                                    <Button icon="sap-icon://expand-group" press="onGrowResponseBody"/>
-                                    <Button icon="sap-icon://collapse-group" press="onShrinkResponseBody"/>
-                                    <Button icon="sap-icon://full-screen" press="onFullscreenResponseBody"/>
-                                </Toolbar>
-                                <HBox>
-                                    
-                                </HBox>
-                                <custom:AceEditor width="100%" height="400px"
-                                                  mode="{localUIModel>/responseBodyDisplayMode}"
-                                                  readOnly="true"
-                                                  value="{localUIModel>/responseBodyFormatted}"
-                                                  id="idEditorResponseBody"
-                                                  autoHeightMode="false"
-                                                  enableWrapMode="true"
-                                                  class="projectXRequestResponseBody"
-                                        />
-                			</IconTabFilter>
-                            <IconTabSeparator/>
-                            <IconTabFilter
-                                text="Response Headers"
-                                count="{localUIModel>/request/mProperties/responseHeaders/length}"
-                                >
-                                <!-- RESPONSE HEADER -->
-                                <custom:AceEditor width="100%" height="auto"
-                                                  mode="text"
-                                                  readOnly="true"
-                                                  value="{localUIModel>/request/mProperties/responseHeaders}"
-                                                  id="superEditor3"
-                                                  autoHeightMode="true"
-                                                  enableWrapMode="true"
-                                        />
-                            </IconTabFilter>
-                            <IconTabSeparator/>
-                            <!-- ASSERTIONS -->
-                			<IconTabFilter
-                				text="Assertions"
-                                count="{ parts : [
-                                          { path : 'localUIModel>/request/mProperties/assertionsResult' },
-                                          { path : 'localUIModel>/request/mProperties/assertionsResultReady' },
-                                          { path : 'localUIModel>/request/mAggregations/assertions/length'}
-                                      ],
-                                      formatter : 'projectX.util.Formatter.assertionsListResultToText' }"
-                				>
-                                  <VBox id="idVBoxAssertionPlaceholder"/>
-                			</IconTabFilter>
-                            <IconTabSeparator/>
-                            <IconTabFilter
-                				text="Test"
-                                count="{localUIModel>/request/mProperties/testScriptCode/length} {localUIModel>/request/mProperties/testScriptResult}"
-                				>
-                                <!-- TEST SCRIPT -->
-                               <Button icon="sap-icon://media-play"
-                                 text="Replay test script"
-                                 tooltip="replay test script on response again"
-                                     press="onBtnExecuteTestScript"/>
-                               <Button text="Snippets" press="onButtonTestScriptExamples"/>
-                               <u:Menu items="{localUIModel>/TESTSCRIPT_EXAMPLES}"
-                                       id="idMenuTestScriptExamples">
-                                   <u:MenuItem text="{localUIModel>text}"
-                                               select="onMenuItemTestScriptExampleSelected"/>
-                               </u:Menu>
-                                <custom:AceEditor width="100%" height="200px"
-                                                  value="{localUIModel>/request/mProperties/testScriptCode}"
-                                                  id="superEditorTestScript"
-                                                  />
-                                <VBox items="{localUIModel>/request/_testResults}">
+                    <IconTabBar
+                        class="sapUiNoContentPadding projectXBorder projectXRequestResponseContainer"
+                    		>
+                    		<items>
+                                <IconTabFilter
+                    				text="Response Body"
+                                    count="{localUIModel>/request/mProperties/responseBody/length}"
+                    				>
+                                    <Toolbar>
+                                        <SegmentedButton
+                                                         select="onResponseBodyFormat"
+                                                         id="idButtonResponseFormat">
+                                            <Button text="XML" id="idButtonResponseXML"/>
+                                            <Button text="JSON" id="idButtonResponseJSON"/>
+                                            <Button text="HTML" id="idButtonResponseHTML"/>
+                                            <Button text="RAW" id="idButtonResponseRAW"/>
+                                        </SegmentedButton>
+                                        <ToolbarSpacer/>
+                                        <Button icon="sap-icon://expand-group" press="onGrowResponseBody"/>
+                                        <Button icon="sap-icon://collapse-group" press="onShrinkResponseBody"/>
+                                        <Button icon="sap-icon://full-screen" press="onFullscreenResponseBody"/>
+                                    </Toolbar>
                                     <HBox>
-                                        <Text text="{localUIModel>name} -"/>
-                                        <Text text="- {localUIModel>result}"/>
+                                        
                                     </HBox>
-                                </VBox>
-                			</IconTabFilter>
-                            <IconTabSeparator/>
-                            <IconTabFilter
-                				text="Sent"
-                				>
-                                   <l:Grid
-                       				defaultSpan="L12 M12 S12"
-                       				width="auto">
-                       				<l:content>
-                       					<f:SimpleForm class="sentDataBackground"
-                       						editable="true"
-                       						layout="ResponsiveGridLayout">
-                       						<f:content>
-                       							<Label text="URL" />
-                                    <Text text="{localUIModel>/request/mProperties/finalUrl}"/>
-                                    <Label text="HTTP Method" />
-                                    <Text text="{localUIModel>/request/mProperties/finalHttpMethod}"/>
-                                    <Label text="Headers" />
-                                    <Text text="{localUIModel>/request/mProperties/finalRequestHeaders}"/>
-                                    <Label text="Payload" />
-                                    <Text text="{localUIModel>/request/mProperties/finalRequestBody}"/>
-                       						</f:content>
-                       					</f:SimpleForm>
-                       				</l:content>
-                       			</l:Grid>
-                			</IconTabFilter>
-                            <IconTabSeparator/>
-                		</items>
-                	</IconTabBar>
+                                    <custom:AceEditor width="100%" height="400px"
+                                                      mode="{localUIModel>/responseBodyDisplayMode}"
+                                                      readOnly="true"
+                                                      value="{localUIModel>/responseBodyFormatted}"
+                                                      id="idEditorResponseBody"
+                                                      autoHeightMode="false"
+                                                      enableWrapMode="true"
+                                                      class="projectXRequestResponseBody"
+                                            />
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                                <IconTabFilter
+                                    text="Response Headers"
+                                    count="{localUIModel>/request/mProperties/responseHeaders/length}"
+                                    >
+                                    <!-- RESPONSE HEADER -->
+                                    <custom:AceEditor width="100%" height="auto"
+                                                      mode="text"
+                                                      readOnly="true"
+                                                      value="{localUIModel>/request/mProperties/responseHeaders}"
+                                                      id="superEditor3"
+                                                      autoHeightMode="true"
+                                                      enableWrapMode="true"
+                                            />
+                                </IconTabFilter>
+                                <IconTabSeparator/>
+                                <!-- ASSERTIONS -->
+                    			<IconTabFilter
+                    				text="Assertions"
+                                    count="{ parts : [
+                                              { path : 'localUIModel>/request/mProperties/assertionsResult' },
+                                              { path : 'localUIModel>/request/mProperties/assertionsResultReady' },
+                                              { path : 'localUIModel>/request/mAggregations/assertions/length'}
+                                          ],
+                                          formatter : 'projectX.util.Formatter.assertionsListResultToText' }"
+                    				>
+                                      <VBox id="idVBoxAssertionPlaceholder"/>
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                                <IconTabFilter
+                    				text="Test"
+                                    count="{localUIModel>/request/mProperties/testScriptCode/length} {localUIModel>/request/mProperties/testScriptResult}"
+                    				>
+                                    <!-- TEST SCRIPT -->
+                                   <Button icon="sap-icon://media-play"
+                                     text="Replay test script"
+                                     tooltip="replay test script on response again"
+                                         press="onBtnExecuteTestScript"/>
+                                   <Button text="Snippets" press="onButtonTestScriptExamples"/>
+                                   <u:Menu items="{localUIModel>/TESTSCRIPT_EXAMPLES}"
+                                           id="idMenuTestScriptExamples">
+                                       <u:MenuItem text="{localUIModel>text}"
+                                                   select="onMenuItemTestScriptExampleSelected"/>
+                                   </u:Menu>
+                                    <custom:AceEditor width="100%" height="200px"
+                                                      value="{localUIModel>/request/mProperties/testScriptCode}"
+                                                      id="superEditorTestScript"
+                                                      />
+                                    <VBox items="{localUIModel>/request/_testResults}">
+                                        <HBox>
+                                            <Text text="{localUIModel>name} -"/>
+                                            <Text text="- {localUIModel>result}"/>
+                                        </HBox>
+                                    </VBox>
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                                <IconTabFilter
+                    				text="Sent"
+                    				>
+                                       <l:Grid
+                           				defaultSpan="L12 M12 S12"
+                           				width="auto">
+                           				<l:content>
+                           					<f:SimpleForm class="sentDataBackground"
+                           						editable="true"
+                           						layout="ResponsiveGridLayout">
+                           						<f:content>
+                           							<Label text="URL" />
+                                        <Text text="{localUIModel>/request/mProperties/finalUrl}"/>
+                                        <Label text="HTTP Method" />
+                                        <Text text="{localUIModel>/request/mProperties/finalHttpMethod}"/>
+                                        <Label text="Headers" />
+                                        <Text text="{localUIModel>/request/mProperties/finalRequestHeaders}"/>
+                                        <Label text="Payload" />
+                                        <Text text="{localUIModel>/request/mProperties/finalRequestBody}"/>
+                           						</f:content>
+                           					</f:SimpleForm>
+                           				</l:content>
+                           			</l:Grid>
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                    		</items>
+                    	</IconTabBar>
+                </ScrollContainer>
+                </VBox>
+            </FlexBox>
+
+            
 
 
-            </ScrollContainer>
+            
         </content>
     </Page>
 </mvc:View>

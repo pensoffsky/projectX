@@ -44,6 +44,13 @@
   border-width: 1px;
   border-color: #cdcdcd;
 }
+.projectXRequestContainer > .sapMFlexItem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 .projectXRequestScrollContainer {
   background-color: #FAFAFA;
 }
@@ -73,6 +80,7 @@
   background-color: white;
   width: calc(100% - 2rem) !important;
   margin-left: 1rem;
+  margin-bottom: 1rem;
 }
 .projectXRequestResponseContainer .sapMITBTextOnly {
   margin-top: 0px;
