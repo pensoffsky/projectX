@@ -165,6 +165,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			return this._oRequestDeferred;
 			
 		}
+		
 		var sBaseUrl = oProject.getBaseUrl();
 		//create a CSRF request for sap gateway
 		var oCSRFDeferred = jQuery.ajax({
@@ -227,13 +228,17 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		}
 		
 		//add basic authentication header if it was set in the project
-		if(oProject.getUseBasicAuthentication() === true) {
-			debugger
+		if(oProject && oProject.getUseBasicAuthentication() === true) {
 			oRequestHeaders["Authorization"] = "Basic " + btoa(oProject.getUsername() + ":" + oProject.getPassword());
 		}
 
 		//create the url. use prefix from project if enabled by user
 		var sUrl = this.getUrl();
+		if (sUrl) {
+			//remove newlines from the url string.
+			//this enables the user to use multiline URLs
+			sUrl = sUrl.replace(/(\r\n|\n|\r)/gm,"");
+		}
 		if (this.getUseProjectPrefixUrl() === true) {
 			sUrl = oProject.getPrefixUrl() + sUrl;
 		}
