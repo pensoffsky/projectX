@@ -1,5 +1,9 @@
 
-// Provides control sap.m.App.
+/*
+	this file is the base for the persisted settings like project, request, assertion, ...
+	it overwrites the extractBindingInfo function that caused a problem with 
+	"{" characters in strings
+ */
 sap.ui.define(['jquery.sap.global', 'sap/ui/base/ManagedObject'],
 	function(jQuery, ManagedObject) {
 	"use strict";
