@@ -368,9 +368,10 @@ sap.ui.define([
 				);
 		};
 		
-		
-		
-		
+		Request.prototype.onExportRequest = function () {			
+			var sSerializedReq = JSON.stringify(this._oRequest.serialize(),null, 2);
+			window.prompt("Copy to clipboard: Ctrl+C, Enter", sSerializedReq);			
+		};
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Functions

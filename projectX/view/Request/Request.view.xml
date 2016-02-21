@@ -119,6 +119,7 @@
                         						</f:content>
                         					</f:SimpleForm>
                         				</l:content>
+                                <Button text="Export Request" press="onExportRequest"/>                         
                         			</l:Grid>
                     			</IconTabFilter>
                                 <IconTabSeparator/>

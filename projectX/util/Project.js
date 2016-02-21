@@ -77,12 +77,13 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	/**
 	 * create a copy of the given request and add it to the requests.
 	 * @param {object} oRequest request object
+	 * @param {string} sNameSuffix the string that is added as suffix to the name of the request
 	*/
-	Project.prototype.addCopyOfRequest = function(oRequest) {
+	Project.prototype.addCopyOfRequest = function(oRequest, sNameSuffix) {
 		var iNewID = this._getNextId();
 		var oNewRequest = new projectX.util.Request(oRequest.serialize());
 		oNewRequest.setIdentifier(iNewID);
-		oNewRequest.setName(oNewRequest.getName() + " (copy)");
+		oNewRequest.setName(oNewRequest.getName() + sNameSuffix);
 		this.addRequest(oNewRequest);
 		return oNewRequest;
 	};

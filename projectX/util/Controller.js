@@ -142,7 +142,7 @@ sap.ui.core.mvc.Controller.extend("projectX.util.Controller", {
 	},
 
 	showErrorMessage : function (sMessage) {
-		
+		sap.m.MessageBox.alert(sMessage);
 	},
 	
 	navToRequest : function(iRequestID, iProjectID) {

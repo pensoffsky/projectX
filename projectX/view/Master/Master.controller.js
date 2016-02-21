@@ -313,6 +313,33 @@ sap.ui.define(['jquery.sap.global',
 			}, true);
 		};
 
+		Master.prototype.onImportRequest = function () {						
+			var oModel = this.getView().getModel();
+			//get the selected project
+			var oSelectedProject = this.getCurrentProject();
+			if (!oSelectedProject) {
+				return;
+			}
+		
+			try {
+				var sSerializedReq = window.prompt("Paste serialized request from clipboard: Ctrl+V, Enter");
+				var oDesirializedRequest = JSON.parse(sSerializedReq);
+				var oNewRequest = new projectX.util.Request(oDesirializedRequest);	
+				
+				var oAddedRequest = oSelectedProject.addCopyOfRequest(oNewRequest, " (imported)");			
+				oModel.updateBindings();
+				var aRequests = oSelectedProject.getRequests();
+				if (aRequests.length === 1){
+					//the user added the first request. Select this request.
+					this._selectFirstRequest();
+				} else {
+					this._selectRequestByReqId("idListRequests", oAddedRequest.getIdentifier());
+				}
+			} catch (e) {				
+				this.showErrorMessage("request could not be imported");
+			}
+		};
+
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Methods
 		// /////////////////////////////////////////////////////////////////////////////
