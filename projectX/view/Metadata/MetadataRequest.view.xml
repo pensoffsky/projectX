@@ -11,10 +11,12 @@
 		showHeader="false">
 		
 		<VBox id="idBindingContainer">
+			
+			<Input value="{/serviceURL}"
+				placeholder="OData service URL"/>
+			<Button text="Load Metadata" press="onRefreshService"/>
 			<Label text="{/odataServiceCheckRes}"/>
 		
-			<Input value="{/serviceURL}"/>
-			<Button text="Refresh" press="onRefreshService"/>
 		<!--  
 		ENTITY SETS
 		-->
@@ -28,6 +30,7 @@
 								<Label text="EntitySets"/>
 							<ToolbarSpacer/>
 					        <Button text="Add new request"
+									type="Emphasized"
 									tooltip="Add requests for selected items"
 									press="onBtnAddEntitySetRequest"/>
 				      </Toolbar>
@@ -59,6 +62,7 @@
 								<Label text="FunctionImports"/>
 							<ToolbarSpacer/>
 					        <Button text="Add new request"
+									type="Emphasized"
 									tooltip="Add requests for selected items"
 									press="onBtnAddFunctionImportRequest"/>
 				      </Toolbar>

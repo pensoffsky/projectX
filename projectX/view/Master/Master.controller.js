@@ -452,7 +452,7 @@ sap.ui.define(['jquery.sap.global',
 					contentHeight: "90%",
 					content: oView,
 					beginButton: new sap.m.Button({
-						text: 'OK',
+						text: 'Close',
 						press: function () {
 							dialog.close();
 						}

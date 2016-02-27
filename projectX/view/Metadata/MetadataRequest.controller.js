@@ -40,9 +40,9 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 		//user wants to add a request based on the currently selected project
 		var oModel = this.getView().getModel();
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
-		var sBaseUrl = oSelectedProject.getBaseUrl();
-		this._localUIModel.setProperty("/serviceURL", sBaseUrl);
-		this._getODataServiceMetadata(sBaseUrl);
+		var sPrefixUrl = oSelectedProject.getPrefixUrl();
+		this._localUIModel.setProperty("/serviceURL", sPrefixUrl);
+		this._getODataServiceMetadata(sPrefixUrl);
 	},
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -50,11 +50,12 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 	// /////////////////////////////////////////////////////////////////////////////
 
 	onRefreshService : function() {
-		var sServiceUrl = this._localUIModel.getProperty("/serviceURL");
-		this._getODataServiceMetadata(sServiceUrl);
+		var sPrefixUrl = this._localUIModel.getProperty("/serviceURL");
+		this._getODataServiceMetadata(sPrefixUrl);
 	},
 
 	onBtnAddEntitySetRequest: function(oEvent) {
+		var sPrefixUrl = this._localUIModel.getProperty("/serviceURL");
 		//get selected items
 		var oTable = this.getView().byId("idTableEntitySets");
 		var aSelectedItems = oTable.getSelectedItems();
@@ -76,7 +77,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			var oBoundObject = projectX.util.Helper.getBoundObjectForItem(aSelectedItems[i]);
 			//create request data and add the request to the currently selected project
 			var sName = "ES: " + oBoundObject.name;
-			var sUrl = oSelectedProject.getBaseUrl() + oBoundObject.name;
+			var sUrl = sPrefixUrl + oBoundObject.name;
 			oSelectedProject.addNewRequest(sName, sUrl);
 			//TODO also add entitytype to request to allow filtering and so on ...?
 		}
@@ -86,6 +87,8 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 	},
 
 	onBtnAddFunctionImportRequest: function(oEvent) {
+		var sPrefixUrl = this._localUIModel.getProperty("/serviceURL");
+		
 		//get selected items
 		var oTable = this.getView().byId("idTableFunctionImports");
 		var aSelectedItems = oTable.getSelectedItems();
@@ -107,7 +110,7 @@ projectX.util.Controller.extend("projectX.view.Metadata.MetadataRequest", {
 			var oBoundObject = projectX.util.Helper.getBoundObjectForItem(aSelectedItems[i]);
 			//create request data and add the request to the currently selected project
 			var sName = "FI: " + oBoundObject.name;
-			var sUrl = oSelectedProject.getBaseUrl() + oBoundObject.name;
+			var sUrl = sPrefixUrl + oBoundObject.name;
 			var sHttpMethod = oBoundObject.httpMethod;
 
 			for (var iParamIndex = 0; iParamIndex < oBoundObject.parameter.length; iParamIndex++) {
