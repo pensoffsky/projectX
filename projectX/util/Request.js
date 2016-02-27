@@ -22,6 +22,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				responseBodyFormat : {type : "string", defaultValue : "text"},
 				//used for grouping the requests in the request list
 				groupName : {type : "string", defaultValue : ""},
+				
+				useBasicAuthentication : {type : "boolean", defaultValue : false},
+				usernameBasicAuth : {type : "string", defaultValue : null},
+				passwordBasicAuth : {type : "string", defaultValue : null},
 
 
 				//these fields are only temporary variables. they will not be persisted
@@ -87,6 +91,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oRequest.testScriptCode = this.getTestScriptCode();
 		oRequest.responseBodyFormat = this.getResponseBodyFormat();
 		oRequest.groupName = this.getGroupName();
+		
+		oRequest.useBasicAuthentication = this.getUseBasicAuthentication();
+		oRequest.usernameBasicAuth = this.getUsernameBasicAuth();
+		oRequest.passwordBasicAuth = this.getPasswordBasicAuth();
 		
 
 		var aSerializedAssertions = [];
@@ -166,7 +174,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			
 		}
 		
-		var sBaseUrl = oProject.getBaseUrl();
+		var sCsrfTokenUrl = oProject.getCsrfTokenUrl();
 		//create a CSRF request for sap gateway
 		var oCSRFDeferred = jQuery.ajax({
 			method: "GET",
@@ -176,7 +184,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	              "DataServiceVersion": "2.0",
 	              "X-CSRF-Token":"Fetch"
 							},
-			url: sBaseUrl
+			url: sCsrfTokenUrl
 		});
 		
 		var oRetDeferred = jQuery.Deferred();
@@ -191,7 +199,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		});
 
 		oCSRFDeferred.fail(function() {
-			oRetDeferred.reject("failed to fetch CSRF token from: " + sBaseUrl);
+			oRetDeferred.reject("failed to fetch CSRF token from: " + sCsrfTokenUrl);
 		});
 
 		return oRetDeferred;
@@ -227,8 +235,11 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			oRequestHeaders["x-csrf-token"] = sCSRFToken;
 		}
 		
-		//add basic authentication header if it was set in the project
-		if(oProject && oProject.getUseBasicAuthentication() === true) {
+		//add basic authentication header if it was set in the project or in request
+		//the settings from the request overwrite the project settings
+		if(this.getUseBasicAuthentication() === true) {
+			oRequestHeaders["Authorization"] = "Basic " + btoa(this.getUsernameBasicAuth() + ":" + this.getPasswordBasicAuth());
+		} else if (oProject && oProject.getUseBasicAuthentication() === true) {
 			oRequestHeaders["Authorization"] = "Basic " + btoa(oProject.getUsername() + ":" + oProject.getPassword());
 		}
 

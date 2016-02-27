@@ -55,27 +55,6 @@ projectX.util.Controller.extend("projectX.view.Project.Project", {
 		});
 	},
 
-	/**
-	 * check if the given base url points to a valid odata service
-	 */
-	onCheckODataService : function() {
-		this._localUIModel.setProperty("/odataServiceCheckRes", "checking ...");
-		var sBaseUrl = this._oProject.getBaseUrl();
-		var oDeferred = projectX.util.Helper.getODataServiceMetadata(sBaseUrl);
-
-		var that = this;
-		oDeferred.done(function(oServiceMetadata) {
-			//console.log(oServiceMetadata);
-			console.log("successfully loaded service metadata");
-			that._localUIModel.setProperty("/odataServiceCheckRes", "ok");
-		});
-
-		oDeferred.fail(function() {
-			console.log("Service Metadata could not be loaded");
-			that._localUIModel.setProperty("/odataServiceCheckRes", "failed");
-		});
-	},
-
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// private methods
 	// /////////////////////////////////////////////////////////////////////////////
@@ -86,7 +65,8 @@ projectX.util.Controller.extend("projectX.view.Project.Project", {
 		var oSelectedProject = oModel.getProperty("/SelectedProject");
 		//write data from local project model back to selected project
 		oSelectedProject.setName(this._localUIModel.getProperty("/name"));
-		oSelectedProject.setBaseUrl(this._localUIModel.getProperty("/baseUrl"));
+		// oSelectedProject.setBaseUrl(this._localUIModel.getProperty("/baseUrl"));
+		//TODO check if this is needed
 		oModel.setProperty("/SelectedProject", null);
 		oModel.setProperty("/SelectedProject", oSelectedProject);
 	},

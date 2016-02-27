@@ -98,7 +98,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 			name: "OData Demo",
 			baseUrl: sDemoService
 		});
-		oProject.generateBasicOdataRequests();
+		oProject.generateEmptyRequest();
 
 		// create and set domain model to the component
 		this._oModel = new sap.ui.model.json.JSONModel({

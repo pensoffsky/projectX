@@ -12,11 +12,11 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			properties : {
 				identifier : {type : "int", defaultValue : null},
 				name : {type : "string", defaultValue : null},
-				baseUrl : {type : "string", defaultValue : null},
 				prefixUrl : {type : "string", defaultValue : null},
 				username : {type : "string", defaultValue : null},
 				password : {type : "string", defaultValue : null},
-				useBasicAuthentication : {type : "boolean", defaultValue : null}
+				useBasicAuthentication : {type : "boolean", defaultValue : null},
+				csrfTokenUrl : {type : "string", defaultValue : null}
 			},
 			events : {
 
@@ -127,11 +127,11 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var oProject = {};
 		oProject.identifier = this.getIdentifier();
 		oProject.name = this.getName();
-		oProject.baseUrl = this.getBaseUrl();
 		oProject.prefixUrl = this.getPrefixUrl();
 		oProject.username = this.getUsername();
 		oProject.password = this.getPassword();
 		oProject.useBasicAuthentication = this.getUseBasicAuthentication();
+		oProject.csrfTokenUrl = this.getCsrfTokenUrl();
 
 		var aSerializedRequests = [];
 		var aRequests = this.getRequests();
@@ -157,9 +157,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		return oProject;
 	};
 
-	Project.prototype.generateBasicOdataRequests = function() {
-		this.addNewRequest( "Service Document", this.getBaseUrl() );
-		this.addNewRequest( "Metadata Document", this.getBaseUrl() + "$metadata" );
+	Project.prototype.generateEmptyRequest = function() {
+		this.addNewRequest( "New Request", "");
 	};
 
 	Project.prototype.getNextSequenceId = function() {
