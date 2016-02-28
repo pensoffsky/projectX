@@ -158,12 +158,12 @@ module.exports = function(grunt) {
                     src: ["**/*"],
                     dots: true,
                     expand: true,
-                    dest: "buildGw/release/projectX/"
+                    dest: "buildGw/release/<%= pkg.name %>/"
                 },
                 //Component: route matching
                 {
                     src: ["projectX/Component.js", "projectX/MyRouter.js"],
-                    dest: "buildGw/release/projectX/",
+                    dest: "buildGw/release/<%= pkg.name %>/",
                     filter: "isFile"
                 },
                 //3rd party components
@@ -194,17 +194,17 @@ module.exports = function(grunt) {
         "buildGw": {
             cwd: "buildGw/release/",
             src: ["buildGw/release/**"],
-            dest: "release/projectX-Gateway.zip"
+            dest: "release/<%= pkg.name %>-Gateway.zip"
         },
         "buildElectronDarwin": {
             cwd: "build/Electron/",
             src: ["build/Electron/darwin/**"],
-            dest: "release/projectX-electron-mac.zip"
+            dest: "release/<%= pkg.name %>-electron-mac.zip"
         },
         "buildElectronWin32": {
             cwd: "build/Electron/",
             src: ["build/Electron/win32/**"],
-            dest: "release/projectX-electron-win32.zip"
+            dest: "release/<%= pkg.name %>-electron-win32.zip"
         }
     },
     // build html files:
