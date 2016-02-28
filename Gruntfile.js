@@ -206,6 +206,20 @@ module.exports = function(grunt) {
             src: ["build/Electron/win32/**"],
             dest: "release/projectX-electron-win32.zip"
         }
+    },
+    // build html files:
+    //  - will replace version number
+    htmlbuild: {
+        dist: {
+            src: ["templates/index.html", "templates/indexElectron.html", "templates/indexOnline.html"],
+            dest: "./",
+            options: {
+                data: {
+                    // data to pass to templates
+                    version: "<%= pkg.version %>"
+                },
+            }
+        }
     }
   });
 
@@ -228,6 +242,7 @@ module.exports = function(grunt) {
   // be uploaded to a Gateway server via
   // /UI5/UI5_REPOSITORY_LOAD_[HTTP|HTTPN] transaction
   grunt.registerTask("buildGw", [
+      "htmlbuild",
       "clean:buildGw",
       "copy:buildGw",
       "zip:buildGw",
@@ -236,6 +251,7 @@ module.exports = function(grunt) {
 
   // build the electron shell app for win and os x, create zip and copy to release folder on root
   grunt.registerTask("build", [
+      "htmlbuild",
       "clean:build",
       "copy:main",
       "build-electron-app",
