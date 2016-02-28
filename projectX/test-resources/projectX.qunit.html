@@ -6,24 +6,24 @@
    
     <script id="sap-ui-bootstrap" 
         type="text/javascript"
-        src="resources/sap-ui-core.js"
+        src="../../resources/sap-ui-core.js"
         data-sap-ui-theme="sap_bluecrystal"
         data-sap-ui-noConflict="true"‚
         data-sap-ui-xx-bindingSyntax="complex"
-        data-sap-ui-resourceroots='{"projectX": "./projectX", "tests": "./tests"}'>
+        data-sap-ui-resourceroots='{"projectX": "../", "tests": "."}'>
     </script>
    
-    <link rel="stylesheet" href="resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
-    <script type="text/javascript" src="resources/sap/ui/thirdparty/qunit.js"></script>
-    <script type="text/javascript" src="resources/sap/ui/thirdparty/sinon.js"></script>
-    <script type="text/javascript" src="resources/sap/ui/thirdparty/sinon-qunit.js"></script>
-    <script type="text/javascript" src="resources/sap/ui/qunit/qunit-junit.js"></script>
-    <script type="text/javascript" src="resources/sap/ui/qunit/qunit-coverage.js"></script>
-    <script type="text/javascript" src="resources/sap/ui/qunit/QUnitUtils.js"></script>
+    <link rel="stylesheet" href="../../resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../../resources/sap/ui/thirdparty/qunit.js"></script>
+    <script type="text/javascript" src="../../resources/sap/ui/thirdparty/sinon.js"></script>
+    <script type="text/javascript" src="../../resources/sap/ui/thirdparty/sinon-qunit.js"></script>
+    <script type="text/javascript" src="../../resources/sap/ui/qunit/qunit-junit.js"></script>
+    <script type="text/javascript" src="../../resources/sap/ui/qunit/qunit-coverage.js"></script>
+    <script type="text/javascript" src="../../resources/sap/ui/qunit/QUnitUtils.js"></script>
 
     <!-- load tested files manually to add the data-cover field to enable blanket test coverage feature -->
-    <script type="text/javascript" src="projectX/util/Storage.js" data-cover></script>
-    <script type="text/javascript" src="projectX/util/Request.js" data-cover></script>
+    <script type="text/javascript" src="../util/Storage.js" data-cover></script>
+    <script type="text/javascript" src="../util/Request.js" data-cover></script>
 
     <script language="javascript">
    
