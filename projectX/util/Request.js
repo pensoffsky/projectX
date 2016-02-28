@@ -39,7 +39,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				finalRequestBody : {type : "string", defaultValue : null},
 				finalHttpMethod : {type : "string", defaultValue : null},
 				finalRequestHeaders : {type : "string", defaultValue : null},
-				
+
 				//state
 				requestIsRunning : {type : "boolean", defaultValue : false}
 			},
@@ -87,7 +87,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oRequest.testScriptCode = this.getTestScriptCode();
 		oRequest.responseBodyFormat = this.getResponseBodyFormat();
 		oRequest.groupName = this.getGroupName();
-		
+
 
 		var aSerializedAssertions = [];
 		var aAssertions = this.getAssertions();
@@ -124,12 +124,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		this.setFinalRequestBody(null);
 		this.setFinalHttpMethod(null);
 		this.setFinalRequestHeaders(null);
-		
+
 		//reset the results from the test script
 		this._testResults = [];
 	};
-	
-	
+
+
 	/**
 	 * reset the temporary assertions data.
 	 */
@@ -141,7 +141,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			aAssertions[i].resetTempData();
 		}
 	};
-	
+
 	/**
 	 * abort the current request
 	 */
@@ -152,7 +152,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	};
 
 
-	Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorage) {	
+	Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorage) {
 		var that = this;
 		var bFetchCSRFToken = this.getFetchCSRFToken();
 		if (!bFetchCSRFToken) {
@@ -163,7 +163,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				that.setRequestIsRunning(false);
 			});
 			return this._oRequestDeferred;
-			
+
 		}
 		var sBaseUrl = oProject.getBaseUrl();
 		//create a CSRF request for sap gateway
@@ -177,7 +177,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 							},
 			url: sBaseUrl
 		});
-		
+
 		var oRetDeferred = jQuery.Deferred();
 		oCSRFDeferred.done(function(data, textStatus, jqXHR) {
 			var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
@@ -225,11 +225,15 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		if (sCSRFToken) {
 			oRequestHeaders["x-csrf-token"] = sCSRFToken;
 		}
-		
+
 		//add basic authentication header if it was set in the project
 		if(oProject.getUseBasicAuthentication() === true) {
-			debugger
 			oRequestHeaders["Authorization"] = "Basic " + btoa(oProject.getUsername() + ":" + oProject.getPassword());
+		}
+
+		//add basic authentication header if it was set in the project
+		if(oProject.getUseProxyAuthentication() === true) {
+			oRequestHeaders["Proxy-Authorization"] = "Basic " + btoa(oProject.getProxyUsername() + ":" + oProject.getProxyPassword());
 		}
 
 		//create the url. use prefix from project if enabled by user
@@ -279,7 +283,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		if (!isEncoded) {
 			sUrl = encodeURI(sUrl);
 		}
-		
+
 		this.setFinalUrl(sUrl);
 		this.setFinalRequestBody(oReqParam.requestBody);
 		this.setFinalHttpMethod(oReqParam.httpMethod);
@@ -289,9 +293,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		} catch (e) {
 			this.setFinalRequestHeaders(null);
 		} finally {
-			
+
 		}
-		
+
 		//do the request
 		var oDeferred = jQuery.ajax({
 			method: oReqParam.httpMethod,

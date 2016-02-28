@@ -46,17 +46,28 @@
 						<Input value="{localUIModel>/project/mProperties/prefixUrl}"
 							placeholder="url to use as prefix for requests"
 							/>
-							<Label text="" />
-							<CheckBox text="use basic authentication for all request in project"
-											selected="{localUIModel>/project/mProperties/useBasicAuthentication}"/>
-							<Label text="Basic Authentication" />
-							<Input value="{localUIModel>/project/mProperties/username}"
-								placeholder="username"
-								/>
-							<Input value="{localUIModel>/project/mProperties/password}"
-								type="Password"
-								placeholder="password"
-								/>
+						<Label text="" />
+						<CheckBox text="use PROXY authentication for all request in project"
+										selected="{localUIModel>/project/mProperties/useProxyAuthentication}"/>
+						<Label text="PROXY Authentication" />
+						<Input value="{localUIModel>/project/mProperties/proxyUsername}"
+							placeholder="username"
+							/>
+						<Input value="{localUIModel>/project/mProperties/proxyPassword}"
+							type="Password"
+							placeholder="password"
+							/>
+						<Label text="" />
+						<CheckBox text="use BASIC authentication for all request in project"
+										selected="{localUIModel>/project/mProperties/useBasicAuthentication}"/>
+						<Label text="BASIC Authentication" />
+						<Input value="{localUIModel>/project/mProperties/username}"
+							placeholder="username"
+							/>
+						<Input value="{localUIModel>/project/mProperties/password}"
+							type="Password"
+							placeholder="password"
+							/>
 					</f:content>
 				</f:SimpleForm>
 			</l:content>

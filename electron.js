@@ -14,14 +14,17 @@ app.on("ready", function () {
         width: 980,
         height: 650,
         "min-width": 980,
-        "min-height": 650
+        "min-height": 650,
+        "web-preferences": {
+          "web-security": false
+        }
     });
     //mainWindow.openDevTools();
     mainWindow.loadUrl("file://" + __dirname + "/indexElectron.html");
     mainWindow.on("closed", function () {
         mainWindow =  null;
     });
-    
+
     // Open the devtools.
     //mainWindow.openDevTools();
 

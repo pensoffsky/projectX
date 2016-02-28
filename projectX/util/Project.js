@@ -16,7 +16,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				prefixUrl : {type : "string", defaultValue : null},
 				username : {type : "string", defaultValue : null},
 				password : {type : "string", defaultValue : null},
-				useBasicAuthentication : {type : "boolean", defaultValue : null}
+				proxyUsername : {type : "string", defaultValue : null},
+				proxyPassword : {type : "string", defaultValue : null},
+				useBasicAuthentication : {type : "boolean", defaultValue : null},
+				useProxyAuthentication : {type : "boolean", defaultValue : null}
 			},
 			events : {
 
@@ -131,6 +134,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oProject.username = this.getUsername();
 		oProject.password = this.getPassword();
 		oProject.useBasicAuthentication = this.getUseBasicAuthentication();
+		oProject.proxyUsername = this.getProxyUsername();
+		oProject.proxyPassword = this.getProxyPassword();
+		oProject.useProxyAuthentication = this.getUseProxyAuthentication();
 
 		var aSerializedRequests = [];
 		var aRequests = this.getRequests();
