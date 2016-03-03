@@ -17,13 +17,11 @@ QUnit.module("util/request", {
         this._oFakeServer.respondWith("GET", "/200noHeader",
             [200, { },'']);
         
-        this.oRequest = new projectX.util.Request(
-            {
-                name : "name1",
-                url : "http://www.url1.com",
-                scriptCode : "asdf = bla;"
-            }
-        );
+        this.oRequest = new projectX.util.Request({
+            name : "name1",
+            url : "http://www.url1.com",
+            scriptCode : "asdf = bla;"
+        });
     },
     teardown: function() {
         this._oFakeServer.restore();
@@ -93,6 +91,56 @@ QUnit.asyncTest('execute request with csrf 200 response but no csrf in header', 
     });
 });
 
+
+QUnit.asyncTest('execute request with defined headers', 4, function (assert) {
+    //configure fake server to allow the ajax request to be tested
+    this._oFakeServer.respondWith("GET", "/200ok", function(req){
+        assert.ok(req.requestHeaders["sap-statistics"] === "true", 'sap-statistics ok');
+        assert.ok(req.requestHeaders["Accept"] === "application/json", 'accept ok');
+        assert.ok(req.requestHeaders["x-csrf-token"] === "myCSRFtoken", 'x-csrf-token ok');
+        assert.ok(req.requestHeaders["Authorization"], 'Authorization ok');
+        
+        req.respond(200, { }, '');
+        QUnit.start();
+    });
+    
+    //create request and project
+    var oRequest = new projectX.util.Request({
+        url : "/200ok",
+        "useBasicAuthentication": true,
+        "usernameBasicAuth": "bla",
+        "passwordBasicAuth": "blub",
+        "requestHeaders": [
+            {
+              "fieldName": "sap-statistics",
+              "fieldValue": "true"
+            },
+            {
+              "fieldName": "Accept",
+              "fieldValue": "application/json"
+            }
+        ]
+    });
+    var oProject = new projectX.util.Project({
+        
+    });
+
+    var oDeferred = oRequest._execute(oProject, null, "myCSRFtoken", {});
+    // oDeferred.resolve(function(){
+    //     assert.ok(true, 'will fail because there was no csrf token found');
+    //     QUnit.start();
+    // });
+});
+
+QUnit.test("_preparePrefixedUrl function", 2, function(assert) {
+  var oRequest = new projectX.util.Request();
+  var sUrl = null;
+  sUrl = oRequest._preparePrefixedUrl("\n/as\ndf", true, "http://bla.com");
+  assert.ok(sUrl === "http://bla.com/asdf", "prefixed ok");
+  sUrl = oRequest._preparePrefixedUrl("\n/as\ndf", false, "http://bla.com");
+  assert.ok(sUrl === "/asdf", "no prefix ok");
+});
+
 QUnit.test("constructor empty", 1, function(assert) {
   var oRequest = new projectX.util.Request();
   assert.ok(oRequest != null, "request instance created");
@@ -125,13 +173,6 @@ QUnit.test("reset", 2, function(assert) {
   assert.equal(this.oRequest.getFinalUrl(), "myFinalURL", "finalUrl set");
   this.oRequest.resetTempData();
   assert.equal(this.oRequest.getFinalUrl(), "", "finalUrl resetted");
-});
-
-QUnit.test("execute no csrf", 2, function(assert) {
-  this.oRequest.setUrl("dummyURL");
-  assert.equal(this.oRequest.getUrl(), "dummyURL", "url set");
-  var oRes = this.oRequest.execute();
-  assert.ok(oRes, "deffered returned");
 });
 
 QUnit.test("_setAjaxResult", 6, function(assert) {
@@ -182,9 +223,21 @@ QUnit.test("checkAssertions", function(assert) {
 });
 
 
-QUnit.test("execute request and fetch csrf token from 404 response", 2, function(assert) { 
-  this.oRequest.setUrl("dummyURL");
-  assert.equal(this.oRequest.getUrl(), "dummyURL", "url set");
-  var oRes = this.oRequest.execute();
-  assert.ok(oRes, "deffered returned");
+QUnit.asyncTest('execute request with url from prev request', 1, function (assert) {
+    var oRequest = new projectX.util.Request({
+        url : "",
+        scriptCode : "req.url = prevReq.url;"
+    });
+    var oPreviousRequest = new projectX.util.Request({
+        url : "/200okJSON"
+    });
+    var oProject = new projectX.util.Project({});
+
+    var oDeferred = oRequest._execute(oProject, oPreviousRequest, "myCSRFtoken", {});
+    oDeferred.done(function(){
+        //the request is only ok when the prerequestScript ran
+        //and got the url from the previous request
+        assert.ok(true, 'url from previous request was set');
+        QUnit.start();
+    });
 });

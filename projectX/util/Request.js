@@ -165,10 +165,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var bFetchCSRFToken = this.getFetchCSRFToken();
 		if (!bFetchCSRFToken) {
 			//no csrf token required
-			// this.setRequestIsRunning(true);
+			this.setRequestIsRunning(true);
 			this._oRequestDeferred = this._execute(oProject, oPreviousRequest, undefined, oSequenceStorage);
 			this._oRequestDeferred.always(function(){
-				// that.setRequestIsRunning(false);
+				that.setRequestIsRunning(false);
 			});
 			return this._oRequestDeferred;
 		}
@@ -205,19 +205,58 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	};
 	
 	Request.prototype._executeRequestWithCSRF = function (jqXHR, oRequestDeferred, oRetDeferred, oProject, oPreviousRequest, oSequenceStorage) {
+		var that = this;
 		var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
 		if (!sCSRFToken) {
 			oRetDeferred.reject("failed to fetch CSRF token");
 			return;
 		}
-		// this.setRequestIsRunning(true);
+		this.setRequestIsRunning(true);
 		this._oRequestDeferred = this._execute(oProject, oPreviousRequest, sCSRFToken, oSequenceStorage);
 		this._oRequestDeferred.always(function(){
-			// this.setRequestIsRunning(false);
+			that.setRequestIsRunning(false);
 			oRetDeferred.resolve();
 		});
 	};
 	
+	
+	Request.prototype._convertHeadersArrayToObject = function (aRequestHeaders) {
+		var oRequestHeaders = {};
+		for (var i = 0; i < aRequestHeaders.length; i++) {
+			// save this into new array
+			var fieldName  = aRequestHeaders[i].getFieldName();
+			var fieldValue = aRequestHeaders[i].getFieldValue();
+			oRequestHeaders[fieldName] = fieldValue;
+		}
+		return oRequestHeaders;
+	};
+	
+	Request.prototype._addCSRFTokenToHeaderObject = function (oRequestHeaders, sCSRFToken) {
+		if (sCSRFToken) {
+			oRequestHeaders["x-csrf-token"] = sCSRFToken;
+		}
+	};
+	
+	Request.prototype._addBasicAuthToHeaderObject = function (oRequestHeaders, oProject, oRequest) {
+		if (oRequest.getUseBasicAuthentication() === true) {
+			oRequestHeaders["Authorization"] = "Basic " + btoa(oRequest.getUsernameBasicAuth() + ":" + oRequest.getPasswordBasicAuth());
+		} else if (oProject && oProject.getUseBasicAuthentication() === true) {
+			oRequestHeaders["Authorization"] = "Basic " + btoa(oProject.getUsername() + ":" + oProject.getPassword());
+		}
+	};
+	
+	Request.prototype._preparePrefixedUrl = function (sReqUrl, bProjUsePrefixUrl, sProjPrefixUrl) {
+		var sUrl = sReqUrl;
+		if (sUrl) {
+			//remove newlines from the url string.
+			//this enables the user to use multiline URLs
+			sUrl = sUrl.replace(/(\r\n|\n|\r)/gm,"");
+		}
+		if (bProjUsePrefixUrl === true) {
+			sUrl = sProjPrefixUrl + sUrl;
+		}
+		return sUrl;
+	};
 
 //TODO this method is to long! fix this
 	/**
@@ -234,74 +273,31 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var oStartTime = new Date();
 
 		//fill the request headers
-		//TODO move to seperate function
 		var aRequestHeaders = this.getRequestHeaders();
-		var oRequestHeaders = {};
-		for (var i = 0; i < aRequestHeaders.length; i++) {
-			// save this into new array
-			var fieldName  = aRequestHeaders[i].getFieldName();
-			var fieldValue = aRequestHeaders[i].getFieldValue();
-			oRequestHeaders[fieldName] = fieldValue;
-		}
-
+		var oRequestHeaders = this._convertHeadersArrayToObject(aRequestHeaders);
 		//add the csrf token if we have one
-		if (sCSRFToken) {
-			oRequestHeaders["x-csrf-token"] = sCSRFToken;
-		}
-		
+		this._addCSRFTokenToHeaderObject(oRequestHeaders, sCSRFToken);
 		//add basic authentication header if it was set in the project or in request
 		//the settings from the request overwrite the project settings
-		if(this.getUseBasicAuthentication() === true) {
-			oRequestHeaders["Authorization"] = "Basic " + btoa(this.getUsernameBasicAuth() + ":" + this.getPasswordBasicAuth());
-		} else if (oProject && oProject.getUseBasicAuthentication() === true) {
-			oRequestHeaders["Authorization"] = "Basic " + btoa(oProject.getUsername() + ":" + oProject.getPassword());
-		}
+		this._addBasicAuthToHeaderObject(oRequestHeaders,
+			 oProject,
+			 this);
 
 		//create the url. use prefix from project if enabled by user
-		var sUrl = this.getUrl();
-		if (sUrl) {
-			//remove newlines from the url string.
-			//this enables the user to use multiline URLs
-			sUrl = sUrl.replace(/(\r\n|\n|\r)/gm,"");
-		}
-		if (this.getUseProjectPrefixUrl() === true) {
-			sUrl = oProject.getPrefixUrl() + sUrl;
-		}
+		var sUrl = this._preparePrefixedUrl(this.getUrl(),
+											this.getUseProjectPrefixUrl(),
+											oProject.getPrefixUrl());
 
 		//pre-request script preparations.
 		//create the objects that can be modified inside the script
-		//TODO move to sepeate method
-
 		var oReqParam = this._createRequestObjectForScript(sUrl);
-
 		//create the object that hold the info from the previous requestHeader
-		//TODO move to sepeate method
 		var oPrevReqParam = null;
 		if (oPreviousRequest) {
-			oPrevReqParam = {
-				httpMethod: oPreviousRequest.getHttpMethod(),
-				url: oPreviousRequest.getUrl(),
-				requestHeader: oPreviousRequest.getRequestHeaders(),
-				requestBody: oPreviousRequest.getRequestBody(),
-				status: oPreviousRequest.getStatus(),
-				responseBody: oPreviousRequest.getResponseBody(),
-				responseTime: oPreviousRequest.getResponseTime(),
-				assertionsResult: oPreviousRequest.getAssertionsResult(),
-				namedAssertions: oPreviousRequest.getNamedAssertionsMap()
-			};
+			oPrevReqParam = oPreviousRequest._createPreviousRequestObjectForScript();
 		}
-
 		//get the pre-request javascript code, put into function and run
-		var sPreRequestScriptCode = this.getScriptCode();
-		//execute custom javascript code
-		try {
-			var fRunPreRequestScript = new Function("req", "prevReq", "seqStorage", sPreRequestScriptCode);
-			fRunPreRequestScript(oReqParam, oPrevReqParam, oSequenceStorage);
-		} catch (e) {
-			console.log(e);
-			this.setPreRequestScriptResult("SCRIPT ERROR");
-		}
-
+		this._runPreRequestScript(this.getScriptCode(), oReqParam, oPrevReqParam, oSequenceStorage);
 
 		//check if the URL needs encoding
 		var isEncoded = typeof oReqParam.url == "string" && decodeURI(oReqParam.url) !== oReqParam.url;
@@ -318,8 +314,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			this.setFinalRequestHeaders(sFinalReqHeaders);
 		} catch (e) {
 			this.setFinalRequestHeaders(null);
-		} finally {
-			
 		}
 		
 		//do the request
@@ -348,6 +342,16 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		return oDeferred;
 	};
 
+	Request.prototype._runPreRequestScript = function (sScriptCode, oReqParam, oPrevReqParam, oSequenceStorage) {
+		try {
+			var fRunPreRequestScript = new Function("req", "prevReq", "seqStorage", sScriptCode);
+			fRunPreRequestScript(oReqParam, oPrevReqParam, oSequenceStorage);
+		} catch (e) {
+			console.log(e);
+			this.setPreRequestScriptResult("SCRIPT ERROR");
+		}
+	};
+
 	Request.prototype._createRequestObjectForScript = function(sUrl) {
 		var oReqParam = {
 			httpMethod: this.getHttpMethod(),
@@ -360,6 +364,21 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			//TODO add more parameters here
 		};
 		return oReqParam;
+	};
+	
+	Request.prototype._createPreviousRequestObjectForScript = function() {
+		var oPrevReqParam = {
+			httpMethod: this.getHttpMethod(),
+			url: this.getUrl(),
+			requestHeader: this.getRequestHeaders(),
+			requestBody: this.getRequestBody(),
+			status: this.getStatus(),
+			responseBody: this.getResponseBody(),
+			responseTime: this.getResponseTime(),
+			assertionsResult: this.getAssertionsResult(),
+			namedAssertions: this.getNamedAssertionsMap()
+		};
+		return oPrevReqParam;
 	};
 
 	//TODO refactor to execute both scripts with one function
