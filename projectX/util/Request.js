@@ -165,45 +165,59 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var bFetchCSRFToken = this.getFetchCSRFToken();
 		if (!bFetchCSRFToken) {
 			//no csrf token required
-			this.setRequestIsRunning(true);
+			// this.setRequestIsRunning(true);
 			this._oRequestDeferred = this._execute(oProject, oPreviousRequest, undefined, oSequenceStorage);
 			this._oRequestDeferred.always(function(){
-				that.setRequestIsRunning(false);
+				// that.setRequestIsRunning(false);
 			});
 			return this._oRequestDeferred;
-			
 		}
 		
+		//get csrf token
 		var sCsrfTokenUrl = oProject.getCsrfTokenUrl();
-		//create a CSRF request for sap gateway
-		var oCSRFDeferred = jQuery.ajax({
-			method: "GET",
-			headers:{
-	              "X-Requested-With": "XMLHttpRequest",
-	              "Content-Type": "application/atom+xml",
-	              "DataServiceVersion": "2.0",
-	              "X-CSRF-Token":"Fetch"
-							},
-			url: sCsrfTokenUrl
-		});
+		var oCSRFDeferred = this._sendCSRFRequest(sCsrfTokenUrl);
 		
 		var oRetDeferred = jQuery.Deferred();
 		oCSRFDeferred.done(function(data, textStatus, jqXHR) {
-			var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
-			that.setRequestIsRunning(true);
-			this._oRequestDeferred = that._execute(oProject, oPreviousRequest, sCSRFToken, oSequenceStorage);
-			this._oRequestDeferred.always(function(){
-				that.setRequestIsRunning(false);
-				oRetDeferred.resolve();
-			});
+			that._executeRequestWithCSRF(jqXHR, this._oRequestDeferred, oRetDeferred, oProject, oPreviousRequest, oSequenceStorage);
 		});
 
-		oCSRFDeferred.fail(function() {
-			oRetDeferred.reject("failed to fetch CSRF token from: " + sCsrfTokenUrl);
+		oCSRFDeferred.fail(function(jqXHR, textStatus, errorThrown) {
+			that._executeRequestWithCSRF(jqXHR, this._oRequestDeferred, oRetDeferred, oProject, oPreviousRequest, oSequenceStorage);
 		});
 
 		return oRetDeferred;
 	};
+	
+	//create a CSRF request for sap gateway
+	Request.prototype._sendCSRFRequest = function (sCsrfTokenUrl) {
+		var oCSRFDeferred = jQuery.ajax({
+			method: "GET",
+			headers:{
+				"X-Requested-With": "XMLHttpRequest",
+				"Content-Type": "application/atom+xml",
+				"DataServiceVersion": "2.0",
+				"X-CSRF-Token":"Fetch"
+			},
+			url: sCsrfTokenUrl
+		});
+		return oCSRFDeferred;
+	};
+	
+	Request.prototype._executeRequestWithCSRF = function (jqXHR, oRequestDeferred, oRetDeferred, oProject, oPreviousRequest, oSequenceStorage) {
+		var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
+		if (!sCSRFToken) {
+			oRetDeferred.reject("failed to fetch CSRF token");
+			return;
+		}
+		// this.setRequestIsRunning(true);
+		this._oRequestDeferred = this._execute(oProject, oPreviousRequest, sCSRFToken, oSequenceStorage);
+		this._oRequestDeferred.always(function(){
+			// this.setRequestIsRunning(false);
+			oRetDeferred.resolve();
+		});
+	};
+	
 
 //TODO this method is to long! fix this
 	/**
