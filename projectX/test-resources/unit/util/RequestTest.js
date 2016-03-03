@@ -4,6 +4,17 @@ jQuery.sap.require("projectX.util.Request");
 
 QUnit.module("util/request", {
     setup: function() {
+        //create a fake server with different responses
+        this._oFakeServer = sinon.fakeServer.create();
+        this._oFakeServer.autoRespond = true;
+        this._oFakeServer.respondWith("GET", "/200okJSON",
+            [200, { "Content-Type": "application/json" },
+             '[{ "name": "ok"}]']);
+        this._oFakeServer.respondWith("GET", "/404csrf",
+            [404, { "x-csrf-token": "myCSRFtoken" },'']);
+        this._oFakeServer.respondWith("GET", "/200csrf",
+            [200, { "x-csrf-token": "myCSRFtoken" },'']);
+        
         this.oRequest = new projectX.util.Request(
             {
                 name : "name1",
@@ -13,7 +24,27 @@ QUnit.module("util/request", {
         );
     },
     teardown: function() {
+        this._oFakeServer.restore();
+    },
+    
+    _executeRequest: function (oRequestData, oProjectData) {
+        var bCSRFTokenInReqHeader = false;
+        //configure fake server to allow the ajax request to be tested
+        this._oFakeServer.respondWith("GET", "/200ok", function(req){
+            bCSRFTokenInReqHeader = req.requestHeaders["x-csrf-token"] === "myCSRFtoken";
+            req.respond(200, { }, '');
+        });
+        //create request and project
+        var oRequest = new projectX.util.Request(oRequestData);
+        var oProject = new projectX.util.Project(oProjectData);
+        
+        var oDeferred = oRequest.execute(oProject, undefined, {});
+        oDeferred.always(function(){
+            assert.ok(bCSRFTokenInReqHeader, 'csrf token in header of real request');
+            QUnit.start();
+        });
     }
+    
 });
 
 QUnit.test("constructor empty", 1, function(assert) {
@@ -104,3 +135,79 @@ QUnit.test("checkAssertions", function(assert) {
   assert.ok(oAssertion.getResult() === true, "assertion result true");
 });
 
+
+QUnit.test("execute request and fetch csrf token from 404 response", 2, function(assert) { 
+  this.oRequest.setUrl("dummyURL");
+  assert.equal(this.oRequest.getUrl(), "dummyURL", "url set");
+  var oRes = this.oRequest.execute();
+  assert.ok(oRes, "deffered returned");
+});
+
+/*
+check 
+ */
+QUnit.asyncTest('execute request with csrf 404 response', 1, function (assert) {
+    this._executeRequest({
+            //the request object
+            url : "/200ok",
+            fetchCSRFToken : true
+        },{ 
+            //the project object
+            csrfTokenUrl : "/404csrf"
+        }
+    );
+    
+    // var bCSRFTokenInReqHeader = false;
+    // //configure fake server to allow the ajax request to be tested
+    // this._oFakeServer.respondWith("GET", "/200ok", function(req){
+    //     bCSRFTokenInReqHeader = req.requestHeaders["x-csrf-token"] === "myCSRFtoken";
+    //     req.respond(200, { }, '');
+    // });
+    // //create request and project
+    // var oRequest = new projectX.util.Request({
+    //     url : "/200ok",
+    //     fetchCSRFToken : true
+    // });
+    // var oProject = new projectX.util.Project({
+    //     csrfTokenUrl : "/404csrf"
+    // });
+    // 
+    // var oDeferred = oRequest.execute(oProject, undefined, {});
+    // oDeferred.always(function(){
+    //     assert.ok(bCSRFTokenInReqHeader, 'csrf token in header of real request');
+    //     QUnit.start();
+    // });
+});
+
+QUnit.asyncTest('execute request with csrf 200 response', 1, function (assert) {
+    this._executeRequest({
+            //the request object
+            url : "/200ok",
+            fetchCSRFToken : true
+        },{ 
+            //the project object
+            csrfTokenUrl : "/200csrf"
+        }
+    );
+    
+    // var bCSRFTokenInReqHeader = false;
+    // //configure fake server to allow the ajax request to be tested
+    // this._oFakeServer.respondWith("GET", "/200ok", function(req){
+    //     bCSRFTokenInReqHeader = req.requestHeaders["x-csrf-token"] === "myCSRFtoken";
+    //     req.respond(200, { }, '');
+    // });
+    // //create request and project
+    // var oRequest = new projectX.util.Request({
+    //     url : "/200ok",
+    //     fetchCSRFToken : true
+    // });
+    // var oProject = new projectX.util.Project({
+    //     csrfTokenUrl : "/200csrf"
+    // });
+    // 
+    // var oDeferred = oRequest.execute(oProject, undefined, {});
+    // oDeferred.always(function(){
+    //     assert.ok(bCSRFTokenInReqHeader, 'csrf token in header of real request');
+    //     QUnit.start();
+    // });
+});
