@@ -137,7 +137,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		this._testResults = [];
 	};
 	
-	
 	/**
 	 * reset the temporary assertions data.
 	 */
@@ -154,11 +153,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	 * abort the current request
 	 */
 	Request.prototype.abortRequest = function() {
-		if(this._oRequestDeferred) {
+		if (this._oRequestDeferred) {
 			this._oRequestDeferred.abort();
 		}
 	};
-
 
 	Request.prototype.execute = function(oProject, oPreviousRequest, oSequenceStorage) {	
 		var that = this;
@@ -189,21 +187,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		return oRetDeferred;
 	};
 	
-	//create a CSRF request for sap gateway
-	Request.prototype._sendCSRFRequest = function (sCsrfTokenUrl) {
-		var oCSRFDeferred = jQuery.ajax({
-			method: "GET",
-			headers:{
-				"X-Requested-With": "XMLHttpRequest",
-				"Content-Type": "application/atom+xml",
-				"DataServiceVersion": "2.0",
-				"X-CSRF-Token":"Fetch"
-			},
-			url: sCsrfTokenUrl
-		});
-		return oCSRFDeferred;
-	};
-	
 	Request.prototype._executeRequestWithCSRF = function (jqXHR, oRequestDeferred, oRetDeferred, oProject, oPreviousRequest, oSequenceStorage) {
 		var that = this;
 		var sCSRFToken = jqXHR.getResponseHeader("x-csrf-token");
@@ -217,45 +200,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			that.setRequestIsRunning(false);
 			oRetDeferred.resolve();
 		});
-	};
-	
-	
-	Request.prototype._convertHeadersArrayToObject = function (aRequestHeaders) {
-		var oRequestHeaders = {};
-		for (var i = 0; i < aRequestHeaders.length; i++) {
-			// save this into new array
-			var fieldName  = aRequestHeaders[i].getFieldName();
-			var fieldValue = aRequestHeaders[i].getFieldValue();
-			oRequestHeaders[fieldName] = fieldValue;
-		}
-		return oRequestHeaders;
-	};
-	
-	Request.prototype._addCSRFTokenToHeaderObject = function (oRequestHeaders, sCSRFToken) {
-		if (sCSRFToken) {
-			oRequestHeaders["x-csrf-token"] = sCSRFToken;
-		}
-	};
-	
-	Request.prototype._addBasicAuthToHeaderObject = function (oRequestHeaders, oProject, oRequest) {
-		if (oRequest.getUseBasicAuthentication() === true) {
-			oRequestHeaders["Authorization"] = "Basic " + btoa(oRequest.getUsernameBasicAuth() + ":" + oRequest.getPasswordBasicAuth());
-		} else if (oProject && oProject.getUseBasicAuthentication() === true) {
-			oRequestHeaders["Authorization"] = "Basic " + btoa(oProject.getUsername() + ":" + oProject.getPassword());
-		}
-	};
-	
-	Request.prototype._preparePrefixedUrl = function (sReqUrl, bProjUsePrefixUrl, sProjPrefixUrl) {
-		var sUrl = sReqUrl;
-		if (sUrl) {
-			//remove newlines from the url string.
-			//this enables the user to use multiline URLs
-			sUrl = sUrl.replace(/(\r\n|\n|\r)/gm,"");
-		}
-		if (bProjUsePrefixUrl === true) {
-			sUrl = sProjPrefixUrl + sUrl;
-		}
-		return sUrl;
 	};
 
 //TODO this method is to long! fix this
@@ -342,83 +286,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		return oDeferred;
 	};
 
-	Request.prototype._runPreRequestScript = function (sScriptCode, oReqParam, oPrevReqParam, oSequenceStorage) {
-		try {
-			var fRunPreRequestScript = new Function("req", "prevReq", "seqStorage", sScriptCode);
-			fRunPreRequestScript(oReqParam, oPrevReqParam, oSequenceStorage);
-		} catch (e) {
-			console.log(e);
-			this.setPreRequestScriptResult("SCRIPT ERROR");
-		}
-	};
-
-	Request.prototype._createRequestObjectForScript = function(sUrl) {
-		var oReqParam = {
-			httpMethod: this.getHttpMethod(),
-			url: sUrl,
-			requestBody: this.getRequestBody(),
-			status: this.getStatus(),
-			responseTime: this.getResponseTime(),
-			responseBody: this.getResponseBody(),
-			responseHeaders: this.getResponseHeaders()
-			//TODO add more parameters here
-		};
-		return oReqParam;
-	};
-	
-	Request.prototype._createPreviousRequestObjectForScript = function() {
-		var oPrevReqParam = {
-			httpMethod: this.getHttpMethod(),
-			url: this.getUrl(),
-			requestHeader: this.getRequestHeaders(),
-			requestBody: this.getRequestBody(),
-			status: this.getStatus(),
-			responseBody: this.getResponseBody(),
-			responseTime: this.getResponseTime(),
-			assertionsResult: this.getAssertionsResult(),
-			namedAssertions: this.getNamedAssertionsMap()
-		};
-		return oPrevReqParam;
-	};
-
-	//TODO refactor to execute both scripts with one function
-	Request.prototype._runTestScript = function(oSequenceStorage) {
-		//TODO why is check Assertions called from outside?
-
-		var oReqParam = this._createRequestObjectForScript(this.getUrl());
-
-		//get the test script javascript code, put into function and run
-		var that = this;
-		that._testResults = [];
-		var fTest = function(sName, bResult){
-			that._testResults.push({
-					name: sName,
-				 result: bResult
-			 });
-		};
-
-		var sTestScriptCode = this.getTestScriptCode();
-		try {
-			var fRunTestScript = new Function("req", "test", "seqStorage", sTestScriptCode);
-			//TODO supply req parameter
-			fRunTestScript(oReqParam, fTest, oSequenceStorage);
-			//check the test results and generate the result string e.g. "3/20"
-			//3 from 20 test succeeded
-			var iTestCount = 0;
-			var iTestSuccess = 0;
-			for (var i=0; i<this._testResults.length; i++) {
-				iTestCount++;
-				if (this._testResults[i].result === true) {
-					iTestSuccess++;
-				}
-			}
-			this.setTestScriptResult("" + iTestSuccess + "/" + iTestCount);
-		} catch (e) {
-			console.log(e);
-			this.setTestScriptResult("SCRIPT ERROR");
-		}
-	};
-
 	Request.prototype.checkAssertions = function() {
 		var aAssertions = this.getAssertions();
 
@@ -462,7 +329,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				evaluatedValue: aAssertions[i].getEvaluatedValue()
 			};
 		}
-
 		return oRes;
 	};
 
@@ -470,11 +336,62 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		this.setUrl(this.getUrl() + "\n" + sString);
 	};
 
-
-
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////
+
+	Request.prototype._convertHeadersArrayToObject = function (aRequestHeaders) {
+		var oRequestHeaders = {};
+		for (var i = 0; i < aRequestHeaders.length; i++) {
+			// save this into new array
+			var fieldName  = aRequestHeaders[i].getFieldName();
+			var fieldValue = aRequestHeaders[i].getFieldValue();
+			oRequestHeaders[fieldName] = fieldValue;
+		}
+		return oRequestHeaders;
+	};
+
+	Request.prototype._addCSRFTokenToHeaderObject = function (oRequestHeaders, sCSRFToken) {
+		if (sCSRFToken) {
+			oRequestHeaders["x-csrf-token"] = sCSRFToken;
+		}
+	};
+
+	Request.prototype._addBasicAuthToHeaderObject = function (oRequestHeaders, oProject, oRequest) {
+		if (oRequest.getUseBasicAuthentication() === true) {
+			oRequestHeaders["Authorization"] = "Basic " + btoa(oRequest.getUsernameBasicAuth() + ":" + oRequest.getPasswordBasicAuth());
+		} else if (oProject && oProject.getUseBasicAuthentication() === true) {
+			oRequestHeaders["Authorization"] = "Basic " + btoa(oProject.getUsername() + ":" + oProject.getPassword());
+		}
+	};
+
+	Request.prototype._preparePrefixedUrl = function (sReqUrl, bProjUsePrefixUrl, sProjPrefixUrl) {
+		var sUrl = sReqUrl;
+		if (sUrl) {
+			//remove newlines from the url string.
+			//this enables the user to use multiline URLs
+			sUrl = sUrl.replace(/(\r\n|\n|\r)/gm,"");
+		}
+		if (bProjUsePrefixUrl === true) {
+			sUrl = sProjPrefixUrl + sUrl;
+		}
+		return sUrl;
+	};
+
+	//create a CSRF request for sap gateway
+	Request.prototype._sendCSRFRequest = function (sCsrfTokenUrl) {
+		var oCSRFDeferred = jQuery.ajax({
+			method: "GET",
+			headers:{
+				"X-Requested-With": "XMLHttpRequest",
+				"Content-Type": "application/atom+xml",
+				"DataServiceVersion": "2.0",
+				"X-CSRF-Token":"Fetch"
+			},
+			url: sCsrfTokenUrl
+		});
+		return oCSRFDeferred;
+	};
 
 	/**
 	 * helper function that sets the status of the finished ajax call.
@@ -490,6 +407,82 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 
 		//this is testdata for the statistics feature
 		//this.setSapStatistics("gwtotal=2274,gwhub=138,gwrfcoh=110,gwbe=82,gwapp=1944");
+	};
+	
+	Request.prototype._runPreRequestScript = function (sScriptCode, oReqParam, oPrevReqParam, oSequenceStorage) {
+		try {
+			var fRunPreRequestScript = new Function("req", "prevReq", "seqStorage", sScriptCode);
+			fRunPreRequestScript(oReqParam, oPrevReqParam, oSequenceStorage);
+		} catch (e) {
+			console.log(e);
+			this.setPreRequestScriptResult("SCRIPT ERROR");
+		}
+	};
+
+	Request.prototype._createRequestObjectForScript = function(sUrl) {
+		var oReqParam = {
+			httpMethod: this.getHttpMethod(),
+			url: sUrl,
+			requestBody: this.getRequestBody(),
+			status: this.getStatus(),
+			responseTime: this.getResponseTime(),
+			responseBody: this.getResponseBody(),
+			responseHeaders: this.getResponseHeaders()
+			//TODO add more parameters here
+		};
+		return oReqParam;
+	};
+	
+	Request.prototype._createPreviousRequestObjectForScript = function() {
+		var oPrevReqParam = {
+			httpMethod: this.getHttpMethod(),
+			url: this.getUrl(),
+			requestHeader: this.getRequestHeaders(),
+			requestBody: this.getRequestBody(),
+			status: this.getStatus(),
+			responseBody: this.getResponseBody(),
+			responseTime: this.getResponseTime(),
+			assertionsResult: this.getAssertionsResult(),
+			namedAssertions: this.getNamedAssertionsMap()
+		};
+		return oPrevReqParam;
+	};
+
+	Request.prototype._runTestScript = function(oSequenceStorage) {
+		//TODO why is check Assertions called from outside?
+
+		var oReqParam = this._createRequestObjectForScript(this.getUrl());
+
+		//get the test script javascript code, put into function and run
+		var that = this;
+		that._testResults = [];
+		var fTest = function(sName, bResult){
+			that._testResults.push({
+					name: sName,
+				 result: bResult
+			 });
+		};
+
+		var sTestScriptCode = this.getTestScriptCode();
+		try {
+			var fRunTestScript = new Function("req", "test", "seqStorage", sTestScriptCode);
+			//TODO supply req parameter
+			fRunTestScript(oReqParam, fTest, oSequenceStorage);
+			//check the test results and generate the result string e.g. "3/20"
+			//3 from 20 test succeeded
+			var iTestCount = 0;
+			var iTestSuccess = 0;
+			for (var i=0; i<this._testResults.length; i++) {
+				iTestCount++;
+				if (this._testResults[i].result === true) {
+					iTestSuccess++;
+				}
+			}
+			this.setTestScriptResult("" + iTestSuccess + "/" + iTestCount);
+		} catch (e) {
+			console.log(e);
+			this.setTestScriptResult("SCRIPT ERROR");
+		}
 	};
 
 	return Request;
