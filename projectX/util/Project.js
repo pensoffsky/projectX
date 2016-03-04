@@ -157,8 +157,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		return oProject;
 	};
 
-	Project.prototype.generateEmptyRequest = function() {
-		this.addNewRequest( "New Request", "");
+	Project.prototype.generateEmptyRequest = function(sUrl) {
+		this.addNewRequest( "New Request", sUrl);
 	};
 
 	Project.prototype.getNextSequenceId = function() {

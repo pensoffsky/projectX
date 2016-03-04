@@ -13,6 +13,7 @@
 			<Toolbar height="60px">
 				<Label text="Project:"/>
 				<Select 
+					id="testingIDProjectSelect"
 					width="15rem"
 					items="{/Projects}"
 					change="onSelectProjectChange"
@@ -22,6 +23,7 @@
 					<core:Item text="{mProperties/name}" key="{mProperties/identifier}" />
 				</Select>
 				<Button icon="sap-icon://edit"
+						id="testingIDEditProject"
 						tooltip="Edit project"
 						press="onEditProject"
 						enabled="{= ${/Projects/length} > 0}"/>
