@@ -18,7 +18,8 @@ sap.ui.require([
 			
 		
 		//check if new project name is shown
-		Then.onAppPage.iSeeProjectName(sProjectName);
+		Then.onAppPage.iSeeProjectName(sProjectName).
+			and.iTeardownMyAppFrame();
 	});
 	
 	
