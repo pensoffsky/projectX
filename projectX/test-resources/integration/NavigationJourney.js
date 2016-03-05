@@ -22,5 +22,34 @@ sap.ui.require([
 			and.iTeardownMyAppFrame();
 	});
 	
+	opaTest("add a new sequence", function (Given, When, Then) {
+		const sProjectName = "New Sequence";
+		
+		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
+		
+		When.onMasterPage.iTapOnSequenceTab();
+		When.onMasterPage.iTapOnNewSequence();
+		When.onSequencePage.iTapOnAddRequests();
+		When.onSequencePage.iSelectRequestWithName("New Request");
+		When.onSequencePage.iTapOnSelectRequestDialogOK();
+			
+		
+		Then.onMasterPage.iSeeSequenceWithName("New Sequence").
+			and.onSequencePage.iSeeSequenceName("New Sequence").
+			and.onSequencePage.iSeeRequestWithName("New Request").
+			and.iTeardownMyAppFrame();
+	});
+	
+	opaTest("open odata dialog", function (Given, When, Then) {
+		const sProjectName = "New Sequence";
+		
+		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
+		
+		When.onMasterPage.iTapOnAddODataRequest();
+		
+		Then.onMasterPage.iSeeODataDialog().
+			and.iTeardownMyAppFrame();
+	});
+	
 	
 });
