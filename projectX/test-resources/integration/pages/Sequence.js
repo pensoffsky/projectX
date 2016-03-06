@@ -11,7 +11,26 @@ function (Opa5, Common) {
 
 			baseClass : Common,
 			actions : {
+				iTapOnSelectRequestDialogOK : function () {
+					
+				},
 				
+				iSelectRequestWithName : function (sRequestName) {
+					
+				},
+				
+				iTapOnAddRequests : function () {
+					
+				},
+			},
+			assertions : {
+				iSeeRequestWithName : function (sRequestName) {
+					
+				},
+				
+				iSeeSequenceName : function (sSequenceName) {
+					
+				},
 			}
 		}
 	});

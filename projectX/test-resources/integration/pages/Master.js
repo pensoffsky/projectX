@@ -11,7 +11,18 @@ function (Opa5, Common) {
 
 			baseClass : Common,
 			actions : {
+				iTapOnSequenceTab : function () {
+					
+				},
 				
+				iTapOnNewSequence : function () {
+					
+				}
+			}, 
+			assertions : {
+				iSeeSequenceWithName : function (sSequenceName) {
+					
+				},
 			}
 		}
 	});
