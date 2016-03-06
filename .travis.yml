@@ -1,5 +1,6 @@
 before_script:
   - npm install
+  - npm install bower
   - bower install
   - grunt copyresources
 
