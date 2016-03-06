@@ -22,35 +22,35 @@ sap.ui.require([
 			and.iTeardownMyAppFrame();
 	});
 	
-	opaTest("add a new sequence with a request", function (Given, When, Then) {
-		var sSequenceName = "New Sequence";
-		var sRequestName = "New Request";
-		
-		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
-		
-		When.onMasterPage.iTapOnSequenceTab();
-		When.onMasterPage.iTapOnNewSequence();
-		When.onSequencePage.iTapOnAddRequests();
-		When.onSequencePage.iSelectRequestWithName(sRequestName);
-		When.onSequencePage.iTapOnSelectRequestDialogOK();
-			
-		
-		Then.onMasterPage.iSeeSequenceWithName(sSequenceName).
-			and.onSequencePage.iSeeSequenceName(sSequenceName).
-			and.onSequencePage.iSeeRequestWithName(sRequestName).
-			and.iTeardownMyAppFrame();
-	});
-	
-	opaTest("open the create odata request dialog", function (Given, When, Then) {
-		var sDialogTitle = "Add new request based on OData metadata";
-		
-		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
-		
-		When.onMasterPage.iTapOnAddODataRequest();
-		
-		Then.onMasterPage.iSeeODataDialog().
-			and.iTeardownMyAppFrame();
-	});
+	// opaTest("add a new sequence with a request", function (Given, When, Then) {
+	// 	var sSequenceName = "New Sequence";
+	// 	var sRequestName = "New Request";
+	// 	
+	// 	Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
+	// 	
+	// 	When.onMasterPage.iTapOnSequenceTab();
+	// 	When.onMasterPage.iTapOnNewSequence();
+	// 	When.onSequencePage.iTapOnAddRequests();
+	// 	When.onSequencePage.iSelectRequestWithName(sRequestName);
+	// 	When.onSequencePage.iTapOnSelectRequestDialogOK();
+	// 		
+	// 	
+	// 	Then.onMasterPage.iSeeSequenceWithName(sSequenceName).
+	// 		and.onSequencePage.iSeeSequenceName(sSequenceName).
+	// 		and.onSequencePage.iSeeRequestWithName(sRequestName).
+	// 		and.iTeardownMyAppFrame();
+	// });
+	// 
+	// opaTest("open the create odata request dialog", function (Given, When, Then) {
+	// 	var sDialogTitle = "Add new request based on OData metadata";
+	// 	
+	// 	Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
+	// 	
+	// 	When.onMasterPage.iTapOnAddODataRequest();
+	// 	
+	// 	Then.onMasterPage.iSeeODataDialog().
+	// 		and.iTeardownMyAppFrame();
+	// });
 	
 	
 });
