@@ -4,4 +4,4 @@ before_script:
   - bower install
   - grunt copyresources
 
-script: grunt qunittest --verbose --force
+script: grunt qunittest --verbose
