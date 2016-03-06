@@ -1,3 +1,5 @@
+<img src="https://travis-ci.org/pensoffsky/projectX.svg?branch=master"/>
+
 # Features 
 - fetch and set CSRF token
 - runs in browser or as standalone app (thanks to [Electron](http://electron.atom.io))
