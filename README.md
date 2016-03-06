@@ -56,3 +56,8 @@ The task runs endless in your Terminal and provides the ZIP file (release_projec
 grunt buildGw
 ```
 
+## Update version number in index files
+Change version number in package.json file and use following grunt task to update version information in index*.html files. 
+```
+grunt htmlbuild
+```
