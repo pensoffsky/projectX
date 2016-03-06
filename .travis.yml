@@ -1,0 +1,6 @@
+before_script:
+  - sudo npm install -g bower grunt-cli
+  - bower install
+  - grunt copyresources
+
+script: grunt qunittest --verbose --force

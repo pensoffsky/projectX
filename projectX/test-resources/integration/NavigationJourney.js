@@ -5,7 +5,7 @@ sap.ui.require([
 	QUnit.module("NavigationJourney");
 	
 	opaTest("change name of project in settingsdialog", function (Given, When, Then) {
-		const sProjectName = "projectName";
+		var sProjectName = "projectName";
 		
 		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
 		
@@ -23,8 +23,8 @@ sap.ui.require([
 	});
 	
 	opaTest("add a new sequence with a request", function (Given, When, Then) {
-		const sSequenceName = "New Sequence";
-		const sRequestName = "New Request";
+		var sSequenceName = "New Sequence";
+		var sRequestName = "New Request";
 		
 		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
 		
@@ -42,7 +42,7 @@ sap.ui.require([
 	});
 	
 	opaTest("open the create odata request dialog", function (Given, When, Then) {
-		const sDialogTitle = "Add new request based on OData metadata";
+		var sDialogTitle = "Add new request based on OData metadata";
 		
 		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
 		

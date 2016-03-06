@@ -220,7 +220,11 @@ module.exports = function(grunt) {
                 },
             }
         }
-    }
+    },
+    
+    qunit: {
+        all: ['projectX/test-resources/*.qunit.html']
+      }
   });
 
   // load all needed plugins via package.json 'devDependencies'
@@ -267,5 +271,9 @@ module.exports = function(grunt) {
       "copy:sap.ui.unified",
       "copy:sap.m",
       "copy:bluecrystal"
+  ]);
+  
+  grunt.registerTask("qunittest", [
+      "qunit"
   ]);
 };
