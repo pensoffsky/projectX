@@ -47,6 +47,7 @@
 						<f:content>
 							<Label text="Name" />
 							<Input value="{localUIModel>/sequence/mProperties/name}"
+									id="testingIDSequenceName"
 									liveChange="onNameChanged"
 									valueLiveUpdate="true"
 									/>
@@ -98,6 +99,7 @@
 							<!-- <Label text="Requests in Sequence" />
 							<ToolbarSpacer/> -->
 							<Button icon="sap-icon://add"
+								id="testingIDAddRequest"
 								text="Add requests"
 								tooltip="Add a request from all available requests in the project"
 								press="onBtnAddRequest"/>

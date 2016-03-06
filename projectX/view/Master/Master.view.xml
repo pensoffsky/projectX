@@ -86,6 +86,7 @@
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}">
 				<ToolbarSpacer/>
 				<Button
+					id="testingIDNewSequence"
 					icon="sap-icon://add"
 					tooltip="Add Sequence"
 					press="onAddNewSequence" />
