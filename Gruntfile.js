@@ -181,7 +181,7 @@ module.exports = function(grunt) {
         options: {
             platforms: ["darwin", "win32"],
             app_dir: "./build/release",
-            build_dir: "./build/electron"
+            build_dir: "./build/<%= pkg.name %>"
         }
     },
     // clean tasks
@@ -189,22 +189,34 @@ module.exports = function(grunt) {
         build: ["build"],
         buildGw: ["buildGw"]
     },
-    // zip tasks
-    zip: {
-        "buildGw": {
-            cwd: "buildGw/release/",
-            src: ["buildGw/release/**"],
-            dest: "release/<%= pkg.name %>-Gateway.zip"
+    // compression tasks
+    compress: {
+        buildGw: {
+            options: {
+                archive: "release/<%= pkg.name %>-gateway.zip",
+                level: 9
+            },
+            files: [{
+                expand: true,
+                cwd: "buildGw/release/",
+                src: ["**"]
+            }],
         },
-        "buildElectronDarwin": {
-            cwd: "build/Electron/",
-            src: ["build/Electron/darwin/**"],
-            dest: "release/<%= pkg.name %>-electron-mac.zip"
+        buildElectronWin32: {
+            options: {
+                archive: "release/<%= pkg.name %>-win32.zip"
+            },
+            files: [{
+                expand: true,
+                cwd: "build/<%= pkg.name %>/",
+                src: ["win32/**/*"]
+            }],
         },
-        "buildElectronWin32": {
-            cwd: "build/Electron/",
-            src: ["build/Electron/win32/**"],
-            dest: "release/<%= pkg.name %>-electron-win32.zip"
+    },
+    shell: {
+        // shell command needed, as long as compress don't support symlinks properly
+        buildElectronDarwin: {
+            command: "zip -yrq0 release/<%= pkg.name %>-mac.zip build/<%= pkg.name %>/darwin/."
         }
     },
     // build html files:
@@ -249,18 +261,18 @@ module.exports = function(grunt) {
       "htmlbuild",
       "clean:buildGw",
       "copy:buildGw",
-      "zip:buildGw",
+      "compress:buildGw",
       "connect:buildGwServer"
   ]);
 
-  // build the electron shell app for win and os x, create zip and copy to release folder on root
+  // build the projectX shell app for win and os x, create zip and copy to release folder on root
   grunt.registerTask("build", [
       "htmlbuild",
       "clean:build",
       "copy:main",
       "build-electron-app",
-      "zip:buildElectronDarwin",
-      "zip:buildElectronWin32"
+      "shell:buildElectronDarwin",
+      "compress:buildElectronWin32"
   ]);
 
   // after bower install copy the resources from the bower folder into the resources folder
