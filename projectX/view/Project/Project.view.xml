@@ -31,16 +31,8 @@
 							placeholder="name of project"
 							liveChange="onNameChanged"
 							valueLiveUpdate="true"
+							id="testingIDProjectName"
 							/>
-						<Label text="OData Service URL" />
-
-						<Input value="{localUIModel>/project/mProperties/baseUrl}"
-								/>
-						<Button text="Check"
-							 	tooltip="Check for valid OData service"
-								press="onCheckODataService"
-								/>
-						<Text text="{localUIModel>/odataServiceCheckRes}"/>
 
 						<Label text="Prefix URL" />
 						<Input value="{localUIModel>/project/mProperties/prefixUrl}"
@@ -57,16 +49,24 @@
 							type="Password"
 							placeholder="password"
 							/>
-						<Label text="" />
-						<CheckBox text="use BASIC authentication for all request in project"
-										selected="{localUIModel>/project/mProperties/useBasicAuthentication}"/>
-						<Label text="BASIC Authentication" />
+						<Label text="CSRF token URL" />
+						<Input value="{localUIModel>/project/mProperties/csrfTokenUrl}"
+							   placeholder="url to fetch the CSRF token from"
+								/>
+						<!-- Authentication -->
+						<Label text="Use Basic Authentication" />
+						<Switch state="{localUIModel>/project/mProperties/useBasicAuthentication}"
+								tooltip="Adds Basic Auth Header to all request in the project"/>
+						<Label text="Username" />
 						<Input value="{localUIModel>/project/mProperties/username}"
 							placeholder="username"
+							enabled="{localUIModel>/project/mProperties/useBasicAuthentication}"
 							/>
+						<Label text="Password" />
 						<Input value="{localUIModel>/project/mProperties/password}"
 							type="Password"
 							placeholder="password"
+							enabled="{localUIModel>/project/mProperties/useBasicAuthentication}"
 							/>
 					</f:content>
 				</f:SimpleForm>

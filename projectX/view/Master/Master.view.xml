@@ -27,6 +27,9 @@
 			<!-- REQUESTS -->
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}">
 				<ToolbarSpacer/>
+				<Button text="Import" 
+								tooltip="Import single request from clipboard" 
+								press="onImportRequest"/>
 				<Button
 					text="OData"
 					tooltip="Add Request from metadata"
@@ -83,6 +86,7 @@
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'SEQUENCES'}">
 				<ToolbarSpacer/>
 				<Button
+					id="testingIDNewSequence"
 					icon="sap-icon://add"
 					tooltip="Add Sequence"
 					press="onAddNewSequence" />

@@ -75,6 +75,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		}
 	},
 
+//TODO this method is to long!
 	init : function() {
 		sap.ui.core.UIComponent.prototype.init.apply(this, arguments);
 
@@ -90,15 +91,12 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		});
 		this.setModel(i18nModel, "i18n");
 
-		//create test project
-		var sDemoService = "http://services.odata.org/V2/OData/OData.svc/";
-
+		//create initial project
 		var oProject = new projectX.util.Project({
 			identifier: 0,
-			name: "OData Demo",
-			baseUrl: sDemoService
+			name: "My nice project"
 		});
-		oProject.generateBasicOdataRequests();
+		oProject.generateEmptyRequest("http://httpbin.org/ip");
 
 		// create and set domain model to the component
 		this._oModel = new sap.ui.model.json.JSONModel({
@@ -107,10 +105,14 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		});
 		this.setModel(this._oModel);
 
+		//check if is running in opa5 mode. this disables load and save of projects
+		var bOpaTestMode = jQuery.sap.getUriParameters().get("opaTest") === "true";
+
 		//attempt to automatically load from webstorage
-		this.load();
-
-
+		if (!bOpaTestMode) {
+			this.load();
+		}
+		
 		// set device model
 		var oDeviceModel = new sap.ui.model.json.JSONModel({
 			isTouch : sap.ui.Device.support.touch,
@@ -133,7 +135,9 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		oAppConstants.setDefaultBindingMode("OneWay");
 		this.setModel(oAppConstants, "constants");
 
-		this.initAutoSave();
+		if (!bOpaTestMode) {
+			this.initAutoSave();
+		}
 
 		var that = this;
 		//add global keyboard hooks
@@ -314,7 +318,7 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	 */
 	duplicateRequest : function(oRequest) {
 		var oSelectedProject = this._oModel.getProperty("/SelectedProject");
-		var oNewRequest = oSelectedProject.addCopyOfRequest(oRequest);
+		var oNewRequest = oSelectedProject.addCopyOfRequest(oRequest, " (copy)");
 		this._oModel.updateBindings();
 		return oNewRequest;
 	},

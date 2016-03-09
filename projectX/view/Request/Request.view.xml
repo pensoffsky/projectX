@@ -84,7 +84,7 @@
                             >
                             <items>
                                 <IconTabFilter
-                    				text="Request Stuff"
+                    				text="Request"
                     				>
                                     <!-- REQUEST DEFINITIONS STUFF-->
                                     <l:Grid
@@ -107,19 +107,61 @@
                                              liveChange="onNameChanged"
                                              valueLiveUpdate="true"
                                               />
-        							<Label text="Use Project Prefix URL" />
-                                      <CheckBox text="{localUIModel>/project/mProperties/prefixUrl}"
+                                    
+        							<Label text="Use Prefix Url"/>
+                                    <Switch state="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
+                                            change="onCBPrefixSelected"
+                                            visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/>
+                                    <Label text="Prefix Url" />
+                                    <Text text="{localUIModel>/project/mProperties/prefixUrl}"
+                                          visible="{localUIModel>/request/mProperties/useProjectPrefixUrl}"/>
+                                      <!-- <CheckBox text="{localUIModel>/project/mProperties/prefixUrl}"
                                                 selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
                                                 select="onCBPrefixSelected"
-                                                visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/>
-                                      <Label text="CSRF Token" />
-                                      <CheckBox text="get CRSF token from {localUIModel>/project/mProperties/baseUrl}"
-                                              selected="{localUIModel>/request/mProperties/fetchCSRFToken}"/>
-
+                                                visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/> -->
+                                    <Label text="" />
+                                    <Button text="Export Request" press="onExportRequest"
+                                            width="10rem"/>
                         						</f:content>
                         					</f:SimpleForm>
-                        				</l:content>
+                        				</l:content>                                
                         			</l:Grid>
+                    			</IconTabFilter>
+                                <IconTabSeparator/>
+                                <!-- Authorization Tab -->
+                                <IconTabFilter text="Authorization">
+                                    <f:SimpleForm editable="true" layout="ResponsiveGridLayout">
+                    					<f:content>
+                                            
+                    					</f:content>
+                    				</f:SimpleForm>
+                                    <f:SimpleForm editable="true" layout="ResponsiveGridLayout">
+                    					<f:content>
+                                            <!-- CSRF token -->
+                                            <Label text="Fetch CSRF Token"/>
+                                            <Switch state="{localUIModel>/request/mProperties/fetchCSRFToken}"
+                                                    tooltip="Fetches the CSRF token from the defined URL from project settings. Adds the CSRF token to the request headers"/>
+                                            <Label text="CSRF Url"/>
+                                            <Text text="{localUIModel>/project/mProperties/csrfTokenUrl}"
+                                                  visible="{localUIModel>/request/mProperties/fetchCSRFToken}"/>
+                                            
+                                            <!-- Basic Authentication -->
+                                            <Label text="Use Basic Authentication" />
+                                            <Switch state="{localUIModel>/request/mProperties/useBasicAuthentication}"
+                                                    tooltip="Add Basic Auth Header to request. Overwrites basic authentication from project settings"/>
+                                            <Label text="Username" />
+                							<Input value="{localUIModel>/request/mProperties/usernameBasicAuth}"
+                								placeholder="username"
+                                                enabled="{localUIModel>/request/mProperties/useBasicAuthentication}"
+                								/>
+                                            <Label text="Password"/>
+                							<Input value="{localUIModel>/request/mProperties/passwordBasicAuth}"
+                                                enabled="{localUIModel>/request/mProperties/useBasicAuthentication}"
+                								type="Password"
+                								placeholder="password"
+                								/>
+                    					</f:content>
+                    				</f:SimpleForm>
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                     			<IconTabFilter

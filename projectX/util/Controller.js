@@ -142,7 +142,62 @@ sap.ui.core.mvc.Controller.extend("projectX.util.Controller", {
 	},
 
 	showErrorMessage : function (sMessage) {
+		sap.m.MessageBox.alert(sMessage);
+	},
+	
+	showPrompt : function (sMessage, sData, fInputCallback) {		
+		var oDialog = null;
+		var oInput = new sap.m.TextArea({
+			rows: 8,
+			editable: false,
+			width: "100%"
+		});
+		oInput.setValue(sData);
+				
+		var aButtons = [new sap.m.Button({
+			text: "Close",
+			press: function () {
+				oDialog.close();
+			}
+		})];
 		
+		//if the input callback is set then provide an import button
+		if (fInputCallback) {
+			oInput.setEditable(true);
+			aButtons.unshift(
+				new sap.m.Button({
+					text: "Import Request",
+					press: function () {
+						oDialog.close();
+						fInputCallback(oInput.getValue());
+					}
+				}));
+		}
+		
+		oDialog = new sap.m.Dialog({
+			stretch: false,
+			showHeader: false,
+			content: [new sap.m.VBox({
+				items: [
+					new sap.m.Text({
+						text:sMessage
+					}), 
+					oInput
+				]
+			})],
+			afterClose: function() {
+				oDialog.destroy();
+			},
+			afterOpen: function() {
+				oInput.selectText(0, sData.length);
+			},
+			buttons: aButtons
+		});
+		
+		//to get access to the global model
+		//this.getView().addDependent(oDialog);
+		oDialog.open();
+				
 	},
 	
 	navToRequest : function(iRequestID, iProjectID) {

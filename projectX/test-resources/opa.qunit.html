@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Opa5</title>
+		<meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+		<meta charset="UTF-8">
+		<script id="sap-ui-bootstrap" 
+	        type="text/javascript"
+	        src="../../resources/sap-ui-core.js"
+	        data-sap-ui-theme="sap_bluecrystal"
+	        data-sap-ui-noConflict="true"‚
+	        data-sap-ui-xx-bindingSyntax="complex"
+	        data-sap-ui-resourceroots='{"projectX": "../",
+			 							"tests": "."}'>
+	    </script>
+
+		<script>
+			//polyfill for string endsWith function
+			if (!String.prototype.endsWith) {
+			  String.prototype.endsWith = function(searchString, position) {
+			      var subjectString = this.toString();
+			      if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
+			        position = subjectString.length;
+			      }
+			      position -= searchString.length;
+			      var lastIndex = subjectString.indexOf(searchString, position);
+			      return lastIndex !== -1 && lastIndex === position;
+			  };
+			}
+		</script>
+
+		<script>
+			jQuery.sap.require("sap.ui.qunit.qunit-css");
+			jQuery.sap.require("sap.ui.thirdparty.qunit");
+			jQuery.sap.require("sap.ui.qunit.qunit-junit");
+			
+			//pages 
+			jQuery.sap.require("tests.integration.pages.App");
+			jQuery.sap.require("tests.integration.pages.Master");
+			jQuery.sap.require("tests.integration.pages.Project");
+			jQuery.sap.require("tests.integration.pages.Request");
+			jQuery.sap.require("tests.integration.pages.Sequence");
+			
+			//journey
+			jQuery.sap.require("tests.integration.NavigationJourney");
+			
+		</script>	
+	</head>
+	
+	<body>
+		<div id="content"></div>
+		<h1 id="qunit-header">Opa5</h1>
+		<h2 id="qunit-banner"></h2>
+		<h2 id="qunit-userAgent"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture"></div>
+	</body>
+</html>

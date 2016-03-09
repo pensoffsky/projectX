@@ -8,7 +8,6 @@ sap.ui.define([
 	'projectX/util/Constants',
 	'projectX/view/Request/AssertionEditListController',
 	'projectX/view/Request/RequestHeaderEditListController',
-	'projectX/view/Metadata/MetadataTypesController',
 	'projectX/util/Request',
 	'projectX/util/AceEditor'
 
@@ -19,7 +18,6 @@ sap.ui.define([
 			Constants,
 			AssertionEditListController,
 			RequestHeaderEditListController,
-			MetadataTypesController,
 			RequestObject,
 			AceEditor
 			) {
@@ -103,8 +101,8 @@ sap.ui.define([
 			//create MetaData fragment controller
 			/////////////////////////////////////////////////////////////////////
 			//create Metadata fragment controller and set fragment to view placeholder
-			this._oMetadataTypesController = new MetadataTypesController();
-			this._oMetadataTypesController.onInit(this.createId("Metadata"));
+			// this._oMetadataTypesController = new MetadataTypesController();
+			// this._oMetadataTypesController.onInit(this.createId("Metadata"));
 			// var oMetadataTypes = this.getView().byId("idVBoxMetadataTypesPlaceholder");
 			// oMetadataTypes.addItem(this._oMetadataTypesController.getView());
 
@@ -136,7 +134,6 @@ sap.ui.define([
 			this._localUIModel.setProperty("/request", this._oRequest);
 			this._localUIModel.setProperty("/project", oSelectedProject);
 
-			this._oMetadataTypesController.setSelectedRequest(this._oProject, this._oRequest);
 			this._oAssertionEditController.setSelectedRequest(this._oRequest);
 			this._oRequestHeaderEditController.setSelectedRequest(this._oRequest);
 
@@ -217,7 +214,7 @@ sap.ui.define([
 		// /////////////////////////////////////////////////////////////////////////////
 
 		Request.prototype.onCBPrefixSelected = function(oEvent) {
-			var bSelected = oEvent.getParameter("selected");
+			var bSelected = this._localUIModel.getProperty("/request/mProperties/useProjectPrefixUrl");
 			var sUrl = this._oRequest.getUrl();
 			var sPrefixUrl = this._oProject.getPrefixUrl();
 			if (bSelected){
@@ -368,9 +365,10 @@ sap.ui.define([
 				);
 		};
 		
-		
-		
-		
+		Request.prototype.onExportRequest = function () {			
+			var sSerializedReq = JSON.stringify(this._oRequest.serialize(),null, 2);
+			this.showPrompt("Copy to clipboard: Ctrl+C, ESC", sSerializedReq);			
+		};
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Functions

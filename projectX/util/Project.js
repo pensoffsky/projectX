@@ -12,14 +12,14 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			properties : {
 				identifier : {type : "int", defaultValue : null},
 				name : {type : "string", defaultValue : null},
-				baseUrl : {type : "string", defaultValue : null},
 				prefixUrl : {type : "string", defaultValue : null},
 				username : {type : "string", defaultValue : null},
 				password : {type : "string", defaultValue : null},
 				proxyUsername : {type : "string", defaultValue : null},
 				proxyPassword : {type : "string", defaultValue : null},
+				useProxyAuthentication : {type : "boolean", defaultValue : null},
 				useBasicAuthentication : {type : "boolean", defaultValue : null},
-				useProxyAuthentication : {type : "boolean", defaultValue : null}
+				csrfTokenUrl : {type : "string", defaultValue : null}
 			},
 			events : {
 
@@ -80,12 +80,13 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	/**
 	 * create a copy of the given request and add it to the requests.
 	 * @param {object} oRequest request object
+	 * @param {string} sNameSuffix the string that is added as suffix to the name of the request
 	*/
-	Project.prototype.addCopyOfRequest = function(oRequest) {
+	Project.prototype.addCopyOfRequest = function(oRequest, sNameSuffix) {
 		var iNewID = this._getNextId();
 		var oNewRequest = new projectX.util.Request(oRequest.serialize());
 		oNewRequest.setIdentifier(iNewID);
-		oNewRequest.setName(oNewRequest.getName() + " (copy)");
+		oNewRequest.setName(oNewRequest.getName() + sNameSuffix);
 		this.addRequest(oNewRequest);
 		return oNewRequest;
 	};
@@ -129,7 +130,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var oProject = {};
 		oProject.identifier = this.getIdentifier();
 		oProject.name = this.getName();
-		oProject.baseUrl = this.getBaseUrl();
 		oProject.prefixUrl = this.getPrefixUrl();
 		oProject.username = this.getUsername();
 		oProject.password = this.getPassword();
@@ -137,6 +137,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oProject.proxyUsername = this.getProxyUsername();
 		oProject.proxyPassword = this.getProxyPassword();
 		oProject.useProxyAuthentication = this.getUseProxyAuthentication();
+		oProject.csrfTokenUrl = this.getCsrfTokenUrl();
 
 		var aSerializedRequests = [];
 		var aRequests = this.getRequests();
@@ -162,9 +163,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		return oProject;
 	};
 
-	Project.prototype.generateBasicOdataRequests = function() {
-		this.addNewRequest( "Service Document", this.getBaseUrl() );
-		this.addNewRequest( "Metadata Document", this.getBaseUrl() + "$metadata" );
+	Project.prototype.generateEmptyRequest = function(sUrl) {
+		this.addNewRequest( "New Request", sUrl);
 	};
 
 	Project.prototype.getNextSequenceId = function() {

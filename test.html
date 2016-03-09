@@ -1,43 +1,15 @@
+<!DOCTYPE HTML>
 <html>
-  <head>
-      <title>Unit tests for projectX</title>
-      <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
-      <meta charset="UTF-8">
-   
-    <script id="sap-ui-bootstrap" 
-        type="text/javascript"
-        src="resources/sap-ui-core.js"
-        data-sap-ui-theme="sap_bluecrystal"
-        data-sap-ui-noConflict="true"‚
-        data-sap-ui-xx-bindingSyntax="complex"
-        data-sap-ui-resourceroots='{"projectX": "./projectX", "tests": "./tests"}'>
-    </script>
-   
-    <link rel="stylesheet" href="resources/sap/ui/thirdparty/qunit.css" type="text/css" media="screen" />
-    <script type="text/javascript" src="resources/sap/ui/thirdparty/qunit.js"></script>
-    <script type="text/javascript" src="resources/sap/ui/qunit/qunit-junit.js"></script>
-    <script type="text/javascript" src="resources/sap/ui/qunit/qunit-coverage.js"></script>
-    <script type="text/javascript" src="resources/sap/ui/qunit/QUnitUtils.js"></script>
 
-    <!-- load tested files manually to add the data-cover field to enable blanket test coverage feature -->
-    <script type="text/javascript" src="projectX/util/Storage.js" data-cover></script>
-    <script type="text/javascript" src="projectX/util/Request.js" data-cover></script>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="UTF-8">
+	
+	    <title>Project X Tests</title>
 
-    <script language="javascript">
-   
-    jQuery.sap.require("tests.unit.util.RequestTest");
-    jQuery.sap.require("tests.unit.util.ProjectTest");
-    jQuery.sap.require("tests.unit.util.StorageTest");
-    
-    </script>
-  </head>
-  <body>
-      <div id="content"></div>
-  		<h1 id="qunit-header">Unit tests for projectX</h1>
-  		<h2 id="qunit-banner"></h2>
-  		<h2 id="qunit-userAgent"></h2>
-  		<div id="qunit-testrunner-toolbar"></div>
-  		<ol id="qunit-tests"></ol>
-  		<div id="qunit-fixture"></div>
-  </body>
+	<body>
+		<a href="projectX/test-resources/unit.qunit.html">Unit tests</a>
+		<a href="projectX/test-resources/opa.qunit.html">Opa5 tests</a>
+	</body>
+
 </html>

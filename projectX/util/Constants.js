@@ -167,6 +167,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML = "application/atom+xml";
 	Constants.REQUEST_HEADER_VALUE_APPL_JSON = "application/json";
 
+	Constants.REQUEST_HEADER_VALUE_MULTIPART_MIXED_BOUNDARY = "multipart/mixed; boundary=batch";
+
 	/**
 	* array of value-keys for ACCEPT field in control.
 	* @type {Array}
@@ -331,6 +333,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 			text: "Post Content-Type; XML",
 			field: Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE,
 			value: Constants.REQUEST_HEADER_VALUE_APPL_ATOM_XML
+		}, {
+			text: "Post Content-Type; multipart/mixed; boundary=batch",
+			field: Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE,
+			value: Constants.REQUEST_HEADER_VALUE_MULTIPART_MIXED_BOUNDARY
 		}
 	];
 	/**
