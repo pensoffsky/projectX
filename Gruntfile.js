@@ -57,8 +57,8 @@ module.exports = function(grunt) {
             options: {
                 port: 8000,
                 useAvailablePort: true,
-                base: "buildGw",
-                directory: "buildGw",
+                base: "release",
+                directory: "release",
                 keepalive: true
             }
         }
@@ -67,15 +67,15 @@ module.exports = function(grunt) {
 	  main: {
 		  files: [
 	      // indexElectron.hml
-	      {src: ["indexElectron.html"], dest: "build/release/indexElectron.html", filter: "isFile"},
+	      {src: ["indexElectron.html"], dest: "build/release-tmp/indexElectron.html", filter: "isFile"},
 	      // electron.js
-	      {src: ["electron.js"], dest: "build/release/electron.js", filter: "isFile"},
+	      {src: ["electron.js"], dest: "build/release-tmp/electron.js", filter: "isFile"},
 	      // package.json
-	      {src: ["package.json"], dest: "build/release/package.json", filter: "isFile"},
+	      {src: ["package.json"], dest: "build/release-tmp/package.json", filter: "isFile"},
           //files
-          {expand: true, cwd: "projectX/", src: ["**"], dest: "build/release/projectX"},
-          {expand: true, cwd: "3rdparty/", src: ["**"], dest: "build/release/3rdparty"},
-          {expand: true, cwd: "resources/", src: ["**"], dest: "build/release/resources"}
+          {expand: true, cwd: "projectX/", src: ["**"], dest: "build/release-tmp/projectX"},
+          {expand: true, cwd: "3rdparty/", src: ["**"], dest: "build/release-tmp/3rdparty"},
+          {expand: true, cwd: "resources/", src: ["**"], dest: "build/release-tmp/resources"}
 	    ]
 	  },
       "sap.ui.core": {
@@ -149,7 +149,7 @@ module.exports = function(grunt) {
                 // index.hml
                 {
                     src: ["index.html"],
-                    dest: "buildGw/release/index.html",
+                    dest: "build/release-for-gateway/index.html",
                     filter: "isFile"
                 },
                 //css, i18n, util, view folders
@@ -158,12 +158,12 @@ module.exports = function(grunt) {
                     src: ["**/*"],
                     dots: true,
                     expand: true,
-                    dest: "buildGw/release/<%= pkg.name %>/"
+                    dest: "build/release-for-gateway/projectX/"
                 },
                 //Component: route matching
                 {
                     src: ["projectX/Component.js", "projectX/MyRouter.js"],
-                    dest: "buildGw/release/<%= pkg.name %>/",
+                    dest: "build/release-for-gateway/projectX/",
                     filter: "isFile"
                 },
                 //3rd party components
@@ -172,7 +172,7 @@ module.exports = function(grunt) {
                     src: ["**/*"],
                     dots: false,
                     expand: true,
-                    dest: "buildGw/release/3rdparty/"
+                    dest: "build/release-for-gateway/3rdparty/"
                 }
             ] // copy:buildGw:files
         } // copy:buildGw
@@ -180,14 +180,14 @@ module.exports = function(grunt) {
     "build-electron-app": {
         options: {
             platforms: ["darwin", "win32"],
-            app_dir: "./build/release",
-            build_dir: "./build/<%= pkg.name %>"
+            app_dir: "build/release-tmp",
+            build_dir: "build/<%= pkg.name %>-executable"
         }
     },
     // clean tasks
     clean: {
         build: ["build"],
-        buildGw: ["buildGw"]
+        buildGw: ["build/release-for-gateway"]
     },
     // compression tasks
     compress: {
@@ -198,7 +198,7 @@ module.exports = function(grunt) {
             },
             files: [{
                 expand: true,
-                cwd: "buildGw/release/",
+                cwd: "build/release-for-gateway/",
                 src: ["**"]
             }],
         },
@@ -208,7 +208,7 @@ module.exports = function(grunt) {
             },
             files: [{
                 expand: true,
-                cwd: "build/<%= pkg.name %>/",
+                cwd: "build/<%= pkg.name %>-executable/",
                 src: ["win32/**/*"]
             }],
         },
@@ -216,7 +216,7 @@ module.exports = function(grunt) {
     shell: {
         // shell command needed, as long as compress don't support symlinks properly
         buildElectronDarwin: {
-            command: "zip -yrq0 release/<%= pkg.name %>-mac.zip build/<%= pkg.name %>/darwin/."
+            command: "zip -yrq0 release/<%= pkg.name %>-mac.zip build/<%= pkg.name %>-executable/darwin/."
         }
     },
     // build html files:
