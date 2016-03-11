@@ -216,7 +216,12 @@ module.exports = function(grunt) {
     shell: {
         // shell command needed, as long as compress don't support symlinks properly
         buildElectronDarwin: {
-            command: "zip -yrq0 release/<%= pkg.name %>-mac.zip build/<%= pkg.name %>-executable/darwin/."
+            command: [
+                // create 'release' folder and discard any errors
+                "mkdir release &2>/dev/null",
+                // zip OSX build into release folder
+                "zip -yrq1 release/<%= pkg.name %>-mac.zip build/<%= pkg.name %>-executable/darwin/."
+            ].join(" && ")
         }
     },
     // build html files:
