@@ -241,9 +241,19 @@
                                         <Button icon="sap-icon://collapse-group" press="onShrinkResponseBody"/>
                                         <Button icon="sap-icon://full-screen" press="onFullscreenResponseBody"/>
                                     </Toolbar>
-                                    <HBox>
-                                        
-                                    </HBox>
+                                    
+                                    <VBox>
+                                        <ObjectStatus
+                            				text="Response body is truncated because it is huge!"
+                            				state="Error"
+                                            visible="{localUIModel>/isHugeResponseBody}"
+                            				icon="sap-icon://alert" />
+                                        <Button text=" Display it all (may be slow)"
+                                                press="onShowHugeResponseBody"
+                                                visible="{localUIModel>/isHugeResponseBody}"
+                                                type="Reject"
+                                                />
+                                    </VBox>
                                     <custom:AceEditor width="100%" height="400px"
                                                       mode="{localUIModel>/responseBodyDisplayMode}"
                                                       readOnly="true"

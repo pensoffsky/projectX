@@ -55,18 +55,12 @@ sap.ui.define([
 				TESTSCRIPT_EXAMPLES: Constants.TESTSCRIPTEXAMPLES,
 				HTTP_METHODS: Constants.HTTP_METHODS,
 				responseBodyDisplayMode : "text",
-				responseBodyFormatted : ""
+				responseBodyFormatted : "",
+				isHugeResponseBody : false
 			});
 			//set the local ui model to the view
 			//use a name when addressing the local ui model from xml
 			this.getView().setModel(this._localUIModel, "localUIModel");
-
-			var that = this;
-			// this.getView().byId("idTextAreaUrl").onsapentermodifiers =  function(oEvent, a ,b){
-			// 	if (oEvent.metaKey === true || oEvent.altKey === true) {
-			// 		that.onBtnSendPress();
-			// 	}
-			// };
 
 			/////////////////////////////////////////////////////////////////////
 			//create Assertion fragment controller
@@ -109,9 +103,18 @@ sap.ui.define([
 			/////////////////////////////////////////////////////////////////////
 			//hook navigation event
 			/////////////////////////////////////////////////////////////////////
-			this.getRouter().getRoute("product").attachMatched(this.onRouteMatched, this);
+			this._hookRoutingEvent();
+			
 		};
-
+		
+		Request.prototype._hookRoutingEvent = function() {
+			try {
+				this.getRouter().getRoute("product").attachMatched(this.onRouteMatched, this);		
+			} catch (e) {
+				jQuery.sap.log.error("Request.prototype._hookRoutingEvent: could not hook routing event");
+			}
+		};
+		
 		Request.prototype.onRouteMatched = function(oEvent) {
 			this._oRequest = null;
 			this._oProject = null;
@@ -141,7 +144,7 @@ sap.ui.define([
 			var sMode = this._oRequest.getResponseBodyFormat();
 			this._setResponseBodyButtonMode(sMode);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
-			this._prettyPrintResponseBody(sMode);
+			this._prettyPrintResponseBody(this._oRequest.getResponseBody(), sMode, false);
 		};
 
 		Request.prototype.onBeforeShow = function() {
@@ -177,6 +180,7 @@ sap.ui.define([
 			var oRequest = this._oRequest;
 			oRequest.resetTempData();
 			this._localUIModel.setProperty("/responseBodyFormatted", "");
+			this._localUIModel.setProperty("/isHugeResponseBody", false);
 			this._localUIModel.updateBindings();
 			this._oAssertionEditController.updateBindings();
 
@@ -185,7 +189,9 @@ sap.ui.define([
 			var that = this;
 			oDeferred.always(function(){
 				oRequest.checkAssertions();
-				that._prettyPrintResponseBody(that._localUIModel.getProperty("/responseBodyDisplayMode"));
+				that._prettyPrintResponseBody(that._oRequest.getResponseBody(),
+					that._localUIModel.getProperty("/responseBodyDisplayMode"),
+					false);
 				that._localUIModel.updateBindings();
 				that._oAssertionEditController.updateBindings();
 			});
@@ -316,7 +322,7 @@ sap.ui.define([
 				console.log("problem with response body format segmented button on detail page");
 			}
 			this._oRequest.setResponseBodyFormat(sMode); //save the tab to the request
-			this._prettyPrintResponseBody(sMode);
+			this._prettyPrintResponseBody(this._oRequest.getResponseBody(), sMode, false);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
 		};
 		
@@ -328,6 +334,7 @@ sap.ui.define([
 		Request.prototype.onBtnClearPress = function(){
 			this._oRequest.resetTempData();
 			this._localUIModel.setProperty("/responseBodyFormatted", "");
+			this._localUIModel.setProperty("/isHugeResponseBody", false);
 			this._localUIModel.updateBindings();
 		};
 		
@@ -369,6 +376,14 @@ sap.ui.define([
 			var sSerializedReq = JSON.stringify(this._oRequest.serialize(),null, 2);
 			this.showPrompt("Copy to clipboard: Ctrl+C, ESC", sSerializedReq);			
 		};
+		
+		Request.prototype.onShowHugeResponseBody = function () {
+			this._localUIModel.setProperty("/isHugeResponseBody", false);
+			var sResponseBodyDisplayMode = this._localUIModel.getProperty("/responseBodyDisplayMode");
+			this._prettyPrintResponseBody(this._oRequest.getResponseBody(), 
+				sResponseBodyDisplayMode, 
+				true);
+		};
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Private Functions
@@ -396,10 +411,16 @@ sap.ui.define([
 			oSegmentedButton.setSelectedButton(this.byId(sButtonId));
 		};
 
-
-		Request.prototype._prettyPrintResponseBody = function(sMode) {
-			var sResponseBody = this._oRequest.getResponseBody();
-
+		/**
+		 * the responseBody from the executed request is formatted with vkbeautify
+		 * depending on the selected mode. 
+		 * if the result is too large it is truncated and the "truncation flag"
+		 * in the localUIModel is set to true.
+		 * @param  {string} sResponseBody         the responseBody from the executed request
+		 * @param  {string} sMode                 the mode used with vkbeautify ("xml" or "json" or "")
+		 * @param  {boolean} bSkipTruncation	  true means no truncation takes place
+		 */
+		Request.prototype._prettyPrintResponseBody = function(sResponseBody, sMode, bSkipTruncation) {
 			try {
 				switch (sMode) {
 					case "xml":
@@ -412,6 +433,14 @@ sap.ui.define([
 				}
 			} catch (e) {
 				console.log("_prettyPrintResponseBody: " + e);
+			}
+			
+			if (!bSkipTruncation 
+				&& sResponseBody.length > Constants.REQUEST_RESPONSEBODY_LENGTH_LIMIT) {
+				this._localUIModel.setProperty("/isHugeResponseBody", true);
+				sResponseBody = sResponseBody.substr(0 ,Constants.REQUEST_RESPONSEBODY_LENGTH_TRUNCATED);
+			} else {
+				this._localUIModel.setProperty("/isHugeResponseBody", false);
 			}
 
 			this._localUIModel.setProperty("/responseBodyFormatted", sResponseBody);

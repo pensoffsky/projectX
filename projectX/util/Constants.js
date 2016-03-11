@@ -16,9 +16,22 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 
 
 	/*
+     * Constants for truncation of responseBody on request Screen
+	 */
+	/**
+	 * the length of the response body that triggers the truncation
+	 * @type {integer}
+	 */
+	Constants.REQUEST_RESPONSEBODY_LENGTH_LIMIT = 1000 * 1000;
+	/**
+	 * the length of the response body gets truncated to
+	 * @type {integer}
+	 */
+	Constants.REQUEST_RESPONSEBODY_LENGTH_TRUNCATED = 10 * 1000;
+
+	/*
 	 * Constants for OData Types
 	 */
-
 	Constants.ODATATYPE_BINARY = "Edm.Binary";
 	Constants.ODATATYPE_BOOLEAN = "Edm.Boolean";
 	Constants.ODATATYPE_BYTE = "Edm.Byte";
