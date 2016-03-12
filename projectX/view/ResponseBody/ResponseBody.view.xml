@@ -11,11 +11,11 @@
 	<Page
 		enableScrolling="false"
 		id="idBindingContainer"
-		title="ResponseBody"
+		title="{i18n>RequestDetailResponseBodyPageTitle}"
 		>
 		<headerContent>
 			<Button icon="sap-icon://exit-full-screen" 
-					tooltip="collapse" 
+					tooltip="{i18n>RequestDetailResponseBodyCollapse}" 
 					press="onCloseDialog"/>
 		</headerContent>
 		

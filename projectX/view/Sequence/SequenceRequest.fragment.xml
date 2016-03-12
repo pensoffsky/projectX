@@ -13,7 +13,7 @@
 						visible="{= ${mProperties/sapStatistics/length} > 0}"
 						/>
 			<TextArea value="{mProperties/scriptCode}"
-						placeholder="no script code supplied"
+						placeholder="{i18n>SequenceDetailSingleRequestNoScriptCode}"
 						editable="false"
 						rows="6"
 						width="90%"
@@ -23,19 +23,19 @@
 					visible="{= ${mProperties/resultReady} === true}"/>
 			</VBox>
 			<TextArea value="{mProperties/testScriptCode}"
-						placeholder="no test script code supplied"
+						placeholder="{i18n>SequenceDetailSingleRequestNoTestScriptCode}"
 						editable="false"
 						rows="6"
 						width="90%"
 						/>
 			<TextArea value="{mProperties/responseHeaders}"
-						placeholder="response headers will be filled after running the sequence..."
+						placeholder="{i18n>SequenceDetailSingleRequestNoResponseHeaders}"
 						editable="false"
 						rows="6"
 						width="90%"
 						/>
 			<TextArea value="{mProperties/responseBody}"
-						placeholder="response body will be filled after running the sequence..."
+						placeholder="{i18n>SequenceDetailSingleRequestNoResponseBody}"
 						editable="false"
 						rows="6"
 						width="90%"

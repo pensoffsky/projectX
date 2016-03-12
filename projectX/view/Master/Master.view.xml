@@ -17,9 +17,9 @@
 							select="onSegmentedButtonSelect"
 							id="idSegmentedButton"
 							width="100%">
-				<Button text="Requests {/SelectedProject/mAggregations/requests/length}"
+				<Button text="{i18n>MasterListButtonRequest} {/SelectedProject/mAggregations/requests/length}"
 					id="idButtonRequests" />
-		        <Button text="Sequences {/SelectedProject/mAggregations/sequences/length}"
+		        <Button text="{i18n>MasterListButtonSequence} {/SelectedProject/mAggregations/sequences/length}"
 					id="idButtonSequences" />
 			</SegmentedButton>
 
@@ -27,16 +27,16 @@
 			<!-- REQUESTS -->
 			<Toolbar visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}">
 				<ToolbarSpacer/>
-				<Button text="Import" 
-								tooltip="Import single request from clipboard" 
-								press="onImportRequest"/>
+				<Button text="{i18n>MasterListButtonImport}" 
+						tooltip="{i18n>MasterListButtonImportTooltip}" 
+						press="onImportRequest"/>
 				<Button
-					text="OData"
-					tooltip="Add Request from metadata"
+					text="{i18n>MasterListButtonOData}"
+					tooltip="{i18n>MasterListButtonODataTooltip}"
 					press="onAddRequestMetadata" />
 				<Button
 					icon="sap-icon://add"
-					tooltip="Add Request"
+					tooltip="{i18n>MasterListButtonDeleteSequenceTooltip}"
 					press="onAddRequest" />
 			</Toolbar>
 			<SearchField liveChange="onRequestSearch"
@@ -67,13 +67,13 @@
 								<ToolbarSpacer/>
 								<c:Fragment fragmentName="projectX.view.Master.MasterHttpMethodTag" type="XML"/>
 								<Button press="onBtnDuplicateRequestPress"
-												tooltip="Duplicate"
-												icon="sap-icon://duplicate"
-												type="Transparent"/>
+									tooltip="{i18n>MasterListButtonDuplicateRequestTooltip}"
+									icon="sap-icon://duplicate"
+									type="Transparent"/>
 								<Button press="onBtnDeleteRequestPress"
-												tooltip="Delete"
-												icon="sap-icon://delete"
-												type="Transparent"/>
+									tooltip="{i18n>MasterListButtonDeleteRequestTooltip}"
+									icon="sap-icon://delete"
+									type="Transparent"/>
 
 							</Toolbar>
 						</CustomListItem>
@@ -88,7 +88,7 @@
 				<Button
 					id="testingIDNewSequence"
 					icon="sap-icon://add"
-					tooltip="Add Sequence"
+					tooltip="{i18n>MasterListButtonAddSequenceTooltip}"
 					press="onAddNewSequence" />
 			</Toolbar>
 			<SearchField liveChange="onSequenceSearch"
@@ -113,13 +113,13 @@
 								<Text text="{mProperties/name}"/>
 								<ToolbarSpacer/>
 								<Button press="onBtnDuplicateSequencePress"
-												tooltip="Duplicate"
-												icon="sap-icon://duplicate"
-												type="Transparent"/>
+									tooltip="{i18n>MasterListButtonDuplicateSequenceTooltip}"
+									icon="sap-icon://duplicate"
+									type="Transparent"/>
 								<Button press="onBtnDeleteSequencePress"
-												tooltip="Delete"
-												icon="sap-icon://delete"
-												type="Transparent"/>
+									tooltip="{i18n>MasterListButtonDeleteSequenceTooltip}"
+									icon="sap-icon://delete"
+									type="Transparent"/>
 
 							</Toolbar>
 						</CustomListItem>

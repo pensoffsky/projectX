@@ -11,9 +11,8 @@
 	<l:FixFlex 	fitContainer="true">
 		<l:fixContent>
 			<Toolbar height="60px">
-				<Label text="Project:"/>
-				<Select 
-					id="testingIDProjectSelect"
+				<Label text="{i18n>ProjectLabel}"/>
+				<Select id="testingIDProjectSelect"
 					width="15rem"
 					items="{/Projects}"
 					change="onSelectProjectChange"
@@ -23,44 +22,44 @@
 					<core:Item text="{mProperties/name}" key="{mProperties/identifier}" />
 				</Select>
 				<Button icon="sap-icon://edit"
-						id="testingIDEditProject"
-						tooltip="Edit project"
-						press="onEditProject"
-						enabled="{= ${/Projects/length} > 0}"/>
+					id="testingIDEditProject"
+					tooltip="{i18n>ProjectEditTooltip}"
+					press="onEditProject"
+					enabled="{= ${/Projects/length} > 0}"/>
 				<Button icon="sap-icon://add"
-						tooltip="Add new project"
-						press="onAddNewProject"/>
+					tooltip="{i18n>ProjectAddTooltip}"
+					press="onAddNewProject"/>
 				<Button icon="sap-icon://delete"
-						tooltip="Delete selected project"
-						press="onDeleteSelectedProject"
-						enabled="{= ${/Projects/length} > 0}"/>
+					tooltip="{i18n>ProjectDeleteTooltip}"
+					press="onDeleteSelectedProject"
+					enabled="{= ${/Projects/length} > 0}"/>
 
 				<ToolbarSpacer/>
-				<Text text="Please import or create a new project" 
-						visible="{= !${/Projects/length} > 0}"
-						/>
-						<ToolbarSpacer/>
+				<Text text="{i18n>ProjectEmptyList}"
+					visible="{= !${/Projects/length} > 0}"/>
+
+				<ToolbarSpacer/>
 				<u:FileUploader
 					change="onFileUploaderChange"
-					buttonText="Import"
+					buttonText="{i18n>ProjectImportTooltip}"
 					tooltip="Load a local file from disk"
 					buttonOnly="true"
 					/>
 				<Button
 					text="Export"
-					tooltip="Export"
+					tooltip="{i18n>ProjectExportTooltip}"
 					press="onExport"
 					enabled="{= ${/Projects/length} > 0}" />
 			</Toolbar>
-    </l:fixContent>
-    <l:flexContent>
-		<SplitApp 	id="idAppControl" 
-					mode="StretchCompressMode"
-					visible="{= ${/Projects/length} > 0}"
-					/>
-		
-    </l:flexContent>
-		
+		</l:fixContent>
+		<l:flexContent>
+			<SplitApp id="idAppControl"
+				mode="StretchCompressMode"
+				visible="{= ${/Projects/length} > 0}"
+				/>
+
+		</l:flexContent>
+	
 	</l:FixFlex>
 	
 </mvc:View>

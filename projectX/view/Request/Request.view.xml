@@ -50,7 +50,7 @@
                         <layoutData>
                             <FlexItemData growFactor="0"/>
                         </layoutData>
-                        <Button text="Send Request"
+                        <Button text="{i18n>RequestDetailSendRequest}"
                                 press="onBtnSendPress"
                                 type="Emphasized"
                                 tooltip="Send the request (F7)"
@@ -84,7 +84,7 @@
                             >
                             <items>
                                 <IconTabFilter
-                    				text="Request"
+                    				text="{i18n>RequestDetailTitleRequest}"
                     				>
                                     <!-- REQUEST DEFINITIONS STUFF-->
                                     <l:Grid
@@ -95,24 +95,24 @@
                         						editable="true"
                         						layout="ResponsiveGridLayout">
                         						<f:content>
-                                    <Label text="Name" />
+                                    <Label text="{i18n>RequestDetailRequestName}" />
                                   <Input value="{localUIModel>/request/mProperties/name}"
-                                         placeholder="name of request"
+                                         placeholder="{i18n>RequestDetailRequestNamePlaceholder}"
                                              liveChange="onNameChanged"
                                              valueLiveUpdate="true"
                                               />
-                                    <Label text="Group" />
+                                    <Label text="{i18n>RequestDetailRequestGroup}" />
                                       <Input value="{localUIModel>/request/mProperties/groupName}"
-                                             placeholder="provide a name to group the request"
+                                             placeholder="{i18n>RequestDetailRequestGroupPlaceholder}"
                                              liveChange="onNameChanged"
                                              valueLiveUpdate="true"
                                               />
                                     
-        							<Label text="Use Prefix Url"/>
+        							<Label text="{i18n>RequestDetailRequestUsePrefixUrl}"/>
                                     <Switch state="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
                                             change="onCBPrefixSelected"
                                             visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/>
-                                    <Label text="Prefix Url" />
+                                    <Label text="{i18n>RequestDetailRequestPrefixUrl}" />
                                     <Text text="{localUIModel>/project/mProperties/prefixUrl}"
                                           visible="{localUIModel>/request/mProperties/useProjectPrefixUrl}"/>
                                       <!-- <CheckBox text="{localUIModel>/project/mProperties/prefixUrl}"
@@ -120,7 +120,7 @@
                                                 select="onCBPrefixSelected"
                                                 visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/> -->
                                     <Label text="" />
-                                    <Button text="Export Request" press="onExportRequest"
+                                    <Button text="{i18n>RequestDetailRequestButtonExportRequest}" press="onExportRequest"
                                             width="10rem"/>
                         						</f:content>
                         					</f:SimpleForm>
@@ -128,8 +128,8 @@
                         			</l:Grid>
                     			</IconTabFilter>
                                 <IconTabSeparator/>
-                                <!-- Authorization Tab -->
-                                <IconTabFilter text="Authorization">
+                                <!-- ization Tab -->
+                                <IconTabFilter text="{i18n>RequestDetailTitleAuthorization}">
                                     <f:SimpleForm editable="true" layout="ResponsiveGridLayout">
                     					<f:content>
                                             
@@ -138,34 +138,34 @@
                                     <f:SimpleForm editable="true" layout="ResponsiveGridLayout">
                     					<f:content>
                                             <!-- CSRF token -->
-                                            <Label text="Fetch CSRF Token"/>
+                                            <Label text="{i18n>RequestDetailAuthorizationFetchCsrfToken}"/>
                                             <Switch state="{localUIModel>/request/mProperties/fetchCSRFToken}"
-                                                    tooltip="Fetches the CSRF token from the defined URL from project settings. Adds the CSRF token to the request headers"/>
-                                            <Label text="CSRF Url"/>
+                                                    tooltip="{i18n>RequestDetailAuthorizationFetchCsrfTokenTooltip}"/>
+                                            <Label text="{i18n>RequestDetailAuthorizationCsrfTokenUrl}"/>
                                             <Text text="{localUIModel>/project/mProperties/csrfTokenUrl}"
                                                   visible="{localUIModel>/request/mProperties/fetchCSRFToken}"/>
                                             
                                             <!-- Basic Authentication -->
-                                            <Label text="Use Basic Authentication" />
+                                            <Label text="{i18n>RequestDetailAuthorizationUseBasicAuth}" />
                                             <Switch state="{localUIModel>/request/mProperties/useBasicAuthentication}"
-                                                    tooltip="Add Basic Auth Header to request. Overwrites basic authentication from project settings"/>
-                                            <Label text="Username" />
+                                                    tooltip="{i18n>RequestDetailAuthorizationUseBasicAuthTooltip}"/>
+                                            <Label text="{i18n>RequestDetailAuthorizationUsername}" />
                 							<Input value="{localUIModel>/request/mProperties/usernameBasicAuth}"
-                								placeholder="username"
+                								placeholder="{i18n>RequestDetailAuthorizationUsernamePlaceholder}"
                                                 enabled="{localUIModel>/request/mProperties/useBasicAuthentication}"
                 								/>
-                                            <Label text="Password"/>
+                                            <Label text="{i18n>RequestDetailAuthorizationPassword}"/>
                 							<Input value="{localUIModel>/request/mProperties/passwordBasicAuth}"
                                                 enabled="{localUIModel>/request/mProperties/useBasicAuthentication}"
                 								type="Password"
-                								placeholder="password"
+                								placeholder="{i18n>RequestDetailAuthorizationPasswordPlaceholder}"
                 								/>
                     					</f:content>
                     				</f:SimpleForm>
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                     			<IconTabFilter
-                    				text="Request Headers"
+                    				text="{i18n>RequestDetailTitleRequestHeaders}"
                                     count="{localUIModel>/request/mAggregations/requestHeaders/length}"
                     				>
                                     <!-- REQUEST HEADER -->
@@ -173,7 +173,7 @@
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                     			<IconTabFilter
-                    				text="Payload"
+                    				text="{i18n>RequestDetailTitlePayload}"
                                     count="{localUIModel>/request/mProperties/requestBody/length}"
                     				>
                                     <!-- REQUEST PAYLOAD -->
@@ -184,10 +184,10 @@
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                     			<IconTabFilter
-                    				text="Pre-Request Script"
+                    				text="{i18n>RequestDetailTitlePreRequestScript}"
                                     count="{localUIModel>/request/mProperties/scriptCode/length} {localUIModel>/request/mProperties/preRequestScriptResult}"
                     				>
-                                        <Button text="Snippets" press="onButtonScriptExamples"/>
+                                        <Button text="{i18n>RequestDetailPreRequestScriptSnippets}" press="onButtonScriptExamples"/>
                                         <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
                                                 id="idMenuScriptExamples">
                                             <u:MenuItem text="{localUIModel>text}"
@@ -203,15 +203,15 @@
                     </IconTabBar>
 
                     <HBox alignItems="Center" class="projectXRequestStatusContainer">
-                        <Button text="Clear"
+                        <Button text="{i18n>RequestDetailButtonClear}"
                                 press="onBtnClearPress"
-                                tooltip="Clear received data"
+                                tooltip="{i18n>RequestDetailButtonClearTooltip}"
                                 enabled="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"
                                 />
                         <ObjectStatus
                             class="projectXRequestStatusText"
-            				text="Status: {localUIModel>/request/mProperties/status}
-                                    Time: {localUIModel>/request/mProperties/responseTime}ms"
+            				text="{i18n>RequestDetailStatus}: {localUIModel>/request/mProperties/status} 
+                                    {i18n>RequestDetailTime}: {localUIModel>/request/mProperties/responseTime}ms"
             				state="None"
                             visible="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}" />
                     </HBox>
@@ -223,18 +223,16 @@
                         class="sapUiNoContentPadding projectXBorder projectXRequestResponseContainer"
                     		>
                     		<items>
-                          <IconTabFilter
-                    				text="Response Body"
-                                    count="{localUIModel>/request/mProperties/responseBody/length}"
-                    				>
+                                <IconTabFilter text="{i18n>RequestDetailResponseBody}"
+                                    count="{localUIModel>/request/mProperties/responseBody/length}">
                                     <Toolbar>
                                         <SegmentedButton
                                                          select="onResponseBodyFormat"
                                                          id="idButtonResponseFormat">
-                                            <Button text="XML" id="idButtonResponseXML"/>
-                                            <Button text="JSON" id="idButtonResponseJSON"/>
-                                            <Button text="HTML" id="idButtonResponseHTML"/>
-                                            <Button text="RAW" id="idButtonResponseRAW"/>
+                                            <Button text="{i18n>RequestDetailOutputFormatButtonXml}" id="idButtonResponseXML"/>
+                                            <Button text="{i18n>RequestDetailOutputFormatButtonJson}" id="idButtonResponseJSON"/>
+                                            <Button text="{i18n>RequestDetailOutputFormatButtonHtml}" id="idButtonResponseHTML"/>
+                                            <Button text="{i18n>RequestDetailOutputFormatButtonRaw}" id="idButtonResponseRAW"/>
                                         </SegmentedButton>
                                         <ToolbarSpacer/>
                                         <Button icon="sap-icon://expand-group" press="onGrowResponseBody"/>
@@ -244,11 +242,11 @@
                                     
                                     <VBox>
                                         <ObjectStatus
-                            				text="Response body is truncated because it is huge!"
+                            				text="{i18n>RequestDetailResponseBodyIsHuge}"
                             				state="Error"
                                             visible="{localUIModel>/isHugeResponseBody}"
                             				icon="sap-icon://alert" />
-                                        <Button text=" Display it all (may be slow)"
+                                        <Button text="{i18n>RequestDetailResponseBodyButtonDisplayAll}"
                                                 press="onShowHugeResponseBody"
                                                 visible="{localUIModel>/isHugeResponseBody}"
                                                 type="Reject"
@@ -268,7 +266,7 @@
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                                 <IconTabFilter
-                                    text="Response Headers"
+                                    text="{i18n>RequestDetailResponseHeaders}"
                                     count="{localUIModel>/request/mProperties/responseHeaders/length}"
                                     >
                                     <custom:AceEditor width="100%" height="auto"
@@ -284,7 +282,7 @@
                                 
                           <!-- ASSERTIONS -->
                     			<IconTabFilter
-                    				text="Assertions"
+                    				text="{i18n>RequestDetailAssertions}"
                                     count="{ parts : [
                                               { path : 'localUIModel>/request/mProperties/assertionsResult' },
                                               { path : 'localUIModel>/request/mProperties/assertionsResultReady' },
@@ -297,16 +295,14 @@
                           <IconTabSeparator/>
                           
                           <!-- TEST SCRIPT -->
-                          <IconTabFilter
-                    				text="Test"
-                                    count="{localUIModel>/request/mProperties/testScriptCode/length} {localUIModel>/request/mProperties/testScriptResult}"
-                    				>
+                          <IconTabFilter text="{i18n>RequestDetailTest}"
+                                    count="{localUIModel>/request/mProperties/testScriptCode/length} {localUIModel>/request/mProperties/testScriptResult}">
                                     
                                    <Button icon="sap-icon://media-play"
-                                     text="Execute test script"
-                                     tooltip="run test script on request response again"
+                                     text="{i18n>RequestDetailTestReplayScript}"
+                                     tooltip="{i18n>RequestDetailTestReplayScriptTooltip}"
                                          press="onBtnExecuteTestScript"/>
-                                   <Button text="Snippets" press="onButtonTestScriptExamples"/>
+                                   <Button text="{i18n>RequestDetailTestSnippets}" press="onButtonTestScriptExamples"/>
                                    <u:Menu items="{localUIModel>/TESTSCRIPT_EXAMPLES}"
                                            id="idMenuTestScriptExamples">
                                        <u:MenuItem text="{localUIModel>text}"
@@ -325,7 +321,7 @@
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                                 <IconTabFilter
-                    				text="Sent"
+                    				text="{i18n>RequestDetailSent}"
                     				>
                                        <l:Grid
                            				defaultSpan="L12 M12 S12"
@@ -335,13 +331,13 @@
                            						editable="true"
                            						layout="ResponsiveGridLayout">
                            						<f:content>
-                           							<Label text="URL" />
+                           							<Label text="{i18n>RequestDetailSentUrl}" />
                                         <Text text="{localUIModel>/request/mProperties/finalUrl}"/>
-                                        <Label text="HTTP Method" />
+                                        <Label text="{i18n>RequestDetailSentHttpMethod}" />
                                         <Text text="{localUIModel>/request/mProperties/finalHttpMethod}"/>
-                                        <Label text="Headers" />
+                                        <Label text="{i18n>RequestDetailSentHeaders}" />
                                         <Text text="{localUIModel>/request/mProperties/finalRequestHeaders}"/>
-                                        <Label text="Payload" />
+                                        <Label text="{i18n>RequestDetailSentPayload}" />
                                         <Text text="{localUIModel>/request/mProperties/finalRequestBody}"/>
                            						</f:content>
                            					</f:SimpleForm>

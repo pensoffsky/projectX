@@ -1,36 +1,37 @@
-<c:FragmentDefinition
+<c:FragmentDefinition controllerName="projectX.view.Request.RequestHeaderEditList"
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
 	xmlns:c="sap.ui.core"
 	xmlns:u="sap.ui.unified"
-	xmlns="sap.m"
-	controllerName="projectX.view.Request.RequestHeaderEditList">
+	xmlns="sap.m">
 	<Table
 		id="idTableRequestHeaders"
 		items="{/request/mAggregations/requestHeaders}"
 		>
 		<headerToolbar>
 			<Toolbar>
-				<Button icon="sap-icon://add-favorite" text="Add common headers" press="onButtonRequestHeaderExamples"/>
+				<Button icon="sap-icon://add-favorite"
+					text="{i18n>RequestDetailRequestHeadersAddCommonHeaders}"
+					press="onButtonRequestHeaderExamples"/>
 					<u:Menu
 						id="idMenuRequestHeaderExamples"
 						items="{/REQUEST_HEADER_EXAMPLES}">
 						<u:MenuItem text="{text}"
-												select="onMenuItemHeaderExampleSelected"/>
+							select="onMenuItemHeaderExampleSelected"/>
 					</u:Menu>
 				<!-- <ToolbarSpacer /> -->
 				<Button icon="sap-icon://add"
-					text="Add header"
-				  tooltip="Add header field"
-				  press="onBtnAddRequestHeader"/>
+					text="{i18n>RequestDetailRequestHeadersAdd}"
+					tooltip="{i18n>RequestDetailRequestHeadersAddTooltip}"
+					press="onBtnAddRequestHeader"/>
 				</Toolbar>
 			</headerToolbar>
 		<columns>
 			<Column>
-				<Text text="Field name" />
+				<Text text="{i18n>RequestDetailRequestHeadersFieldName}" />
 			</Column>
 			<Column>
-				<Text text="Value" />
+				<Text text="{i18n>RequestDetailRequestHeadersValue}" />
 			</Column>
 			<Column width="0.5rem">
 				<!--Column for action button e.g. delete-->
@@ -42,7 +43,7 @@
 					<ComboBox
 						id="idRequestHeaderFieldName"
 						value="{mProperties/fieldName}"
-						placeholder="Field name ..."
+						placeholder="{i18n>RequestDetailRequestHeadersFieldNamePlaceholder}"
 						showSuggestion="true"
 						items="{/REQUEST_HEADER_FIELDS}"
 						selectionChange="handleRequestHeaderFieldNameChanged">
@@ -50,15 +51,15 @@
 					</ComboBox>
 					<ComboBox
 						id="idRequestHeaderFieldValue"
-					  value="{mProperties/fieldValue}"
-			      placeholder="Value name ..."
+						value="{mProperties/fieldValue}"
+						placeholder="{i18n>RequestDetailRequestHeadersValuePlaceholder}"
 						showSuggestion="true"
-		  	    items="{/REQUEST_HEADER_VALUES}">
-		    		<c:Item text="{key}" key="{key}" />
+						items="{/REQUEST_HEADER_VALUES}">
+							<c:Item text="{key}" key="{key}" />
 					</ComboBox>
 					<Button icon="sap-icon://delete"
-					  tooltip="Delete request header"
-					  press="onBtnDeleteRequestHeader"/>
+						tooltip="{i18n>RequestDetailRequestHeadersDelete}"
+						press="onBtnDeleteRequestHeader"/>
 				</cells>
 			</ColumnListItem>
 		</items>

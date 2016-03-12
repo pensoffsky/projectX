@@ -26,35 +26,35 @@
 					columnsM="1"
 					>
 					<f:content>
-						<Label text="Project Name" />
+						<Label text="{i18n>ProjectDetailName}" />
 						<Input value="{localUIModel>/project/mProperties/name}"
-							placeholder="name of project"
+							placeholder="{i18n>ProjectDetailNamePlaceholder}"
 							liveChange="onNameChanged"
 							valueLiveUpdate="true"
 							id="testingIDProjectName"
 							/>
 
-						<Label text="Prefix URL" />
+						<Label text="{i18n>ProjectDetailPrefixUrl}" />
 						<Input value="{localUIModel>/project/mProperties/prefixUrl}"
-							placeholder="url to use as prefix for requests"
+							placeholder="{i18n>ProjectDetailPrefixUrlPlaceholder}"
 							/>
-						<Label text="CSRF token URL" />
+						<Label text="{i18n>ProjectDetailCsrfUrl}" />
 						<Input value="{localUIModel>/project/mProperties/csrfTokenUrl}"
-							   placeholder="url to fetch the CSRF token from"
+							   placeholder="{i18n>ProjectDetailCsrfUrlPlaceholder}"
 								/>
 						<!-- Authentication -->
-						<Label text="Use Basic Authentication" />
+						<Label text="{i18n>ProjectDetailUseBasicAuthentication}" />
 						<Switch state="{localUIModel>/project/mProperties/useBasicAuthentication}"
-								tooltip="Adds Basic Auth Header to all request in the project"/>
-						<Label text="Username" />
+								tooltip="{i18n>ProjectDetailUseBasicAuthenticationTooltip}"/>
+						<Label text="{i18n>ProjectDetailUsername}" />
 						<Input value="{localUIModel>/project/mProperties/username}"
-							placeholder="username"
+							placeholder="{i18n>ProjectDetailUsernamePlaceholder}"
 							enabled="{localUIModel>/project/mProperties/useBasicAuthentication}"
 							/>
-						<Label text="Password" />
+						<Label text="{i18n>ProjectDetailPassword}" />
 						<Input value="{localUIModel>/project/mProperties/password}"
 							type="Password"
-							placeholder="password"
+							placeholder="{i18n>ProjectDetailPasswordPlaceholder}"
 							enabled="{localUIModel>/project/mProperties/useBasicAuthentication}"
 							/>
 

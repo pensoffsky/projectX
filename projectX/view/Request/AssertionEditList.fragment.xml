@@ -9,36 +9,36 @@
 		<headerToolbar>
 	    	<Toolbar>
 				<Button icon="sap-icon://media-play"
-						text="Check assertions"
-						tooltip="replay assertions on current response"
+						text="{i18n>RequestDetailAssertionsReplay}"
+						tooltip="{i18n>RequestDetailAssertionsReplayTooltip}"
 						press="onBtnExecuteAssertion"/>
 	        <Button icon="sap-icon://add"
-					text="Add Assertion"
-					tooltip="Add assertion"
+					text="{i18n>RequestDetailAssertionsAddAssertion}"
+					tooltip="{i18n>RequestDetailAssertionsAddAssertionTooltip}"
 					press="onBtnAddAssertion"/>
 	      </Toolbar>
 	    </headerToolbar>
 		<columns>
 			<Column>
-				<Text text="Property" />
+				<Text text="{i18n>RequestDetailAssertionsProperty}" />
 			</Column>
 			<Column>
-				<Text text="Path" />
+				<Text text="{i18n>RequestDetailAssertionsJsonXmlPath}" />
 			</Column>
 			<Column>
-				<Text text="Operation" />
+				<Text text="{i18n>RequestDetailAssertionsOperation}" />
 			</Column>
 			<Column>
-				<Text text="Expected Value" />
+				<Text text="{i18n>RequestDetailAssertionsExpectedValue}" />
 			</Column>
 			<Column width="1rem">
-				<Text text="Success" />
+				<Text text="{i18n>RequestDetailAssertionsSuccess}" />
 			</Column>
 			<Column>
-				<Text text="Evaluated Value" />
+				<Text text="{i18n>RequestDetailAssertionsEvaluatedValue}" />
 			</Column>
 			<Column width="2rem">
-				<Text text="Var"/>
+				<Text text="{i18n>RequestDetailAssertionsVar}" />
 			</Column>
 			<Column width="0.5rem">
 				
@@ -76,7 +76,7 @@
 					<Text text="{mProperties/evaluatedValue}" maxLines="2" tooltip="{mProperties/evaluatedValue}"/>
 					<Input value="{mProperties/name}"/>
 					<Button icon="sap-icon://delete"
-							tooltip="Delete this assertion"
+							tooltip="{i18n>RequestDetailAssertionsDelete}"
 							press="onBtnDeleteAssertion"/>
 				</cells>
 			</ColumnListItem>

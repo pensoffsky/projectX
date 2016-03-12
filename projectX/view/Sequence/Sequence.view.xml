@@ -14,16 +14,16 @@
 		<subHeader>
 		<Toolbar>
 			<ToolbarSpacer/>
-			<Button text="Clear"
+			<Button text="{i18n>SequenceDetailButtonClearResults}"
 					press="onClearResults"
 					visible="{localUIModel>/testNotRunning}"
 					/>
-			<Button text="Run Sequence"
+			<Button text="{i18n>SequenceDetailButtonRunSequence}"
 					press="onRunSequence"
-					tooltip="Execute the requests (F7)"
+					tooltip="{i18n>SequenceDetailButtonRunSequenceTooltip}"
 					type="Emphasized"
 					visible="{localUIModel>/testNotRunning}"/>
-			<Button text="Stop"
+			<Button text="{i18n>SequenceDetailButtonStop}"
 					press="onStopSequence"
 					type="Reject"
 					visible="{localUIModel>/testRunning}"
@@ -45,17 +45,17 @@
 						editable="true"
 						layout="ResponsiveGridLayout">
 						<f:content>
-							<Label text="Name" />
+							<Label text="{i18n>SequenceDetailName}" />
 							<Input value="{localUIModel>/sequence/mProperties/name}"
-									id="testingIDSequenceName"
-									liveChange="onNameChanged"
-									valueLiveUpdate="true"
-									/>
-							<Label text="Description" />
+								id="testingIDSequenceName"
+								liveChange="onNameChanged"
+								valueLiveUpdate="true"
+								/>
+							<Label text="{i18n>SequenceDetailDescription}" />
 							<Input value="{localUIModel>/sequence/mProperties/description}" />
 							<Label text="" />
-							<CheckBox text="abort sequence on failed assertion"
-											selected="{localUIModel>/sequence/mProperties/abortOnFailedAssertion}"/>
+							<CheckBox text="{i18n>SequenceDetailAbortOnFailedAssertion}"
+								selected="{localUIModel>/sequence/mProperties/abortOnFailedAssertion}"/>
 						</f:content>
 					</f:SimpleForm>
 				</l:content>
@@ -63,15 +63,15 @@
 
 			<!-- Pre-Sequence Script -->
 			<Panel expandable="true"
-						 expanded="false"
-						 class="sapUiNoContentPadding"
-						 expand="onPanelPreSequenceScriptExpand">
+				 expanded="false"
+				 class="sapUiNoContentPadding"
+				 expand="onPanelPreSequenceScriptExpand">
 				<headerToolbar>
 					<Toolbar design="Transparent" height="3rem">
-						<Text text="Pre-Sequence Script ({localUIModel>/sequence/mProperties/preSequenceScript/length})"/>
+						<Text text="{i18n>SequenceDetailPanelPreSequenceScript} ({localUIModel>/sequence/mProperties/preSequenceScript/length})"/>
 					</Toolbar>
 				</headerToolbar>
-				<Button text="Snippets" press="onButtonPreRequestScriptExamples"/>
+				<Button text="{i18n>SequenceDetailPreRequestScriptSnippets}" press="onButtonPreRequestScriptExamples"/>
 				<u:Menu items="{localUIModel>/PRE_REQUEST_SCRIPT_EXAMPLES}"
 								id="idMenuPreRequestScriptExamples">
 						<u:MenuItem text="{localUIModel>text}"
@@ -87,7 +87,7 @@
 			<!-- Requests in sequence -->
 			<Panel expandable="false"
 						 expanded="true"
-						 headerText="Requests in sequence"
+						 headerText="{i18n>SequenceDetailPanelSequenceRequests}"
 						 class="sapUiNoContentPadding">
 				<Table
 					items="{localUIModel>/selectedRequests}"
@@ -100,14 +100,14 @@
 							<ToolbarSpacer/> -->
 							<Button icon="sap-icon://add"
 								id="testingIDAddRequest"
-								text="Add requests"
-								tooltip="Add a request from all available requests in the project"
+								text="{i18n>SequenceDetailButtonAddRequest}"
+								tooltip="{i18n>SequenceDetailButtonAddRequestTooltip}"
 								press="onBtnAddRequest"/>
 							<SelectDialog
 								id="idRequestSelectDialog"
 								growingThreshold="100"
-						    noDataText="No requests found"
-						    title="Select Requests"
+						    noDataText="{i18n>SequenceDetailDialogAddRequestEmptyRequestList}"
+						    title="{i18n>SequenceDetailDialogAddRequestTitle}"
 						    search="onRequestSelectDialogSearch"
 						    confirm="onRequestSelectDialogConfirm"
 						    close="onRequestSelectDialogClose"
@@ -123,24 +123,24 @@
 					</headerToolbar>
 					<columns>
 						<Column>
-							<Text text="Request" />
+							<Text text="{i18n>SequenceDetailRequestListTitleRequest}" />
 						</Column>
 						<Column
 							width="2.6em">
-							<Text text="Assertions" />
+							<Text text="{i18n>SequenceDetailRequestListTitleAssertions}" />
 						</Column>
 						<Column
 							hAlign="Right"
 							width="3em">
-							<Text text="Status" />
+							<Text text="{i18n>SequenceDetailRequestListTitleStatus}" />
 						</Column>
 						<Column
 							width="3em">
-							<Text text="Time" />
+							<Text text="{i18n>SequenceDetailRequestListTitleTime}" />
 						</Column>
 						<Column
 							width="8em">
-							<Text text="Actions" />
+							<Text text="{i18n>SequenceDetailRequestListTitleActions}" />
 						</Column>
 					</columns>
 					<items>
@@ -164,10 +164,10 @@
 							<Text text="{localUIModel>mProperties/status}"/>
 							<Text text="{localUIModel>mProperties/responseTime}"/>
 							<HBox>
-								<Button icon="sap-icon://edit" press="onEditRequest" tooltip="Edit Request"/>
-								<Button icon="sap-icon://up" press="onMoveRequestUp"/>
-								<Button icon="sap-icon://down" press="onMoveRequestDown"/>
-								<Button icon="sap-icon://delete" press="onDeleteRequest"/>
+								<Button icon="sap-icon://edit" press="onEditRequest" tooltip="{i18n>SequenceDetailRequestListEditTooltip}"/>
+								<Button icon="sap-icon://up" press="onMoveRequestUp" tooltip="{i18n>SequenceDetailRequestListMoveUpTooltip}"/>
+								<Button icon="sap-icon://down" press="onMoveRequestDown" tooltip="{i18n>SequenceDetailRequestListMoveDownTooltip}"/>
+								<Button icon="sap-icon://delete" press="onDeleteRequest" tooltip="{i18n>SequenceDetailRequestListDeleteTooltip}"/>
 							</HBox>
 						</cells>
 					</ColumnListItem>

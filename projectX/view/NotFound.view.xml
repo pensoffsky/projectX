@@ -3,7 +3,7 @@
 	xmlns="sap.m">
 	<Page showHeader="false">
 		<content>
-			<Text text="{i18n>notFoundText}" width="100%" textAlign="Center" />
+			<Text text="{i18n>ViewNotFoundText}" width="100%" textAlign="Center" />
 		</content>
 	</Page>
 </mvc:View>
