@@ -432,7 +432,7 @@ sap.ui.define([
 					default:
 				}
 			} catch (e) {
-				console.log("_prettyPrintResponseBody: " + e);
+				jQuery.sap.log.info("_prettyPrintResponseBody: failed to format with mode: " + sMode);
 			}
 			
 			if (!bSkipTruncation 

@@ -1,4 +1,4 @@
-<img src="https://travis-ci.org/pensoffsky/projectX.svg?branch=master"/>
+[![Build Status](https://travis-ci.org/pensoffsky/projectX.svg?branch=master)](https://travis-ci.org/pensoffsky/projectX)
 
 # Features 
 - fetch and set CSRF token
