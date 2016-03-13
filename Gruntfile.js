@@ -269,16 +269,30 @@ module.exports = function(grunt) {
       "compress:buildGw",
       "connect:buildGwServer"
   ]);
+  
+  if (process.platform === "win32") {
+    //on win32 only build the win32 electon version
+    grunt.registerTask("build", [
+        "htmlbuild",
+        "clean:build",
+        "copy:main",
+        "build-electron-app",
+        "compress:buildElectronWin32"
+    ]);
+  } else {
+    //on all other systems build both win32 and darwin
+    grunt.registerTask("build", [
+        "htmlbuild",
+        "clean:build",
+        "copy:main",
+        "build-electron-app",
+        "shell:buildElectronDarwin",
+        "compress:buildElectronWin32"
+    ]);
+  }
 
   // build the projectX shell app for win and os x, create zip and copy to release folder on root
-  grunt.registerTask("build", [
-      "htmlbuild",
-      "clean:build",
-      "copy:main",
-      "build-electron-app",
-      "shell:buildElectronDarwin",
-      "compress:buildElectronWin32"
-  ]);
+  
 
   // after bower install copy the resources from the bower folder into the resources folder
   grunt.registerTask("copyresources", [
