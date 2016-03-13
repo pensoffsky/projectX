@@ -156,7 +156,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.REQUEST_HEADER_FIELD_ACCEPT_LANGUAGE = "Accept-Lanugage";
 	Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE = "Content-Type";
 	Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS = "sap-statistics";
-	Constants.REQUEST_HEADER_FIELD_SAPGW_STATISTICS = "sapgw-statistics";
+	Constants.REQUEST_HEADER_FIELD_IF_MATCH = "If-Match";
 	Constants.REQUEST_HEADER_FIELD_USER_AGENT = "User-Agent";
 
 	/**
@@ -170,7 +170,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 		{key : Constants.REQUEST_HEADER_FIELD_ACCEPT_LANGUAGE},
 		{key : Constants.REQUEST_HEADER_FIELD_CONTENT_TYPE},
 		{key : Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS},
-		{key : Constants.REQUEST_HEADER_FIELD_SAPGW_STATISTICS},
+		{key : Constants.REQUEST_HEADER_FIELD_IF_MATCH},
 		{key : Constants.REQUEST_HEADER_FIELD_USER_AGENT}
 	];
 
@@ -201,21 +201,24 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	];
 
 	/**
-	* array of value-keys for SAPGW-STATISTICS field in control.
+	* array of value-keys for SAP-STATISTICS field in control.
 	* @type {Array}
 	*/
 	Constants.REQUEST_HEADER_VALUES_SAP_STATISTICS = [
 		{key : "true"},
 		{key : "false"}
 	];
-
+	
 	/**
-	* array of value-keys for SAP-STATISTICS field in control.
-	* @type {Array}
-	*/
-	Constants.REQUEST_HEADER_VALUES_SAPGW_STATISTICS = [
-		{key : "true"},
-		{key : "false"}
+	 * 
+	 */
+	Constants.REQUEST_HEADER_VALUE_WILDCARD = "*";
+	/**
+	 * array of value-keys for If-Match field in control.
+	 * @type {Array}
+	 */
+	Constants.REQUEST_HEADER_VALUES_IF_MATCH = [
+		{key : Constants.REQUEST_HEADER_VALUE_WILDCARD}
 	];
 
 
@@ -226,7 +229,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	Constants.REQUEST_HEADER_VALUE_ISO_8859_1 = "ISO-8859-1";
 
 	/**
-	* array of value-keys for ACCEPT field in select control.
+	* array of value-keys for ACCEPT-CHARSET field in select control.
 	* @type {Array}
 	*/
 	Constants.REQUEST_HEADER_VALUES_ACCEPT_CHARSET = [

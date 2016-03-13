@@ -84,8 +84,8 @@ sap.ui.define(["jquery.sap.global",
 			  case Constants.REQUEST_HEADER_FIELD_SAP_STATISTICS:
 					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_SAP_STATISTICS);
 					break;
-			  case Constants.REQUEST_HEADER_FIELD_SAPGW_STATISTICS:
-					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_SAPGW_STATISTICS);
+			  case Constants.REQUEST_HEADER_FIELD_IF_MATCH:
+					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_IF_MATCH);
 					break;
 			  case Constants.REQUEST_HEADER_FIELD_USER_AGENT:
 					this._localUIModel.setProperty("/REQUEST_HEADER_VALUES", Constants.REQUEST_HEADER_VALUES_USER_AGENT);
