@@ -66,8 +66,8 @@ sap.ui.define(['jquery.sap.global',
 						oList.setSelectedItem(aItems[0], true);
 						var oSelectedSequence = Helper.getBoundObjectForItem(aItems[0]);
 						this.getRouter().navTo("sequence", {
-							sequenceID : oSelectedSequence.getIdentifier(),
-							reason : "edit"
+							projectID : this.getCurrentProject().getIdentifier(),
+							sequenceID : oSelectedSequence.getIdentifier()
 						}, true);
 						this._removeSelectionFromRequestList();
 					}
@@ -87,7 +87,7 @@ sap.ui.define(['jquery.sap.global',
 				}, this), 1000);
 			}
 
-			this.getRouter().getRoute("product").attachMatched(function(oEvent){
+			this.getRouter().getRoute("request").attachMatched(function(oEvent){
 
 				//TODO how to prevent double selection if navigation happend from inside master controller
 				var oParameters = oEvent.getParameters();
@@ -153,8 +153,8 @@ sap.ui.define(['jquery.sap.global',
 			var oSelectedSequence = Helper.getBoundObjectForItem(oItem);
 
 			this.getRouter().navTo("sequence", {
-				sequenceID : oSelectedSequence.getIdentifier(),
-				reason : "edit"
+				projectID : this.getCurrentProject().getIdentifier(),
+				sequenceID : oSelectedSequence.getIdentifier()
 			}, true);
 			//this._removeSelectionFromRequestList();
 		};
@@ -308,8 +308,8 @@ sap.ui.define(['jquery.sap.global',
 			oModel.updateBindings();
 			//select the newly created sequence
 			this.getRouter().navTo("sequence", {
-				sequenceID : oSequence.getIdentifier(),
-				reason : "edit"
+				projectID : this.getCurrentProject().getIdentifier(),
+				sequenceID : oSequence.getIdentifier()
 			}, true);
 		};
 

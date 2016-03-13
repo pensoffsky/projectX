@@ -38,13 +38,13 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 					targetControl : "idAppControl",
 					subroutes : [
 						{
-							pattern : "product/{projectID}/{requestID}/:tab:",
-							name : "product",
+							pattern : "project/{projectID}/request/{requestID}",
+							name : "request",
 							view : "Request.Request",
 							transition : "show"
 						},
 						{
-							pattern : "sequence/{sequenceID}/:reason:",
+							pattern : "project/{projectID}/sequence/{sequenceID}",
 							name : "sequence",
 							view : "Sequence.Sequence",
 							transition : "show"

@@ -112,7 +112,7 @@ sap.ui.define([
 		
 		Request.prototype._hookRoutingEvent = function() {
 			try {
-				this.getRouter().getRoute("product").attachMatched(this.onRouteMatched, this);		
+				this.getRouter().getRoute("request").attachMatched(this.onRouteMatched, this);		
 			} catch (e) {
 				jQuery.sap.log.error("Request.prototype._hookRoutingEvent: could not hook routing event");
 			}

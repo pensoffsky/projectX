@@ -6,7 +6,6 @@ jQuery.sap.require("projectX.util.Helper");
 projectX.util.Controller.extend("projectX.view.Project.Project", {
 
 	_localUIModel : undefined,
-	_sReason : null,
 	_oProject : null,
 
 	//TODO create enum for the binding targets

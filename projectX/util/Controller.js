@@ -201,7 +201,7 @@ sap.ui.core.mvc.Controller.extend("projectX.util.Controller", {
 	},
 	
 	navToRequest : function(iRequestID, iProjectID) {
-		this.getRouter().navTo("product", {
+		this.getRouter().navTo("request", {
 				requestID : iRequestID,
 				projectID : iProjectID
 			}, true);
