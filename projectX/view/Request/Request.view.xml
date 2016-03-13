@@ -303,8 +303,8 @@
                     				>
                                     
                                    <Button icon="sap-icon://media-play"
-                                     text="Replay test script"
-                                     tooltip="replay test script on response again"
+                                     text="Execute test script"
+                                     tooltip="run test script on request response again"
                                          press="onBtnExecuteTestScript"/>
                                    <Button text="Snippets" press="onButtonTestScriptExamples"/>
                                    <u:Menu items="{localUIModel>/TESTSCRIPT_EXAMPLES}"

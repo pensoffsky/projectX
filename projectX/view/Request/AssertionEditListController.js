@@ -14,7 +14,7 @@ sap.ui.define(['jquery.sap.global',
 			view : {type : "object", defaultValue : null}
 			},
 		events : {
-
+			change : {}
 		}
 	}});
 
@@ -38,7 +38,7 @@ sap.ui.define(['jquery.sap.global',
 		var oAssertion = Assertion.createDefaultAssertion();
 		var oRequest =  this._localUIModel.getProperty("/request");
 		oRequest.addAssertion(oAssertion);
-		this.updateBindings();
+		this.updateBindings(true);
 	};
 
 	AssertionEditListController.prototype.onBtnDeleteAssertion = function(oEvent) {
@@ -48,14 +48,14 @@ sap.ui.define(['jquery.sap.global',
 		}
 		var oRequest =  this._localUIModel.getProperty("/request");
 		oRequest.removeAssertion(oAssertion);
-		this.updateBindings();
+		this.updateBindings(true);
 	};
 	
 	AssertionEditListController.prototype.onBtnExecuteAssertion = function(){
 		var oRequest =  this._localUIModel.getProperty("/request");
 		oRequest.resetAssertionsData();
 		oRequest.checkAssertions();
-		this.updateBindings();
+		this.updateBindings(true);
 	};
 	
 	// /////////////////////////////////////////////////////////////////////////////
@@ -85,8 +85,13 @@ sap.ui.define(['jquery.sap.global',
 		this._localUIModel.setProperty("/request", oRequest);
 	};
 
-	AssertionEditListController.prototype.updateBindings = function() {
+	AssertionEditListController.prototype.updateBindings = function(bFireChangeEvent) {
 		this._localUIModel.updateBindings();
+		if (bFireChangeEvent) {
+			//make sure the controller this is embedded in is notified
+			//that something changed and to update accordingly
+			this.fireChange();
+		}
 	};
 	
 	// /////////////////////////////////////////////////////////////////////////////

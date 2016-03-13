@@ -9,7 +9,7 @@
 		<headerToolbar>
 	    	<Toolbar>
 				<Button icon="sap-icon://media-play"
-						text="Replay assertions"
+						text="Check assertions"
 						tooltip="replay assertions on current response"
 						press="onBtnExecuteAssertion"/>
 	        <Button icon="sap-icon://add"
@@ -31,7 +31,7 @@
 			<Column>
 				<Text text="Expected Value" />
 			</Column>
-			<Column width="2rem">
+			<Column width="1rem">
 				<Text text="Success" />
 			</Column>
 			<Column>

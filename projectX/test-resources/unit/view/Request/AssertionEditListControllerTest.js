@@ -9,8 +9,11 @@ QUnit.module("view/Request/AssertionEditListController", {
         this._oAssertionEditFragment = sap.ui.xmlfragment(
           "dummyID", 
           "projectX.view.Request.AssertionEditList", 
-          this._oAssertionEditController);
+          this._oController);
         this._oController.setView(this._oAssertionEditFragment);
+        this._oController.onInit("dummyID");
+        var oRequest = new projectX.util.Request();
+        this._oController.setSelectedRequest(oRequest);
     },
     
     teardown: function() {
@@ -49,4 +52,12 @@ QUnit.test("formatAssertProperty2PathPlaceholder, check formatter", 3, function(
     assert.ok(sRes === "XPath", "placeholder for path field is: " + sRes);
     sRes = this._oController.formatAssertProperty2PathPlaceholder(projectX.util.Constants.ASSERTPROPERTY_SAPSTATISTICS);
     assert.ok(sRes === "Field", "placeholder for path field is: " + sRes);
+});
+
+
+QUnit.test("adding an assertion triggers the change event", 1, function(assert) {
+    var spy = sinon.spy();
+    this._oController.attachChange(spy);
+    this._oController.onBtnAddAssertion();
+    assert.ok(spy.calledOnce, "change event was called");
 });

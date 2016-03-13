@@ -66,6 +66,9 @@ sap.ui.define([
 			//create Assertion fragment controller
 			/////////////////////////////////////////////////////////////////////
 			this._oAssertionEditController = new AssertionEditListController();
+			this._oAssertionEditController.attachChange(function onChange() {
+				this._localUIModel.updateBindings();
+			}, this);
 			//create fragment view
 			var oAssertionEditFragment = sap.ui.xmlfragment(this.createId("Assertions"), "projectX.view.Request.AssertionEditList", this._oAssertionEditController);
 			//set fragment view to fragment controller
