@@ -26,6 +26,30 @@ sap.ui.define(['jquery.sap.global',
 		ManagedObject.apply(this, arguments);
 
 	};
+	
+	/**
+	 * factory method to create the assertionEditListController
+	 * @param  {function} fOnChange  method that is attached to the change event
+	 * @param  {string} sId        id for the assertionEditlist fragment
+	 * @param  {object} oContainer the control in which the view is added
+	 * @return {object}            the instantiated controller
+	 */
+	AssertionEditListController.create = function(fOnChange, sId, oContainer) {
+		var oController;
+		oController = new AssertionEditListController();
+		oController.attachChange(fOnChange);
+		//create fragment view
+		var oFragment = sap.ui.xmlfragment(sId,
+			"projectX.view.Request.AssertionEditList", 
+			oController);
+		//set fragment view to fragment controller
+		oController.setView(oFragment);
+		//add fragment view to page		
+		oContainer.addItem(oFragment);
+		//initialize the fragement controller
+		oController.onInit(sId);
+		return oController;
+	};
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Event Handler

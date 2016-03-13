@@ -44,7 +44,7 @@ sap.ui.define([
 		// /////////////////////////////////////////////////////////////////////////////
 
 		Request.prototype.onInit = function() {
-
+			var that = this;
 			// this._oConstants = new Constants();
 
 			this._localUIModel = new sap.ui.model.json.JSONModel();
@@ -65,19 +65,13 @@ sap.ui.define([
 			/////////////////////////////////////////////////////////////////////
 			//create Assertion fragment controller
 			/////////////////////////////////////////////////////////////////////
-			this._oAssertionEditController = new AssertionEditListController();
-			this._oAssertionEditController.attachChange(function onChange() {
-				this._localUIModel.updateBindings();
-			}, this);
-			//create fragment view
-			var oAssertionEditFragment = sap.ui.xmlfragment(this.createId("Assertions"), "projectX.view.Request.AssertionEditList", this._oAssertionEditController);
-			//set fragment view to fragment controller
-			this._oAssertionEditController.setView(oAssertionEditFragment);
-			//add fragment view to page
-			var oAssertionContainer = this.getView().byId("idVBoxAssertionPlaceholder");
-			oAssertionContainer.addItem(oAssertionEditFragment);
-			//initialize the fragement controller
-			this._oAssertionEditController.onInit(this.createId("Assertions"));
+			this._oAssertionEditController = AssertionEditListController.create(
+				function onChange() {
+					that._localUIModel.updateBindings();
+				},
+				this.createId("Assertions"), //id for the fragment
+				this.getView().byId("idVBoxAssertionPlaceholder") //container
+			);
 
 			/////////////////////////////////////////////////////////////////////
 			//create requestHeader fragment controller

@@ -5,20 +5,17 @@ jQuery.sap.require("projectX.view.Request.AssertionEditListController");
 QUnit.module("view/Request/AssertionEditListController", {
     setup: function() {
         
-        this._oController = new projectX.view.Request.AssertionEditListController();
-        this._oAssertionEditFragment = sap.ui.xmlfragment(
-          "dummyID", 
-          "projectX.view.Request.AssertionEditList", 
-          this._oController);
-        this._oController.setView(this._oAssertionEditFragment);
-        this._oController.onInit("dummyID");
-        var oRequest = new projectX.util.Request();
-        this._oController.setSelectedRequest(oRequest);
+      this._oController = projectX.view.Request.AssertionEditListController.create(
+          function () {},
+          "dummyID", //id for the fragment
+          { addItem: function (oView) {}} //container 
+        );
+      this._oController.setSelectedRequest(new projectX.util.Request());
     },
     
     teardown: function() {
       //destroy the fragment to prevent duplicate id issues
-			this._oAssertionEditFragment.destroy(true);
+			this._oController.getView().destroy(true);
     }
 });
 
@@ -54,10 +51,15 @@ QUnit.test("formatAssertProperty2PathPlaceholder, check formatter", 3, function(
     assert.ok(sRes === "Field", "placeholder for path field is: " + sRes);
 });
 
-
 QUnit.test("adding an assertion triggers the change event", 1, function(assert) {
-    var spy = sinon.spy();
-    this._oController.attachChange(spy);
-    this._oController.onBtnAddAssertion();
-    assert.ok(spy.calledOnce, "change event was called");
+  var onChangeSpy = sinon.spy();
+  var oController = projectX.view.Request.AssertionEditListController.create(
+      onChangeSpy,
+      "someID", //id for the fragment
+      { addItem: function (oView) {}} //container 
+    );
+    oController.setSelectedRequest(new projectX.util.Request());
+    oController.onBtnExecuteAssertion();
+    oController.onBtnAddAssertion();
+    assert.ok(onChangeSpy.calledTwice, "change event was called twice");
 });
