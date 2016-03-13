@@ -223,7 +223,7 @@
                         class="sapUiNoContentPadding projectXBorder projectXRequestResponseContainer"
                     		>
                     		<items>
-                                <IconTabFilter
+                          <IconTabFilter
                     				text="Response Body"
                                     count="{localUIModel>/request/mProperties/responseBody/length}"
                     				>
@@ -263,13 +263,14 @@
                                                       enableWrapMode="true"
                                                       class="projectXRequestResponseBody"
                                             />
+                                            
+                          <!-- RESPONSE HEADERS -->
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                                 <IconTabFilter
                                     text="Response Headers"
                                     count="{localUIModel>/request/mProperties/responseHeaders/length}"
                                     >
-                                    <!-- RESPONSE HEADER -->
                                     <custom:AceEditor width="100%" height="auto"
                                                       mode="text"
                                                       readOnly="true"
@@ -278,9 +279,10 @@
                                                       autoHeightMode="true"
                                                       enableWrapMode="true"
                                             />
-                                </IconTabFilter>
-                                <IconTabSeparator/>
-                                <!-- ASSERTIONS -->
+                          </IconTabFilter>
+                          <IconTabSeparator/>
+                                
+                          <!-- ASSERTIONS -->
                     			<IconTabFilter
                     				text="Assertions"
                                     count="{ parts : [
@@ -292,12 +294,14 @@
                     				>
                                       <VBox id="idVBoxAssertionPlaceholder"/>
                     			</IconTabFilter>
-                                <IconTabSeparator/>
-                                <IconTabFilter
+                          <IconTabSeparator/>
+                          
+                          <!-- TEST SCRIPT -->
+                          <IconTabFilter
                     				text="Test"
                                     count="{localUIModel>/request/mProperties/testScriptCode/length} {localUIModel>/request/mProperties/testScriptResult}"
                     				>
-                                    <!-- TEST SCRIPT -->
+                                    
                                    <Button icon="sap-icon://media-play"
                                      text="Replay test script"
                                      tooltip="replay test script on response again"

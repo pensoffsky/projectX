@@ -88,7 +88,30 @@ sap.ui.define(['jquery.sap.global',
 	AssertionEditListController.prototype.updateBindings = function() {
 		this._localUIModel.updateBindings();
 	};
-
+	
+	// /////////////////////////////////////////////////////////////////////////////
+	// /// Formatter Methods
+	// /////////////////////////////////////////////////////////////////////////////
+	
+	AssertionEditListController.prototype.formatAssertProperty2PathEnable = function (sAssertProperty) {
+		return sAssertProperty === projectX.util.Constants.ASSERTPROPERTY_JSONBODY
+			|| sAssertProperty === projectX.util.Constants.ASSERTPROPERTY_XMLBODY
+			|| sAssertProperty === projectX.util.Constants.ASSERTPROPERTY_SAPSTATISTICS;
+	}
+	
+	AssertionEditListController.prototype.formatAssertProperty2PathPlaceholder = function (sAssertProperty) {
+		if (sAssertProperty === projectX.util.Constants.ASSERTPROPERTY_JSONBODY) {
+			return "JsonPath";
+		}
+		if (sAssertProperty === projectX.util.Constants.ASSERTPROPERTY_XMLBODY) {
+			return "XPath";
+		}
+		if (sAssertProperty === projectX.util.Constants.ASSERTPROPERTY_SAPSTATISTICS) {
+			return "Field";
+		}
+		
+	}
+	
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// Private Methods
 	// /////////////////////////////////////////////////////////////////////////////

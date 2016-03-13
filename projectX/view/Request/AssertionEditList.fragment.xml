@@ -23,7 +23,7 @@
 				<Text text="Property" />
 			</Column>
 			<Column>
-				<Text text="JSON/XML Path" />
+				<Text text="Path" />
 			</Column>
 			<Column>
 				<Text text="Operation" />
@@ -51,7 +51,17 @@
 							items="{/ASSERTPROPERTIES}">
 							<c:Item text="{key}" key="{key}"/>
 					</Select>
-					<Input value="{mProperties/path}"/>
+					<Input value="{mProperties/path}"
+									visible="{ 
+										path: 'mProperties/assertProperty',
+										formatter: '.formatAssertProperty2PathEnable'
+										}"
+									placeholder="{ 
+										path: 'mProperties/assertProperty',
+										formatter: '.formatAssertProperty2PathPlaceholder'
+										}"
+									/>
+									
 					<Select selectedKey="{mProperties/operation}"
 							items="{/ASSERTOPERATIONS}">
 							<c:Item text="{key}" key="{key}"/>
