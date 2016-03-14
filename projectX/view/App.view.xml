@@ -41,15 +41,27 @@
 				<ToolbarSpacer/>
 				<u:FileUploader
 					change="onFileUploaderChange"
-					buttonText="{i18n>ProjectImportTooltip}"
-					tooltip="Load a local file from disk"
+					buttonText="{i18n>ProjectImportButtonText}"
+					tooltip="{i18n>ProjectImportTooltip}"
 					buttonOnly="true"
 					/>
 				<Button
-					text="Export"
+					text="{i18n>ProjectExportButtonText}"
 					tooltip="{i18n>ProjectExportTooltip}"
 					press="onExport"
 					enabled="{= ${/Projects/length} > 0}" />
+				<SelectDialog id="idExportSelectDialog"
+					growingThreshold="100"
+					title="{i18n>ProjectExportDialogTitle}"
+					search="onExportSelectDialogSearch"
+					confirm="onExportSelectDialogConfirm"
+					close="onExportSelectDialogClose"
+					items="{/Projects}"
+					multiSelect="true">
+					<StandardListItem title="{mProperties/name}"
+						description="{= ${mProperties/prefixUrl} !== '' ? ${mProperties/prefixUrl} : ${i18n>ProjectExportDialogNoPrefixUrl} }"
+						type="Active"/>
+				</SelectDialog>
 			</Toolbar>
 		</l:fixContent>
 		<l:flexContent>

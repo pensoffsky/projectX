@@ -202,12 +202,14 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	},
 
 	/**
-	 * create json file and prepare it for download.
+	 * Create json file and prepare it for download.
 	 * lets the user donwload the current config in a file which he then can
 	 * save on disk.
+	 *
+	 * @param {array} aProjects Array of projects which will be writtern to file
+	 * @public
 	 */
-	export : function() {
-		var aProjects = this._oModel.getProperty("/Projects");
+	export : function(aProjects) {
 		var sData = projectX.util.Storage.createJsonString(aProjects);
 		var pom = document.createElement('a');
 		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sData));

@@ -1,8 +1,28 @@
 /**
  * the controller for the main view of the application
  */
-sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/Constants', 'projectX/util/Formatter', 'projectX/util/Helper', "sap/m/MessageBox"],
-	function(jQuery, Controller, Constants, Formatter, Helper, MessageBox) {
+sap.ui.define([
+	"jquery.sap.global",
+	"projectX/util/Controller",
+	"projectX/util/Constants",
+	"projectX/util/Formatter",
+	"projectX/util/Helper",
+	"sap/m/MessageBox",
+	"sap/ui/model/Sorter",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+],	function(
+		jQuery,
+		Controller,
+		Constants,
+		Formatter,
+		Helper,
+		MessageBox,
+		Sorter,
+		Filter,
+		FilterOperator
+	) {
+
 		"use strict";
 
 		var App = Controller.extend("projectX.view.App", {
@@ -37,17 +57,61 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/Controller', 'projectX/util/C
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
-		
+
 		App.prototype.onSelectProjectChange = function() {
 			var sIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");
 			var oComponent = this.getComponent();
 			oComponent.setSelectedProject(sIdentifier);
 		};
-		
-		
+
+		/**
+		 * Handler for export button.
+		 *
+		 * @public
+		 */
 		App.prototype.onExport = function() {
+			var oExportSelectDialog = this.getView().byId("idExportSelectDialog");
+			var oSorter = new Sorter("mProperties/identifier", false);
+			oExportSelectDialog.getBinding("items").sort(oSorter);
+			jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), oExportSelectDialog);
+			oExportSelectDialog.open();
+		};
+
+		/**
+		 * Handler for search button in export dialog.
+		 *
+		 * @param  {object} oEvent Object of event by current control
+		 * @public
+		 */
+		App.prototype.onExportSelectDialogSearch = function(oEvent) {
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter("mProperties/name", FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter]);
+		};
+
+		/**
+		 * Handler for confirm to export selected projects.
+		 *
+		 * @param {object} oEvent Object of event by current control
+		 * @public
+		 */
+		App.prototype.onExportSelectDialogConfirm = function(oEvent) {
+			// get context of all selected items
+			var aContexts = oEvent.getParameter("selectedContexts");
+			var aProjects = [];
+
+			// leave when no project is selected
+			if (!aContexts.length) {
+				return;
+			}
+
+			aProjects = aContexts.map(function(oContext) {
+				return oContext.getObject();
+			}, this);
+
 			var oComponent = this.getComponent();
-			oComponent.export();
+			oComponent.export(aProjects);
 		};
 
 		App.prototype.onFileUploaderChange = function(oEvent) {
