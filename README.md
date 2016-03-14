@@ -6,26 +6,17 @@
 - create assertions for requests
 - import and export project in JSON format
 
-## Switch between multiple projects
-<img src="https://github.com/pensoffsky/projectX/blob/master/documentation/gifs/projectSwitch.gif" width="500"/>
+<img src="documentation/gifs/overview.gif" width="900"/>
 
-## grouping of requests
-<img src="https://github.com/pensoffsky/projectX/blob/master/documentation/gifs/requestGrouping.gif" width="500"/>
-
-## sequences of requests
-<img src="https://github.com/pensoffsky/projectX/blob/master/documentation/gifs/sequenceOfRequests.gif" width="500"/>
-
-## customize requests with JavaScript
-<img src="https://github.com/pensoffsky/projectX/blob/master/documentation/gifs/prerequestScript.gif" width="500"/>
-
-## create test scripts
-<img src="https://github.com/pensoffsky/projectX/blob/master/documentation/gifs/testScript.gif" width="500"/>
-
-## fullscreen view of request response
-<img src="https://github.com/pensoffsky/projectX/blob/master/documentation/gifs/fullscreenResponsebody.gif" width="500"/>
+## Tutorials
+* [Switch projects](documentation/projectSwitch.md)
+* [Grouping of requests](documentation/requestGrouping.md)
+* [Sequences of requests](documentation/sequenceOfRequests.md)
+* [Customzine requests with JavaScript](documentation/prerequestScript.md)
+* [Create test scripts](documentation/testScript.md)
+* [Switch to fullscreen mode for response body](documentation/fullscreenResponsebody.md)
 
 # Installation
-
 Clone the git repository.
 
 Install [NPM](https://www.npmjs.com/), [GRUNT](http://gruntjs.com/) and [Bower](http://bower.io/)
@@ -58,7 +49,7 @@ The task runs endless in your Terminal and provides the ZIP file (release_projec
 grunt buildGw
 ```
 
-## Update version number in index files
+## Update version number
 Change version number in package.json file and use following grunt task to update version information in index*.html files. 
 ```
 grunt htmlbuild
