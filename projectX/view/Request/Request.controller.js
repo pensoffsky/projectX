@@ -324,7 +324,7 @@ sap.ui.define([
 		};
 		
 		Request.prototype.onBtnExecuteTestScript = function(){
-			this._oRequest._runTestScript();
+			this._oRequest._runTestScript({});
 			this._localUIModel.updateBindings();
 		};
 		
