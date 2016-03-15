@@ -11,7 +11,9 @@ function (Opa5, Common) {
 
 			baseClass : Common,
 			actions : {
-				
+				iTapOnExportRequest : function(){
+					return this.triggerTapOnCtrlWithID(sViewName, "testingIDExportRequest");
+				},
 			}
 		}
 	});

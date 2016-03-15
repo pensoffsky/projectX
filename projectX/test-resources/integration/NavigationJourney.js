@@ -40,6 +40,25 @@ sap.ui.require([
 			and.iTeardownMyAppFrame();
 	});
 	
+	opaTest("open the export project dialog and check binding", function (Given, When, Then) {
+		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
+		
+		When.onAppPage.iTapOnProjectExport();
+		
+		Then.onAppPage.iSeeProjectExportDialogWithItem().
+			and.iTeardownMyAppFrame();
+	});
+	
+	opaTest("open the export request dialog", function (Given, When, Then) {
+		Given.iStartMyAppInAFrame("../../index.html?opaTest=true");
+		
+		When.onMasterPage.iTapOnOnlyRequest();
+		When.onRequestPage.iTapOnExportRequest();
+		
+		Then.onAppPage.iSeeRequestExportDialogWithTextLength(446).
+			and.iTeardownMyAppFrame();
+	});
+	
 	// opaTest("open the create odata request dialog", function (Given, When, Then) {
 	// 	var sDialogTitle = "Add new request based on OData metadata";
 	// 	

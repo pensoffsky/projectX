@@ -21,7 +21,18 @@ function (Opa5, Common) {
 				
 				iTapOnNewSequence : function () {
 					return this.triggerTapOnCtrlWithID(sViewName, "testingIDNewSequence");
-				}
+				},
+				
+				iTapOnOnlyRequest : function () {
+					return this.waitFor({
+						controlType: "sap.m.CustomListItem",
+						success : function (aListItems) {
+							aListItems[0].$().trigger("tap");
+							ok(true, "triggered tap on request");
+						},
+						errorMessage : "Did not find customlistitem"
+					});
+				},
 			}, 
 			assertions : {
 				iSeeSequenceWithName : function (sSequenceName) {

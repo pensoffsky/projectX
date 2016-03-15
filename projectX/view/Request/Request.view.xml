@@ -120,7 +120,9 @@
                                                 select="onCBPrefixSelected"
                                                 visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/> -->
                                     <Label text="" />
-                                    <Button text="{i18n>RequestDetailRequestButtonExportRequest}" press="onExportRequest"
+                                    <Button id="testingIDExportRequest"
+                                            text="{i18n>RequestDetailRequestButtonExportRequest}"
+                                            press="onExportRequest"
                                             width="10rem"/>
                         						</f:content>
                         					</f:SimpleForm>

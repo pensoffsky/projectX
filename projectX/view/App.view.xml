@@ -46,6 +46,7 @@
 					buttonOnly="true"
 					/>
 				<Button
+					id="testingIDExportProject"
 					text="{i18n>ProjectExportButtonText}"
 					tooltip="{i18n>ProjectExportTooltip}"
 					press="onExport"
