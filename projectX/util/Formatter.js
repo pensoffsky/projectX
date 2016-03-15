@@ -9,12 +9,28 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 			metadata: {}
 		});
 
-
+		/**
+		 * Formatter to display results from assertion list entries into
+		 * a text string.
+		 * Examples:
+		 *  - '2 ERROR' - two assertions with at least one error
+		 *  - '3 OK' - three assertion, all fine
+		 *
+		 * @param  {bool} bAssertionsResult      Result of all assertions
+		 * @param  {bool} bAssertionsResultReady All assertions are processed
+		 * @param  {int} iLength                 Entries in assertion list
+		 * @return {string} Text with counter of assertion entries and sematic
+		 * result of all assertions
+		 */
 		Formatter.assertionsListResultToText = function(bAssertionsResult, bAssertionsResultReady, iLength) {
+			if(!iLength) {
+				return "";
+			}
+
 			if(iLength <= 0) {
 				return "" + iLength;
 			}
-			
+
 			if (bAssertionsResultReady !== true) {
 				return "" + iLength;
 			}
@@ -24,10 +40,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 			} else if (bAssertionsResult === false) {
 				return "" + iLength + " ERROR";
 			}
-			
+
 			return "" + iLength;
 		};
-		
+
 		Formatter.assertionsListResultToImage = function(bAssertionsResult, bAssertionsResultReady, iLength) {
 			if(iLength > 0) {
 				return Formatter.assertionsResultToImage(bAssertionsResult, bAssertionsResultReady);
