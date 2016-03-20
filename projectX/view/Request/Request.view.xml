@@ -236,9 +236,15 @@
                                             <Button text="{i18n>RequestDetailOutputFormatButtonRaw}" id="idButtonResponseRAW"/>
                                         </SegmentedButton>
                                         <ToolbarSpacer/>
-                                        <Button icon="sap-icon://expand-group" press="onGrowResponseBody"/>
-                                        <Button icon="sap-icon://collapse-group" press="onShrinkResponseBody"/>
-                                        <Button icon="sap-icon://full-screen" press="onFullscreenResponseBody"/>
+                                        <Button icon="sap-icon://expand-group" 
+                                                press="onGrowResponseBody"
+                                                tooltip="{i18n>RequestDetailResponseBodyExpand}"/>
+                                        <Button icon="sap-icon://collapse-group" 
+                                                press="onShrinkResponseBody"
+                                                tooltip="{i18n>RequestDetailResponseBodyShrink}"/>
+                                        <Button icon="sap-icon://full-screen" 
+                                                press="onFullscreenResponseBody"
+                                                tooltip="{i18n>RequestDetailResponseBodyFullscreen}"/>
                                     </Toolbar>
                                     
                                     <VBox>
