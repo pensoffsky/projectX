@@ -18,30 +18,21 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 		 *
 		 * @param  {bool} bAssertionsResult      Result of all assertions
 		 * @param  {bool} bAssertionsResultReady All assertions are processed
-		 * @param  {int} iLength                 Entries in assertion list
 		 * @return {string} Text with counter of assertion entries and sematic
 		 * result of all assertions
 		 */
-		Formatter.assertionsListResultToText = function(bAssertionsResult, bAssertionsResultReady, iLength) {
-			if(!iLength) {
+		Formatter.assertionsListResultToText = function(bAssertionsResult, bAssertionsResultReady) {
+			if (bAssertionsResultReady !== true) {
 				return "";
 			}
 
-			if(iLength <= 0) {
-				return "" + iLength;
-			}
-
-			if (bAssertionsResultReady !== true) {
-				return "" + iLength;
-			}
-
 			if (bAssertionsResult === true) {
-				return "" + iLength + " OK";
+				return "OK";
 			} else if (bAssertionsResult === false) {
-				return "" + iLength + " ERROR";
+				return "ERROR";
 			}
 
-			return "" + iLength;
+			return "";
 		};
 
 		Formatter.assertionsListResultToImage = function(bAssertionsResult, bAssertionsResultReady, iLength) {

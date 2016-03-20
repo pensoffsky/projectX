@@ -167,16 +167,14 @@
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                     			<IconTabFilter
-                    				text="{i18n>RequestDetailTitleRequestHeaders}"
-                                    count="{localUIModel>/request/mAggregations/requestHeaders/length}"
+                            text="{= ${localUIModel>/request/mAggregations/requestHeaders/length} > 0 ?  '●' + ${i18n>RequestDetailTitleRequestHeaders} : ${i18n>RequestDetailTitleRequestHeaders} }"
                     				>
                                     <!-- REQUEST HEADER -->
                                     <VBox id="idVBoxRequestHeaderPlaceholder"/>
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                     			<IconTabFilter
-                    				text="{i18n>RequestDetailTitlePayload}"
-                                    count="{localUIModel>/request/mProperties/requestBody/length}"
+                            text="{= ${localUIModel>/request/mProperties/requestBody/length} > 0 ?  '●' + ${i18n>RequestDetailTitlePayload} : ${i18n>RequestDetailTitlePayload} }"
                     				>
                                     <!-- REQUEST PAYLOAD -->
                                     <custom:AceEditor width="100%" height="200px"
@@ -186,8 +184,8 @@
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                     			<IconTabFilter
-                    				text="{i18n>RequestDetailTitlePreRequestScript}"
-                                    count="{localUIModel>/request/mProperties/scriptCode/length} {localUIModel>/request/mProperties/preRequestScriptResult}"
+                            text="{= ${localUIModel>/request/mProperties/scriptCode/length} > 0 ?  '●' + ${i18n>RequestDetailTitlePreRequestScript} : ${i18n>RequestDetailTitlePreRequestScript} }"
+                            count="{localUIModel>/request/mProperties/preRequestScriptResult}"
                     				>
                                         <Button text="{i18n>RequestDetailPreRequestScriptSnippets}" press="onButtonScriptExamples"/>
                                         <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
@@ -225,8 +223,9 @@
                         class="sapUiNoContentPadding projectXBorder projectXRequestResponseContainer"
                     		>
                     		<items>
-                                <IconTabFilter text="{i18n>RequestDetailResponseBody}"
-                                    count="{localUIModel>/request/mProperties/responseBody/length}">
+                                <IconTabFilter
+                                  text="{= ${localUIModel>/request/mProperties/responseBody/length} > 0 ?  '●' + ${i18n>i18n>RequestDetailResponseBody} : ${i18n>i18n>RequestDetailResponseBody} }"
+                                    >
                                     <Toolbar>
                                         <SegmentedButton
                                                          select="onResponseBodyFormat"
@@ -268,8 +267,7 @@
                     			</IconTabFilter>
                                 <IconTabSeparator/>
                                 <IconTabFilter
-                                    text="{i18n>RequestDetailResponseHeaders}"
-                                    count="{localUIModel>/request/mProperties/responseHeaders/length}"
+                                  text="{= ${localUIModel>/request/mProperties/responseHeaders/length} > 0 ?  '●' + ${i18n>RequestDetailResponseHeaders} : ${i18n>RequestDetailResponseHeaders} }"
                                     >
                                     <custom:AceEditor width="100%" height="auto"
                                                       mode="text"
@@ -284,21 +282,21 @@
                                 
                           <!-- ASSERTIONS -->
                     			<IconTabFilter
-                    				text="{i18n>RequestDetailAssertions}"
-                                    count="{ parts : [
-                                              { path : 'localUIModel>/request/mProperties/assertionsResult' },
-                                              { path : 'localUIModel>/request/mProperties/assertionsResultReady' },
-                                              { path : 'localUIModel>/request/mAggregations/assertions/length'}
-                                          ],
-                                          formatter : 'projectX.util.Formatter.assertionsListResultToText' }"
+                            text="{= ${localUIModel>/request/mProperties/testScriptCode/length} > 0 ?  '●' + ${i18n>RequestDetailAssertions} : ${i18n>RequestDetailAssertions} }"
+                            count="{ parts : [
+                                      { path : 'localUIModel>/request/mProperties/assertionsResult' },
+                                      { path : 'localUIModel>/request/mProperties/assertionsResultReady' }
+                                  ],
+                                  formatter : 'projectX.util.Formatter.assertionsListResultToText' }"
                     				>
                                       <VBox id="idVBoxAssertionPlaceholder"/>
                     			</IconTabFilter>
                           <IconTabSeparator/>
                           
                           <!-- TEST SCRIPT -->
-                          <IconTabFilter text="{i18n>RequestDetailTest}"
-                                    count="{localUIModel>/request/mProperties/testScriptCode/length} {localUIModel>/request/mProperties/testScriptResult}">
+                          <IconTabFilter text="{= ${localUIModel>/request/mProperties/testScriptCode/length} > 0 ?  '●' + ${i18n>RequestDetailTest} : ${i18n>RequestDetailTest} }"
+                                    count="{localUIModel>/request/mProperties/testScriptResult}"
+                                    >
                                     
                                    <Button icon="sap-icon://media-play"
                                      text="{i18n>RequestDetailTestReplayScript}"
