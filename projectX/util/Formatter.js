@@ -64,6 +64,26 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'projectX/util/Constan
 				return "";
 			}
 		};
+		
+		/**
+		 *
+		 * @param {boolean} bAssertionsResult representing the result of the assertions.
+		 * @param {boolean} bAssertionsResultReady true if the assertions were checked.
+		 * @return returns ObjectStatus state error if one of the assertions failed otherwise success is returned.
+		 */
+		Formatter.assertionsResultToState = function(bAssertionsResult, bAssertionsResultReady) {
+			if (bAssertionsResultReady !== true) {
+				return sap.ui.core.ValueState.None;
+			}
+
+			if (bAssertionsResult === true) {
+				return sap.ui.core.ValueState.Success;
+			} else if (bAssertionsResult === false) {
+				return sap.ui.core.ValueState.Error;
+			} else {
+				return sap.ui.core.ValueState.None;
+			}
+		};
 
 		Formatter.entitytypeString = function(sType) {
 			if (sType === Constants.ODATATYPE_STRING ||

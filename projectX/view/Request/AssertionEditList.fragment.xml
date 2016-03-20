@@ -67,12 +67,17 @@
 							<c:Item text="{key}" key="{key}"/>
 					</Select>
 					<Input value="{mProperties/expected}"/>
-					<c:Icon
-						src="{ parts : [
+					<ObjectStatus
+						icon="{ parts : [
 							{ path : 'mProperties/result' },
 							{ path : 'mProperties/resultReady' }
 						],
-						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"/>
+						formatter : 'projectX.util.Formatter.assertionsResultToImage' }"
+						state="{ parts : [
+							{ path : 'mProperties/result' },
+							{ path : 'mProperties/resultReady' }
+						],
+						formatter : 'projectX.util.Formatter.assertionsResultToState' }"/>
 					<Text text="{mProperties/evaluatedValue}" maxLines="2" tooltip="{mProperties/evaluatedValue}"/>
 					<Input value="{mProperties/name}"/>
 					<Button icon="sap-icon://delete"
