@@ -126,8 +126,14 @@
 							<Text text="{i18n>SequenceDetailRequestListTitleRequest}" />
 						</Column>
 						<Column
-							width="2.6em">
+							width="2.6em"
+							hAlign="Right">
 							<Text text="{i18n>SequenceDetailRequestListTitleAssertions}" />
+						</Column>
+						<Column
+							width="2.5em"
+							hAlign="Right">
+							<Text text="{i18n>SequenceDetailRequestListTitleTests}" />
 						</Column>
 						<Column
 							hAlign="Right"
@@ -135,11 +141,14 @@
 							<Text text="{i18n>SequenceDetailRequestListTitleStatus}" />
 						</Column>
 						<Column
-							width="3em">
+							width="3em"
+							hAlign="Right">
 							<Text text="{i18n>SequenceDetailRequestListTitleTime}" />
 						</Column>
 						<Column
-							width="8em">
+							width="8em"
+							minScreenWidth="Tablet"
+							demandPopin="true">
 							<Text text="{i18n>SequenceDetailRequestListTitleActions}" />
 						</Column>
 					</columns>
@@ -161,6 +170,7 @@
 									{ path : 'localUIModel>mAggregations/assertions/length' }
 								],
 								formatter : 'projectX.util.Formatter.assertionsListResultToImage' }"/>
+							<Text text="{localUIModel>mProperties/testScriptResult}"/>
 							<Text text="{localUIModel>mProperties/status}"/>
 							<Text text="{localUIModel>mProperties/responseTime}"/>
 							<HBox>

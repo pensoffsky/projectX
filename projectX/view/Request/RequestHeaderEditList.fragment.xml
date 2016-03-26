@@ -46,7 +46,8 @@
 						placeholder="{i18n>RequestDetailRequestHeadersFieldNamePlaceholder}"
 						showSuggestion="true"
 						items="{/REQUEST_HEADER_FIELDS}"
-						selectionChange="handleRequestHeaderFieldNameChanged">
+						selectionChange="handleRequestHeaderFieldNameChanged"
+						width="100%">
 						<c:Item text="{key}" key="{key}" />
 					</ComboBox>
 					<ComboBox
@@ -54,7 +55,8 @@
 						value="{mProperties/fieldValue}"
 						placeholder="{i18n>RequestDetailRequestHeadersValuePlaceholder}"
 						showSuggestion="true"
-						items="{/REQUEST_HEADER_VALUES}">
+						items="{/REQUEST_HEADER_VALUES}"
+						width="100%">
 							<c:Item text="{key}" key="{key}" />
 					</ComboBox>
 					<Button icon="sap-icon://delete"
