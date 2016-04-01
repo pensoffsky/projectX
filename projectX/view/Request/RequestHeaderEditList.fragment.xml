@@ -33,7 +33,7 @@
 			<Column>
 				<Text text="{i18n>RequestDetailRequestHeadersValue}" />
 			</Column>
-			<Column width="0.5rem">
+			<Column width="1rem">
 				<!--Column for action button e.g. delete-->
 			</Column>
 		</columns>
@@ -60,6 +60,7 @@
 							<c:Item text="{key}" key="{key}" />
 					</ComboBox>
 					<Button icon="sap-icon://delete"
+						type="Transparent"
 						tooltip="{i18n>RequestDetailRequestHeadersDelete}"
 						press="onBtnDeleteRequestHeader"/>
 				</cells>

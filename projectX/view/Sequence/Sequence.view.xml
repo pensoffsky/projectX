@@ -174,10 +174,26 @@
 							<Text text="{localUIModel>mProperties/status}"/>
 							<Text text="{localUIModel>mProperties/responseTime}"/>
 							<HBox>
-								<Button icon="sap-icon://edit" press="onEditRequest" tooltip="{i18n>SequenceDetailRequestListEditTooltip}"/>
-								<Button icon="sap-icon://up" press="onMoveRequestUp" tooltip="{i18n>SequenceDetailRequestListMoveUpTooltip}"/>
-								<Button icon="sap-icon://down" press="onMoveRequestDown" tooltip="{i18n>SequenceDetailRequestListMoveDownTooltip}"/>
-								<Button icon="sap-icon://delete" press="onDeleteRequest" tooltip="{i18n>SequenceDetailRequestListDeleteTooltip}"/>
+								<Button icon="sap-icon://edit" 
+										press="onEditRequest" 
+										tooltip="{i18n>SequenceDetailRequestListEditTooltip}"
+										type="Transparent"
+										/>
+								<Button icon="sap-icon://up" 
+										press="onMoveRequestUp" 
+										tooltip="{i18n>SequenceDetailRequestListMoveUpTooltip}"
+										type="Transparent"
+										/>
+								<Button icon="sap-icon://down" 
+										press="onMoveRequestDown" 
+										tooltip="{i18n>SequenceDetailRequestListMoveDownTooltip}"
+										type="Transparent"
+										/>
+								<Button icon="sap-icon://delete" 
+										press="onDeleteRequest" 
+										tooltip="{i18n>SequenceDetailRequestListDeleteTooltip}"
+										type="Transparent"
+										/>
 							</HBox>
 						</cells>
 					</ColumnListItem>

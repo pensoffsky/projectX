@@ -52,6 +52,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			httpMethod: sHttpMethod
 			}
 		);
+		
+		if (this.getPrefixUrl()) {
+			oRequest.setUseProjectPrefixUrl(true);
+			oRequest.setUrl("");
+		}
+		
 		this.addRequest(oRequest);
 		return oRequest;
 	};

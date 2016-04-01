@@ -178,6 +178,7 @@
                     				>
                                     <!-- REQUEST PAYLOAD -->
                                     <custom:AceEditor width="100%" height="200px"
+                                                      mode="text"
                                                       value="{localUIModel>/request/mProperties/requestBody}"
                                                       id="superEditorRequestBody"/>
                                 

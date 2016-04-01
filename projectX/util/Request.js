@@ -36,6 +36,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				assertionsResultReady : {type : "boolean", defaultValue : false},
 				assertionsResult : {type : "boolean", defaultValue : false},
 				testScriptResult : {type : "string", defaultValue : null},
+				testScriptSuccess : {type : "boolean", defaultValue : null},
 				preRequestScriptResult : {type : "string", defaultValue : null},
 				sapStatistics : {type : "string", defaultValue : null},
 				//the final url used for the request (including the changes from prerequest script)
@@ -125,6 +126,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		this.setResponseBody(null);
 		this.setResponseTime(null);
 		this.setTestScriptResult(null);
+		this.setTestScriptSuccess(false);
 		this.setPreRequestScriptResult(null);
 		this.setSapStatistics(null);
 		this.resetAssertionsData();
@@ -466,7 +468,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var sTestScriptCode = this.getTestScriptCode();
 		try {
 			var fRunTestScript = new Function("req", "test", "seqStorage", sTestScriptCode);
-			//TODO supply req parameter
 			fRunTestScript(oReqParam, fTest, oSequenceStorage);
 			//check the test results and generate the result string e.g. "3/20"
 			//3 from 20 test succeeded
@@ -478,9 +479,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 					iTestSuccess++;
 				}
 			}
+			
+			this.setTestScriptSuccess(iTestCount === iTestSuccess);
 			this.setTestScriptResult("" + iTestSuccess + "/" + iTestCount);
 		} catch (e) {
 			console.log(e);
+			this.setTestScriptSuccess(false);
 			this.setTestScriptResult("SCRIPT ERROR");
 		}
 	};

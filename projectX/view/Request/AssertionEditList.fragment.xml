@@ -40,7 +40,7 @@
 			<Column width="2rem">
 				<Text text="{i18n>RequestDetailAssertionsVar}" />
 			</Column>
-			<Column width="0.5rem">
+			<Column width="1rem">
 				
 			</Column>
 		</columns>
@@ -81,6 +81,7 @@
 					<Text text="{mProperties/evaluatedValue}" maxLines="2" tooltip="{mProperties/evaluatedValue}"/>
 					<Input value="{mProperties/name}"/>
 					<Button icon="sap-icon://delete"
+							type="Transparent"
 							tooltip="{i18n>RequestDetailAssertionsDelete}"
 							press="onBtnDeleteAssertion"/>
 				</cells>

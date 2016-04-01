@@ -342,6 +342,12 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 				that._bAbortSequence = true;
 				sap.m.MessageBox.alert("Error in request assertion. Sequence aborted!");
 			}
+			//check if we have to abort the sequence if one of the tests failed
+			if (that._oSequence.getAbortOnFailedAssertion() 
+					&& oRequest.getTestScriptSuccess() === false) {
+				that._bAbortSequence = true;
+				sap.m.MessageBox.alert("Error in request test script. Sequence aborted!");
+			}
 
 			if (that._bAbortSequence === true){
 				that._bAbortSequence = false;
@@ -350,7 +356,6 @@ projectX.util.Controller.extend("projectX.view.Sequence.Sequence", {
 			}
 
 			that._executeRequests(oProject, iIndex + 1, aRequests, oSequenceStorage);
-			//TODO add positiliy to abort on failure
 		});
 	},
 
