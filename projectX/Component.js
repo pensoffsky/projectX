@@ -212,8 +212,13 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 	export : function(aProjects) {
 		var sData = projectX.util.Storage.createJsonString(aProjects);
 		var pom = document.createElement('a');
+		var sFileName = "projectX";
+		for (var i = 0; i < aProjects.length; i++) {
+			sFileName +=  "-" + aProjects[i].getName();
+		}
+		sFileName += ".json";
 		pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sData));
-		pom.setAttribute('download', "projectX.config");
+		pom.setAttribute('download', sFileName);
 		pom.style.display = 'none';
 		document.body.appendChild(pom);
 		pom.click();
