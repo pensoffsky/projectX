@@ -128,6 +128,7 @@
                                     <Button id="testingIDExportRequest"
                                             text="{i18n>RequestDetailRequestButtonExportRequest}"
                                             press="onExportRequest"
+                                            type="Transparent"
                                             width="10rem"/>
                         						</f:content>
                         					</f:SimpleForm>
@@ -157,7 +158,10 @@
                             text="{= ${localUIModel>/request/mProperties/scriptCode/length} > 0 ?  '● ' + ${i18n>RequestDetailTitlePreRequestScript} : ${i18n>RequestDetailTitlePreRequestScript} }"
                             count="{localUIModel>/request/mProperties/preRequestScriptResult}"
                     				>
-                                        <Button text="{i18n>RequestDetailPreRequestScriptSnippets}" press="onButtonScriptExamples"/>
+                                        <Button text="{i18n>RequestDetailPreRequestScriptSnippets}" 
+                                            press="onButtonScriptExamples"
+                                            type="Transparent"
+                                            class="sapUiSmallMarginBegin"/>
                                         <u:Menu items="{localUIModel>/SCRIPT_EXAMPLES}"
                                                 id="idMenuScriptExamples">
                                             <u:MenuItem text="{localUIModel>text}"
@@ -213,7 +217,7 @@
                                 press="onBtnClearPress"
                                 tooltip="{i18n>RequestDetailButtonClearTooltip}"
                                 enabled="{= ${localUIModel>/request/mProperties/requestIsRunning} === false}"
-                                />
+                                type="Transparent"/>
                         <ObjectStatus
                             class="projectXRequestStatusText"
             				text="{i18n>RequestDetailStatus}: {localUIModel>/request/mProperties/status} 
@@ -244,13 +248,16 @@
                                         <ToolbarSpacer/>
                                         <Button icon="sap-icon://expand-group" 
                                                 press="onGrowResponseBody"
-                                                tooltip="{i18n>RequestDetailResponseBodyExpand}"/>
+                                                tooltip="{i18n>RequestDetailResponseBodyExpand}"
+                                                type="Transparent"/>
                                         <Button icon="sap-icon://collapse-group" 
                                                 press="onShrinkResponseBody"
-                                                tooltip="{i18n>RequestDetailResponseBodyShrink}"/>
+                                                tooltip="{i18n>RequestDetailResponseBodyShrink}"
+                                                type="Transparent"/>
                                         <Button icon="sap-icon://full-screen" 
                                                 press="onFullscreenResponseBody"
-                                                tooltip="{i18n>RequestDetailResponseBodyFullscreen}"/>
+                                                tooltip="{i18n>RequestDetailResponseBodyFullscreen}"
+                                                type="Transparent"/>
                                     </Toolbar>
                                     
                                     <VBox>
@@ -313,8 +320,11 @@
                                    <Button icon="sap-icon://media-play"
                                      text="{i18n>RequestDetailTestReplayScript}"
                                      tooltip="{i18n>RequestDetailTestReplayScriptTooltip}"
-                                         press="onBtnExecuteTestScript"/>
-                                   <Button text="{i18n>RequestDetailTestSnippets}" press="onButtonTestScriptExamples"/>
+                                     press="onBtnExecuteTestScript"
+                                     type="Transparent"/>
+                                   <Button text="{i18n>RequestDetailTestSnippets}"
+                                     press="onButtonTestScriptExamples"
+                                     type="Transparent"/>
                                    <u:Menu items="{localUIModel>/TESTSCRIPT_EXAMPLES}"
                                            id="idMenuTestScriptExamples">
                                        <u:MenuItem text="{localUIModel>text}"

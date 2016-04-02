@@ -25,31 +25,31 @@
 					id="testingIDEditProject"
 					tooltip="{i18n>ProjectEditTooltip}"
 					press="onEditProject"
-					enabled="{= ${/Projects/length} > 0}"/>
+					enabled="{= ${/Projects/length} > 0}"
+					type="Transparent"/>
 				<Button icon="sap-icon://add"
 					tooltip="{i18n>ProjectAddTooltip}"
-					press="onAddNewProject"/>
+					press="onAddNewProject"
+					type="Transparent"/>
 				<Button icon="sap-icon://delete"
 					tooltip="{i18n>ProjectDeleteTooltip}"
 					press="onDeleteSelectedProject"
-					enabled="{= ${/Projects/length} > 0}"/>
-
-				<ToolbarSpacer/>
+					enabled="{= ${/Projects/length} > 0}"
+					type="Transparent"/>
 				<Text text="{i18n>ProjectEmptyList}"
 					visible="{= !${/Projects/length} > 0}"/>
-
-				<ToolbarSpacer/>
 				<u:FileUploader
 					change="onFileUploaderChange"
 					buttonText="{i18n>ProjectImportButtonText}"
 					tooltip="{i18n>ProjectImportTooltip}"
 					buttonOnly="true"
-					/>
+					style="Transparent"/>
 				<Button
 					id="testingIDExportProject"
 					text="{i18n>ProjectExportButtonText}"
 					tooltip="{i18n>ProjectExportTooltip}"
 					press="onExport"
+					type="Transparent"
 					enabled="{= ${/Projects/length} > 0}" />
 				<SelectDialog id="idExportSelectDialog"
 					growingThreshold="100"

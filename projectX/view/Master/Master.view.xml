@@ -29,14 +29,17 @@
 				<ToolbarSpacer/>
 				<Button text="{i18n>MasterListButtonImport}" 
 						tooltip="{i18n>MasterListButtonImportTooltip}" 
+						type="Transparent"
 						press="onImportRequest"/>
 				<Button
 					text="{i18n>MasterListButtonOData}"
 					tooltip="{i18n>MasterListButtonODataTooltip}"
+					type="Transparent"
 					press="onAddRequestMetadata" />
 				<Button
 					icon="sap-icon://add"
 					tooltip="{i18n>MasterListButtonAddRequestTooltip}"
+					type="Transparent"
 					press="onAddRequest" />
 			</Toolbar>
 			<SearchField liveChange="onRequestSearch"
@@ -58,7 +61,8 @@
 					mode="{device>/listMode}"
 					select="onRequestsListSelect"
 					updateFinished="onListUpdateFinished"
-					class="masterList">
+					class="masterList"
+					noDataText="{i18n>MasterListEmptyRequests}">
 					<items>
 						<CustomListItem>
 							<Toolbar width="100%">
@@ -89,7 +93,8 @@
 					id="testingIDNewSequence"
 					icon="sap-icon://add"
 					tooltip="{i18n>MasterListButtonAddSequenceTooltip}"
-					press="onAddNewSequence" />
+					press="onAddNewSequence"
+					type="Transparent"/>
 			</Toolbar>
 			<SearchField liveChange="onSequenceSearch"
 				width="100%"
@@ -106,7 +111,7 @@
 					mode="{device>/listMode}"
 					select="onSequencesListSelect"
 					class="masterList"
-					>
+					noDataText="{i18n>MasterListEmptySequences}">
 					<items>
 						<CustomListItem>
 							<Toolbar width="100%">

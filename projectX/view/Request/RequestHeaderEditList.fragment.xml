@@ -12,7 +12,8 @@
 			<Toolbar>
 				<Button icon="sap-icon://add-favorite"
 					text="{i18n>RequestDetailRequestHeadersAddCommonHeaders}"
-					press="onButtonRequestHeaderExamples"/>
+					press="onButtonRequestHeaderExamples"
+					type="Transparent"/>
 					<u:Menu
 						id="idMenuRequestHeaderExamples"
 						items="{/REQUEST_HEADER_EXAMPLES}">
@@ -23,7 +24,8 @@
 				<Button icon="sap-icon://add"
 					text="{i18n>RequestDetailRequestHeadersAdd}"
 					tooltip="{i18n>RequestDetailRequestHeadersAddTooltip}"
-					press="onBtnAddRequestHeader"/>
+					press="onBtnAddRequestHeader"
+					type="Transparent"/>
 				</Toolbar>
 			</headerToolbar>
 		<columns>
