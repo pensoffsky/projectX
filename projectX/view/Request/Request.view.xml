@@ -80,12 +80,9 @@
                         vertical="true">
                 
                     <IconTabBar
-                        class="sapUiNoContentPadding projectXBorder projectXRequestStuffContainer"
-                            >
+                        class="sapUiNoContentPadding projectXBorder projectXRequestStuffContainer">
                             <items>
-                                <IconTabFilter
-                    				text="{i18n>RequestDetailTitleRequest}"
-                    				>
+                                <IconTabFilter text="{i18n>RequestDetailTitleRequest}">
                                     <!-- REQUEST DEFINITIONS STUFF-->
                                     <l:Grid
                         				defaultSpan="L12 M12 S12"
@@ -95,30 +92,38 @@
                         						editable="true"
                         						layout="ResponsiveGridLayout">
                         						<f:content>
-                                    <Label text="{i18n>RequestDetailRequestName}" />
-                                  <Input value="{localUIModel>/request/mProperties/name}"
-                                         placeholder="{i18n>RequestDetailRequestNamePlaceholder}"
-                                             liveChange="onNameChanged"
-                                             valueLiveUpdate="true"
-                                              />
-                                    <Label text="{i18n>RequestDetailRequestGroup}" />
-                                      <Input value="{localUIModel>/request/mProperties/groupName}"
-                                             placeholder="{i18n>RequestDetailRequestGroupPlaceholder}"
-                                             liveChange="onNameChanged"
-                                             valueLiveUpdate="true"
-                                              />
                                     
-        							<Label text="{i18n>RequestDetailRequestUsePrefixUrl}"/>
+		                                <Label text="{i18n>RequestDetailRequestUsePrefixUrl}"/>
                                     <Switch state="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
                                             change="onCBPrefixSelected"
                                             visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/>
                                     <Label text="{i18n>RequestDetailRequestPrefixUrl}" />
                                     <Text text="{localUIModel>/project/mProperties/prefixUrl}"
                                           visible="{localUIModel>/request/mProperties/useProjectPrefixUrl}"/>
-                                      <!-- <CheckBox text="{localUIModel>/project/mProperties/prefixUrl}"
-                                                selected="{localUIModel>/request/mProperties/useProjectPrefixUrl}"
-                                                select="onCBPrefixSelected"
-                                                visible="{= ${localUIModel>/project/mProperties/prefixUrl} !== '' }"/> -->
+                                    
+                                    <!-- CSRF token -->
+                                    <Label text="{i18n>RequestDetailAuthorizationFetchCsrfToken}"/>
+                                    <Switch state="{localUIModel>/request/mProperties/fetchCSRFToken}"
+                                            tooltip="{i18n>RequestDetailAuthorizationFetchCsrfTokenTooltip}"/>
+                                    <Label text="{i18n>RequestDetailAuthorizationCsrfTokenUrl}"/>
+                                    <Text text="{localUIModel>/project/mProperties/csrfTokenUrl}"
+                                          visible="{localUIModel>/request/mProperties/fetchCSRFToken}"/>
+                                    
+                                    <!-- Basic Authentication -->
+                                    <Label text="{i18n>RequestDetailAuthorizationUseBasicAuth}" />
+                                    <Switch state="{localUIModel>/request/mProperties/useBasicAuthentication}"
+                                            tooltip="{i18n>RequestDetailAuthorizationUseBasicAuthTooltip}"/>
+                                    <Label text="{i18n>RequestDetailAuthorizationUsername}" />
+                                  <Input value="{localUIModel>/request/mProperties/usernameBasicAuth}"
+                                    placeholder="{i18n>RequestDetailAuthorizationUsernamePlaceholder}"
+                                                    enabled="{localUIModel>/request/mProperties/useBasicAuthentication}"
+                                    />
+                                                <Label text="{i18n>RequestDetailAuthorizationPassword}"/>
+                                  <Input value="{localUIModel>/request/mProperties/passwordBasicAuth}"
+                                                    enabled="{localUIModel>/request/mProperties/useBasicAuthentication}"
+                                    type="Password"
+                                    placeholder="{i18n>RequestDetailAuthorizationPasswordPlaceholder}"
+                                    />
                                     <Label text="" />
                                     <Button id="testingIDExportRequest"
                                             text="{i18n>RequestDetailRequestButtonExportRequest}"
@@ -129,43 +134,7 @@
                         				</l:content>                                
                         			</l:Grid>
                     			</IconTabFilter>
-                                <IconTabSeparator/>
-                                <!-- ization Tab -->
-                                <IconTabFilter text="{i18n>RequestDetailTitleAuthorization}">
-                                    <f:SimpleForm editable="true" layout="ResponsiveGridLayout">
-                    					<f:content>
-                                            
-                    					</f:content>
-                    				</f:SimpleForm>
-                                    <f:SimpleForm editable="true" layout="ResponsiveGridLayout">
-                    					<f:content>
-                                            <!-- CSRF token -->
-                                            <Label text="{i18n>RequestDetailAuthorizationFetchCsrfToken}"/>
-                                            <Switch state="{localUIModel>/request/mProperties/fetchCSRFToken}"
-                                                    tooltip="{i18n>RequestDetailAuthorizationFetchCsrfTokenTooltip}"/>
-                                            <Label text="{i18n>RequestDetailAuthorizationCsrfTokenUrl}"/>
-                                            <Text text="{localUIModel>/project/mProperties/csrfTokenUrl}"
-                                                  visible="{localUIModel>/request/mProperties/fetchCSRFToken}"/>
-                                            
-                                            <!-- Basic Authentication -->
-                                            <Label text="{i18n>RequestDetailAuthorizationUseBasicAuth}" />
-                                            <Switch state="{localUIModel>/request/mProperties/useBasicAuthentication}"
-                                                    tooltip="{i18n>RequestDetailAuthorizationUseBasicAuthTooltip}"/>
-                                            <Label text="{i18n>RequestDetailAuthorizationUsername}" />
-                							<Input value="{localUIModel>/request/mProperties/usernameBasicAuth}"
-                								placeholder="{i18n>RequestDetailAuthorizationUsernamePlaceholder}"
-                                                enabled="{localUIModel>/request/mProperties/useBasicAuthentication}"
-                								/>
-                                            <Label text="{i18n>RequestDetailAuthorizationPassword}"/>
-                							<Input value="{localUIModel>/request/mProperties/passwordBasicAuth}"
-                                                enabled="{localUIModel>/request/mProperties/useBasicAuthentication}"
-                								type="Password"
-                								placeholder="{i18n>RequestDetailAuthorizationPasswordPlaceholder}"
-                								/>
-                    					</f:content>
-                    				</f:SimpleForm>
-                    			</IconTabFilter>
-                                <IconTabSeparator/>
+                          <IconTabSeparator/>
                     			<IconTabFilter
                             text="{= ${localUIModel>/request/mAggregations/requestHeaders/length} > 0 ?  '● ' + ${i18n>RequestDetailTitleRequestHeaders} : ${i18n>RequestDetailTitleRequestHeaders} }"
                     				>
@@ -183,7 +152,7 @@
                                                       id="superEditorRequestBody"/>
                                 
                     			</IconTabFilter>
-                                <IconTabSeparator/>
+                          <IconTabSeparator/>
                     			<IconTabFilter
                             text="{= ${localUIModel>/request/mProperties/scriptCode/length} > 0 ?  '● ' + ${i18n>RequestDetailTitlePreRequestScript} : ${i18n>RequestDetailTitlePreRequestScript} }"
                             count="{localUIModel>/request/mProperties/preRequestScriptResult}"
@@ -200,6 +169,42 @@
                                                           />
                     			</IconTabFilter>
                                 <IconTabSeparator/>
+                                <!-- Request Description -->
+                                <IconTabFilter
+                                  text="Description"
+                          				>
+                                  <l:Grid
+                              defaultSpan="L12 M12 S12"
+                              width="auto">
+                              <l:content>
+                                <f:SimpleForm
+                                  editable="true"
+                                  layout="ResponsiveGridLayout">
+                                  <f:content>
+                                  <Label text="{i18n>RequestDetailRequestName}" />
+                                <Input value="{localUIModel>/request/mProperties/name}"
+                                       placeholder="{i18n>RequestDetailRequestNamePlaceholder}"
+                                           liveChange="onNameChanged"
+                                           valueLiveUpdate="true"
+                                            />
+                                  <Label text="{i18n>RequestDetailRequestGroup}" />
+                                    <Input value="{localUIModel>/request/mProperties/groupName}"
+                                           placeholder="{i18n>RequestDetailRequestGroupPlaceholder}"
+                                           liveChange="onNameChanged"
+                                           valueLiveUpdate="true"
+                                            />
+                                  <Label text="Description" />
+                                    <TextArea value="{localUIModel>/request/mProperties/description}"
+                                              rows="3"
+                                            />
+                                  </f:content>
+                                </f:SimpleForm>
+                              </l:content>                                
+                            </l:Grid>
+                                  
+                    			</IconTabFilter>
+                          <IconTabSeparator/>
+                                
                             </items>
                     </IconTabBar>
 
