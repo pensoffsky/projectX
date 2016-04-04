@@ -181,7 +181,7 @@ module.exports = function(grunt) {
         options: {
             platforms: ["darwin", "win32"],
             app_dir: "build/release-tmp",
-            build_dir: "build/<%= pkg.name %>-executable"
+            build_dir: "build/<%= pkg.name %>-executable-<%= pkg.version %>"
         }
     },
     // clean tasks
@@ -193,7 +193,7 @@ module.exports = function(grunt) {
     compress: {
         buildGw: {
             options: {
-                archive: "release/<%= pkg.name %>-gateway.zip",
+                archive: "release/<%= pkg.name %>-gateway-<%= pkg.version %>.zip",
                 level: 9
             },
             files: [{
@@ -204,11 +204,11 @@ module.exports = function(grunt) {
         },
         buildElectronWin32: {
             options: {
-                archive: "release/<%= pkg.name %>-win32.zip"
+                archive: "release/<%= pkg.name %>-win32-<%= pkg.version %>.zip"
             },
             files: [{
                 expand: true,
-                cwd: "build/<%= pkg.name %>-executable/",
+                cwd: "build/<%= pkg.name %>-executable-<%= pkg.version %>/",
                 src: ["win32/**/*"]
             }],
         },
@@ -220,7 +220,7 @@ module.exports = function(grunt) {
                 // create 'release' folder and discard any errors
                 "mkdir release &2>/dev/null",
                 // zip OSX build into release folder
-                "zip -yrq1 release/<%= pkg.name %>-mac.zip build/<%= pkg.name %>-executable/darwin/."
+                "zip -yrq1 release/<%= pkg.name %>-mac-<%= pkg.version %>.zip build/<%= pkg.name %>-executable-<%= pkg.version %>/darwin/."
             ].join(" && ")
         }
     },
