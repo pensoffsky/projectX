@@ -11,11 +11,13 @@
 				<Button icon="sap-icon://media-play"
 						text="{i18n>RequestDetailAssertionsReplay}"
 						tooltip="{i18n>RequestDetailAssertionsReplayTooltip}"
-						press="onBtnExecuteAssertion"/>
+						press="onBtnExecuteAssertion"
+						type="Transparent"/>
 	        <Button icon="sap-icon://add"
 					text="{i18n>RequestDetailAssertionsAddAssertion}"
 					tooltip="{i18n>RequestDetailAssertionsAddAssertionTooltip}"
-					press="onBtnAddAssertion"/>
+					press="onBtnAddAssertion"
+					type="Transparent"/>
 	      </Toolbar>
 	    </headerToolbar>
 		<columns>
