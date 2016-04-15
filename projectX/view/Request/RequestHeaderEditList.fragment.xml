@@ -4,69 +4,70 @@
 	xmlns:c="sap.ui.core"
 	xmlns:u="sap.ui.unified"
 	xmlns="sap.m">
-	<Table
-		id="idTableRequestHeaders"
-		items="{/request/mAggregations/requestHeaders}"
-		>
-		<headerToolbar>
-			<Toolbar>
-				<Button icon="sap-icon://add-favorite"
-					text="{i18n>RequestDetailRequestHeadersAddCommonHeaders}"
-					press="onButtonRequestHeaderExamples"
-					type="Transparent"/>
-					<u:Menu
-						id="idMenuRequestHeaderExamples"
-						items="{/REQUEST_HEADER_EXAMPLES}">
-						<u:MenuItem text="{text}"
-							select="onMenuItemHeaderExampleSelected"/>
-					</u:Menu>
-				<!-- <ToolbarSpacer /> -->
-				<Button icon="sap-icon://add"
-					text="{i18n>RequestDetailRequestHeadersAdd}"
-					tooltip="{i18n>RequestDetailRequestHeadersAddTooltip}"
-					press="onBtnAddRequestHeader"
-					type="Transparent"/>
-				</Toolbar>
-			</headerToolbar>
-		<columns>
-			<Column>
-				<Text text="{i18n>RequestDetailRequestHeadersFieldName}" />
-			</Column>
-			<Column>
-				<Text text="{i18n>RequestDetailRequestHeadersValue}" />
-			</Column>
-			<Column width="1rem">
-				<!--Column for action button e.g. delete-->
-			</Column>
-		</columns>
-		<items>
-			<ColumnListItem>
-				<cells>
-					<ComboBox
-						id="idRequestHeaderFieldName"
-						value="{mProperties/fieldName}"
-						placeholder="{i18n>RequestDetailRequestHeadersFieldNamePlaceholder}"
-						showSuggestion="true"
-						items="{/REQUEST_HEADER_FIELDS}"
-						selectionChange="handleRequestHeaderFieldNameChanged"
-						width="100%">
-						<c:Item text="{key}" key="{key}" />
-					</ComboBox>
-					<ComboBox
-						id="idRequestHeaderFieldValue"
-						value="{mProperties/fieldValue}"
-						placeholder="{i18n>RequestDetailRequestHeadersValuePlaceholder}"
-						showSuggestion="true"
-						items="{/REQUEST_HEADER_VALUES}"
-						width="100%">
+	<VBox>
+		<Toolbar>
+			<Button icon="sap-icon://add-favorite"
+				text="{i18n>RequestDetailRequestHeadersAddCommonHeaders}"
+				press="onButtonRequestHeaderExamples"
+				type="Transparent"/>
+				<u:Menu
+					id="idMenuRequestHeaderExamples"
+					items="{/REQUEST_HEADER_EXAMPLES}">
+					<u:MenuItem text="{text}"
+						select="onMenuItemHeaderExampleSelected"/>
+				</u:Menu>
+			<!-- <ToolbarSpacer /> -->
+			<Button icon="sap-icon://add"
+				text="{i18n>RequestDetailRequestHeadersAdd}"
+				tooltip="{i18n>RequestDetailRequestHeadersAddTooltip}"
+				press="onBtnAddRequestHeader"
+				type="Transparent"/>
+		</Toolbar>
+	
+		<Table
+			id="idTableRequestHeaders"
+			items="{/request/mAggregations/requestHeaders}"
+			>
+			<columns>
+				<Column>
+					<Text text="{i18n>RequestDetailRequestHeadersFieldName}" />
+				</Column>
+				<Column>
+					<Text text="{i18n>RequestDetailRequestHeadersValue}" />
+				</Column>
+				<Column width="1rem">
+					<!--Column for action button e.g. delete-->
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<ComboBox
+							id="idRequestHeaderFieldName"
+							value="{mProperties/fieldName}"
+							placeholder="{i18n>RequestDetailRequestHeadersFieldNamePlaceholder}"
+							showSuggestion="true"
+							items="{/REQUEST_HEADER_FIELDS}"
+							selectionChange="handleRequestHeaderFieldNameChanged"
+							width="100%">
 							<c:Item text="{key}" key="{key}" />
-					</ComboBox>
-					<Button icon="sap-icon://delete"
-						type="Transparent"
-						tooltip="{i18n>RequestDetailRequestHeadersDelete}"
-						press="onBtnDeleteRequestHeader"/>
-				</cells>
-			</ColumnListItem>
-		</items>
-	</Table>
+						</ComboBox>
+						<ComboBox
+							id="idRequestHeaderFieldValue"
+							value="{mProperties/fieldValue}"
+							placeholder="{i18n>RequestDetailRequestHeadersValuePlaceholder}"
+							showSuggestion="true"
+							items="{/REQUEST_HEADER_VALUES}"
+							width="100%">
+								<c:Item text="{key}" key="{key}" />
+						</ComboBox>
+						<Button icon="sap-icon://delete"
+							type="Transparent"
+							tooltip="{i18n>RequestDetailRequestHeadersDelete}"
+							press="onBtnDeleteRequestHeader"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</VBox>
 </c:FragmentDefinition>
