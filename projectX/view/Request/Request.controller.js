@@ -316,7 +316,7 @@ sap.ui.define([
 					sMode = "text";
 					break;
 			default:
-				console.log("problem with response body format segmented button on detail page");
+				jQuery.sap.log.error("problem with response body format segmented button on detail page");
 			}
 			this._oRequest.setResponseBodyFormat(sMode); //save the tab to the request
 			this._prettyPrintResponseBody(this._oRequest.getResponseBody(), sMode, false);
@@ -358,7 +358,7 @@ sap.ui.define([
 
 			var fCloseDialog = function () {
 				dialog.close();
-			}
+			};
 			//to get access to the global model
 			this.getView().addDependent(dialog);
 			dialog.open();
