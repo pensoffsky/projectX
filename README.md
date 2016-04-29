@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/pensoffsky/projectX.svg?branch=master)](https://travis-ci.org/pensoffsky/projectX)
+[![Gitter](https://badges.gitter.im/pensoffsky/projectX.svg)](https://gitter.im/pensoffsky/projectX?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Features 
 - create assertions for requests
@@ -7,7 +8,7 @@
 - import and export projects and single requests in JSON format for team collaboration
 - runs in browser or as standalone app (thanks to [Electron](http://electron.atom.io))
 
-<img src="documentation/gifs/overview.gif" width="900"/>
+<img src="documentation/gifs/overview.gif" width="900"/>˘
 
 ## Screencast tutorials
 * [Switch projects](documentation/projectSwitch.md)
