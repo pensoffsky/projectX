@@ -51,6 +51,13 @@
 					press="onExport"
 					type="Transparent"
 					enabled="{= ${/Projects/length} > 0}" />
+				<!-- <Button
+					id="testingIDCreateDocumentation"
+					text="{i18n>ProjectCreateDocuButtonText}"
+					tooltip="{i18n>ProjectCreateDocuTooltip}"
+					press="onCreateDocu"
+					type="Transparent"
+					enabled="{= ${/Projects/length} > 0}" /> -->
 				<SelectDialog id="idExportSelectDialog"
 					growingThreshold="100"
 					title="{i18n>ProjectExportDialogTitle}"

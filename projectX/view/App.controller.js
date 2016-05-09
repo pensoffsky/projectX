@@ -50,10 +50,6 @@ sap.ui.define([
 			//this.getRouter().getRoute("main").attachPatternMatched(this.onRouteMatched, this);
 		};
 
-		App.prototype.onRouteMatched = function(oEvent) {
-			debugger
-		};
-
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
@@ -152,6 +148,13 @@ sap.ui.define([
 				}
 		      }
 		    );
+		};
+		
+		App.prototype.onCreateDocu = function() {
+			var oComponent = this.getComponent();
+			var oProject = oComponent.getSelectedProject();
+			var sDocu = Helper.createMarkdownDocuForProject(oProject);
+			this.showPrompt("Copy to clipboard: Ctrl+C, ESC", sDocu);
 		};
 		
 		// /////////////////////////////////////////////////////////////////////////////

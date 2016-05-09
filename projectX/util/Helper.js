@@ -13,6 +13,51 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/base/Object', 'sap/ui/model/odata/OD
 	// /// Public Functions
 	// /////////////////////////////////////////////////////////////////////////////
 	
+	
+	Helper.createMarkdownDocuForProject = function(oProject){
+		var sRes = "";
+		sRes += Helper._mdLevel(oProject.getName(), 1) + "\n";
+		
+		sRes += "Prefix URL: `" + oProject.getPrefixUrl() + "\n";
+		sRes += "CSRF Token URL: `" + oProject.getCsrfTokenUrl() + "\n\n";
+		
+		//requests
+		var aRequests = oProject.getRequests();
+		var aFields = ["Name", "Description", "HttpMethod", "UseProjectPrefixUrl", "FetchCSRFToken", "Url", "Tags", "RequestBody", "ScriptCode", "TestScriptCode", "ResponseBodyFormat", "GroupName", "UseBasicAuthentication", "UsernameBasicAuth"];
+		for (var i = 0; i < aRequests.length; i++) {
+			sRes += Helper._mdLevel("Request: " + aRequests[i].getName() ,2);
+			sRes += Helper._mdObject(aRequests[i], aFields) + "\n";
+			
+			// var aAssertions = aRequests[i].getAssertions();
+			// aFields = ["Name", "AssertProperty", "Operation", "Path", "Expected"];
+			// for (var i = 0; i < aAssertions.length; i++) {
+			// 	sRes += Helper._mdObject(aAssertions[i], aFields);	
+			// }
+		}
+		
+		return sRes;
+	};
+	
+	Helper._mdLevel = function(sValue, iLevel) {
+		var sRes = "";
+		for (var i = 0; i < iLevel; i++) {
+			sRes += "#";
+		}
+		return sRes + " " + sValue + "\n";
+	};
+	
+	Helper._mdObject = function(oRequest, aRequestFields) {
+		var sRes = "";
+		for (var i = 0; i < aRequestFields.length; i++) {
+			var sValue = oRequest["get" + aRequestFields[i]]();
+			if(!sValue) {
+				continue;
+			}
+			sRes += aRequestFields[i] + "\n> " + sValue + "\n\n";
+		}
+		return sRes + "\n";
+	};
+	
 	/**
 	 * converts a xpathResult object from xmldocument.evaluate to string.
 	 * @param {object} oXpathResult result form xmldocument evaluate function.
