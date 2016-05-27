@@ -41,6 +41,7 @@
                                       enableWrapMode="true"
                                       fontSize="14"
                                       highlightActiveLine="false"
+                                      textChange="onUrlChanged"
                                       >
                         <custom:layoutData>
                             <FlexItemData growFactor="1" />

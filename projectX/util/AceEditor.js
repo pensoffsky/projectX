@@ -57,10 +57,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 					fontSize: {
 						type: "int",
 						defaultValue: 12
-					},
+					}
 				},
 				events: {
-					someEvent: {}
+					textChange : {}
 				}
 			}
 		});
@@ -75,6 +75,7 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 
 
 		AceEditor.prototype.onAfterRendering = function() {
+			var that = this;
 			console.log("aceeditor onAfterRendering");
 			var sEditID = this.getId();
 			if (this._editor) {
@@ -108,8 +109,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 				var sControlValue = that.getValue();
 				if (sEditorValue !== sControlValue) {
 					that.setProperty("value", sEditorValue, true);
+					that.fireTextChange({/* no parameters */});
 				}
-
 			});
 		};
 

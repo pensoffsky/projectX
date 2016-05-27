@@ -38,6 +38,13 @@ sap.ui.define([
 		 * @type {object}
 		 */
 		Request.prototype._oRequest = null;
+		
+		/**
+		 * flag that is used to prevent the initial filling of the url control
+		 * to trigger an update of the master list.
+		 * @type {Boolean}
+		 */
+		Request.prototype._bIgnoreUrlChangeEvent = false;
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Initialization
@@ -113,6 +120,7 @@ sap.ui.define([
 		};
 		
 		Request.prototype.onRouteMatched = function(oEvent) {
+			this._bIgnoreUrlChangeEvent = true;
 			this._oRequest = null;
 			this._oProject = null;
 
@@ -142,6 +150,7 @@ sap.ui.define([
 			this._setResponseBodyButtonMode(sMode);
 			this._localUIModel.setProperty("/responseBodyDisplayMode", sMode);
 			this._prettyPrintResponseBody(this._oRequest.getResponseBody(), sMode, false);
+			this._bIgnoreUrlChangeEvent = false;
 		};
 
 		Request.prototype.onBeforeShow = function() {
@@ -216,6 +225,17 @@ sap.ui.define([
 		// /// Event Handler
 		// /////////////////////////////////////////////////////////////////////////////
 
+		Request.prototype.onUrlChanged = function() {
+			if(this._bIgnoreUrlChangeEvent){
+				return;
+			}
+			
+			//update the master list because the url was changed
+			this.triggerWithInputDelay(function() {
+				this.refreshMasterList();
+			});
+		};
+
 		Request.prototype.onCBPrefixSelected = function(oEvent) {
 			var bSelected = this._localUIModel.getProperty("/request/mProperties/useProjectPrefixUrl");
 			var sUrl = this._oRequest.getUrl();
@@ -230,6 +250,11 @@ sap.ui.define([
 			}
 			this._oRequest.setUrl(sUrl);
 			this._localUIModel.updateBindings();
+			
+			//update the master list because the url was changed
+			this.triggerWithInputDelay(function() {
+				this.refreshMasterList();
+			});
 		};
 
 		Request.prototype.onButtonScriptExamples = function(oEvent) {
@@ -270,7 +295,7 @@ sap.ui.define([
 		 */
 		Request.prototype.onNameChanged = function() {
 			this.triggerWithInputDelay(function() {
-				this.updateMasterList();
+				this.refreshMasterList();
 			});
 		};
 
@@ -280,7 +305,7 @@ sap.ui.define([
 		 */
 		Request.prototype.onHttpMethodChange = function() {
 			this.triggerWithInputDelay(function() {
-				this.updateMasterList();
+				this.refreshMasterList();
 			});
 		};
 

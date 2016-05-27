@@ -98,6 +98,10 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.projectXDescriptiveText {
+  color: gray;
+  font-size: 0.8rem;
+}
 .sapUiSizeCompact .sapMSegB,
 .sapMSegB .sapMSegB {
   padding: 0rem;

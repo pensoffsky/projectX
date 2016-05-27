@@ -121,6 +121,11 @@ sap.ui.core.mvc.Controller.extend("projectX.util.Controller", {
 		oModel.updateBindings(true);
 	},
 	
+	refreshMasterList : function () {
+		var oModel = this.getView().getModel();
+		oModel.refresh();
+	},
+	
 	getCurrentProject : function () {
 		//TODO use component to get the selected project
 		var oModel = this.getView().getModel();

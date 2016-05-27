@@ -45,7 +45,6 @@
 			<SearchField liveChange="onRequestSearch"
 				width="100%"
 				visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}"/>
-				<!--TODO fix height of scrollcontainer -->
 			<ScrollContainer
 				visible="{= ${localUIModel>/visibleTab} === 'REQUESTS'}"
 				width="100%"
@@ -65,21 +64,49 @@
 					noDataText="{i18n>MasterListEmptyRequests}">
 					<items>
 						<CustomListItem>
-							<Toolbar width="100%">
-
-								<Text text="{mProperties/name}"/>
-								<ToolbarSpacer/>
-								<c:Fragment fragmentName="projectX.view.Master.MasterHttpMethodTag" type="XML"/>
-								<Button press="onBtnDuplicateRequestPress"
-									tooltip="{i18n>MasterListButtonDuplicateRequestTooltip}"
-									icon="sap-icon://duplicate"
-									type="Transparent"/>
-								<Button press="onBtnDeleteRequestPress"
-									tooltip="{i18n>MasterListButtonDeleteRequestTooltip}"
-									icon="sap-icon://delete"
-									type="Transparent"/>
-
-							</Toolbar>
+							<VBox>
+								<FlexBox width="100%" 
+									class="sapUiNoMargin"
+										alignItems="Begin">
+									<Text text="{mProperties/name}"
+										wrapping="true"
+										maxLines="2"
+										  class="sapUiTinyMarginBegin sapUiTinyMarginEnd sapUiTinyMarginTop"
+										  visible="{= ${mProperties/name}.length > 0}">
+										<layoutData>
+			                                <FlexItemData growFactor="1" />
+			                            </layoutData>
+									</Text>
+									
+									<Text class="projectXDescriptiveText sapUiTinyMargin" 
+										  text="{mProperties/url}"
+										  visible="{= ${mProperties/url}.length > 0 &amp;&amp; ${mProperties/name}.length &lt; 1}"
+										  maxLines="5"
+										  >
+										  <layoutData>
+  			                                <FlexItemData growFactor="1" />
+  			                            </layoutData>
+									  </Text>
+									
+									<HBox alignItems="Center">
+										<c:Fragment fragmentName="projectX.view.Master.MasterHttpMethodTag" type="XML" />
+										<Button press="onBtnDuplicateRequestPress"
+											tooltip="{i18n>MasterListButtonDuplicateRequestTooltip}"
+											icon="sap-icon://duplicate"
+											type="Transparent"/>
+										<Button press="onBtnDeleteRequestPress"
+											tooltip="{i18n>MasterListButtonDeleteRequestTooltip}"
+											icon="sap-icon://delete"
+											type="Transparent"
+											class="sapUiTinyMarginEnd"/>
+									</HBox>
+								</FlexBox>
+								<Text class="projectXDescriptiveText sapUiTinyMargin sapUiNoMarginTop" 
+									  text="{mProperties/url}"
+									  visible="{= ${mProperties/url}.length > 0 &amp;&amp; ${mProperties/name}.length > 0}"
+									  maxLines="5"
+									  />
+							</VBox>
 						</CustomListItem>
 					</items>
 				</List>
