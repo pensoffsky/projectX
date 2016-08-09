@@ -16,7 +16,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				username : {type : "string", defaultValue : null},
 				password : {type : "string", defaultValue : null},
 				useBasicAuthentication : {type : "boolean", defaultValue : null},
-				csrfTokenUrl : {type : "string", defaultValue : null}
+				csrfTokenUrl : {type : "string", defaultValue : null},
+				gistID : {type : "string", defaultValue : null},
+				githubUsername : {type : "string", defaultValue : null},
+				githubApiUrl : {type : "string", defaultValue : null}
 			},
 			events : {
 
@@ -138,6 +141,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oProject.password = this.getPassword();
 		oProject.useBasicAuthentication = this.getUseBasicAuthentication();
 		oProject.csrfTokenUrl = this.getCsrfTokenUrl();
+		oProject.gistID = this.getGistID();
+		oProject.githubApiUrl = this.getGithubApiUrl();
+		oProject.githubUsername = this.getGithubUsername();
 
 		var aSerializedRequests = [];
 		var aRequests = this.getRequests();

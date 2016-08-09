@@ -46,16 +46,32 @@
 						<Label text="{i18n>ProjectDetailUseBasicAuthentication}" />
 						<Switch state="{localUIModel>/project/mProperties/useBasicAuthentication}"
 								tooltip="{i18n>ProjectDetailUseBasicAuthenticationTooltip}"/>
-						<Label text="{i18n>ProjectDetailUsername}" />
+						<Label text="{i18n>ProjectDetailUsername}"
+							visible="{localUIModel>/project/mProperties/useBasicAuthentication}" />
 						<Input value="{localUIModel>/project/mProperties/username}"
 							placeholder="{i18n>ProjectDetailUsernamePlaceholder}"
 							enabled="{localUIModel>/project/mProperties/useBasicAuthentication}"
+							visible="{localUIModel>/project/mProperties/useBasicAuthentication}"
 							/>
-						<Label text="{i18n>ProjectDetailPassword}" />
+						<Label text="{i18n>ProjectDetailPassword}"
+							visible="{localUIModel>/project/mProperties/useBasicAuthentication}" />
 						<Input value="{localUIModel>/project/mProperties/password}"
 							type="Password"
 							placeholder="{i18n>ProjectDetailPasswordPlaceholder}"
 							enabled="{localUIModel>/project/mProperties/useBasicAuthentication}"
+							visible="{localUIModel>/project/mProperties/useBasicAuthentication}"
+							/>
+						<Label text="{i18n>ProjectDetailGistID}" />
+						<Input value="{localUIModel>/project/mProperties/gistID}"
+							placeholder="{i18n>ProjectDetailGistIDPlaceholder}"
+							/>
+						<Label text="{i18n>ProjectDetailGithubApiUrl}" />
+						<Input value="{localUIModel>/project/mProperties/githubApiUrl}"
+							placeholder="{i18n>ProjectDetailGithubApiUrlPlaceholder}"
+							/>
+						<Label text="{i18n>ProjectDetailGithubUsername}" />
+						<Input value="{localUIModel>/project/mProperties/githubUsername}"
+							placeholder="{i18n>ProjectDetailGithubUsernamePlaceholder}"
 							/>
 
 					</f:content>

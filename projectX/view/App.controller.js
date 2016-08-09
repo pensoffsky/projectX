@@ -30,6 +30,15 @@ sap.ui.define([
 		});
 
 
+		App.prototype.onSaveToGist = function() {
+			this._showGistDialog("create");
+		};
+		
+		App.prototype.onReadFromGist = function() {
+			this._showGistDialog("read");
+		};
+
+
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Members
 		// /////////////////////////////////////////////////////////////////////////////
@@ -48,10 +57,6 @@ sap.ui.define([
 			this.getView().setModel(this._localUIModel, "localUIModel");
 
 			//this.getRouter().getRoute("main").attachPatternMatched(this.onRouteMatched, this);
-		};
-
-		App.prototype.onRouteMatched = function(oEvent) {
-			debugger
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -192,6 +197,34 @@ sap.ui.define([
 		    this.getView().addDependent(dialog);
 		    dialog.open();
 			oView.getController().onRouteMatched();
+		};
+		
+		//TODO move to gist controller function?
+		App.prototype._showGistDialog = function(sScreenMode) {
+			var oView = sap.ui.xmlview("projectX.view.Gist.Gist");
+			var dialog = new sap.m.Dialog({
+		      title: 'Gist',
+		      contentWidth: "90%",
+		      contentHeight: "500px",
+			  resizable: true,
+			  draggable: true,
+		      content: oView,
+		      beginButton: new sap.m.Button({
+		        text: 'Close',
+		        press: function () {
+		          dialog.close();
+		        }
+		      }),
+		      afterClose: function() {
+		        dialog.destroy();
+		      }
+		    });
+
+		    //to get access to the global model
+		    this.getView().addDependent(dialog);
+		    dialog.open();
+			oView.getController().initializeController();
+			oView.getController().defineScreenMode(sScreenMode);
 		};
 		
 		

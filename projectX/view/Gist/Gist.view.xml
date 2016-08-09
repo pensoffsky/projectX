@@ -1,0 +1,51 @@
+<mvc:View
+	controllerName="projectX.view.Gist.Gist"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:c="sap.ui.core"
+	xmlns="sap.m"
+	height="100%">
+	<Page
+		showHeader="false"
+		>
+		<f:SimpleForm
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanL="3"
+			labelSpanM="3"
+			emptySpanL="1"
+			emptySpanM="1"
+			columnsL="1"
+			columnsM="1"
+			title="Project - Github Settings"
+			>
+			<f:content>
+				<Label text="GIST ID" />
+				<Input value="{localUIModel>/project/mProperties/gistID}"
+					placeholder="The ID of the GIST on Github"
+					/>
+				<Label text="GitHub API URL" />
+				<Input value="{localUIModel>/project/mProperties/githubApiUrl}"
+					placeholder="URL of the GitHub API"
+					/>
+				<Label text="Username" />
+				<Input value="{localUIModel>/project/mProperties/githubUsername}"
+					placeholder="GitHub username needed to create a Gist"
+					/>
+				<Label text="Password (not persisted)"
+					/>
+				<Input value="{localUIModel>/githubPassword}"
+					type="Password"
+					placeholder="GitHub password needed to create a Gist"
+					/>
+			</f:content>
+		</f:SimpleForm>
+				
+		<HBox>
+			<Button text="Import Project" press="onImportFromGist"/>
+			<Button text="Upload to existing GIST" press="onUpdateGist"/>
+			<Button text="Upload to new GIST" press="onCreateGist"/>
+		</HBox>
+	</Page>
+</mvc:View>

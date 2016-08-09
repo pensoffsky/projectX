@@ -51,6 +51,8 @@
 					press="onExport"
 					type="Transparent"
 					enabled="{= ${/Projects/length} > 0}" />
+				<Button press="onReadFromGist" text="Import from GIST"/>
+				<Button press="onSaveToGist" text="Save to GIST"/>
 				<SelectDialog id="idExportSelectDialog"
 					growingThreshold="100"
 					title="{i18n>ProjectExportDialogTitle}"
