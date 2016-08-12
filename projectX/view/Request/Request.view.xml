@@ -192,7 +192,7 @@
                                     <Label text="{i18n>RequestDetailRequestGroup}" />
                                       <Input value="{localUIModel>/request/mProperties/groupName}"
                                              placeholder="{i18n>RequestDetailRequestGroupPlaceholder}"
-                                             liveChange="onNameChanged"
+                                             liveChange="onGroupNameChanged"
                                              valueLiveUpdate="true"
                                               />
                                     <Label text="Description" />

@@ -298,6 +298,11 @@ sap.ui.define([
 				this.refreshMasterList();
 			});
 		};
+		Request.prototype.onGroupNameChanged = function() {
+			this.triggerWithInputDelay(function() {
+				this.updateMasterList();
+			});
+		};
 
 		/**
 		 * called from the name input control when the name changes.
