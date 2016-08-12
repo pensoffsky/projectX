@@ -116,7 +116,8 @@
 								>
 						    <StandardListItem
 						      title="{localUIModel>mProperties/name}"
-						      description="{{localUIModel>mProperties/url}}"
+						      description="{localUIModel>mProperties/url}"
+									info="{localUIModel>mProperties/groupName}"
 						      type="Active"/>
 						  </SelectDialog>
 						</Toolbar>
