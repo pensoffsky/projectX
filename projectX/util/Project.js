@@ -177,6 +177,18 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		return iNewID;
 	};
 
+	
+	Project.prototype.merge = function(oRemoteProj) {
+		/*var aRemoteRequests = oRemoteProj.getRequests();
+		
+		for (var i = 0; i < aRemoteRequests.length; i++) {
+			//check if 
+			
+			aRemoteRequests[i]
+		}*/
+	};
+
+
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// private functions
 	// /////////////////////////////////////////////////////////////////////////////

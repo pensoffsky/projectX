@@ -26,6 +26,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				useBasicAuthentication : {type : "boolean", defaultValue : false},
 				usernameBasicAuth : {type : "string", defaultValue : null},
 				passwordBasicAuth : {type : "string", defaultValue : null},
+				
+				deleted : {type : "boolean", defaultValue : null},
+				revision : {type : "int", defaultValue : null},
 
 
 				//these fields are only temporary variables. they will not be persisted
@@ -96,6 +99,9 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oRequest.useBasicAuthentication = this.getUseBasicAuthentication();
 		oRequest.usernameBasicAuth = this.getUsernameBasicAuth();
 		oRequest.passwordBasicAuth = this.getPasswordBasicAuth();
+		
+		oRequest.revision = this.getRevision();
+		oRequest.deleted = this.getDeleted();
 		
 
 		var aSerializedAssertions = [];
