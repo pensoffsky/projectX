@@ -27,7 +27,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				usernameBasicAuth : {type : "string", defaultValue : null},
 				passwordBasicAuth : {type : "string", defaultValue : null},
 				
-				deleted : {type : "boolean", defaultValue : null},
+				deleted : {type : "boolean", defaultValue : false},
 				revision : {type : "int", defaultValue : null},
 
 

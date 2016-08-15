@@ -179,13 +179,40 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 
 	
 	Project.prototype.merge = function(oRemoteProj) {
-		/*var aRemoteRequests = oRemoteProj.getRequests();
-		
+		var aRemoteRequests = oRemoteProj.getRequests();
+		var aLocalRequests = this.getRequests();
 		for (var i = 0; i < aRemoteRequests.length; i++) {
-			//check if 
+
+			var oMatchingLocalReq = this.getRequestByIdentifier(aRemoteRequests[i].getIdentifier());
+			if(!oMatchingLocalReq) {
+				//there is no matching local request so the remote request must be new
+				//just add it to the local requests
+				aLocalRequests.push(aRemoteRequests[i]);
+				continue;
+			}
+			 
+			//TODO set requests to deleted if deleted in remote
+			if(aRemoteRequests[i].getDeleted() 
+			|| aRemoteRequests[i].getRevision() > oMatchingLocalReq.getRevision()) {
+				//deleted request in remote have priority
+				aLocalRequests.splice(aLocalRequests.indexOf(oMatchingLocalReq), 1);
+				aLocalRequests.push(aRemoteRequests[i]);
+				continue;
+			}
 			
-			aRemoteRequests[i]
-		}*/
+			//TODO
+			//higher revision wins
+			
+			
+			
+			//aRemoteRequests[i]
+		}
+		this.removeAllRequests();
+		
+		for (var j = 0; j < aLocalRequests.length; j++) {
+			this.addRequest(aLocalRequests[j]);
+		}
+		
 	};
 
 
