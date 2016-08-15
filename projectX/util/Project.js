@@ -47,6 +47,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 
 		var oRequest = new projectX.util.Request({
 			identifier: iNewID,
+			uuid: projectX.util.Request.generateUuid(),
 			name: sName,
 			url: sUrl,
 			httpMethod: sHttpMethod
@@ -89,6 +90,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var iNewID = this._getNextId();
 		var oNewRequest = new projectX.util.Request(oRequest.serialize());
 		oNewRequest.setIdentifier(iNewID);
+		oNewRequest.setUuid(projectX.util.Request.generateUuid());
 		oNewRequest.setName(oNewRequest.getName() + sNameSuffix);
 		this.addRequest(oNewRequest);
 		return oNewRequest;
@@ -112,6 +114,17 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 
 		for (var i = 0; i < aRequests.length; i++) {
 			if (aRequests[i].getIdentifier() === iIdentifier){
+				return aRequests[i];
+			}
+		}
+		return null;
+	};
+	
+	Project.prototype.getRequestByUuid = function(sUuid) {
+		var aRequests = this.getRequests();
+
+		for (var i = 0; i < aRequests.length; i++) {
+			if (aRequests[i].getUuid() === sUuid){
 				return aRequests[i];
 			}
 		}
@@ -183,15 +196,14 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var aLocalRequests = this.getRequests();
 		for (var i = 0; i < aRemoteRequests.length; i++) {
 
-			var oMatchingLocalReq = this.getRequestByIdentifier(aRemoteRequests[i].getIdentifier());
+			var oMatchingLocalReq = this.getRequestByUuid(aRemoteRequests[i].getUuid());
 			if(!oMatchingLocalReq) {
 				//there is no matching local request so the remote request must be new
 				//just add it to the local requests
 				aLocalRequests.push(aRemoteRequests[i]);
 				continue;
 			}
-			 
-			//TODO set requests to deleted if deleted in remote
+			
 			if(aRemoteRequests[i].getDeleted() 
 			|| aRemoteRequests[i].getRevision() > oMatchingLocalReq.getRevision()) {
 				//deleted request in remote have priority
@@ -199,20 +211,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				aLocalRequests.push(aRemoteRequests[i]);
 				continue;
 			}
-			
-			//TODO
-			//higher revision wins
-			
-			
-			
-			//aRemoteRequests[i]
 		}
 		this.removeAllRequests();
 		
 		for (var j = 0; j < aLocalRequests.length; j++) {
 			this.addRequest(aLocalRequests[j]);
 		}
-		
 	};
 
 
