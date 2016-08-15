@@ -8,12 +8,12 @@ QUnit.module("util/Project Merge", {
           "name": "AAAA",
           "requests": [
             {
-              "identifier": 1,
+              "uuid": "1",
               "name": "req1 local",
               "revision": 1
             },
             {
-              "identifier": 2,
+              "uuid": "2",
               "name": "req2 local",
               "revision": 1
             }
@@ -38,7 +38,7 @@ QUnit.test('remote proj with a NEW request, merge remote into local', 3, functio
       "name": "AAAA",
       "requests": [
         {
-          "identifier": 1,
+          "uuid": "1",
           "name": "req1 local",
           "revision": 1
         }
@@ -53,8 +53,8 @@ QUnit.test('remote proj with a NEW request, merge remote into local', 3, functio
   var aRequests = oProjectLocal.getRequests();
 
   assert.ok(aRequests.length === 2, "2 requests");
-  assert.ok(oProjectLocal.getRequestByIdentifier(1).getName() === "req1 local", "req 1 ok");
-  assert.ok(oProjectLocal.getRequestByIdentifier(2).getName() === "req2 local", "req 2 ok");
+  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 local", "req 1 ok");
+  assert.ok(oProjectLocal.getRequestByUuid("2").getName() === "req2 local", "req 2 ok");
 });
 
 
@@ -65,17 +65,17 @@ QUnit.test('local proj with new request, merge remote into', 4, function (assert
       "name": "AAAA",
       "requests": [
         {
-          "identifier": 1,
+          "uuid": "1",
           "name": "req1 local",
           "revision": 1
         },
         {
-          "identifier": 2,
+          "uuid": "2",
           "name": "req2 local",
           "revision": 1
         },
         {
-          "identifier": 3,
+          "uuid": "3",
           "name": "req3 local",
           "revision": 1
         }
@@ -90,9 +90,9 @@ QUnit.test('local proj with new request, merge remote into', 4, function (assert
   oProjectLocal.merge(this._oProjectRemote);
   var aRequests = oProjectLocal.getRequests();
   assert.ok(aRequests.length === 3, "3 req");
-  assert.ok(oProjectLocal.getRequestByIdentifier(1).getName() === "req1 local", "req 1 ok");
-  assert.ok(oProjectLocal.getRequestByIdentifier(2).getName() === "req2 local", "req 2 ok");
-  assert.ok(oProjectLocal.getRequestByIdentifier(3).getName() === "req3 local", "req 3 ok");
+  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 local", "req 1 ok");
+  assert.ok(oProjectLocal.getRequestByUuid("2").getName() === "req2 local", "req 2 ok");
+  assert.ok(oProjectLocal.getRequestByUuid("3").getName() === "req3 local", "req 3 ok");
   
 });
 
@@ -104,12 +104,12 @@ QUnit.test('local proj with removed request, merge remote into', 3, function (as
       "name": "AAAA",
       "requests": [
         {
-          "identifier": 1,
+          "uuid": "1",
           "name": "req1 local",
           "revision": 1
         },
         {
-          "identifier": 2,
+          "uuid": "2",
           "deleted": true,
           "revision": 2
         }
@@ -122,8 +122,8 @@ QUnit.test('local proj with removed request, merge remote into', 3, function (as
   //expected after merging remote into local:
   // req1, req2(del)
   assert.ok(aRequests.length === 2, "2 requests");
-  assert.ok(oProjectLocal.getRequestByIdentifier(1).getName() === "req1 local", "req 1 ok");
-  assert.ok(oProjectLocal.getRequestByIdentifier(2).getDeleted() === true, "req 2 deleted");
+  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 local", "req 1 ok");
+  assert.ok(oProjectLocal.getRequestByUuid("2").getDeleted() === true, "req 2 deleted");
 
   
 });
@@ -137,12 +137,12 @@ QUnit.test('remote proj with removed request, merge remote into local', 3, funct
       "name": "AAAA",
       "requests": [
         {
-          "identifier": 1,
+          "uuid": "1",
           "name": "req1 remote",
           "revision": 1
         },
         {
-          "identifier": 2,
+          "uuid": "2",
           "deleted": true,
           "revision": 2
         }
@@ -155,12 +155,12 @@ QUnit.test('remote proj with removed request, merge remote into local', 3, funct
       "name": "AAAA",
       "requests": [
         {
-          "identifier": 1,
+          "uuid": "1",
           "name": "req1 local",
           "revision": 1
         },
         {
-          "identifier": 2,
+          "uuid": "2",
           "name": "req2 local",
           "revision": 1
         }
@@ -174,8 +174,8 @@ QUnit.test('remote proj with removed request, merge remote into local', 3, funct
   var aRequests = oProjectLocal.getRequests();
 
   assert.ok(aRequests.length === 2, "2 requests");
-  assert.ok(oProjectLocal.getRequestByIdentifier(1).getName() === "req1 local", "req 1 ok");
-  assert.ok(oProjectLocal.getRequestByIdentifier(2).getDeleted() === true, "req 2 deleted");
+  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 local", "req 1 ok");
+  assert.ok(oProjectLocal.getRequestByUuid("2").getDeleted() === true, "req 2 deleted");
 });
 
 
@@ -188,7 +188,7 @@ QUnit.test('remote proj changed a request, merge remote into local', 2, function
       "name": "AAAA",
       "requests": [
         {
-          "identifier": 1,
+          "uuid": "1",
           "name": "req1 remote changed",
           "revision": 4
         }
@@ -201,7 +201,7 @@ QUnit.test('remote proj changed a request, merge remote into local', 2, function
       "name": "AAAA",
       "requests": [
         {
-          "identifier": 1,
+          "uuid": "1",
           "name": "req1 local original",
           "revision": 1
         }
@@ -216,7 +216,7 @@ QUnit.test('remote proj changed a request, merge remote into local', 2, function
   var aRequests = oProjectLocal.getRequests();
 
   assert.ok(aRequests.length === 1, "1 request");
-  assert.ok(oProjectLocal.getRequestByIdentifier(1).getName() === "req1 remote changed", "req 1 ok");
+  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 remote changed", "req 1 ok");
 });
 
 

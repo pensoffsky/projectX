@@ -29,7 +29,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				
 				deleted : {type : "boolean", defaultValue : false},
 				revision : {type : "int", defaultValue : null},
-
+				uuid: {type : "string", defaultValue : null},
 
 				//these fields are only temporary variables. they will not be persisted
 				status : {type : "string", defaultValue : null},
@@ -102,6 +102,14 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		
 		oRequest.revision = this.getRevision();
 		oRequest.deleted = this.getDeleted();
+		oRequest.uuid = this.getUuid();
+		
+		//make sure every request has a uuid even if it is an old request
+		//before the time uuid was used
+		if(!oRequest.uuid) {
+				oRequest.uuid = Request.generateUuid();
+		}
+		
 		
 
 		var aSerializedAssertions = [];
@@ -493,6 +501,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			this.setTestScriptSuccess(false);
 			this.setTestScriptResult("SCRIPT ERROR");
 		}
+	};
+
+	Request.generateUuid = function() {
+		return "" + Date.now() + uuid.v4();
 	};
 
 	return Request;
