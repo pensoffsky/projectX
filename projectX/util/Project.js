@@ -1,4 +1,3 @@
-
 // Provides control sap.m.App.
 sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/util/Assertion', 'projectX/util/Sequence'],
 	function(jQuery, MyManagedObject, Assertion, Sequence) {
@@ -16,7 +15,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				username : {type : "string", defaultValue : null},
 				password : {type : "string", defaultValue : null},
 				useBasicAuthentication : {type : "boolean", defaultValue : null},
-				csrfTokenUrl : {type : "string", defaultValue : null}
+				csrfTokenUrl : {type : "string", defaultValue : null},
+				githubUrl : {type : "string", defaultValue : null},
+				githubUser : {type : "string", defaultValue : null},
+				githubPassword : {type : "string", defaultValue : null},
+				githubRepository : {type : "string", defaultValue : null},
+				githubFileName : {type : "string", defaultValue : null}
 			},
 			events : {
 

@@ -43,7 +43,23 @@ projectX.util.Controller.extend("projectX.view.Project.Project", {
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// event handler
 	// /////////////////////////////////////////////////////////////////////////////
-
+	
+	onShowGithub : function() {
+		var toggle = this.getView().byId("gitHubUrl").getVisible();
+		if (toggle === false) {
+			this.getView().byId("gitHubUrl").setVisible(true);
+			this.getView().byId("gitHubUser").setVisible(true);
+			this.getView().byId("gitHubPassword").setVisible(true);
+			this.getView().byId("gitHubRepositoryName").setVisible(true);
+			this.getView().byId("gitHubFileName").setVisible(true);
+		} else {
+			this.getView().byId("gitHubUrl").setVisible(false);
+			this.getView().byId("gitHubUser").setVisible(false);
+			this.getView().byId("gitHubPassword").setVisible(false);
+			this.getView().byId("gitHubRepositoryName").setVisible(false);
+			this.getView().byId("gitHubFileName").setVisible(false);
+		}
+	},
 	/**
 	* called from the name input control when the name changes.
 	* after a delay triggers the updating of the master list to show the new name.

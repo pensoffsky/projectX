@@ -63,6 +63,16 @@ sap.ui.define([
 			var oComponent = this.getComponent();
 			oComponent.setSelectedProject(sIdentifier);
 		};
+		
+		App.prototype.onPush = function() {
+			var aProjects = this.getView().getModel().getProperty("/Projects");
+			var temp = [];
+			aProjects.forEach(function(project) {
+				temp.push(project.serialize());
+			});
+			
+			temp;
+		};
 
 		/**
 		 * Handler for export button.

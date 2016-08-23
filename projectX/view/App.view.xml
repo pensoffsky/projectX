@@ -44,11 +44,26 @@
 					tooltip="{i18n>ProjectImportTooltip}"
 					buttonOnly="true"
 					style="Transparent"/>
+					<Button
+					text="{i18n>GitHubImportNewProject}"
+					press="onPush"
+					type="Transparent"
+					enabled="{= ${/Projects/length} > 0}" />
 				<Button
 					id="testingIDExportProject"
 					text="{i18n>ProjectExportButtonText}"
 					tooltip="{i18n>ProjectExportTooltip}"
 					press="onExport"
+					type="Transparent"
+					enabled="{= ${/Projects/length} > 0}" />
+					<Button
+					text="{i18n>GitHubFetchButton}"
+					press="onPush"
+					type="Transparent"
+					enabled="{= ${/Projects/length} > 0}" />
+					<Button
+					text="{i18n>GitHubPushButton}"
+					press="onPush"
 					type="Transparent"
 					enabled="{= ${/Projects/length} > 0}" />
 				<SelectDialog id="idExportSelectDialog"
