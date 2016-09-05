@@ -38,13 +38,25 @@
 					type="Transparent"/>
 				<Text text="{i18n>ProjectEmptyList}"
 					visible="{= !${/Projects/length} > 0}"/>
+				<Button
+					text="{i18n>GitHubFetchButton}"
+					press="onGitHubFetch"
+					type="Transparent"
+					enabled="{= ${/Projects/length} > 0}" />
+				<Button
+					text="{i18n>GitHubPushButton}"
+					class="sapUiLargeMarginEnd"
+					press="onGitHubPush"
+					type="Transparent"
+					enabled="{/SelectedProject/mProperties/useGithub}" />
 				<u:FileUploader
 					change="onFileUploaderChange"
+					class="sapUiLargeMarginBegin"
 					buttonText="{i18n>ProjectImportButtonText}"
 					tooltip="{i18n>ProjectImportTooltip}"
 					buttonOnly="true"
 					style="Transparent"/>
-					<Button
+				<Button
 					text="{i18n>GitHubImportNewProject}"
 					press="onPush"
 					type="Transparent"
@@ -54,16 +66,6 @@
 					text="{i18n>ProjectExportButtonText}"
 					tooltip="{i18n>ProjectExportTooltip}"
 					press="onExport"
-					type="Transparent"
-					enabled="{= ${/Projects/length} > 0}" />
-					<Button
-					text="{i18n>GitHubFetchButton}"
-					press="onPush"
-					type="Transparent"
-					enabled="{= ${/Projects/length} > 0}" />
-					<Button
-					text="{i18n>GitHubPushButton}"
-					press="onPush"
 					type="Transparent"
 					enabled="{= ${/Projects/length} > 0}" />
 				<SelectDialog id="idExportSelectDialog"

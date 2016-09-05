@@ -28,7 +28,7 @@ sap.ui.define([
 		var App = Controller.extend("projectX.view.App", {
 			metadata: {}
 		});
-
+		
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Members
@@ -64,16 +64,6 @@ sap.ui.define([
 			oComponent.setSelectedProject(sIdentifier);
 		};
 		
-		App.prototype.onPush = function() {
-			var aProjects = this.getView().getModel().getProperty("/Projects");
-			var temp = [];
-			aProjects.forEach(function(project) {
-				temp.push(project.serialize());
-			});
-			
-			temp;
-		};
-
 		/**
 		 * Handler for export button.
 		 *
@@ -123,7 +113,89 @@ sap.ui.define([
 			var oComponent = this.getComponent();
 			oComponent.export(aProjects);
 		};
+		
+		App.prototype.onGitHubPush = function(oEvent) {
+			// get selected project
+			var oSelectedProject = this.getView().getModel().getProperty("/SelectedProject");
+			var bGitHubUsed = this.getView().getModel().getProperty("/SelectedProject/mProperties/useGithub");
+			var aSelectedProject = [];
+			aSelectedProject.push(oSelectedProject);
+			//var aContexts = oEvent.getParameter("selectedContexts");
+			
+			// leave when no project is selected
+			if (!bGitHubUsed) {
+				return;
+			}
 
+			/*var aProject = aSelectedProject.map(function(oContext) {
+				return oContext.getObject();
+			}, this);*/
+
+			var gitApi = this._getGitHubAPI();
+			
+			var oComponent = this.getComponent();
+			
+			//given Content for file
+			var sContent = oComponent.createGitHubJson(aSelectedProject);
+			
+			//getting repo
+			var sRepo = aSelectedProject[0].mProperties.githubRepository;
+			
+			var sUserRepo = aSelectedProject[0].mProperties.githubUserRepository;
+
+			//getting repo
+			var gitRepo = gitApi.getRepo(sUserRepo,sRepo);
+			
+			//given branch
+			var branch = "master";
+			
+			//given path for file 
+			var path = aSelectedProject[0].mProperties.githubFileName;
+			
+			//given commit message
+			var message = "test1";
+			
+			//deleting actual file from repository and creating new one with a HTTP - PUT
+			var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
+			
+			});
+			newFile.then(function(temp) {
+				var tempvar = temp
+			});
+		};
+
+		App.prototype.onGitHubFetch = function(oEvent) {
+			//get Data from UI for GitHub
+			var oModel = this.getView().getModel();
+			var gitApi = this._getGitHubAPI();
+			var selectedProject = oModel.getProperty("/SelectedProject");
+			
+			//get branch
+			var ref = "master";
+			
+			//get path from given Project
+			var path = selectedProject.mProperties.githubFileName;
+			
+			var sRepo = selectedProject.mProperties.githubRepository;
+			
+			var sUserRepo = selectedProject.mProperties.githubUserRepository;
+
+			//getting repo
+			var gitRepo = gitApi.getRepo(sUserRepo,sRepo);
+			
+			//get Content from given path
+			var fileContent = gitRepo.getContents(ref,path,true,function() {
+				
+			});
+			fileContent.then(function(temp){
+				//todo add success and error callback to provide feedback to the user
+				var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, function(oMergedProject) {
+						oModel.updateBindings(true);
+						return oMergedProject;
+				});
+			})
+		};
+		
 		App.prototype.onFileUploaderChange = function(oEvent) {
 			//TODO add error hanlding. at the moment best case programming
 			var aFiles = oEvent.getParameter("files");
@@ -204,6 +276,27 @@ sap.ui.define([
 			oView.getController().onRouteMatched();
 		};
 		
+		App.prototype._getGitHubAPI = function() {
+			var oModel = this.getView().getModel();
+			var selectedProject = oModel.getProperty("/SelectedProject");
+			var sUsername = "githubID";
+			var sPassword = "githubpasswort";
+			var sAPIUrl = "www.wrongurl.com";
+			
+			/*var selectedProjectIdentifier = "0";
+			selectedProjectIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");*/
+			
+			/*sUsername = selectedProject.mProperties.githubUser;
+			sPassword = selectedProject.mProperties.githubPassword;*/
+			sAPIUrl = selectedProject.mProperties.githubUrl;
+
+			var oGitHub = new GitHub({
+				username: sUsername,
+				password: sPassword
+			}, sAPIUrl);
+
+			return oGitHub;
+		};
 		
 		return App;
 

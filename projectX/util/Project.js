@@ -16,11 +16,14 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				password : {type : "string", defaultValue : null},
 				useBasicAuthentication : {type : "boolean", defaultValue : null},
 				csrfTokenUrl : {type : "string", defaultValue : null},
+				baseVersionSha : {type : "string", defaultValue : null},
+				useGithub : {type : "boolean", defaultValue : null},
 				githubUrl : {type : "string", defaultValue : null},
 				githubUser : {type : "string", defaultValue : null},
 				githubPassword : {type : "string", defaultValue : null},
 				githubRepository : {type : "string", defaultValue : null},
-				githubFileName : {type : "string", defaultValue : null}
+				githubFileName : {type : "string", defaultValue : null},
+				githubUserRepository : {type : "string", defaultValue : null}
 			},
 			events : {
 
@@ -155,6 +158,14 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oProject.password = this.getPassword();
 		oProject.useBasicAuthentication = this.getUseBasicAuthentication();
 		oProject.csrfTokenUrl = this.getCsrfTokenUrl();
+		oProject.baseVersionSha = this.getBaseVersionSha();
+		oProject.useGithub = this.getUseGithub();
+		oProject.githubUrl = this.getGithubUrl();
+		/*oProject.githubUser = this.getGithubUser();
+		oProject.githubPassword = this.getGithubPassword();*/
+		oProject.githubRepository = this.getGithubRepository();
+		oProject.githubFileName = this.getGithubFileName();
+		oProject.githubUserRepository = this.getGithubUserRepository();
 
 		var aSerializedRequests = [];
 		var aRequests = this.getRequests();
@@ -195,32 +206,191 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	};
 
 	
-	Project.prototype.merge = function(oRemoteProj) {
-		var aRemoteRequests = oRemoteProj.getRequests();
-		var aLocalRequests = this.getRequests();
-		for (var i = 0; i < aRemoteRequests.length; i++) {
-
-			var oMatchingLocalReq = this.getRequestByUuid(aRemoteRequests[i].getUuid());
-			if(!oMatchingLocalReq) {
-				//there is no matching local request so the remote request must be new
-				//just add it to the local requests
-				aLocalRequests.push(aRemoteRequests[i]);
-				continue;
-			}
-			
-			if(aRemoteRequests[i].getDeleted() 
-			|| aRemoteRequests[i].getRevision() > oMatchingLocalReq.getRevision()) {
-				//deleted request in remote have priority
-				aLocalRequests.splice(aLocalRequests.indexOf(oMatchingLocalReq), 1);
-				aLocalRequests.push(aRemoteRequests[i]);
-				continue;
-			}
-		}
-		this.removeAllRequests();
+	Project.prototype.merge = function(gitRepo, mergeCallback) {
+	
+		var that = this;
+		this.setBaseVersionSha("bbcd591613847bb122daa49ef045352ace79a3ce");
 		
-		for (var j = 0; j < aLocalRequests.length; j++) {
-			this.addRequest(aLocalRequests[j]);
+		var oSelectedProject =	this.serialize();
+		
+		var options = {
+						path : oSelectedProject.githubFileName
+		};
+
+		var aGettingListOfCommits = gitRepo.listCommits(options);
+
+		var oGettingSingleCommit = aGettingListOfCommits.then(function(temp){
+				
+				if (!oSelectedProject.baseVersionSha){
+					var sBaseProjSha = temp.data[0].sha;
+					return gitRepo.getSingleCommit(sBaseProjSha,function(error,response){
+					});
+				} else {
+					return gitRepo.getSingleCommit(oSelectedProject.baseVersionSha,function(error,response){
+					});
+				}
+			});
+		
+		var oGettingFile = oGettingSingleCommit.then(function(commit){
+				var fileName = commit.data.files[0].filename;
+				var sBaseProjSha = commit.data.sha;
+				return gitRepo.getContents(sBaseProjSha, fileName, true);
+		});
+
+		var oGettingFileBaseVersion = oGettingFile.then(function(oBaseVersion){
+				return oBaseVersion;
+		});
+		
+		
+		//getting last remote project
+		var oGettingRecentCommit = aGettingListOfCommits.then(function(temp){
+					var sBaseProjSha = temp.data[0].sha;
+					return gitRepo.getSingleCommit(sBaseProjSha,function(error,response){
+					});
+			});
+		var oGettingRecentFile = oGettingRecentCommit.then(function(commit){
+				var fileName = commit.data.files[0].filename;
+				return gitRepo.getContents("master", fileName, true);
+		});
+
+		var oGettingFileRecentVersion = oGettingRecentFile.then(function(oBaseVersion){
+				return oBaseVersion;
+		});
+		
+		Promise.all([aGettingListOfCommits, oGettingSingleCommit, oGettingFile, oGettingFileBaseVersion, oGettingFileRecentVersion]).then(function(results) {
+				var aListOfCommits = results[0];
+				var oSingleCommit = results[1];
+				var oFile = results[2];
+				var oFileBaseVersion = results[3];
+				var oRemoteProject = results[4];
+				
+				//oFileBaseVersion.data[0].baseVersionSha = oSingleCommit.data.sha;
+				
+				
+				var aBaseRequests = oFileBaseVersion.data[0].requests;
+				
+				var aLocalRequests = oSelectedProject.requests;
+				
+				var aRemoteRequests = oRemoteProject.data[0].requests;
+				
+				var aMergedRequests = that.mergeLogic(aBaseRequests, aLocalRequests, aRemoteRequests)
+				
+				debugger;
+				
+				that.removeAllRequests();
+				for (var i = 0; i < aMergedRequests.length; i++) {
+					var oRequest = new projectX.util.Request(aMergedRequests[i]);
+					that.addRequest(oRequest);
+				}
+				
+				//that.mAggregations.requests = aMergedRequests;
+				mergeCallback(that);
+				
+		});
+	};
+	
+	Project.prototype.mergeBlaBlub
+	
+	
+	Project.prototype.mergeLogic = function (aBaseRequests, aLocalRequests, aRemoteRequests) {
+		var aComparedLocalRequests = [];
+		var aComparedRemoteRequests = [];
+		
+		var aMergedRequests  = [];
+		
+		var oProject = new projectX.util.Project();
+		
+		// Split the request by comparing it with the base version given, into 'unchanged', 'changed' and 'added'
+		aComparedLocalRequests = oProject.compareRequests(aLocalRequests, aBaseRequests);
+		aComparedRemoteRequests = oProject.compareRequests(aRemoteRequests, aBaseRequests);
+		
+		// Compare local unchanged array with the remote object
+		for (var i = 0; i < aComparedLocalRequests.unchanged.length; i++) {
+			
+			var aCheckLocalUnchanged = aComparedRemoteRequests.unchanged.filter(function(object) { return object.uuid === aComparedLocalRequests.unchanged[i].uuid; });
+			var aCheckLocalChanged = aComparedRemoteRequests.changed.filter(function(object) { return object.uuid === aComparedLocalRequests.unchanged[i].uuid; });
+			// var aCheckLocalRemoved = aComparedRemoteRequests.added.filter(function(object) { return object.uuid === aComparedLocalRequests.unchanged[i].uuid; });
+			 
+			if (aCheckLocalUnchanged[0] !== undefined) {
+				var sTempUnchanged = JSON.stringify(aCheckLocalUnchanged[0]);
+				var sComparedLocalUnchangedRequests = JSON.stringify(aComparedLocalRequests.unchanged[i]);
+				if (sTempUnchanged === sComparedLocalUnchangedRequests) {
+					aMergedRequests.push(aComparedLocalRequests.unchanged[i]);
+				}
+			} else if (aCheckLocalChanged[0] !== undefined) {
+				aMergedRequests.push(aCheckLocalChanged[0]);
+			} 
 		}
+		
+		// Compare local changed array with the remote object
+		for (var j = 0; j < aComparedLocalRequests.changed.length; j++) {
+			
+			var aCheckRemoteUnchanged = aComparedRemoteRequests.unchanged.filter(function(object) { return object.uuid === aComparedLocalRequests.changed[j].uuid; });
+			var aCheckRemoteChanged = aComparedRemoteRequests.changed.filter(function(object) { return object.uuid === aComparedLocalRequests.changed[j].uuid; });
+			 
+			if (aCheckRemoteUnchanged[0] !== undefined) {
+				aMergedRequests.push(aComparedLocalRequests.changed[j]);
+			} else if (aCheckRemoteChanged[0] !== undefined) {
+				aMergedRequests.push(aCheckRemoteChanged[0]);
+				aMergedRequests.push(aComparedLocalRequests.changed[j]);
+			}
+		}
+		// Push the 'added' requests from the REMOTE project into the final array
+		for (var k = 0; k < aComparedRemoteRequests.added.length; k++) {
+			aMergedRequests.push(aComparedRemoteRequests.added[k]);
+		}
+		// Push the 'added' requests from the LOCAL project into the final array		
+		for (var h = 0; h < aComparedLocalRequests.added.length; h++) {
+			aMergedRequests.push(aComparedLocalRequests.added[h]);
+		}
+		
+		return aMergedRequests;
+	};
+	
+	Project.prototype.compareRequests = function (aLocalRequests, aBaseRequests) {
+		
+		var aLocalChangedRequests = [];
+		var aLocalNewRequests = [];
+		var aLocalUnchangedRequests = [];
+		for (var h = 0; h < aLocalRequests.length; h++) {
+			aLocalNewRequests.push(aLocalRequests[h]);
+		}
+		
+		function newRequestHelper (sLocalRequestUuid, aLocalNewRequests){
+			for (var k = aLocalNewRequests.length - 1; k >= 0; k--) {
+						    if (aLocalNewRequests[k].uuid == sLocalRequestUuid){
+						    aLocalNewRequests.splice(k,1);
+						    } 
+						}
+		};
+		for (var i = 0; i < aLocalRequests.length; i++) {
+			
+			var temp = aBaseRequests.filter(function(object) { return object.uuid === aLocalRequests[i].uuid; });
+			
+			var sTemp = JSON.stringify(temp[0]);
+			var sLocalRequests = JSON.stringify(aLocalRequests[i]);
+			var tmp = aLocalRequests[i].uuid;
+			
+			if (temp[0] !== undefined){
+				if (temp !== null && temp[0].uuid === aLocalRequests[i].uuid && sTemp === sLocalRequests){
+					aLocalUnchangedRequests.push(aLocalRequests[i]);
+					newRequestHelper(tmp, aLocalNewRequests);
+					continue;
+				} else if (temp !== null && temp[0].uuid === aLocalRequests[i].uuid && sTemp !== sLocalRequests){
+					aLocalChangedRequests.push(aLocalRequests[i]);
+					newRequestHelper(tmp, aLocalNewRequests);
+				} else {
+					newRequestHelper(tmp, aLocalNewRequests);
+				}
+			}
+		}
+		var result = {
+			changed : aLocalChangedRequests,
+			added : aLocalNewRequests,
+			unchanged : aLocalUnchangedRequests
+			};
+			
+		return result;
 	};
 
 

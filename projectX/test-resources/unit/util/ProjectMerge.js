@@ -1,222 +1,475 @@
 jQuery.sap.require("projectX.util.Project");
 
-QUnit.module("util/Project Merge", {
+QUnit.module("util/ProjectMerge", {
     setup: function() {
-      this._oProjectRemote = new projectX.util.Project(
-        {
-          "identifier": 4,
-          "name": "AAAA",
-          "requests": [
-            {
-              "uuid": "1",
-              "name": "req1 local",
-              "revision": 1
-            },
-            {
-              "uuid": "2",
-              "name": "req2 local",
-              "revision": 1
-            }
-          ]
-        }
-      );
+        
     },
     teardown: function() {
-        this._oProjectRemote.destroy();
+        
     }
 });
 
-QUnit.test('instantiation', 1, function (assert) {
-    assert.ok(this._oProjectRemote, "instantiation ok");
+QUnit.test("CompareRequests : local project exists, user wants to get the updated requests", function(assert) {
+
+	var base = [{
+		uuid : "1",
+		name : "name A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "name B",
+		identifier : "2"
+	}];
+	
+	var local = [{
+		uuid : "1",
+		name : "name A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "name Changed",
+		identifier : "2"
+	}];
+	
+	var expected = {
+		changed : [{
+		uuid : "2",
+		name : "name Changed",
+		identifier : "2"
+	}],
+		added : [],
+		unchanged : [{
+		uuid : "1",
+		name : "name A",
+		identifier : "1"
+	}]
+	};
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.compareRequests(local, base), expected, "Correct array returned with changed requests");
+	
 });
 
+QUnit.test("CompareRequests : Added new Request to local project", function(assert) {
 
-QUnit.test('remote proj with a NEW request, merge remote into local', 3, function (assert) {
-  var oProjectLocal = new projectX.util.Project(
-    {
-      "identifier": 4,
-      "name": "AAAA",
-      "requests": [
-        {
-          "uuid": "1",
-          "name": "req1 local",
-          "revision": 1
-        }
-      ]
-    }
-  );
-
-  //rule: new requests can savely be integrated
-  //expected after merging remote into local:
-  //req1, req2
-  oProjectLocal.merge(this._oProjectRemote);
-  var aRequests = oProjectLocal.getRequests();
-
-  assert.ok(aRequests.length === 2, "2 requests");
-  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 local", "req 1 ok");
-  assert.ok(oProjectLocal.getRequestByUuid("2").getName() === "req2 local", "req 2 ok");
+	var base = [{
+		uuid : "1",
+		name : "name A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "name B",
+		identifier : "2"
+	}];
+	
+	var local = [{
+		uuid : "1",
+		name : "name A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "name B",
+		identifier : "2"
+	}, {
+		uuid : "3",
+		name : "name C",
+		identifier : "3"
+	}];
+	
+	var expected = {
+		changed : [],
+		added : [{
+			uuid : "3",
+			name : "name C",
+			identifier : "3"
+		}],
+		unchanged : [{
+			uuid : "1",
+			name : "name A",
+			identifier : "1"
+		}, {
+			uuid : "2",
+			name : "name B",
+			identifier : "2"
+		}]
+	};
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.compareRequests(local, base), expected, "Correct array returned with new requests");
+	
 });
 
-
-QUnit.test('local proj with new request, merge remote into', 4, function (assert) {
-  var oProjectLocal = new projectX.util.Project(
-    {
-      "identifier": 4,
-      "name": "AAAA",
-      "requests": [
-        {
-          "uuid": "1",
-          "name": "req1 local",
-          "revision": 1
-        },
-        {
-          "uuid": "2",
-          "name": "req2 local",
-          "revision": 1
-        },
-        {
-          "uuid": "3",
-          "name": "req3 local",
-          "revision": 1
-        }
-      ]
-    }
-  );
-  
-  //rule: new request always stay, only if a deleted request exists then it gets deleted locally
-  //expected after merging remote into local:
-  // req1, req2, req3
-  
-  oProjectLocal.merge(this._oProjectRemote);
-  var aRequests = oProjectLocal.getRequests();
-  assert.ok(aRequests.length === 3, "3 req");
-  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 local", "req 1 ok");
-  assert.ok(oProjectLocal.getRequestByUuid("2").getName() === "req2 local", "req 2 ok");
-  assert.ok(oProjectLocal.getRequestByUuid("3").getName() === "req3 local", "req 3 ok");
-  
+QUnit.test("Merge : Changed Request from remote project to local project", function(assert) {
+	
+	var aRequestBase = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestLocal = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestRemote = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "UPDATED Request B",
+		identifier : "2"
+	}];
+	
+	var expected = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "UPDATED Request B",
+		identifier : "2"
+	}];
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.mergeLogic(aRequestBase, aRequestLocal, aRequestRemote), expected, "Correct array returned with updated requests");
+	
 });
 
+QUnit.test("Merge : Changed Request from LOCAL project", function(assert) {
 
-QUnit.test('local proj with removed request, merge remote into', 3, function (assert) {
-  var oProjectLocal = new projectX.util.Project(
-    {
-      "identifier": 4,
-      "name": "AAAA",
-      "requests": [
-        {
-          "uuid": "1",
-          "name": "req1 local",
-          "revision": 1
-        },
-        {
-          "uuid": "2",
-          "deleted": true,
-          "revision": 2
-        }
-      ]
-    }
-  );
-  oProjectLocal.merge(this._oProjectRemote);
-  var aRequests = oProjectLocal.getRequests();
-
-  //expected after merging remote into local:
-  // req1, req2(del)
-  assert.ok(aRequests.length === 2, "2 requests");
-  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 local", "req 1 ok");
-  assert.ok(oProjectLocal.getRequestByUuid("2").getDeleted() === true, "req 2 deleted");
-
-  
+	var aRequestBase = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestLocal = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "[UPDATED] Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestRemote = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var expected = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "[UPDATED] Request B",
+		identifier : "2"
+	}];
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.mergeLogic(aRequestBase, aRequestLocal, aRequestRemote), expected, "Correct array returned with updated requests");
+	
 });
 
+QUnit.test("Merge : Changed Request from REMOTE project", function(assert) {
 
-
-QUnit.test('remote proj with removed request, merge remote into local', 3, function (assert) {
-  var oProjectRemote = new projectX.util.Project(
-    {
-      "identifier": 4,
-      "name": "AAAA",
-      "requests": [
-        {
-          "uuid": "1",
-          "name": "req1 remote",
-          "revision": 1
-        },
-        {
-          "uuid": "2",
-          "deleted": true,
-          "revision": 2
-        }
-      ]
-    }
-  );
-  var oProjectLocal = new projectX.util.Project(
-    {
-      "identifier": 4,
-      "name": "AAAA",
-      "requests": [
-        {
-          "uuid": "1",
-          "name": "req1 local",
-          "revision": 1
-        },
-        {
-          "uuid": "2",
-          "name": "req2 local",
-          "revision": 1
-        }
-      ]
-    }
-  );
-
-  //expected after merging remote into local:
-  //req1, req2(del)
-  oProjectLocal.merge(oProjectRemote);
-  var aRequests = oProjectLocal.getRequests();
-
-  assert.ok(aRequests.length === 2, "2 requests");
-  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 local", "req 1 ok");
-  assert.ok(oProjectLocal.getRequestByUuid("2").getDeleted() === true, "req 2 deleted");
+	var aRequestBase = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestLocal = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestRemote = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "[UPDATED] Request B",
+		identifier : "2"
+	}];
+	
+	var expected = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "[UPDATED] Request B",
+		identifier : "2"
+	}];
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.mergeLogic(aRequestBase, aRequestLocal, aRequestRemote), expected, "Correct array returned with updated requests");
+	
 });
 
-
-
-
-QUnit.test('remote proj changed a request, merge remote into local', 2, function (assert) {
-  var oProjectRemote = new projectX.util.Project(
-    {
-      "identifier": 4,
-      "name": "AAAA",
-      "requests": [
-        {
-          "uuid": "1",
-          "name": "req1 remote changed",
-          "revision": 4
-        }
-      ]
-    }
-  );
-  var oProjectLocal = new projectX.util.Project(
-    {
-      "identifier": 4,
-      "name": "AAAA",
-      "requests": [
-        {
-          "uuid": "1",
-          "name": "req1 local original",
-          "revision": 1
-        }
-      ]
-    }
-  );
-
-  //rule: the change with the higher revision wins
-  //expected after merging remote into local:
-  //req1(remote changed)
-  oProjectLocal.merge(oProjectRemote);
-  var aRequests = oProjectLocal.getRequests();
-
-  assert.ok(aRequests.length === 1, "1 request");
-  assert.ok(oProjectLocal.getRequestByUuid("1").getName() === "req1 remote changed", "req 1 ok");
+QUnit.test("Merge : A request has been created locally", function(assert) {
+	
+	var aRequestBase = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var aRequestLocal = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "NEW Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestRemote = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	
+	var expected = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "NEW Request B",
+		identifier : "2"
+	}];
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.mergeLogic(aRequestBase, aRequestLocal, aRequestRemote), expected, "Correct array returned with updated requests");
+	
 });
 
+QUnit.test("Merge : A request has been created remotely", function(assert) {
+	
+	var aRequestBase = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var aRequestLocal = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var aRequestRemote = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "NEW Request B",
+		identifier : "2"
+	}];
+	
+	var expected = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "NEW Request B",
+		identifier : "2"
+	}];
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.mergeLogic(aRequestBase, aRequestLocal, aRequestRemote), expected, "Correct array returned with updated requests");
+	
+});
 
+QUnit.test("Merge : A request has been removed locally", function(assert) {
+	
+	var aRequestBase = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestLocal = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var aRequestRemote = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var expected = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.mergeLogic(aRequestBase, aRequestLocal, aRequestRemote), expected, "Correct array returned with updated requests");
+	
+});
+
+QUnit.test("Merge : A request has been removed remotely", function(assert) {
+	
+	var aRequestBase = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestLocal = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestRemote = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var expected = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var project = new projectX.util.Project();
+	
+	assert.deepEqual(project.mergeLogic(aRequestBase, aRequestLocal, aRequestRemote), expected, "Correct array returned with updated requests");
+	
+});
+
+QUnit.test("Merge : A request has been removed remotely", function(assert) {
+	
+	var aRequestBase = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestLocal = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}, {
+		uuid : "2",
+		name : "Request B",
+		identifier : "2"
+	}];
+	
+	var aRequestRemote = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var expected = [{
+		uuid : "1",
+		name : "Request A",
+		identifier : "1"
+	}];
+	
+	var project = new projectX.util.Project({
+		uuid:"asdf"
+	});
+	project.mergeBlaBlub = sinon.spy();
+	project.merge(....);
+	assert.ok(project.mergeBlaBlub.called === true, "project.mergeBlaBlub was called");
+	
+	
+	//temp.data[0].sha;
+	var oCommitResults = {
+		
+	};
+	
+	var oDummyRepo = {
+		listCommits: sinon.stub().returns({
+			then: function(fnDingens){
+				fnDingens(oCommitResults);
+			}
+		})
+	};
+	var fnMergeCallback = sinon.spy();
+	
+	
+	
+	
+	
+	project.merge(oDummyRepo, fnMergeCallback);
+	
+	var oMergeCallbackArgs = fnMergeCallback.args[0];
+	//TODO check oMergeCallbackArgs
+	assert.ok(fnMergeCallback.called === true, "mege callback was called");
+	
+});
