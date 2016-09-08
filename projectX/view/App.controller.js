@@ -156,16 +156,28 @@ sap.ui.define([
 			
 			//given commit message
 			var message = "test1";
-			oSelectedProject.merge(gitRepo,function() {
-				
-				//deleting actual file from repository and creating new one with a HTTP - PUT
-				var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
-				
-				});
-				newFile.then(function(temp) {
-					var temo = temp;
-					MessageToast.show("Requests have been pushed!");
-				});
+			
+			var options = {
+						path : oSelectedProject.githubFileName
+			};
+			var gettingListOfCommits = gitRepo.listCommits(options);
+			gettingListOfCommits.then(function (listOfCommits) {
+				if (listOfCommits !== []) {
+					var newFile = gitRepo.writeFile(branch, path, sContent, message, function () {
+					});
+					newFile.then(function() {
+						MessageToast.show("Requests have been pushed!");
+					});	
+				} else {
+					oSelectedProject.merge(gitRepo,function() {
+						//deleting actual file from repository and creating new one with a HTTP - PUT
+						var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
+						});
+						newFile.then(function() {
+							MessageToast.show("Requests have been pushed!");
+						});
+					});
+				}
 			});
 		};
 
@@ -287,14 +299,13 @@ sap.ui.define([
 			var selectedProject = oModel.getProperty("/SelectedProject");
 			var sUsername = "";
 			var sPassword = "";
-			var sAPIUrl = "www.wrongurl.com";
+			var sAPIUrl = selectedProject.mProperties.githubUrl;
 			
 			/*var selectedProjectIdentifier = "0";
 			selectedProjectIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");*/
 			
 			/*sUsername = selectedProject.mProperties.githubUser;
 			sPassword = selectedProject.mProperties.githubPassword;*/
-			sAPIUrl = selectedProject.mProperties.githubUrl;
 
 			var oGitHub = new GitHub({
 				username: sUsername,
