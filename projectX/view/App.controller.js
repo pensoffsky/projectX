@@ -8,16 +8,18 @@ sap.ui.define([
 	"projectX/util/Formatter",
 	"projectX/util/Helper",
 	"sap/m/MessageBox",
+	"sap/m/MessageToast",
 	"sap/ui/model/Sorter",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator"
-],	function(
+	],	function(
 		jQuery,
 		Controller,
 		Constants,
 		Formatter,
 		Helper,
 		MessageBox,
+		MessageToast,
 		Sorter,
 		Filter,
 		FilterOperator
@@ -154,13 +156,16 @@ sap.ui.define([
 			
 			//given commit message
 			var message = "test1";
-			
-			//deleting actual file from repository and creating new one with a HTTP - PUT
-			var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
-			
-			});
-			newFile.then(function(temp) {
-				var tempvar = temp
+			oSelectedProject.merge(gitRepo,function() {
+				
+				//deleting actual file from repository and creating new one with a HTTP - PUT
+				var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
+				
+				});
+				newFile.then(function(temp) {
+					var temo = temp;
+					MessageToast.show("Requests have been pushed!");
+				});
 			});
 		};
 
@@ -192,6 +197,7 @@ sap.ui.define([
 				var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, function(oMergedProject) {
 						oModel.updateBindings(true);
 						return oMergedProject;
+						MessageToast.show("Requests have been updated!");
 				});
 			})
 		};
@@ -279,8 +285,8 @@ sap.ui.define([
 		App.prototype._getGitHubAPI = function() {
 			var oModel = this.getView().getModel();
 			var selectedProject = oModel.getProperty("/SelectedProject");
-			var sUsername = "githubID";
-			var sPassword = "githubpasswort";
+			var sUsername = "";
+			var sPassword = "";
 			var sAPIUrl = "www.wrongurl.com";
 			
 			/*var selectedProjectIdentifier = "0";

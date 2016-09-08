@@ -208,11 +208,13 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	
 	Project.prototype.merge = function(gitRepo, mergeCallback) {
 	
+	//TODO split function into parts for testing
+	
 		var that = this;
-		this.setBaseVersionSha("bbcd591613847bb122daa49ef045352ace79a3ce");
-		
+		// this.setBaseVersionSha("2e48dabe74a0b17be95b861d119f48d749db71dc");
+		var bImportProject = false;
 		var oSelectedProject =	this.serialize();
-		
+		var sBaseProjSha = null;
 		var options = {
 						path : oSelectedProject.githubFileName
 		};
@@ -222,9 +224,12 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var oGettingSingleCommit = aGettingListOfCommits.then(function(temp){
 				
 				if (!oSelectedProject.baseVersionSha){
-					var sBaseProjSha = temp.data[0].sha;
+					bImportProject = true;
+					sBaseProjSha = temp.data[0].sha;
+					that.setBaseVersionSha(sBaseProjSha);
 					return gitRepo.getSingleCommit(sBaseProjSha,function(error,response){
 					});
+				} else if (oSelectedProject.baseVersionSha === temp.data[0].sha) {
 				} else {
 					return gitRepo.getSingleCommit(oSelectedProject.baseVersionSha,function(error,response){
 					});
@@ -232,9 +237,11 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			});
 		
 		var oGettingFile = oGettingSingleCommit.then(function(commit){
+			if (typeof commit !== "undefined") {
 				var fileName = commit.data.files[0].filename;
 				var sBaseProjSha = commit.data.sha;
 				return gitRepo.getContents(sBaseProjSha, fileName, true);
+			}
 		});
 
 		var oGettingFileBaseVersion = oGettingFile.then(function(oBaseVersion){
@@ -244,7 +251,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		
 		//getting last remote project
 		var oGettingRecentCommit = aGettingListOfCommits.then(function(temp){
-					var sBaseProjSha = temp.data[0].sha;
+					sBaseProjSha = temp.data[0].sha;
 					return gitRepo.getSingleCommit(sBaseProjSha,function(error,response){
 					});
 			});
@@ -257,39 +264,66 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				return oBaseVersion;
 		});
 		
-		Promise.all([aGettingListOfCommits, oGettingSingleCommit, oGettingFile, oGettingFileBaseVersion, oGettingFileRecentVersion]).then(function(results) {
-				var aListOfCommits = results[0];
-				var oSingleCommit = results[1];
-				var oFile = results[2];
-				var oFileBaseVersion = results[3];
-				var oRemoteProject = results[4];
-				
-				//oFileBaseVersion.data[0].baseVersionSha = oSingleCommit.data.sha;
-				
-				
-				var aBaseRequests = oFileBaseVersion.data[0].requests;
-				
-				var aLocalRequests = oSelectedProject.requests;
-				
-				var aRemoteRequests = oRemoteProject.data[0].requests;
-				
-				var aMergedRequests = that.mergeLogic(aBaseRequests, aLocalRequests, aRemoteRequests)
-				
-				debugger;
-				
-				that.removeAllRequests();
-				for (var i = 0; i < aMergedRequests.length; i++) {
-					var oRequest = new projectX.util.Request(aMergedRequests[i]);
-					that.addRequest(oRequest);
+		Promise.all([oGettingFileBaseVersion, oGettingFileRecentVersion]).then(function(results) {
+			if (typeof results[0] !== "undefined" && typeof results[1] !== "undefined") {
+				if (!bImportProject) {
+					that.executeMergeLogic(results);
+					that.setBaseVersionSha(sBaseProjSha);
+				} else if (bImportProject){
+					that.importGitHubProject(results);
 				}
-				
-				//that.mAggregations.requests = aMergedRequests;
+			}
 				mergeCallback(that);
 				
 		});
 	};
 	
-	Project.prototype.mergeBlaBlub
+	Project.prototype.getGitHubInformations = function (gitRepo) {
+		// TODO extract the whole GitHub execution into this function for simple testing
+		
+	};
+	
+	Project.prototype.importGitHubProject = function (aPromiseResult) {
+			var oSelectedProject =	this.serialize();
+			var oFileBaseVersion = aPromiseResult[0];
+			var oRemoteProject = aPromiseResult[1];
+			
+			var aMergedRequests = oRemoteProject.data[0].requests;
+			
+			this.removeAllRequests();
+			for (var i = 0; i < aMergedRequests.length; i++) {
+				var oRequest = new projectX.util.Request(aMergedRequests[i]);
+				this.addRequest(oRequest);
+			}
+			return this;
+		
+	};
+	
+	Project.prototype.executeMergeLogic = function (aPromiseResult) {
+		
+			var oSelectedProject =	this.serialize();
+			var oFileBaseVersion = aPromiseResult[0];
+			var oRemoteProject = aPromiseResult[1];
+			
+			//oFileBaseVersion.data[0].baseVersionSha = oSingleCommit.data.sha;
+			
+			
+			var aBaseRequests = oFileBaseVersion.data[0].requests;
+			
+			var aLocalRequests = oSelectedProject.requests;
+			
+			var aRemoteRequests = oRemoteProject.data[0].requests;
+			
+			var aMergedRequests = this.mergeLogic(aBaseRequests, aLocalRequests, aRemoteRequests);
+			
+			this.removeAllRequests();
+			for (var i = 0; i < aMergedRequests.length; i++) {
+				var oRequest = new projectX.util.Request(aMergedRequests[i]);
+				this.addRequest(oRequest);
+			}
+			return this;
+			//this.mAggregations.requests = aMergedRequests;
+	};
 	
 	
 	Project.prototype.mergeLogic = function (aBaseRequests, aLocalRequests, aRemoteRequests) {
@@ -342,6 +376,11 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		// Push the 'added' requests from the LOCAL project into the final array		
 		for (var h = 0; h < aComparedLocalRequests.added.length; h++) {
 			aMergedRequests.push(aComparedLocalRequests.added[h]);
+		}
+		
+		// defining new identifier in case there are duplicates because of the merge
+		for (var l = 0; l < aMergedRequests.length; l++) {
+			aMergedRequests[l].identifier = l + 1;
 		}
 		
 		return aMergedRequests;
