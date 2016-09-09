@@ -42,7 +42,7 @@
 					text="{i18n>GitHubFetchButton}"
 					press="onGitHubFetch"
 					type="Transparent"
-					enabled="{= ${/Projects/length} > 0}" />
+					enabled="{/SelectedProject/mProperties/useGithub}" />
 				<Button
 					text="{i18n>GitHubPushButton}"
 					class="sapUiLargeMarginEnd"
@@ -56,11 +56,6 @@
 					tooltip="{i18n>ProjectImportTooltip}"
 					buttonOnly="true"
 					style="Transparent"/>
-				<Button
-					text="{i18n>GitHubImportNewProject}"
-					press="onPush"
-					type="Transparent"
-					enabled="{= ${/Projects/length} > 0}" />
 				<Button
 					id="testingIDExportProject"
 					text="{i18n>ProjectExportButtonText}"

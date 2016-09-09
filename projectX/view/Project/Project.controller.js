@@ -53,6 +53,10 @@ projectX.util.Controller.extend("projectX.view.Project.Project", {
 			this.updateMasterList();
 		});
 	},
+	
+	onExit : function() {
+		this.getView().getModel().updateBindings(true);
+	},
 
 	// /////////////////////////////////////////////////////////////////////////////
 	// /// private methods

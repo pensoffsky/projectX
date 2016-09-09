@@ -53,7 +53,6 @@ sap.ui.define([
 		};
 
 		App.prototype.onRouteMatched = function(oEvent) {
-			debugger
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -162,7 +161,7 @@ sap.ui.define([
 			};
 			var gettingListOfCommits = gitRepo.listCommits(options);
 			gettingListOfCommits.then(function (listOfCommits) {
-				if (listOfCommits !== []) {
+				if (listOfCommits === []) {
 					var newFile = gitRepo.writeFile(branch, path, sContent, message, function () {
 					});
 					newFile.then(function() {
@@ -297,10 +296,11 @@ sap.ui.define([
 		App.prototype._getGitHubAPI = function() {
 			var oModel = this.getView().getModel();
 			var selectedProject = oModel.getProperty("/SelectedProject");
-			var sUsername = "";
-			var sPassword = "";
+		//	var sUsername = "";
+		//	var sPassword = "";
 			var sAPIUrl = selectedProject.mProperties.githubUrl;
-			
+			var sUsername = selectedProject.mProperties.githubUser;
+			var sPassword = selectedProject.mProperties.githubPassword;
 			/*var selectedProjectIdentifier = "0";
 			selectedProjectIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");*/
 			

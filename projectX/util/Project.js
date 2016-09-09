@@ -366,6 +366,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				aMergedRequests.push(aComparedLocalRequests.changed[j]);
 			} else if (aCheckRemoteChanged[0] !== undefined) {
 				aMergedRequests.push(aCheckRemoteChanged[0]);
+				
+				aComparedLocalRequests.changed[j].uuid = "" + Date.now() + uuid.v4();
 				aMergedRequests.push(aComparedLocalRequests.changed[j]);
 			}
 		}

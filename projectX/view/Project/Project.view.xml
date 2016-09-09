@@ -66,10 +66,10 @@
 						<Input id="gitHubUser" value="{localUIModel>/project/mProperties/githubUser}" width="50%" placeholder="{i18n>GitHubUserPlaceHolder}" enabled="{localUIModel>/project/mProperties/useGithub}"/>
 						<Label text="{i18n>GitHubPassword}"/>
 						<Input id="gitHubPassword" value="{localUIModel>/project/mProperties/githubPassword}" type="Password" width="25%" placeholder="{i18n>GitHubPasswordPlaceHolder}" enabled="{localUIModel>/project/mProperties/useGithub}"/>
-						<Label text="{i18n>GitHubRepository}"/>
-						<Input id="gitHubRepositoryName" value="{localUIModel>/project/mProperties/githubRepository}" width="25%" placeholder="{i18n>GitHubRepositoryPlaceHolder}" enabled="{localUIModel>/project/mProperties/useGithub}"/>
 						<Label text="{i18n>GitHubUserRepository}"/>
 						<Input id="gitHubUserRepositoryName" value="{localUIModel>/project/mProperties/githubUserRepository}" width="25%" placeholder="{i18n>GitHubUserRepositoryPlaceHolder}" enabled="{localUIModel>/project/mProperties/useGithub}"/>
+						<Label text="{i18n>GitHubRepository}"/>
+						<Input id="gitHubRepositoryName" value="{localUIModel>/project/mProperties/githubRepository}" width="25%" placeholder="{i18n>GitHubRepositoryPlaceHolder}" enabled="{localUIModel>/project/mProperties/useGithub}"/>
 						<Label text="{i18n>GitHubFileName}"/>
 						<Input id="gitHubFileName" value="{localUIModel>/project/mProperties/githubFileName}" width="25%" placeholder="{i18n>GitHubFileNamePlaceHolder}" enabled="{localUIModel>/project/mProperties/useGithub}"/>
 					</f:content>
