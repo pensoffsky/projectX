@@ -49,6 +49,12 @@
 					press="onGitHubPush"
 					type="Transparent"
 					enabled="{/SelectedProject/mProperties/useGithub}" />
+				<Button
+					text="DialogTEST"
+					class="sapUiLargeMarginEnd"
+					press="onDialogTest"
+					type="Transparent"
+					enabled="{/SelectedProject/mProperties/useGithub}" />
 				<u:FileUploader
 					change="onFileUploaderChange"
 					class="sapUiLargeMarginBegin"

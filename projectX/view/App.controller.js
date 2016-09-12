@@ -115,6 +115,34 @@ sap.ui.define([
 			oComponent.export(aProjects);
 		};
 		
+		App.prototype.showCredentialsDialog = function(oEvent) {
+		
+			var oView = sap.ui.xmlview("projectX.view.GitHubDialog.GitHubDialog");
+			var dialog = new sap.m.Dialog({
+		      title: 'User credentials are missing!',
+		      contentWidth: "250px",
+		      contentHeight: "200px",
+			  resizable: true,
+			  draggable: true,
+		      content: oView,
+		      beginButton: new sap.m.Button({
+		        text: 'OK',
+		        press: function () {
+		          dialog.close();
+		        }
+		      }),
+		      afterClose: function() {
+		        dialog.destroy();
+		      }
+		    });
+
+		    //to get access to the global model
+		    this.getView().addDependent(dialog);
+		    dialog.open();
+			oView.getController().onRouteMatched();
+			
+		};
+		
 		App.prototype.onGitHubPush = function(oEvent) {
 			// get selected project
 			var oSelectedProject = this.getView().getModel().getProperty("/SelectedProject");
@@ -157,27 +185,38 @@ sap.ui.define([
 			var message = "test1";
 			
 			var options = {
-						path : oSelectedProject.githubFileName
+						path : oSelectedProject.getGithubFileName()
 			};
-			var gettingListOfCommits = gitRepo.listCommits(options);
-			gettingListOfCommits.then(function (listOfCommits) {
-				if (listOfCommits === []) {
-					var newFile = gitRepo.writeFile(branch, path, sContent, message, function () {
-					});
-					newFile.then(function() {
-						MessageToast.show("Requests have been pushed!");
-					});	
-				} else {
-					oSelectedProject.merge(gitRepo,function() {
-						//deleting actual file from repository and creating new one with a HTTP - PUT
-						var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
+			
+			if (oSelectedProject.getGithubUser() === "" || oSelectedProject.getGithubPassword() === "") {
+				this.showCredentialsDialog();
+			} else {
+				var gettingListOfCommits = gitRepo.listCommits(options);
+				gettingListOfCommits.then(function (listOfCommits) {
+					if (listOfCommits.data.length === 0) {
+						//TODO show messagetoast only if successfull / error
+						var newFile = gitRepo.writeFile(branch, path, sContent, message, function () {
 						});
 						newFile.then(function() {
 							MessageToast.show("Requests have been pushed!");
-						});
-					});
-				}
-			});
+						});	
+					} else {
+						try {
+							oSelectedProject.merge(gitRepo,function() {
+								//deleting actual file from repository and creating new one with a HTTP - PUT
+								//TODO show messagetoast only if successfull / error
+								var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
+								});
+								newFile.then(function() {
+									MessageToast.show("Requests have been pushed!");
+								});
+							});
+						} catch (err) {
+							MessageToast.show("An Error has occured: " + err);
+						}
+					}
+				});
+			}
 		};
 
 		App.prototype.onGitHubFetch = function(oEvent) {
@@ -205,12 +244,17 @@ sap.ui.define([
 			});
 			fileContent.then(function(temp){
 				//todo add success and error callback to provide feedback to the user
-				var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, function(oMergedProject) {
-						oModel.updateBindings(true);
-						return oMergedProject;
-						MessageToast.show("Requests have been updated!");
-				});
-			})
+				try {
+					var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, function(oMergedProject) {
+							oModel.updateBindings(true);
+							return oMergedProject;
+							
+							MessageToast.show("Requests have been updated!");
+					});
+				} catch (err) {
+					MessageToast.show("An Error has occured: " + err);	
+				}
+			}, function(reason) {MessageToast.show("An Error has occured: " + reason); })
 		};
 		
 		App.prototype.onFileUploaderChange = function(oEvent) {

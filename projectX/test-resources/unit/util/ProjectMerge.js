@@ -14,34 +14,34 @@ QUnit.test("CompareRequests : local project exists, user wants to get the update
 	var base = [{
 		uuid : "1",
 		name : "name A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "name B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var local = [{
 		uuid : "1",
 		name : "name A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "name Changed",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var expected = {
 		changed : [{
 		uuid : "2",
 		name : "name Changed",
-		identifier : "2"
+		identifier : 2
 	}],
 		added : [],
 		unchanged : [{
 		uuid : "1",
 		name : "name A",
-		identifier : "1"
+		identifier : 1
 	}]
 	};
 	
@@ -56,25 +56,25 @@ QUnit.test("CompareRequests : Added new Request to local project", function(asse
 	var base = [{
 		uuid : "1",
 		name : "name A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "name B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var local = [{
 		uuid : "1",
 		name : "name A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "name B",
-		identifier : "2"
+		identifier : 2
 	}, {
 		uuid : "3",
 		name : "name C",
-		identifier : "3"
+		identifier : 3
 	}];
 	
 	var expected = {
@@ -82,16 +82,16 @@ QUnit.test("CompareRequests : Added new Request to local project", function(asse
 		added : [{
 			uuid : "3",
 			name : "name C",
-			identifier : "3"
+			identifier : 3
 		}],
 		unchanged : [{
 			uuid : "1",
 			name : "name A",
-			identifier : "1"
+			identifier : 1
 		}, {
 			uuid : "2",
 			name : "name B",
-			identifier : "2"
+			identifier : 2
 		}]
 	};
 	
@@ -106,41 +106,41 @@ QUnit.test("Merge : Changed Request from remote project to local project", funct
 	var aRequestBase = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestLocal = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestRemote = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "UPDATED Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var expected = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "UPDATED Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var project = new projectX.util.Project();
@@ -154,41 +154,41 @@ QUnit.test("Merge : Changed Request from LOCAL project", function(assert) {
 	var aRequestBase = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestLocal = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "[UPDATED] Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestRemote = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var expected = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "[UPDATED] Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var project = new projectX.util.Project();
@@ -202,41 +202,41 @@ QUnit.test("Merge : Changed Request from REMOTE project", function(assert) {
 	var aRequestBase = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestLocal = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestRemote = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "[UPDATED] Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var expected = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "[UPDATED] Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var project = new projectX.util.Project();
@@ -250,34 +250,34 @@ QUnit.test("Merge : A request has been created locally", function(assert) {
 	var aRequestBase = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var aRequestLocal = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "NEW Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestRemote = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	
 	var expected = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "NEW Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var project = new projectX.util.Project();
@@ -291,33 +291,33 @@ QUnit.test("Merge : A request has been created remotely", function(assert) {
 	var aRequestBase = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var aRequestLocal = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var aRequestRemote = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "NEW Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var expected = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "NEW Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var project = new projectX.util.Project();
@@ -331,33 +331,33 @@ QUnit.test("Merge : A request has been removed locally", function(assert) {
 	var aRequestBase = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestLocal = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var aRequestRemote = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var expected = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var project = new projectX.util.Project();
@@ -371,33 +371,33 @@ QUnit.test("Merge : A request has been removed remotely", function(assert) {
 	var aRequestBase = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestLocal = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestRemote = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var expected = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var project = new projectX.util.Project();
@@ -411,40 +411,40 @@ QUnit.test("Merge : A request has been removed remotely", function(assert) {
 	var aRequestBase = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestLocal = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}, {
 		uuid : "2",
 		name : "Request B",
-		identifier : "2"
+		identifier : 2
 	}];
 	
 	var aRequestRemote = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var expected = [{
 		uuid : "1",
 		name : "Request A",
-		identifier : "1"
+		identifier : 1
 	}];
 	
 	var project = new projectX.util.Project({
 		uuid:"asdf"
 	});
 	project.mergeBlaBlub = sinon.spy();
-	project.merge(....);
+	project.merge();
 	assert.ok(project.mergeBlaBlub.called === true, "project.mergeBlaBlub was called");
 	
 	

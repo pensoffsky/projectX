@@ -249,7 +249,7 @@
   uuid._nodeRNG = _nodeRNG;
   uuid._whatwgRNG = _whatwgRNG;
 
-  if (('undefined' !== typeof module) && module.exports) {
+  /*if (('undefined' !== typeof module) && module.exports) {
     // Publish as node.js module
     module.exports = uuid;
   } else if (typeof define === 'function' && define.amd) {
@@ -257,7 +257,7 @@
     define(function() {return uuid;});
 
 
-  } else {
+  } else {*/
     // Publish as global (in browsers)
     _previousRoot = _window.uuid;
 
@@ -268,5 +268,5 @@
     };
 
     _window.uuid = uuid;
-  }
+//  }
 })('undefined' !== typeof window ? window : null);
