@@ -210,6 +210,8 @@ sap.ui.define([
 								newFile.then(function() {
 									MessageToast.show("Requests have been pushed!");
 								});
+							}, function(err){
+								MessageToast.show("Action could not be executed");	
 							});
 						} catch (err) {
 							MessageToast.show("An Error has occured: " + err);
@@ -244,17 +246,15 @@ sap.ui.define([
 			});
 			fileContent.then(function(temp){
 				//todo add success and error callback to provide feedback to the user
-				try {
 					var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, function(oMergedProject) {
 							oModel.updateBindings(true);
-							return oMergedProject;
+							//return oMergedProject;
 							
 							MessageToast.show("Requests have been updated!");
-					});
-				} catch (err) {
-					MessageToast.show("An Error has occured: " + err);	
-				}
-			}, function(reason) {MessageToast.show("An Error has occured: " + reason); })
+					}, function(err){
+					MessageToast.show("Action could not be executed");	
+				});
+			}, function(reason) {MessageToast.show("An Error has occured: " + reason); });
 		};
 		
 		App.prototype.onFileUploaderChange = function(oEvent) {

@@ -206,7 +206,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	};
 
 	
-	Project.prototype.merge = function(gitRepo, mergeCallback) {
+	Project.prototype.merge = function(gitRepo, mergeCallback, mergeCallbackError) {
 	
 	//TODO split function into parts for testing
 	
@@ -234,6 +234,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 					return gitRepo.getSingleCommit(oSelectedProject.baseVersionSha,function(error,response){
 					});
 				}
+			}).catch(function(err){
+				return;
 			});
 		
 		var oGettingFile = oGettingSingleCommit.then(function(commit){
@@ -242,10 +244,14 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				var sBaseProjSha = commit.data.sha;
 				return gitRepo.getContents(sBaseProjSha, fileName, true);
 			}
+		}).catch(function(err){
+			return;
 		});
 
 		var oGettingFileBaseVersion = oGettingFile.then(function(oBaseVersion){
 				return oBaseVersion;
+		}).catch(function(err){
+			return;
 		});
 		
 		
@@ -254,14 +260,21 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 					sBaseProjSha = temp.data[0].sha;
 					return gitRepo.getSingleCommit(sBaseProjSha,function(error,response){
 					});
+		}).catch(function(err){
+			return;
+				
 			});
 		var oGettingRecentFile = oGettingRecentCommit.then(function(commit){
 				var fileName = commit.data.files[0].filename;
 				return gitRepo.getContents("master", fileName, true);
+		}).catch(function(err){
+			return;
 		});
 
 		var oGettingFileRecentVersion = oGettingRecentFile.then(function(oBaseVersion){
 				return oBaseVersion;
+		}).catch(function(err){
+			return;
 		});
 		
 		Promise.all([oGettingFileBaseVersion, oGettingFileRecentVersion]).then(function(results) {
@@ -269,12 +282,14 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				if (!bImportProject) {
 					that.executeMergeLogic(results);
 					that.setBaseVersionSha(sBaseProjSha);
+					mergeCallback(that);
 				} else if (bImportProject){
 					that.importGitHubProject(results);
+					mergeCallback(that);
 				}
+			} else if (typeof results[0] === "undefined" || typeof results[1] === "undefined") {
+				mergeCallbackError();
 			}
-				mergeCallback(that);
-				
 		});
 	};
 	
