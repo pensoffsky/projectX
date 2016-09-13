@@ -202,7 +202,7 @@ sap.ui.define([
 						});	
 					} else {
 						try {
-							oSelectedProject.merge(gitRepo,function() {
+							oSelectedProject.merge(gitRepo, false, function() {
 								//deleting actual file from repository and creating new one with a HTTP - PUT
 								//TODO show messagetoast only if successfull / error
 								var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
@@ -246,7 +246,7 @@ sap.ui.define([
 			});
 			fileContent.then(function(temp){
 				//todo add success and error callback to provide feedback to the user
-					var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, function(oMergedProject) {
+					var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, true, function(oMergedProject) {
 							oModel.updateBindings(true);
 							//return oMergedProject;
 							

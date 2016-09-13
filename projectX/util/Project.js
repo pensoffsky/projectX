@@ -206,7 +206,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 	};
 
 	
-	Project.prototype.merge = function(gitRepo, mergeCallback, mergeCallbackError) {
+	Project.prototype.merge = function(gitRepo, bMergeAbort, mergeCallback, mergeCallbackError) {
 	
 	//TODO split function into parts for testing
 	
@@ -215,6 +215,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		var bImportProject = false;
 		var oSelectedProject =	this.serialize();
 		var sBaseProjSha = null;
+		var bMergeAbortTemp = bMergeAbort;
 		var options = {
 						path : oSelectedProject.githubFileName
 		};
@@ -230,6 +231,11 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 					return gitRepo.getSingleCommit(sBaseProjSha,function(error,response){
 					});
 				} else if (oSelectedProject.baseVersionSha === temp.data[0].sha) {
+					//Sha of both, the local version and the most recent remote version are the same
+					if(!bMergeAbortTemp){
+							return gitRepo.getSingleCommit(oSelectedProject.baseVersionSha,function(error,response){
+						});	
+					}
 				} else {
 					return gitRepo.getSingleCommit(oSelectedProject.baseVersionSha,function(error,response){
 					});
@@ -288,7 +294,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 					mergeCallback(that);
 				}
 			} else if (typeof results[0] === "undefined" || typeof results[1] === "undefined") {
-				mergeCallbackError();
+					mergeCallbackError();
 			}
 		});
 	};
@@ -361,6 +367,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			// var aCheckLocalRemoved = aComparedRemoteRequests.added.filter(function(object) { return object.uuid === aComparedLocalRequests.unchanged[i].uuid; });
 			 
 			if (aCheckLocalUnchanged[0] !== undefined) {
+				delete aCheckLocalUnchanged[0].identifier;
+				delete aComparedLocalRequests.unchanged[i].identifier;
 				var sTempUnchanged = JSON.stringify(aCheckLocalUnchanged[0]);
 				var sComparedLocalUnchangedRequests = JSON.stringify(aComparedLocalRequests.unchanged[i]);
 				if (sTempUnchanged === sComparedLocalUnchangedRequests) {
