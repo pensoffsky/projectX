@@ -268,8 +268,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 					});
 		}).catch(function(err){
 			return;
-				
-			});
+		});
 		var oGettingRecentFile = oGettingRecentCommit.then(function(commit){
 				var fileName = commit.data.files[0].filename;
 				return gitRepo.getContents("master", fileName, true);
