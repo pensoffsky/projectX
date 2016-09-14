@@ -386,22 +386,36 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			var aCheckRemoteChanged = aComparedRemoteRequests.changed.filter(function(object) { return object.uuid === aComparedLocalRequests.changed[j].uuid; });
 			 
 			if (aCheckRemoteUnchanged[0] !== undefined) {
-				aMergedRequests.push(aComparedLocalRequests.changed[j]);
-			} else if (aCheckRemoteChanged[0] !== undefined) {
+				aMergedRequests.push(aCheckRemoteUnchanged[0]);
+			}
+			 
+			if (aCheckRemoteChanged[0] !== undefined) {
 				aMergedRequests.push(aCheckRemoteChanged[0]);
 				
-				aComparedLocalRequests.changed[j].uuid = "" + Date.now() + uuid.v4();
-				aComparedLocalRequests.changed[j].name += " (NEW)";
-				aMergedRequests.push(aComparedLocalRequests.changed[j]);
+				var sTempRemote = JSON.stringify(aCheckRemoteChanged[0]);
+				var sTempLocal = JSON.stringify(aComparedLocalRequests.changed[j]);
+				
+				if (sTempRemote !== sTempLocal){
+					aComparedLocalRequests.changed[j].uuid = "" + Date.now() + uuid.v4();
+					aComparedLocalRequests.changed[j].name += " (NEW)";
+					aMergedRequests.push(aComparedLocalRequests.changed[j]);
+				}
 			}
 		}
 		// Push the 'added' requests from the REMOTE project into the final array
 		for (var k = 0; k < aComparedRemoteRequests.added.length; k++) {
-			aMergedRequests.push(aComparedRemoteRequests.added[k]);
+			
+			var aCheckIfAlreadyMerged = aMergedRequests.filter(function(object) { return object.uuid === aComparedRemoteRequests.added[k].uuid; });
+			if(!aCheckIfAlreadyMerged[0]){
+				aMergedRequests.push(aComparedRemoteRequests.added[k]);
+			}	
 		}
 		// Push the 'added' requests from the LOCAL project into the final array		
 		for (var h = 0; h < aComparedLocalRequests.added.length; h++) {
-			aMergedRequests.push(aComparedLocalRequests.added[h]);
+			var aCheckIfAlreadyMerged = aMergedRequests.filter(function(object) { return object.uuid === aComparedLocalRequests.added[h].uuid; });
+			if(!aCheckIfAlreadyMerged[0]){
+				aMergedRequests.push(aComparedLocalRequests.added[h]);
+			}
 		}
 		
 		// defining new identifier in case there are duplicates because of the merge

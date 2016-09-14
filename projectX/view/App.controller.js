@@ -206,7 +206,7 @@ sap.ui.define([
 						try {
 							oSelectedProject.merge(gitRepo, false, function() {
 								//deleting actual file from repository and creating new one with a HTTP - PUT
-								//TODO show messagetoast only if successfull / error
+								//TODO show messagetoast if successfull / error
 								var comp = oComponent;
 								var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
 								});
@@ -214,10 +214,10 @@ sap.ui.define([
 									comp.setSelectedProject(sProjectIdentifier);
 									MessageToast.show("Requests have been pushed!");
 								}).catch(function(err){
-									MessageToast.show("Action could not be executed")
+									MessageToast.show("Action could not be executed" + err)
 								});
 							}, function(err){
-								MessageToast.show("Action could not be executed");	
+								MessageToast.show("Action could not be executed" + err);	
 							});
 						} catch (err) {
 							MessageToast.show("An Error has occured: " + err);
