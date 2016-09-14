@@ -311,7 +311,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			
 			var aMergedRequests = oRemoteProject.data[0].requests;
 			
-			this.removeAllRequests();
 			for (var i = 0; i < aMergedRequests.length; i++) {
 				var oRequest = new projectX.util.Request(aMergedRequests[i]);
 				this.addRequest(oRequest);
@@ -355,6 +354,10 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		
 		var oProject = new projectX.util.Project();
 		
+		aBaseRequests.forEach(function(element, index, array){delete array[index].identifier; });
+		aLocalRequests.forEach(function(element, index, array){delete array[index].identifier; });
+		aRemoteRequests.forEach(function(element, index, array){delete array[index].identifier; });
+		
 		// Split the request by comparing it with the base version given, into 'unchanged', 'changed' and 'added'
 		aComparedLocalRequests = oProject.compareRequests(aLocalRequests, aBaseRequests);
 		aComparedRemoteRequests = oProject.compareRequests(aRemoteRequests, aBaseRequests);
@@ -367,8 +370,6 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			// var aCheckLocalRemoved = aComparedRemoteRequests.added.filter(function(object) { return object.uuid === aComparedLocalRequests.unchanged[i].uuid; });
 			 
 			if (aCheckLocalUnchanged[0] !== undefined) {
-				delete aCheckLocalUnchanged[0].identifier;
-				delete aComparedLocalRequests.unchanged[i].identifier;
 				var sTempUnchanged = JSON.stringify(aCheckLocalUnchanged[0]);
 				var sComparedLocalUnchangedRequests = JSON.stringify(aComparedLocalRequests.unchanged[i]);
 				if (sTempUnchanged === sComparedLocalUnchangedRequests) {

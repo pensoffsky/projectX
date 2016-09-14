@@ -146,6 +146,7 @@ sap.ui.define([
 		App.prototype.onGitHubPush = function(oEvent) {
 			// get selected project
 			var oSelectedProject = this.getView().getModel().getProperty("/SelectedProject");
+			var sProjectIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");
 			var bGitHubUsed = this.getView().getModel().getProperty("/SelectedProject/mProperties/useGithub");
 			var aSelectedProject = [];
 			aSelectedProject.push(oSelectedProject);
@@ -195,6 +196,7 @@ sap.ui.define([
 				gettingListOfCommits.then(function (listOfCommits) {
 					if (listOfCommits.data.length === 0) {
 						//TODO show messagetoast only if successfull / error
+						var comp = oComponent;
 						var newFile = gitRepo.writeFile(branch, path, sContent, message, function () {
 						});
 						newFile.then(function() {
@@ -205,10 +207,14 @@ sap.ui.define([
 							oSelectedProject.merge(gitRepo, false, function() {
 								//deleting actual file from repository and creating new one with a HTTP - PUT
 								//TODO show messagetoast only if successfull / error
+								var comp = oComponent;
 								var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
 								});
 								newFile.then(function() {
+									comp.setSelectedProject(sProjectIdentifier);
 									MessageToast.show("Requests have been pushed!");
+								}).catch(function(err){
+									MessageToast.show("Action could not be executed")
 								});
 							}, function(err){
 								MessageToast.show("Action could not be executed");	
@@ -217,6 +223,8 @@ sap.ui.define([
 							MessageToast.show("An Error has occured: " + err);
 						}
 					}
+				}).catch(function(err){
+					MessageToast.show("An Error has occured: " + err);
 				});
 			}
 		};
@@ -244,7 +252,7 @@ sap.ui.define([
 			var fileContent = gitRepo.getContents(ref,path,true,function() {
 				
 			});
-			fileContent.then(function(temp){
+			fileContent.then(function(){
 				//todo add success and error callback to provide feedback to the user
 					var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, true, function(oMergedProject) {
 							oModel.updateBindings(true);
