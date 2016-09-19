@@ -312,23 +312,38 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			var aMergedRequests = oRemoteProject.data[0].requests;
 			var aLocalRequests = this.getRequests();
 			
-			for (var i = 0; i < aLocalRequests.length; i++) {
-				this.mAggregations.requests[i].mProperties.identifier = i;
-			}
+			this.removeAllRequests();
 			
 			for (var j = 0; j < aMergedRequests.length; j++) {
-				aMergedRequests[j].identifier = aLocalRequests.length + j;
 				var aCheckIfAlreadyExisting = aLocalRequests.filter(function(object) { return object.mProperties.uuid === aMergedRequests[j].uuid; });
 				if (aCheckIfAlreadyExisting.length !== 0) {
-					aMergedRequests[j].uuid = "" + Date.now() + uuid.v4();
-					aMergedRequests[j].name += " (NEW)";
-					var oRequestNew = new projectX.util.Request(aMergedRequests[j]);
-					this.addRequest(oRequestNew);
+					var temp = aCheckIfAlreadyExisting[0].serialize();
+					delete temp.identifier;
+					delete aMergedRequests[j].identifier;
+					var sLocalForComparison = JSON.stringify(temp);
+					var sRemoteForComparison = JSON.stringify(aMergedRequests[j]);
+					if (sLocalForComparison !== sRemoteForComparison) {
+						aMergedRequests[j].uuid = "" + Date.now() + uuid.v4();
+						aMergedRequests[j].name += " (NEW)";
+						var oRequestLocalChanged =  new projectX.util.Request(temp);
+						this.addRequest(oRequestLocalChanged);
+						var oRequestNew = new projectX.util.Request(aMergedRequests[j]);
+						this.addRequest(oRequestNew);
+					} else {
+						var oRequestMerge = new projectX.util.Request(aMergedRequests[j]);
+						this.addRequest(oRequestMerge);
+					}
 				} else {
 					var oRequest = new projectX.util.Request(aMergedRequests[j]);
 					this.addRequest(oRequest);
 				}
 			}
+			
+			var aAllRequestsForIdentifier = this.getRequests();
+			for (var i = 0; i < aAllRequestsForIdentifier.length; i++) {
+				this.mAggregations.requests[i].mProperties.identifier = i;
+			}
+			
 			return this;
 		
 	};
