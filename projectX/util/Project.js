@@ -290,6 +290,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 					mergeCallback(that);
 				} else if (bImportProject){
 					that.importGitHubProject(results);
+					that.setBaseVersionSha(sBaseProjSha);
 					mergeCallback(that);
 				}
 			} else if (typeof results[0] === "undefined" || typeof results[1] === "undefined") {
@@ -309,10 +310,24 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			var oRemoteProject = aPromiseResult[1];
 			
 			var aMergedRequests = oRemoteProject.data[0].requests;
+			var aLocalRequests = this.getRequests();
 			
-			for (var i = 0; i < aMergedRequests.length; i++) {
-				var oRequest = new projectX.util.Request(aMergedRequests[i]);
-				this.addRequest(oRequest);
+			for (var i = 0; i < aLocalRequests.length; i++) {
+				this.mAggregations.requests[i].mProperties.identifier = i;
+			}
+			
+			for (var j = 0; j < aMergedRequests.length; j++) {
+				aMergedRequests[j].identifier = aLocalRequests.length + j;
+				var aCheckIfAlreadyExisting = aLocalRequests.filter(function(object) { return object.mProperties.uuid === aMergedRequests[j].uuid; });
+				if (aCheckIfAlreadyExisting.length !== 0) {
+					aMergedRequests[j].uuid = "" + Date.now() + uuid.v4();
+					aMergedRequests[j].name += " (NEW)";
+					var oRequestNew = new projectX.util.Request(aMergedRequests[j]);
+					this.addRequest(oRequestNew);
+				} else {
+					var oRequest = new projectX.util.Request(aMergedRequests[j]);
+					this.addRequest(oRequest);
+				}
 			}
 			return this;
 		
@@ -386,7 +401,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			var aCheckRemoteChanged = aComparedRemoteRequests.changed.filter(function(object) { return object.uuid === aComparedLocalRequests.changed[j].uuid; });
 			 
 			if (aCheckRemoteUnchanged[0] !== undefined) {
-				aMergedRequests.push(aCheckRemoteUnchanged[0]);
+				aMergedRequests.push(aComparedLocalRequests.changed[j]);
 			}
 			 
 			if (aCheckRemoteChanged[0] !== undefined) {
