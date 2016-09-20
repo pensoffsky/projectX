@@ -145,6 +145,7 @@ sap.ui.define([
 		
 		App.prototype.onGitHubPush = function(oEvent) {
 			// get selected project
+			var that = this;
 			var oModel = this.getView().getModel();
 			var oSelectedProject = this.getView().getModel().getProperty("/SelectedProject");
 			var sProjectIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");
@@ -214,6 +215,7 @@ sap.ui.define([
 								newFile.then(function() {
 									comp.setSelectedProject(sProjectIdentifier);
 									oModel.updateBindings(true);
+									that.onGitHubFetch();
 									MessageToast.show("Requests have been pushed!");
 								}).catch(function(err){
 									MessageToast.show("Action could not be executed" + err)
@@ -262,7 +264,7 @@ sap.ui.define([
 							
 							MessageToast.show("Requests have been updated!");
 					}, function(err){
-					MessageToast.show("Action could not be executed");	
+					MessageToast.show("Action could not be executed!");	
 				});
 			}, function(reason) {MessageToast.show("An Error has occured: " + reason); });
 		};
