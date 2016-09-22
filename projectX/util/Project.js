@@ -285,16 +285,18 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 			if (typeof results[0] !== "undefined" && typeof results[1] !== "undefined") {
 				if (!bImportProject) {
 					that.executeMergeLogic(results);
-					that.setBaseVersionSha(sBaseProjSha);
 					gitRepo.listCommits(options).then(function (temp){
 							var	sBaseProjSha = temp.data[0].sha;
 							that.setBaseVersionSha(sBaseProjSha);
+							mergeCallback(that);
 					});
-					mergeCallback(that);
 				} else if (bImportProject){
 					that.importGitHubProject(results);
-					that.setBaseVersionSha(sBaseProjSha);
-					mergeCallback(that);
+					gitRepo.listCommits(options).then(function (temp){
+							var	sBaseProjSha = temp.data[0].sha;
+							that.setBaseVersionSha(sBaseProjSha);
+							mergeCallback(that);
+					});
 				}
 			} else if (typeof results[0] === "undefined" || typeof results[1] === "undefined") {
 					mergeCallbackError();
@@ -488,7 +490,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 						    aLocalNewRequests.splice(k,1);
 						    } 
 						}
-		};
+		}
 		for (var i = 0; i < aLocalRequests.length; i++) {
 			
 			var temp = aBaseRequests.filter(function(object) { return object.uuid === aLocalRequests[i].uuid; });

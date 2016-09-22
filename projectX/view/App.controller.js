@@ -198,7 +198,6 @@ sap.ui.define([
 				gettingListOfCommits.then(function (listOfCommits) {
 					if (listOfCommits.data.length === 0) {
 						//TODO show messagetoast only if successfull / error
-						var comp = oComponent;
 						var newFile = gitRepo.writeFile(branch, path, sContent, message, function () {
 						});
 						newFile.then(function() {
@@ -206,10 +205,13 @@ sap.ui.define([
 						});	
 					} else {
 						try {
-							oSelectedProject.merge(gitRepo, false, function() {
+							oSelectedProject.merge(gitRepo, false, function(oMergedProject) {
 								//deleting actual file from repository and creating new one with a HTTP - PUT
 								//TODO show messagetoast if successfull / error
+								
 								var comp = oComponent;
+								aSelectedProject.splice(0,1,oMergedProject);
+								sContent = comp.createGitHubJson(aSelectedProject);
 								var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
 								});
 								newFile.then(function() {
@@ -218,7 +220,7 @@ sap.ui.define([
 									that.onGitHubFetch();
 									MessageToast.show("Requests have been pushed!");
 								}).catch(function(err){
-									MessageToast.show("Action could not be executed" + err)
+									MessageToast.show("Action could not be executed" + err);
 								});
 							}, function(err){
 								MessageToast.show("Action could not be executed" + err);	
