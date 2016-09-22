@@ -115,7 +115,7 @@ sap.ui.define([
 			oComponent.export(aProjects);
 		};
 		
-		App.prototype.showCredentialsDialog = function(oEvent) {
+		App.prototype.showCredentialsDialog = function(fnOKCallback) {
 		
 			var oView = sap.ui.xmlview("projectX.view.GitHubDialog.GitHubDialog");
 			var dialog = new sap.m.Dialog({
@@ -128,6 +128,9 @@ sap.ui.define([
 		      beginButton: new sap.m.Button({
 		        text: 'OK',
 		        press: function () {
+		          if (typeof fnOKCallback === "function") {
+		            fnOKCallback();
+		          }
 		          dialog.close();
 		        }
 		      }),
@@ -192,7 +195,9 @@ sap.ui.define([
 			};
 			
 			if (oSelectedProject.getGithubUser() === "" || oSelectedProject.getGithubPassword() === "") {
-				this.showCredentialsDialog();
+				this.showCredentialsDialog(function() {
+					this.onGitHubPush(oEvent);
+				}.bind(this));
 			} else {
 				var gettingListOfCommits = gitRepo.listCommits(options);
 				gettingListOfCommits.then(function (listOfCommits) {
