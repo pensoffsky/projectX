@@ -27,7 +27,7 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 				usernameBasicAuth : {type : "string", defaultValue : null},
 				passwordBasicAuth : {type : "string", defaultValue : null},
 				
-				deleted : {type : "boolean", defaultValue : false},
+				changed : {type : "boolean", defaultValue : false},
 				revision : {type : "int", defaultValue : null},
 				uuid: {type : "string", defaultValue : null},
 
@@ -100,8 +100,8 @@ sap.ui.define(['jquery.sap.global', 'projectX/util/MyManagedObject', 'projectX/u
 		oRequest.usernameBasicAuth = this.getUsernameBasicAuth();
 		oRequest.passwordBasicAuth = this.getPasswordBasicAuth();
 		
+		oRequest.changed = this.getChanged();
 		oRequest.revision = this.getRevision();
-		oRequest.deleted = this.getDeleted();
 		oRequest.uuid = this.getUuid();
 		
 		//make sure every request has a uuid even if it is an old request

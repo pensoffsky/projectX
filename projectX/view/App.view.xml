@@ -38,8 +38,20 @@
 					type="Transparent"/>
 				<Text text="{i18n>ProjectEmptyList}"
 					visible="{= !${/Projects/length} > 0}"/>
+				<Button
+					text="{i18n>GitHubFetchButton}"
+					press="onGitHubFetch"
+					type="Transparent"
+					enabled="{/SelectedProject/mProperties/useGithub}" />
+				<Button
+					text="{i18n>GitHubPushButton}"
+					class="sapUiLargeMarginEnd"
+					press="onGitHubPush"
+					type="Transparent"
+					enabled="{/SelectedProject/mProperties/useGithub}" />
 				<u:FileUploader
 					change="onFileUploaderChange"
+					class="sapUiLargeMarginBegin"
 					buttonText="{i18n>ProjectImportButtonText}"
 					tooltip="{i18n>ProjectImportTooltip}"
 					buttonOnly="true"

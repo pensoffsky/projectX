@@ -3,7 +3,7 @@ jQuery.sap.require("projectX.util.Request");
 jQuery.sap.require("projectX.util.Controller");
 jQuery.sap.require("projectX.util.Helper");
 
-projectX.util.Controller.extend("projectX.view.Project.Project", {
+projectX.util.Controller.extend("projectX.view.GitHubDialog.GitHubDialog", {
 
 	_localUIModel : undefined,
 	_oProject : null,

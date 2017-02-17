@@ -8,16 +8,18 @@ sap.ui.define([
 	"projectX/util/Formatter",
 	"projectX/util/Helper",
 	"sap/m/MessageBox",
+	"sap/m/MessageToast",
 	"sap/ui/model/Sorter",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator"
-],	function(
+	],	function(
 		jQuery,
 		Controller,
 		Constants,
 		Formatter,
 		Helper,
 		MessageBox,
+		MessageToast,
 		Sorter,
 		Filter,
 		FilterOperator
@@ -28,7 +30,7 @@ sap.ui.define([
 		var App = Controller.extend("projectX.view.App", {
 			metadata: {}
 		});
-
+		
 
 		// /////////////////////////////////////////////////////////////////////////////
 		// /// Members
@@ -51,7 +53,6 @@ sap.ui.define([
 		};
 
 		App.prototype.onRouteMatched = function(oEvent) {
-			debugger
 		};
 
 		// /////////////////////////////////////////////////////////////////////////////
@@ -63,7 +64,7 @@ sap.ui.define([
 			var oComponent = this.getComponent();
 			oComponent.setSelectedProject(sIdentifier);
 		};
-
+		
 		/**
 		 * Handler for export button.
 		 *
@@ -113,7 +114,168 @@ sap.ui.define([
 			var oComponent = this.getComponent();
 			oComponent.export(aProjects);
 		};
+		
+		App.prototype.showCredentialsDialog = function(fnOKCallback) {
+		
+			var oView = sap.ui.xmlview("projectX.view.GitHubDialog.GitHubDialog");
+			var dialog = new sap.m.Dialog({
+		      title: 'User credentials are missing!',
+		      contentWidth: "250px",
+		      contentHeight: "200px",
+			  resizable: true,
+			  draggable: true,
+		      content: oView,
+		      beginButton: new sap.m.Button({
+		        text: 'OK',
+		        press: function () {
+		          if (typeof fnOKCallback === "function") {
+		            fnOKCallback();
+		          }
+		          dialog.close();
+		        }
+		      }),
+		      afterClose: function() {
+		        dialog.destroy();
+		      }
+		    });
 
+		    //to get access to the global model
+		    this.getView().addDependent(dialog);
+		    dialog.open();
+			oView.getController().onRouteMatched();
+			
+		};
+		
+		App.prototype.onGitHubPush = function(oEvent) {
+			// get selected project
+			var that = this;
+			var oModel = this.getView().getModel();
+			var oSelectedProject = this.getView().getModel().getProperty("/SelectedProject");
+			var sProjectIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");
+			var bGitHubUsed = this.getView().getModel().getProperty("/SelectedProject/mProperties/useGithub");
+			var aSelectedProject = [];
+			aSelectedProject.push(oSelectedProject);
+			//var aContexts = oEvent.getParameter("selectedContexts");
+			
+			// leave when no project is selected
+			if (!bGitHubUsed) {
+				return;
+			}
+
+			/*var aProject = aSelectedProject.map(function(oContext) {
+				return oContext.getObject();
+			}, this);*/
+
+			var gitApi = this._getGitHubAPI();
+			
+			var oComponent = this.getComponent();
+			
+			//given Content for file
+			var sContent = oComponent.createGitHubJson(aSelectedProject);
+			
+			//getting repo
+			var sRepo = aSelectedProject[0].mProperties.githubRepository;
+			
+			var sUserRepo = aSelectedProject[0].mProperties.githubUserRepository;
+
+			//getting repo
+			var gitRepo = gitApi.getRepo(sUserRepo,sRepo);
+			
+			//given branch
+			var branch = "master";
+			
+			//given path for file 
+			var path = aSelectedProject[0].mProperties.githubFileName;
+			
+			//given commit message
+			var message = "test1";
+			
+			var options = {
+						path : oSelectedProject.getGithubFileName()
+			};
+			
+			if (oSelectedProject.getGithubUser() === "" || oSelectedProject.getGithubPassword() === "") {
+				this.showCredentialsDialog(function() {
+					this.onGitHubPush(oEvent);
+				}.bind(this));
+			} else {
+				var gettingListOfCommits = gitRepo.listCommits(options);
+				gettingListOfCommits.then(function (listOfCommits) {
+					if (listOfCommits.data.length === 0) {
+						//TODO show messagetoast only if successfull / error
+						var newFile = gitRepo.writeFile(branch, path, sContent, message, function () {
+						});
+						newFile.then(function() {
+							MessageToast.show("Requests have been pushed!");
+						});	
+					} else {
+						try {
+							oSelectedProject.merge(gitRepo, false, function(oMergedProject) {
+								//deleting actual file from repository and creating new one with a HTTP - PUT
+								//TODO show messagetoast if successfull / error
+								
+								var comp = oComponent;
+								aSelectedProject.splice(0,1,oMergedProject);
+								sContent = comp.createGitHubJson(aSelectedProject);
+								var newFile = gitRepo.writeFile(branch,path,sContent,message,function () {
+								});
+								newFile.then(function() {
+									comp.setSelectedProject(sProjectIdentifier);
+									oModel.updateBindings(true);
+									that.onGitHubFetch();
+									MessageToast.show("Requests have been pushed!");
+								}).catch(function(err){
+									MessageToast.show("Action could not be executed" + err);
+								});
+							}, function(err){
+								MessageToast.show("Action could not be executed" + err);	
+							});
+						} catch (err) {
+							MessageToast.show("An Error has occured: " + err);
+						}
+					}
+				}).catch(function(err){
+					MessageToast.show("An Error has occured: " + err);
+				});
+			}
+		};
+
+		App.prototype.onGitHubFetch = function(oEvent) {
+			//get Data from UI for GitHub
+			var oModel = this.getView().getModel();
+			var gitApi = this._getGitHubAPI();
+			var selectedProject = oModel.getProperty("/SelectedProject");
+			
+			//get branch
+			var ref = "master";
+			
+			//get path from given Project
+			var path = selectedProject.mProperties.githubFileName;
+			
+			var sRepo = selectedProject.mProperties.githubRepository;
+			
+			var sUserRepo = selectedProject.mProperties.githubUserRepository;
+
+			//getting repo
+			var gitRepo = gitApi.getRepo(sUserRepo,sRepo);
+			
+			//get Content from given path
+			var fileContent = gitRepo.getContents(ref,path,true,function() {
+				
+			});
+			fileContent.then(function(){
+				//todo add success and error callback to provide feedback to the user
+					var oSelectedAndBaseProjectmerged = selectedProject.merge(gitRepo, true, function(oMergedProject) {
+							oModel.updateBindings(true);
+							//return oMergedProject;
+							
+							MessageToast.show("Requests have been updated!");
+					}, function(err){
+					MessageToast.show("Action could not be executed!");	
+				});
+			}, function(reason) {MessageToast.show("An Error has occured: " + reason); });
+		};
+		
 		App.prototype.onFileUploaderChange = function(oEvent) {
 			//TODO add error hanlding. at the moment best case programming
 			var aFiles = oEvent.getParameter("files");
@@ -194,6 +356,27 @@ sap.ui.define([
 			oView.getController().onRouteMatched();
 		};
 		
+		App.prototype._getGitHubAPI = function() {
+			var oModel = this.getView().getModel();
+			var selectedProject = oModel.getProperty("/SelectedProject");
+		//	var sUsername = "";
+		//	var sPassword = "";
+			var sAPIUrl = selectedProject.mProperties.githubUrl;
+			var sUsername = selectedProject.mProperties.githubUser;
+			var sPassword = selectedProject.mProperties.githubPassword;
+			/*var selectedProjectIdentifier = "0";
+			selectedProjectIdentifier = this._localUIModel.getProperty("/selectedProjectIdentifier");*/
+			
+			/*sUsername = selectedProject.mProperties.githubUser;
+			sPassword = selectedProject.mProperties.githubPassword;*/
+
+			var oGitHub = new GitHub({
+				username: sUsername,
+				password: sPassword
+			}, sAPIUrl);
+
+			return oGitHub;
+		};
 		
 		return App;
 

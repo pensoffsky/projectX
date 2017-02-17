@@ -240,6 +240,16 @@ sap.ui.core.UIComponent.extend("projectX.Component", {
 		};
 		oFileReader.readAsText(oFile);
 	},
+	
+	createGitHubJson : function (aProject){
+		var sData = projectX.util.Storage.createJsonString(aProject);
+		var sFileName = "projectX";
+		for (var i = 0; i < aProject.length; i++) {
+			sFileName +=  "-" + aProject[i].getName();
+		}
+		sFileName += ".json";
+		return sData;
+	},
 
 	getProjects : function() {
 		return this._oModel.getProperty("/Projects");
