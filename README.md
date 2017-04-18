@@ -2,6 +2,8 @@
 [![Gitter](https://badges.gitter.im/pensoffsky/projectX.svg)](https://gitter.im/pensoffsky/projectX?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Features 
+
+[![Join the chat at https://gitter.im/pensoffsky/projectX](https://badges.gitter.im/pensoffsky/projectX.svg)](https://gitter.im/pensoffsky/projectX?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 - create assertions for requests
 - fetch and set CSRF token on modifying requests
 - automatically create GET request for entitysets from OData metadata
